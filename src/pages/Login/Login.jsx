@@ -168,7 +168,7 @@ export default function Login() {
                 </label>
               </div>
 
-              <div className="form-check-container">
+              <div className="form-check">
                 <input
                   type="radio"
                   className="form-check-input"
