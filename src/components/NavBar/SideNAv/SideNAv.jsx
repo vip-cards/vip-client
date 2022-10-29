@@ -1,0 +1,100 @@
+import { t } from "i18next";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { NavLink } from "react-router-dom";
+import { switchLang } from "../../../helpers/lang";
+import i18n from "../../../locales/i18n";
+import { authActions } from "../../../store/auth-slice";
+import "./SideNAv.scss";
+export default function SideNAv() {
+  const dispatch = useDispatch();
+  const lang = i18n.language;
+
+  function logoutHandler() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userRole");
+    dispatch(authActions.logout());
+  }
+
+  function changeLang(lang) {
+    i18n.changeLanguage(lang);
+    switchLang(lang);
+  }
+  return (
+    <div className="side-nav">
+      <ul className="side-nav-menu">
+        <li className="nav-item">
+          <NavLink
+            to="/branches"
+            className={(navData) =>
+              navData.isActive ? "active nav-link" : "nav-link"
+            }
+          >
+            {t("branches")}
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink
+            to="/offers"
+            className={(navData) =>
+              navData.isActive ? "active nav-link" : "nav-link"
+            }
+          >
+            {t("offers")}
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink
+            to="/hot-deals"
+            className={(navData) =>
+              navData.isActive ? "active nav-link" : "nav-link"
+            }
+          >
+            {t("hotDeals")}
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink
+            to="/jobs"
+            className={(navData) =>
+              navData.isActive ? "active nav-link" : "nav-link"
+            }
+          >
+            {t("jobs")}
+          </NavLink>
+        </li>
+
+        <li className="nav-item">
+          <NavLink
+            to="/settings"
+            className={(navData) =>
+              navData.isActive ? "active nav-link" : "nav-link"
+            }
+          >
+            {t("settings")}
+          </NavLink>
+        </li>
+
+        <li className="nav-item" onClick={logoutHandler}>
+          <div className={"nav-link"}>{t("logout")}</div>
+        </li>
+
+        <li
+          className="nav-item"
+          onClick={
+            lang === "en"
+              ? () => {
+                  changeLang("ar");
+                }
+              : () => {
+                  changeLang("en");
+                }
+          }
+        >
+          <div className={"nav-link"}> {t("lang")}</div>
+        </li>
+      </ul>
+    </div>
+  );
+}

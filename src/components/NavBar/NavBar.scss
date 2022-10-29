@@ -1,0 +1,164 @@
+.top-nav {
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  grid-template-areas: "logo logo logo logo logo logo logo menunav menunav menunav menunav menunav menudrop  lang";
+  grid-area: nav;
+  background-color: var(--mainColor);
+  border: 1px solid #707070;
+  align-items: center;
+  padding: 0 20px;
+
+  .burger-menu-icon {
+    display: none;
+  }
+  .app-logo {
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    grid-area: logo;
+  }
+
+  .nav-menu {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    grid-area: menunav;
+    .nav-item {
+      cursor: pointer;
+      font-size: 18px;
+
+      .nav-link {
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        text-decoration: none;
+        color: var(--secondaryColor);
+        &:hover {
+          background-color: var(--secondaryColor);
+          color: var(--mainColor);
+          border-radius: 5px;
+        }
+        &.active {
+          background-color: var(--secondaryColor);
+          color: var(--mainColor);
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+  .account-btn-container {
+    position: relative;
+    grid-area: menudrop;
+    width: fit-content;
+    .account-btn {
+      padding: 10px;
+      color: var(--secondaryColor);
+      font-size: 18px;
+      font-family: sans-serif;
+      cursor: pointer;
+      &:hover {
+        background-color: var(--secondaryColor);
+        color: var(--mainColor);
+        border-radius: 5px;
+      }
+      &.menu-opened {
+        background-color: var(--secondaryColor);
+        color: var(--mainColor);
+        border-radius: 5px;
+      }
+    }
+
+    .account-menu {
+      list-style: none;
+      position: absolute;
+      background-color: var(--secondaryColor);
+      width: 100%;
+      top: 50px;
+      border-radius: 10px;
+      display: none;
+      &.view-account-menu {
+        display: unset;
+      }
+      .account-menu-item {
+        padding: 10px;
+        color: var(--mainColor);
+        text-align: center;
+        &:hover {
+          cursor: pointer;
+          background-color: var(--mainColor);
+          color: var(--secondaryColor);
+          border-radius: 10px;
+        }
+      }
+    }
+  }
+
+  .notifictation-language {
+    grid-area: lang;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    .lang-btn {
+      background-color: transparent;
+      border: none;
+      padding: 10px;
+      color: var(--secondaryColor);
+      cursor: pointer;
+      &:hover {
+        background-color: var(--secondaryColor);
+        color: var(--mainColor);
+        border-radius: 5px;
+      }
+    }
+
+    .notification-icon {
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+      fill: var(--secondaryColor);
+    }
+  }
+  .small-notification-icon {
+    display: none;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    fill: var(--secondaryColor);
+  }
+}
+
+@media screen and (max-width: 1070px) {
+  .top-nav {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas: "burger logo notifi";
+    .burger-menu-icon {
+      display: unset;
+      width: 30px;
+      height: 20px;
+      fill: var(--secondaryColor);
+      cursor: pointer;
+      align-self: center;
+      justify-self: start;
+    }
+    .app-logo {
+      align-self: center;
+      justify-self: center;
+    }
+    .small-notification-icon {
+      display: unset;
+      align-self: center;
+      justify-self: end;
+    }
+    .nav-menu {
+      display: none;
+    }
+    .account-btn-container {
+      display: none;
+    }
+    .notifictation-language {
+      display: none;
+    }
+  }
+}

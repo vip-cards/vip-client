@@ -1,0 +1,11 @@
+.search-area {
+  width: 100%;
+  background-color: var(--mainColorLight);
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .search-input-container {
+    width: 50%;
+  }
+}

@@ -1,0 +1,109 @@
+.branch-card {
+  position: relative;
+  height: 150px;
+  width: 400px;
+  border: 2px solid #e2e2e2;
+  border-radius: 12px;
+  background-color: #f1f1f1;
+
+  .branch-img-container {
+    height: 150px;
+    max-width: 200px;
+    overflow: hidden;
+    box-shadow: 0 0 10px #07070732;
+    border-radius: 12px;
+    position: absolute;
+    top: -2px;
+
+    .branch-img {
+      position: relative;
+      height: 100%;
+      max-width: 200px;
+      border-radius: 12px;
+    }
+  }
+  .branch-info-actions {
+    width: 200px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: absolute;
+    top: 0;
+    padding: 10px;
+
+    .brcanch-info {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      .branch-name {
+        font-size: 18px;
+        color: var(--mainColor);
+      }
+      .manager-name {
+        font-size: 15px;
+      }
+      .orders {
+        font-size: 14px;
+      }
+      .open {
+        color: var(--mainColor);
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+        width: fit-content;
+      }
+      .rate {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 14px;
+        .rate-icon {
+          width: 15px;
+          height: 15px;
+        }
+      }
+    }
+    .branch-actions {
+      display: flex;
+      position: relative;
+
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-end;
+      font-size: 12px;
+      .remove {
+        color: var(--mainColor);
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+      }
+      .edit {
+        color: var(--mainColor);
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+      }
+    }
+  }
+}
+
+[dir="ltr"] {
+  .branch-card {
+    .branch-info-actions {
+      right: 0;
+    }
+    .branch-img-container {
+      left: -2px;
+    }
+  }
+}
+[dir="rtl"] {
+  .branch-card {
+    .branch-info-actions {
+      left: 0;
+    }
+    .branch-img-container {
+      right: -2px;
+    }
+  }
+}

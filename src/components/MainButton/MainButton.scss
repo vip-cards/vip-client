@@ -1,0 +1,17 @@
+.main-button {
+  height: 50px;
+  background-color: var(--mainColor);
+  border: none;
+  border-radius: 15px;
+  font-size: 20px;
+  font-family: "Open Sans", sans-serif;
+  color: var(--secondaryColor);
+  cursor: pointer;
+  transition: all 0.4s;
+}
+
+.main-button:hover {
+  background-color: var(--secondaryColor);
+  color: var(--mainColor);
+  border: 1px solid var(--mainColor);
+}

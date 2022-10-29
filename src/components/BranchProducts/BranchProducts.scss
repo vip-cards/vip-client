@@ -1,0 +1,23 @@
+.branch-products-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  margin: 40px 0 0 0;
+  .product-card {
+    align-self: center;
+    justify-self: center;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .branch-products-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (max-width: 767px) {
+  .branch-products-container {
+    grid-template-columns: 1fr;
+  }
+}
