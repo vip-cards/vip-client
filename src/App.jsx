@@ -5,6 +5,7 @@ import { checkFixLang, editTitle, switchLang } from "./helpers/lang";
 import { useEffect } from "react";
 import VendorLayout from "./layouts/VendorLayout/VendorLayout";
 import { useSelector } from "react-redux";
+import BranchLayout from "./layouts/BranchLayout/BranchLayout";
 function App() {
   let lang = i18n.language;
 
@@ -20,6 +21,8 @@ function App() {
   function layout() {
     if (auth.userRole === "vendor") {
       return <VendorLayout />;
+    } else if (auth.userRole === "branch") {
+      return <BranchLayout />;
     }
   }
   return <div className="App">{auth.token ? layout() : <Login />}</div>;

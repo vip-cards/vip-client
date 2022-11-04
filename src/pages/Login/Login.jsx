@@ -10,7 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { switchLang } from "../../helpers/lang";
 import MainButton from "../../components/MainButton/MainButton";
-import vendorSevices from "../../services/vendorSevices";
+import vendorSevices from "../../services/vendorServices";
+import branchServices from "../../services/branchServices";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth-slice";
 import jwt_decode from "jwt-decode";
@@ -52,7 +53,17 @@ export default function Login() {
     return schema.validate(user);
   }
 
-  const login = async (e) => {
+  async function vendorLogin() {
+    const { data } = await vendorSevices.login(user);
+    return data;
+  }
+
+  async function branchLogin() {
+    const { data } = await branchServices.login(user);
+    return data;
+  }
+
+  const loginHandler = async (e) => {
     e.preventDefault();
     setErrorList([]);
     let validationResult = loginValidation(user);
@@ -63,23 +74,33 @@ export default function Login() {
     } else {
       setLoading(true);
       try {
-        const { data } = await vendorSevices.login(user);
+        let data;
+
+        if (userType === "vendor") {
+          data = await vendorLogin();
+        } else if (userType === "branch") {
+          data = await branchLogin();
+        }
 
         if (data.success && data.code === 200) {
           setLoading(false);
           toastPopup.success(t("Success"));
           const tokenDecoded = jwt_decode(data.token);
-
           dispatch(
             authActions.login({
               token: data.token,
-              userId: tokenDecoded._id,
+              vendorId:
+                tokenDecoded.role === "vendor"
+                  ? tokenDecoded._id
+                  : tokenDecoded.vendor,
+              branchId: tokenDecoded.role === "branch" && tokenDecoded._id,
               userRole: tokenDecoded.role,
             })
           );
           navigate("/");
         }
       } catch (e) {
+        console.log(e);
         setLoading(false);
         setErrorMessage(e.response.data.error);
       }
@@ -103,7 +124,7 @@ export default function Login() {
             <button onClick={() => changeLang("en")}>English</button>
           )}
         </div>
-        <form className="login-box app-card-shadow" onSubmit={login}>
+        <form className="login-box app-card-shadow" onSubmit={loginHandler}>
           <p>{t("login")}</p>
 
           {errorMessage ? (

@@ -15,6 +15,9 @@ Axios.interceptors.request.use(async (req) => {
   if (req.url === "/vendor/login") {
     console.log("loggingig on");
     return req;
+  } else if (req.url === "/branch/login") {
+    console.log("loggingig on");
+    return req;
   }
 
   let auth = store.getState().auth;

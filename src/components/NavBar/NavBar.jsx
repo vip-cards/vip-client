@@ -16,6 +16,9 @@ import SideNAv from "./SideNAv/SideNAv";
 export default function NavBar() {
   const [viweAccountMenu, setViweAccountMenu] = useState(false);
   const [showSideMenu, setShowSideMenu] = useState(false);
+
+  let auth = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
 
   const lang = i18n.language;
@@ -28,48 +31,69 @@ export default function NavBar() {
     i18n.changeLanguage(lang);
     switchLang(lang);
   }
+
   function logoutHandler() {
     localStorage.removeItem("token");
-    localStorage.removeItem("userId");
+    localStorage.removeItem("branchId");
+    localStorage.removeItem("vendorId");
     localStorage.removeItem("userRole");
     dispatch(authActions.logout());
     setViweAccountMenu((prevState) => !prevState);
   }
+
   return (
     <nav className="top-nav">
       <BurgerMenuIcon className="burger-menu-icon" onClick={toggleSideMenu} />
       <NavbarLogo className="app-logo" />
       <ul className="nav-menu">
-        <li className="nav-item">
-          <NavLink
-            to="/branches"
-            className={(navData) =>
-              navData.isActive ? "active nav-link" : "nav-link"
-            }
-          >
-            {t("branches")}
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink
-            to="/offers"
-            className={(navData) =>
-              navData.isActive ? "active nav-link" : "nav-link"
-            }
-          >
-            {t("offers")}
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink
-            to="/hot-deals"
-            className={(navData) =>
-              navData.isActive ? "active nav-link" : "nav-link"
-            }
-          >
-            {t("hotDeals")}
-          </NavLink>
-        </li>
+        {auth.userRole === "branch" && (
+          <li className="nav-item">
+            <NavLink
+              to="/home/offers"
+              className={(navData) =>
+                navData.isActive ? "active nav-link" : "nav-link"
+              }
+            >
+              {t("home")}
+            </NavLink>
+          </li>
+        )}
+        {auth.userRole === "vendor" && (
+          <li className="nav-item">
+            <NavLink
+              to="/branches"
+              className={(navData) =>
+                navData.isActive ? "active nav-link" : "nav-link"
+              }
+            >
+              {t("branches")}
+            </NavLink>
+          </li>
+        )}
+        {auth.userRole === "vendor" && (
+          <li className="nav-item">
+            <NavLink
+              to="/offers"
+              className={(navData) =>
+                navData.isActive ? "active nav-link" : "nav-link"
+              }
+            >
+              {t("offers")}
+            </NavLink>
+          </li>
+        )}
+        {auth.userRole === "vendor" && (
+          <li className="nav-item">
+            <NavLink
+              to="/hot-deals"
+              className={(navData) =>
+                navData.isActive ? "active nav-link" : "nav-link"
+              }
+            >
+              {t("hotDeals")}
+            </NavLink>
+          </li>
+        )}
         <li className="nav-item">
           <NavLink
             to="/jobs"

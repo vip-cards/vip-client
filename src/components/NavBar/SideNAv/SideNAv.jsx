@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { switchLang } from "../../../helpers/lang";
 import i18n from "../../../locales/i18n";
@@ -9,10 +9,12 @@ import "./SideNAv.scss";
 export default function SideNAv() {
   const dispatch = useDispatch();
   const lang = i18n.language;
+  let auth = useSelector((state) => state.auth);
 
   function logoutHandler() {
     localStorage.removeItem("token");
-    localStorage.removeItem("userId");
+    localStorage.removeItem("branchId");
+    localStorage.removeItem("vendorId");
     localStorage.removeItem("userRole");
     dispatch(authActions.logout());
   }
@@ -24,36 +26,54 @@ export default function SideNAv() {
   return (
     <div className="side-nav">
       <ul className="side-nav-menu">
-        <li className="nav-item">
-          <NavLink
-            to="/branches"
-            className={(navData) =>
-              navData.isActive ? "active nav-link" : "nav-link"
-            }
-          >
-            {t("branches")}
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink
-            to="/offers"
-            className={(navData) =>
-              navData.isActive ? "active nav-link" : "nav-link"
-            }
-          >
-            {t("offers")}
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink
-            to="/hot-deals"
-            className={(navData) =>
-              navData.isActive ? "active nav-link" : "nav-link"
-            }
-          >
-            {t("hotDeals")}
-          </NavLink>
-        </li>
+        {auth.userRole === "branch" && (
+          <li className="nav-item">
+            <NavLink
+              to="/home/offers"
+              className={(navData) =>
+                navData.isActive ? "active nav-link" : "nav-link"
+              }
+            >
+              {t("home")}
+            </NavLink>
+          </li>
+        )}
+        {auth.userRole === "vendor" && (
+          <li className="nav-item">
+            <NavLink
+              to="/branches"
+              className={(navData) =>
+                navData.isActive ? "active nav-link" : "nav-link"
+              }
+            >
+              {t("branches")}
+            </NavLink>
+          </li>
+        )}
+        {auth.userRole === "vendor" && (
+          <li className="nav-item">
+            <NavLink
+              to="/offers"
+              className={(navData) =>
+                navData.isActive ? "active nav-link" : "nav-link"
+              }
+            >
+              {t("offers")}
+            </NavLink>
+          </li>
+        )}
+        {auth.userRole === "vendor" && (
+          <li className="nav-item">
+            <NavLink
+              to="/hot-deals"
+              className={(navData) =>
+                navData.isActive ? "active nav-link" : "nav-link"
+              }
+            >
+              {t("hotDeals")}
+            </NavLink>
+          </li>
+        )}
         <li className="nav-item">
           <NavLink
             to="/jobs"

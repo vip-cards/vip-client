@@ -1,41 +1,111 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ReactComponent as Rate } from "../../assets/VIP-ICON-SVG/rate.svg";
 import "./Branch.scss";
 import SearchInput from "../../components/SearchInput/SearchInput";
 import { Outlet, useParams } from "react-router";
 import RoutingTab from "../../components/RoutingTab/RoutingTab";
+import { useSelector } from "react-redux";
+import vendorServices from "../../services/vendorServices";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import i18n from "../../locales/i18n";
 export default function Branch() {
   const params = useParams();
-  const branchId = params.branchId;
+  let branchId;
+  const auth = useSelector((state) => state.auth);
+  let vendorId = auth.vendorId;
+  let userRole = auth.userRole;
+  let lang = i18n.language;
 
-  useEffect(() => {}, []);
+  const [loading, setLoading] = useState(false);
+  let routes;
 
-  console.log("params", params);
+  const [branchhInfo, setBranchInfo] = useState({
+    name_en: "",
+    name_ar: "",
+    lat: "31.21417631969772",
+    lng: "29.945998297003165",
+    email: "",
+    address_en: "",
+    address_ar: "",
+    phone: "",
+    governorate: "",
+    vendor: "",
+  });
+
+  useEffect(() => {
+    getBranchDetailsHandler();
+  }, []);
+
+  console.log(branchhInfo);
+
+  async function getBranchDetailsHandler() {
+    setLoading(true);
+    try {
+      let { data } = await vendorServices.getBranchDetails(branchId, vendorId);
+      setBranchInfo({
+        name_en: data?.record[0]?.name?.en,
+        name_ar: data?.record[0]?.name?.ar,
+        lat: "31.21417631969772",
+        lng: "29.945998297003165",
+        email: data?.record[0]?.email,
+        address_en: data?.record[0]?.address.en,
+        address_ar: data?.record[0]?.address.ar,
+        phone: data?.record[0]?.phone,
+        governorate: data?.record[0]?.governorate.en,
+        vendor: data?.record[0]?.vendor,
+      });
+
+      console.log(data);
+      setLoading(false);
+    } catch (e) {
+      console.log(e);
+      setLoading(false);
+    }
+  }
+
+  if (userRole === "vendor") {
+    branchId = params.branchId;
+  } else if (userRole === "branch") {
+    branchId = auth.branchId;
+  }
+
+  if (userRole === "vendor") {
+    routes = [
+      { name: "offers", route: `/branches/${branchId}/offers` },
+      { name: "hot-deals", route: `/branches/${branchId}/hot-deals` },
+    ];
+  } else if (userRole === "branch") {
+    routes = [
+      { name: "offers", route: `/home/offers` },
+      { name: "hot-deals", route: `/home/hot-deals` },
+    ];
+  }
 
   return (
     <div className="app-card-shadow branch-container">
-      <div className="branch-details">
-        <p className="branch-name">Samsung - Miamie Branch</p>
-        <div className="rate">
-          <Rate className="rate-icon" />
-          <Rate className="rate-icon" />
-          <Rate className="rate-icon" />
-          <Rate className="rate-icon" />
-          <Rate className="rate-icon" />
-          (653 Reviews)
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <div className="branch-details">
+          <p className="branch-name">{`${branchhInfo?.vendor?.name?.[lang]} - ${
+            branchhInfo?.[`name_${lang}`]
+          }`}</p>
+          <div className="rate">
+            <Rate className="rate-icon" />
+            <Rate className="rate-icon" />
+            <Rate className="rate-icon" />
+            <Rate className="rate-icon" />
+            <Rate className="rate-icon" />
+            (653 Reviews)
+          </div>
+          <p className="address">{branchhInfo?.[`address_${lang}`]}</p>
         </div>
-        <p className="address">532 gamal abdelnaser - front elmahdy phamacy</p>
-      </div>
+      )}
       <div className="search-input-container">
         <SearchInput />
       </div>
 
-      <RoutingTab
-        routes={[
-          { name: "offers", route: `/branches/${branchId}/offers` },
-          { name: "hot-deals", route: `/branches/${branchId}/hot-deals` },
-        ]}
-      />
+      <RoutingTab routes={routes} />
 
       <Outlet />
     </div>
