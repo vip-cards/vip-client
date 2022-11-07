@@ -11,7 +11,7 @@
 
     .branch-img-container {
       height: 150px;
-      max-width: 200px;
+      width: 200px;
       overflow: hidden;
       box-shadow: 0 0 10px #07070732;
       border-radius: 12px;
@@ -21,7 +21,7 @@
       .branch-img {
         position: relative;
         height: 100%;
-        max-width: 200px;
+        width: 200px;
         border-radius: 12px;
       }
     }
@@ -68,30 +68,6 @@
       }
     }
   }
-  .branch-actions {
-    display: flex;
-    position: absolute;
-    top: 15px;
-    flex-direction: column;
-    gap: 10px;
-    align-items: flex-end;
-    font-size: 12px;
-    z-index: 5;
-    .remove {
-      color: var(--mainColor);
-      cursor: pointer;
-      background-color: transparent;
-      border: none;
-      z-index: 6;
-    }
-    .edit {
-      z-index: 6;
-      color: var(--mainColor);
-      cursor: pointer;
-      background-color: transparent;
-      border: none;
-    }
-  }
 }
 
 [dir="ltr"] {
@@ -101,10 +77,6 @@
     }
     .branch-img-container {
       left: -2px;
-    }
-
-    .branch-actions {
-      right: 15px;
     }
   }
 }
@@ -116,9 +88,5 @@
     .branch-img-container {
       right: -2px;
     }
-  }
-
-  .branch-actions {
-    left: 15px;
   }
 }

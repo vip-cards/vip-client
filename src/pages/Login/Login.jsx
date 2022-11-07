@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import { ReactComponent as VendorLogo } from "../../assets/VIP-ICON-SVG/VendorLogo.svg";
 import { ReactComponent as VendorLogoOrange } from "../../assets/VIP-ICON-SVG/VendorLogoOrange.svg";
-import "./Login.scss";
 import MainInput from "../../components/MainInput/MainInput";
 import toastPopup from "../../helpers/toastPopup";
 import Joi from "joi";
@@ -10,11 +9,11 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { switchLang } from "../../helpers/lang";
 import MainButton from "../../components/MainButton/MainButton";
-import vendorSevices from "../../services/vendorServices";
-import branchServices from "../../services/branchServices";
+import clientServices from "../../services/clientServices";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth-slice";
 import jwt_decode from "jwt-decode";
+import "./Login.scss";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -53,16 +52,6 @@ export default function Login() {
     return schema.validate(user);
   }
 
-  async function vendorLogin() {
-    const { data } = await vendorSevices.login(user);
-    return data;
-  }
-
-  async function branchLogin() {
-    const { data } = await branchServices.login(user);
-    return data;
-  }
-
   const loginHandler = async (e) => {
     e.preventDefault();
     setErrorList([]);
@@ -74,26 +63,18 @@ export default function Login() {
     } else {
       setLoading(true);
       try {
-        let data;
-
-        if (userType === "vendor") {
-          data = await vendorLogin();
-        } else if (userType === "branch") {
-          data = await branchLogin();
-        }
-
+        const { data } = await clientServices.login(user);
+        console.log(data);
         if (data.success && data.code === 200) {
           setLoading(false);
           toastPopup.success(t("Success"));
           const tokenDecoded = jwt_decode(data.token);
+
+          console.log(tokenDecoded);
           dispatch(
             authActions.login({
               token: data.token,
-              vendorId:
-                tokenDecoded.role === "vendor"
-                  ? tokenDecoded._id
-                  : tokenDecoded.vendor,
-              branchId: tokenDecoded.role === "branch" && tokenDecoded._id,
+              userId: tokenDecoded._id,
               userRole: tokenDecoded.role,
             })
           );
@@ -117,6 +98,7 @@ export default function Login() {
         <div className="app-logo-small">
           <VendorLogoOrange className="login-logo-small" />
         </div>
+
         <div className="lang">
           {localStorage.getItem("i18nextLng") === "en" ? (
             <button onClick={() => changeLang("ar")}>العربية</button>
@@ -124,6 +106,7 @@ export default function Login() {
             <button onClick={() => changeLang("en")}>English</button>
           )}
         </div>
+
         <form className="login-box app-card-shadow" onSubmit={loginHandler}>
           <p>{t("login")}</p>
 
@@ -155,57 +138,7 @@ export default function Login() {
               );
             }
           })}
-          <div className="login-user-type">
-            <p className="login-as">{t("login as")}</p>
-            <div className="check-field">
-              <div className="form-check">
-                <input
-                  type="radio"
-                  className="form-check-input"
-                  name="userType"
-                  id={`userTypeVendor`}
-                  checked={userType === "vendor"}
-                  onChange={(e) => {
-                    setUserType("vendor");
-                  }}
-                />
-                <label className="form-check-label" htmlFor={`userTypeVendor`}>
-                  {t("vendor")}
-                </label>
-              </div>
-              <div className="form-check">
-                <input
-                  type="radio"
-                  className="form-check-input"
-                  name="userType"
-                  id={`userTypeBranch`}
-                  checked={userType === "branch"}
-                  onChange={(e) => {
-                    setUserType("branch");
-                  }}
-                />
-                <label className="form-check-label" htmlFor={`userTypeBranch`}>
-                  {t("branch")}
-                </label>
-              </div>
 
-              <div className="form-check">
-                <input
-                  type="radio"
-                  className="form-check-input"
-                  name="userType"
-                  id={`userTypeCasheir`}
-                  checked={userType === "casheir"}
-                  onChange={(e) => {
-                    setUserType("casheir");
-                  }}
-                />
-                <label className="form-check-label" htmlFor={`userTypeCasheir`}>
-                  {t("casheir")}
-                </label>
-              </div>
-            </div>
-          </div>
           {formData.map((formInput, index) => {
             return (
               <MainInput

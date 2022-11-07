@@ -4,27 +4,27 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     token: localStorage.getItem("token"),
-    vendorId: localStorage.getItem("vendorId"),
-    branchId: localStorage.getItem("branchId"),
+
+    userId: localStorage.getItem("userId"),
     userRole: localStorage.getItem("userRole"),
   },
   reducers: {
     login(state, action) {
       localStorage.setItem("token", action.payload.token);
-      localStorage.setItem("vendorId", action.payload.vendorId);
-      localStorage.setItem("branchId", action.payload.branchId);
+
+      localStorage.setItem("userId", action.payload.userId);
       localStorage.setItem("userRole", action.payload.userRole);
 
       state.token = localStorage.getItem("token");
-      state.vendorId = localStorage.getItem("vendorId");
-      state.branchId = localStorage.getItem("branchId");
+
+      state.userId = localStorage.getItem("userId");
       state.userRole = localStorage.getItem("userRole");
     },
 
     logout(state) {
       state.token = localStorage.getItem("token");
-      state.vendorId = localStorage.getItem("vendorId");
-      state.branchId = localStorage.getItem("branchId");
+
+      state.userId = localStorage.getItem("userId");
       state.userRole = localStorage.getItem("userRole");
     },
   },

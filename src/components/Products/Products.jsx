@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
-import vendorServices from "../../services/vendorServices";
+import clientServices from "../../services/clientServices";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import ProductCard from "../ProductCard/ProductCard";
 import "./Products.scss";
@@ -9,7 +9,7 @@ import "./Products.scss";
 export default function Products() {
   const location = useLocation();
   const vendorId = useSelector((state) => state.auth.vendorId);
-  const [vendorOffers, setVendorOffers] = useState([]);
+  const [offers, setOffers] = useState([]);
   const [Loading, setLoading] = useState(false);
 
   function isHotDeal() {
@@ -20,15 +20,11 @@ export default function Products() {
     }
   }
 
-  async function getVendorProductsHandler() {
+  async function getProductsHandler() {
     setLoading(true);
     try {
-      const { data } = await vendorServices.listAllVendorProductsOfType(
-        vendorId,
-        isHotDeal()
-      );
-
-      setVendorOffers(data.records);
+      const { data } = await clientServices.listAllProductsOfType(isHotDeal());
+      setOffers(data.records);
       setLoading(false);
       console.log("data", data);
     } catch (e) {
@@ -38,7 +34,7 @@ export default function Products() {
   }
 
   useEffect(() => {
-    getVendorProductsHandler();
+    getProductsHandler();
   }, []);
 
   return (
@@ -47,8 +43,8 @@ export default function Products() {
         <LoadingSpinner />
       ) : (
         <div className="products-container">
-          {vendorOffers?.length > 0 &&
-            vendorOffers.map((offer) => {
+          {offers?.length > 0 &&
+            offers.map((offer) => {
               return <ProductCard key={offer._id} product={offer} />;
             })}
         </div>

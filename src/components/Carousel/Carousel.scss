@@ -1,0 +1,27 @@
+.swiper-button-next,
+.swiper-button-prev {
+  background: white;
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #f89936;
+}
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 10px !important;
+  font-weight: bolder !important;
+  color: var(--mainColor);
+}
+
+.swiper-button-disabled {
+  display: none !important;
+}
+
+.slider-component {
+  width: 100%;
+}
+
+.swiper {
+  overflow: visible !important;
+  // overflow-x: hidden !important;
+}

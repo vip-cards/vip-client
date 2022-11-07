@@ -1,17 +1,16 @@
 import React from "react";
 import "./ProductCard.scss";
-import branchImage from "../../assets/images/productImg.png";
+
 import i18n from "../../locales/i18n";
 import { useNavigate } from "react-router";
 import { t } from "i18next";
 import imagesPath from "../../services/imagesPath";
 import { useSelector } from "react-redux";
+import productPlaceHolder from "../../assets/images/productPlaceHolder.png";
 
 export default function ProductCard({ product }) {
   let auth = useSelector((state) => state.auth);
   const userRole = auth.userRole;
-  const vendorId = auth.vendorId;
-  const branchId = auth.branchId;
 
   const lang = i18n.language;
   const navigate = useNavigate();
@@ -19,8 +18,13 @@ export default function ProductCard({ product }) {
   return (
     <div className="product-card">
       <div className="product-img-container">
-        <img
+        {/* <img
           src={`${imagesPath}${product?.image?.path}`}
+          alt="product-img"
+          className="product-img"
+        /> */}
+        <img
+          src={productPlaceHolder}
           alt="product-img"
           className="product-img"
         />
@@ -31,18 +35,6 @@ export default function ProductCard({ product }) {
           <p className="price">
             {product.price} <span className="currency">EGP</span>
           </p>
-          <button
-            className="edit"
-            onClick={() => {
-              userRole === "vendor"
-                ? navigate(
-                    `/edit-offer/${product._id}/${product.branch}/${product.vendor._id}`
-                  )
-                : navigate(`/edit-offer/${product._id}/${product.branch}`);
-            }}
-          >
-            {t("edit")}
-          </button>
         </div>
         <div className="sale-ratio">
           <p className="sale">{product.originalPrice} EGP</p>

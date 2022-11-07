@@ -4,21 +4,16 @@ import "./Branch.scss";
 import SearchInput from "../../components/SearchInput/SearchInput";
 import { Outlet, useParams } from "react-router";
 import RoutingTab from "../../components/RoutingTab/RoutingTab";
-import { useSelector } from "react-redux";
-import vendorServices from "../../services/vendorServices";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import i18n from "../../locales/i18n";
+import clientServices from "../../services/clientServices";
 export default function Branch() {
   const params = useParams();
-  let branchId;
-  const auth = useSelector((state) => state.auth);
-  let vendorId = auth.vendorId;
-  let userRole = auth.userRole;
+  let branchId = params.branchId;
+  let vendorId = params.vendorId;
   let lang = i18n.language;
-
   const [loading, setLoading] = useState(false);
   let routes;
-
   const [branchhInfo, setBranchInfo] = useState({
     name_en: "",
     name_ar: "",
@@ -41,7 +36,7 @@ export default function Branch() {
   async function getBranchDetailsHandler() {
     setLoading(true);
     try {
-      let { data } = await vendorServices.getBranchDetails(branchId, vendorId);
+      let { data } = await clientServices.getBranchDetails(branchId);
       setBranchInfo({
         name_en: data?.record[0]?.name?.en,
         name_ar: data?.record[0]?.name?.ar,
@@ -63,23 +58,10 @@ export default function Branch() {
     }
   }
 
-  if (userRole === "vendor") {
-    branchId = params.branchId;
-  } else if (userRole === "branch") {
-    branchId = auth.branchId;
-  }
-
-  if (userRole === "vendor") {
-    routes = [
-      { name: "offers", route: `/branches/${branchId}/offers` },
-      { name: "hot-deals", route: `/branches/${branchId}/hot-deals` },
-    ];
-  } else if (userRole === "branch") {
-    routes = [
-      { name: "offers", route: `/home/offers` },
-      { name: "hot-deals", route: `/home/hot-deals` },
-    ];
-  }
+  routes = [
+    { name: "offers", route: `/vendors/${vendorId}/${branchId}/offers` },
+    { name: "hot-deals", route: `/vendors/${vendorId}/${branchId}/hot-deals` },
+  ];
 
   return (
     <div className="app-card-shadow branch-container">

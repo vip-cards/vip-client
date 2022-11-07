@@ -1,0 +1,36 @@
+.vendors-page {
+  .vendors-cards-container {
+    margin: 30px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+
+    .vendor-card {
+      align-self: center;
+      justify-self: center;
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .vendors-page {
+    .vendors-cards-container {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .vendors-page {
+    .vendors-cards-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+@media screen and (max-width: 650px) {
+  .vendors-page {
+    .vendors-cards-container {
+      grid-template-columns: 1fr;
+    }
+  }
+}

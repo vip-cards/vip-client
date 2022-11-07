@@ -2,21 +2,18 @@ import { t } from "i18next";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router";
-import branchServices from "../../services/branchServices";
-import vendorServices from "../../services/vendorServices";
+import clientServices from "../../services/clientServices";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import ProductCard from "../ProductCard/ProductCard";
 import "./BranchProducts.scss";
 export default function BranchProducts() {
   const params = useParams();
+  console.log("braaaaaaaanchhhhh products");
   const navigate = useNavigate();
-
   const location = useLocation();
-  const auth = useSelector((state) => state.auth);
 
-  const userRole = auth.userRole;
-  const vendorId = auth.vendorId;
-  const branchId = userRole === "vendor" ? params.branchId : auth.branchId;
+  const vendorId = params.vendorId;
+  const branchId = params.branchId;
 
   const [loading, setLoading] = useState(false);
   const [branchProducts, setBranchProducts] = useState([]);
@@ -29,38 +26,17 @@ export default function BranchProducts() {
     }
   }
 
-  async function vendorBranchProducts() {
-    const { data } = await vendorServices.listAllBranchProductsOfType(
-      vendorId,
-      branchId,
-      isHotDeal()
-    );
-
-    return data;
-  }
-
-  async function getBranchProducts() {
-    const { data } = await branchServices.listAllBranchProductsOfType(
-      branchId,
-      isHotDeal()
-    );
-
-    return data;
-  }
-
   async function getBranchProductsHandler() {
-    let data;
-
     console.log("user is vendor");
     try {
       setLoading(true);
-      if (userRole === "vendor") {
-        data = await vendorBranchProducts();
-        setBranchProducts(data.records);
-      } else if (userRole === "branch") {
-        data = await getBranchProducts();
-        setBranchProducts(data.records);
-      }
+      const { data } = await clientServices.listAllBranchProductsOfType(
+        branchId,
+        isHotDeal()
+      );
+
+      setBranchProducts(data.records);
+
       setLoading(false);
       console.log("data", data);
     } catch (e) {
@@ -84,30 +60,14 @@ export default function BranchProducts() {
       {loading ? (
         <LoadingSpinner />
       ) : (
-        <>
-          <div className="add-button-container">
-            <button
-              className="add-button"
-              onClick={() => {
-                isHotDeal()
-                  ? navigate(`/add-hot-deal/${branchId}`)
-                  : navigate(`/add-offer/${branchId}`);
-              }}
-            >
-              {isHotDeal() ? t("addHotDeal") : t("addOffer")}
-            </button>
-          </div>
-          <div className="branch-products-container">
-            {branchProducts.length > 0
-              ? branchProducts.map((product) => {
-                  return <ProductCard key={product._id} product={product} />;
-                })
-              : null}
-          </div>
-        </>
+        <div className="branch-products-container">
+          {branchProducts.length > 0
+            ? branchProducts.map((product) => {
+                return <ProductCard key={product._id} product={product} />;
+              })
+            : null}
+        </div>
       )}
     </>
   );
 }
-
-//  <i className="fas fa-spinner fa-spin "></i>

@@ -6,7 +6,7 @@
   position: relative;
   .product-img-container {
     width: 250px;
-    max-height: 150px;
+    height: 150px;
     overflow: hidden;
     box-shadow: 0 0 10px #07070732;
     border-radius: 12px;
@@ -17,7 +17,7 @@
     .product-img {
       position: relative;
       width: 100%;
-      max-height: 150px;
+      height: 150px;
       border-radius: 12px;
     }
   }
