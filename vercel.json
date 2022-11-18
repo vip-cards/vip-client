@@ -1,0 +1,25 @@
+{
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "https://vipcardshop-admin.vercel.app/"
+    },
+    {
+      "source": "/admin/:match*",
+      "destination": "https://vipcardshop-admin.vercel.app/:match*"
+    },
+    {
+      "source": "/dashboard/",
+      "destination": "https://vipcardshop-vendor.vercel.app/"
+    },
+    {
+      "source": "/dashboard/:match*",
+      "destination": "https://vipcardshop-vendor.vercel.app/:match*"
+    },
+    { "source": "/", "destination": "https://vipcardshop-client.vercel.app/" },
+    {
+      "source": "/:match*",
+      "destination": "https://vipcardshop-client.vercel.app/:match*"
+    }
+  ]
+}
