@@ -1,8 +1,8 @@
 export function editTitle(lang) {
   if (lang === "ar") {
-    document.title = "VIP VENDOR";
+    document.title = "VIP";
   } else {
-    document.title = "VIP VENDOR";
+    document.title = "VIP";
   }
 }
 
