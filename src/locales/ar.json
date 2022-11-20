@@ -10,5 +10,25 @@
   "settings": "الإعدادات",
   "logout": "تسجيل الخروج",
   "home": "الرئيسية",
-  "lang": "English"
+  "lang": "English",
+
+  "remove": "ازالة",
+  "edit": "تعديل",
+  "addHotDeal": "اضافة عرض ساخن",
+  "addOffer": "اضافة عرض",
+  "What Are You Looking For": "عن ماذا تبحث",
+  "addImage": "اضافة صورة",
+  "addBranch": "اضافة فرع",
+  "editBranch": "تعديل الفرع",
+  "editHotDeal": "تعديل العرض الساخن",
+  "editOffer": "تعديل العرض",
+  "vendor": "معرض",
+  "branch": "فرع",
+  "casheir": "كاشير",
+  "categories": "التصنيفات",
+  "vendors": "المعارض",
+  "showAllCategories": "عرض كل التصنيفات",
+  "showAllVendors": "عرض كل المعارض",
+  "showAllOffers": "عرض كل العروض",
+  "showAllHotDeals": "عرض كل العرض الساخنة"
 }

@@ -10,5 +10,25 @@
   "settings": "Settings",
   "logout": "Logout",
   "home": "Home",
-  "lang": "العربية"
+  "lang": "العربية",
+
+  "remove": "Remove",
+  "edit": "Edit",
+  "addHotDeal": "Add Hot Deal",
+  "addOffer": "Add Offer",
+  "What Are You Looking For": "What Are You Looking For",
+  "addImage": "Add Image",
+  "addBranch": "Add Branch",
+  "editBranch": "Edit Branch",
+  "editHotDeal": "Edit Hot Deal",
+  "editOffer": "Edit Offer",
+  "vendor": "Vendor",
+  "branch": "Branch",
+  "casheir": "Casheir",
+  "categories": "Categories",
+  "vendors": "Vendors",
+  "showAllCategories": "Show All Categories",
+  "showAllVendors": "Show All Vendors",
+  "showAllOffers": "Show All Offers",
+  "showAllHotDeals": "Show All Hot Deals"
 }
