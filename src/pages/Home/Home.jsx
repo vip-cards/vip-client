@@ -4,11 +4,11 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import clientServices from "../../services/clientServices";
-import Carousel from "../Carousel/Carousel";
-import CategoryCard from "../CategoryCard/CategoryCard";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import ProductCard from "../ProductCard/ProductCard";
-import VendorCard from "../VendorCard/VendorCard";
+import Carousel from "../../components/Carousel/Carousel";
+import CategoryCard from "../../components/CategoryCard/CategoryCard";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import ProductCard from "../../components/ProductCard/ProductCard";
+import VendorCard from "../../components/VendorCard/VendorCard";
 import "./Home.scss";
 export default function Home() {
   const [loading, setLoading] = useState(false);

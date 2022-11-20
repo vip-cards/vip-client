@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Footer from "../../components/Footer/Footer";
 import NavBar from "../../components/NavBar/NavBar";
 import "./ClientLayout.scss";
-import Home from "../../components/Home/Home";
+import Home from "../../pages/Home/Home";
 import Vendors from "../../pages/Vendors/Vendors";
 import Branches from "../../pages/Branches/Branches";
 import Branch from "../../pages/Branch/Branch";

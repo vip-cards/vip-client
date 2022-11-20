@@ -32,7 +32,8 @@ export default function NavBar() {
     switchLang(lang);
   }
 
-  function logoutHandler() {
+  function logoutHandler(e) {
+    e.preventDefault();
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     localStorage.removeItem("userRole");
@@ -88,7 +89,6 @@ export default function NavBar() {
           </NavLink>
         </li>
         <li className="nav-item">
-          {" "}
           <NavLink
             to="/offers"
             className={(navData) =>
@@ -99,7 +99,6 @@ export default function NavBar() {
           </NavLink>
         </li>
         <li className="nav-item">
-          {" "}
           <NavLink
             to="/jobs"
             className={(navData) =>
@@ -109,28 +108,31 @@ export default function NavBar() {
             {t("jobs")}
           </NavLink>
         </li>
-      </ul>
-      <div className="account-btn-container">
-        <div
-          className={`account-btn ${viweAccountMenu && "menu-opened"}`}
-          onClick={() => {
-            setViweAccountMenu((prevState) => !prevState);
-          }}
-        >
-          {t("myAccount")}
-        </div>
-
-        <ul
-          className={`account-menu app-card-shadow ${
-            viweAccountMenu && "view-account-menu"
-          }`}
-        >
-          <li className="account-menu-item">{t("settings")}</li>
-          <li className="account-menu-item" onClick={logoutHandler}>
+        <li className="nav-item">
+          <NavLink
+            to="/account"
+            className={(navData) =>
+              navData.isActive ? "active nav-link" : "nav-link"
+            }
+          >
+            {t("myAccount")}
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink
+            to="/logout"
+            onClick={(e) => {
+              logoutHandler(e);
+            }}
+            className={(navData) =>
+              navData.isActive ? "active nav-link" : "nav-link"
+            }
+          >
             {t("logout")}
-          </li>
-        </ul>
-      </div>
+          </NavLink>
+        </li>
+      </ul>
+
       <div className="notifictation-language">
         <button
           className="lang-btn"
