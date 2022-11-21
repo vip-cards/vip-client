@@ -62,6 +62,11 @@ export default function Home() {
           </button>
         </div>
         <Carousel
+          extraLarge={4.5}
+          midLarge={3.5}
+          large={3}
+          medium={3}
+          small={4}
           data={vendors}
           render={(props) => {
             return <CategoryCard category={props} />;

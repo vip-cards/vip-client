@@ -20,6 +20,7 @@ import {
 
 export default function Carousel({
   extraLarge,
+  midLarge,
   large,
   medium,
   small,
@@ -34,17 +35,25 @@ export default function Carousel({
         breakpoints={{
           1200: {
             slidesPerView: extraLarge || 3,
+            spaceBetween: 20,
           },
 
           992: {
-            slidesPerView: large || 3,
+            slidesPerView: midLarge || 3,
+            spaceBetween: 20,
           },
 
+          892: {
+            slidesPerView: large || 2,
+            spaceBetween: 20,
+          },
           576: {
             slidesPerView: medium || 2,
+            spaceBetween: 20,
           },
           350: {
             slidesPerView: small || 1,
+            spaceBetween: 20,
           },
         }}
         dir="ltr"
@@ -62,7 +71,7 @@ export default function Carousel({
         keyboard={{ enabled: true }}
         spaceBetween={20}
         // pagination={pagination}
-        slidesPerView={4}
+        // slidesPerView={4}
         navigation
         freeMode={true}
       >
