@@ -35,6 +35,16 @@
     cursor: text;
     transition: all 0.4s;
   }
+
+  .show-password-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    [fill] {
+      fill: var(--mainColor);
+    }
+  }
 }
 
 [dir="rtl"] {
@@ -43,6 +53,9 @@
       right: 0;
       margin-right: 20px;
     }
+    .show-password-icon {
+      left: 20px;
+    }
   }
 }
 [dir="ltr"] {
@@ -50,6 +63,9 @@
     .main-label {
       left: 0;
       margin-left: 20px;
+    }
+    .show-password-icon {
+      right: 20px;
     }
   }
 }

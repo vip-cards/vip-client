@@ -1,6 +1,8 @@
 import { t } from "i18next";
-import React from "react";
+import React, { useState } from "react";
 import i18n from "../../locales/i18n";
+import { ReactComponent as EyeOPen } from "../../assets/VIP-ICON-SVG/eye_open.svg";
+import { ReactComponent as EyeClose } from "../../assets/VIP-ICON-SVG/eye_close.svg";
 import "./MainInput.scss";
 
 export default function MainInput({
@@ -12,6 +14,8 @@ export default function MainInput({
   identifier = "",
   required = false,
 }) {
+  const [showPassword, setShowPassword] = useState(false);
+
   const lang = i18n.language;
   return type === "list" ? (
     <div className="main-input-label">
@@ -41,6 +45,23 @@ export default function MainInput({
     </div>
   ) : (
     <div className="main-input-label">
+      {type === "password" ? (
+        showPassword ? (
+          <EyeClose
+            onClick={() => {
+              setShowPassword((prev) => !prev);
+            }}
+            className="show-password-icon"
+          />
+        ) : (
+          <EyeOPen
+            onClick={() => {
+              setShowPassword((prev) => !prev);
+            }}
+            className="show-password-icon"
+          />
+        )
+      ) : null}
       <input
         value={state[name]}
         onChange={(e) => {
@@ -48,7 +69,7 @@ export default function MainInput({
         }}
         required
         className="main-input"
-        type={type}
+        type={!type === "password" ? type : showPassword ? "text" : type}
         name={name}
         id={name}
         placeholder=" "
