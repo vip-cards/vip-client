@@ -23,7 +23,9 @@ export default function Carousel({
   midLarge,
   large,
   medium,
-  small,
+  largeSmall,
+  midSmall,
+  extraSmall,
   data = [],
   pagination,
   render,
@@ -33,26 +35,34 @@ export default function Carousel({
     <div className="slider-component">
       <Swiper
         breakpoints={{
-          1200: {
+          1250: {
             slidesPerView: extraLarge || 3,
             spaceBetween: 20,
           },
 
-          992: {
+          1150: {
             slidesPerView: midLarge || 3,
             spaceBetween: 20,
           },
 
-          892: {
+          992: {
             slidesPerView: large || 2,
             spaceBetween: 20,
           },
-          576: {
+          877: {
             slidesPerView: medium || 2,
             spaceBetween: 20,
           },
-          350: {
-            slidesPerView: small || 1,
+          721: {
+            slidesPerView: largeSmall || 1,
+            spaceBetween: 20,
+          },
+          600: {
+            slidesPerView: midSmall || 1,
+            spaceBetween: 20,
+          },
+          300: {
+            slidesPerView: extraSmall || 1,
             spaceBetween: 20,
           },
         }}
@@ -74,6 +84,9 @@ export default function Carousel({
         // slidesPerView={4}
         navigation
         freeMode={true}
+        centeredSlides
+        centeredSlidesBounds
+        rewind
       >
         {data.map((item, i) => (
           <SwiperSlide key={i}>{render && render(item)}</SwiperSlide>

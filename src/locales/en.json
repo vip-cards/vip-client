@@ -27,8 +27,8 @@
   "casheir": "Casheir",
   "categories": "Categories",
   "vendors": "Vendors",
-  "showAllCategories": "Show All Categories",
-  "showAllVendors": "Show All Vendors",
-  "showAllOffers": "Show All Offers",
-  "showAllHotDeals": "Show All Hot Deals"
+  "showAllCategories": "All Categories",
+  "showAllVendors": "All Vendors",
+  "showAllOffers": "All Offers",
+  "showAllHotDeals": "All Hot Deals"
 }

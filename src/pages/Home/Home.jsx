@@ -61,12 +61,15 @@ export default function Home() {
             {t("showAllCategories")}
           </button>
         </div>
+
         <Carousel
           extraLarge={4.5}
-          midLarge={3.5}
-          large={3}
+          midLarge={4}
+          large={3.5}
           medium={3}
-          small={4}
+          largeSmall={2.5}
+          midSmall={2}
+          extraSmall={1.25}
           data={vendors}
           render={(props) => {
             return <CategoryCard category={props} />;
@@ -88,6 +91,13 @@ export default function Home() {
         <Carousel
           data={vendors}
           autoplay={false}
+          extraLarge={4.5}
+          midLarge={4}
+          large={3.5}
+          medium={3}
+          largeSmall={2.5}
+          midSmall={2}
+          extraSmall={1.25}
           render={(props) => {
             return <VendorCard vendor={props} />;
           }}
@@ -107,6 +117,13 @@ export default function Home() {
         <Carousel
           data={offers}
           autoplay={false}
+          extraLarge={4.5}
+          midLarge={4}
+          large={3.5}
+          medium={3}
+          largeSmall={2.5}
+          midSmall={2}
+          extraSmall={1.25}
           render={(props) => {
             return <ProductCard product={props} />;
           }}
@@ -124,6 +141,13 @@ export default function Home() {
           </button>
         </div>
         <Carousel
+          extraLarge={4.5}
+          midLarge={4}
+          large={3.5}
+          medium={3}
+          largeSmall={2.5}
+          midSmall={2}
+          extraSmall={1.25}
           autoplay={false}
           data={hotDeals}
           render={(props) => {
