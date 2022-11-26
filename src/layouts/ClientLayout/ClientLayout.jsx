@@ -12,6 +12,7 @@ import Offers from "../../pages/Offers/Offers";
 import HotDeals from "../../pages/HotDeals/HotDeals";
 import Categories from "../../pages/Categories/Categories";
 import Vendor from "../../pages/Vendor/Vendor";
+import AccountDetails from "../../pages/AccountDetails/AccountDetails";
 
 export default function ClientLayout() {
   return (
@@ -25,6 +26,7 @@ export default function ClientLayout() {
           <Route path="/vendors" element={<Vendors />} />
           <Route path="/offers" element={<Offers />} />
           <Route path="/categories" element={<Categories />} />
+          <Route path="/categories/:categoryId" element={<Vendors />} />
           <Route path="/hot-deals" element={<HotDeals />} />
           <Route path="/vendors/:vendorId" element={<Vendor />} />
           <Route path="/vendors/:vendorId/branches" element={<Branches />} />
@@ -32,6 +34,7 @@ export default function ClientLayout() {
             <Route path="offers" element={<BranchProducts />} />
             <Route path="hot-deals" element={<BranchProducts />} />
           </Route>
+          {/* <Route path="/account" element={<AccountDetails />} /> */}
         </Routes>
       </div>
       <Footer />

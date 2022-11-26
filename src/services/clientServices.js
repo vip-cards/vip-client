@@ -10,6 +10,10 @@ let clientServices = {
     const response = await Axios.get(`/client/vendor/list`);
     return response;
   },
+  listAllVendorsInCategory: async (id) => {
+    const response = await Axios.get(`/client/vendor/list?category=${id}`);
+    return response;
+  },
 
   listAllVendorBranches: async (vendorId) => {
     const response = await Axios.get(`client/branch/list/?vendor=${vendorId}`);

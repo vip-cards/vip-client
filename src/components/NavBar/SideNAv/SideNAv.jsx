@@ -15,6 +15,7 @@ export default function SideNAv() {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     localStorage.removeItem("userRole");
+    localStorage.removeItem("userData");
     dispatch(authActions.logout());
   }
 

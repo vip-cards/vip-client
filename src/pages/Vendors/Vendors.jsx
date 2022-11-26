@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import NoData from "../../components/NoData/NoData";
 import SearchArea from "../../components/SearchArea/SearchArea";
@@ -8,11 +9,15 @@ import "./Vendors.scss";
 export default function Vendors() {
   const [loading, setLoading] = useState(false);
   const [vendors, setVendors] = useState([]);
+  const params = useParams();
+  const categoryId = params.categoryId;
 
   async function getVendorsHandler() {
     setLoading(true);
     try {
-      let { data } = await clientServices.listAllVendors();
+      let { data } = categoryId
+        ? await clientServices.listAllVendorsInCategory(categoryId)
+        : await clientServices.listAllVendors();
       setVendors(data.records);
       console.log(data);
       setLoading(false);

@@ -13,7 +13,7 @@ export default function CategoryCard({ category }) {
     <div
       className="category-card"
       onClick={() => {
-        // navigate(`/categories/${category._id}`);
+        navigate(`/categories/${category._id}`);
       }}
     >
       <div className="category-info-container">
