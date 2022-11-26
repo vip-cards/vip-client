@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import clientServices from "../../services/clientServices";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import NoData from "../NoData/NoData";
 import ProductCard from "../ProductCard/ProductCard";
 import "./Products.scss";
 
@@ -41,13 +42,15 @@ export default function Products() {
     <>
       {Loading ? (
         <LoadingSpinner />
-      ) : (
+      ) : offers.length > 0 ? (
         <div className="products-container">
           {offers?.length > 0 &&
             offers.map((offer) => {
               return <ProductCard key={offer._id} product={offer} />;
             })}
         </div>
+      ) : (
+        <NoData />
       )}
     </>
   );

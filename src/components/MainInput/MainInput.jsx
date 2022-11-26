@@ -13,6 +13,7 @@ export default function MainInput({
   list = [],
   identifier = "",
   required = false,
+  disabled = false,
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -20,7 +21,8 @@ export default function MainInput({
   return type === "list" ? (
     <div className="main-input-label">
       <select
-        required
+        required={required}
+        disabled={disabled}
         className="main-input"
         selected={state[name]}
         value={state[name]}
@@ -47,14 +49,14 @@ export default function MainInput({
     <div className="main-input-label">
       {type === "password" ? (
         showPassword ? (
-          <EyeClose
+          <EyeOPen
             onClick={() => {
               setShowPassword((prev) => !prev);
             }}
             className="show-password-icon"
           />
         ) : (
-          <EyeOPen
+          <EyeClose
             onClick={() => {
               setShowPassword((prev) => !prev);
             }}
@@ -67,7 +69,8 @@ export default function MainInput({
         onChange={(e) => {
           setState({ ...state, [name]: e.target.value });
         }}
-        required
+        required={required}
+        disabled={disabled}
         className="main-input"
         type={!type === "password" ? type : showPassword ? "text" : type}
         name={name}

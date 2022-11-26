@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import NoData from "../../components/NoData/NoData";
 import SearchArea from "../../components/SearchArea/SearchArea";
 import VendorCard from "../../components/VendorCard/VendorCard";
 import clientServices from "../../services/clientServices";
@@ -29,7 +30,7 @@ export default function Vendors() {
       <SearchArea />
       {loading ? (
         <LoadingSpinner />
-      ) : (
+      ) : vendors.length > 0 ? (
         <div className="vendors-cards-container">
           {vendors.length > 0
             ? vendors.map((vendor) => {
@@ -37,6 +38,8 @@ export default function Vendors() {
               })
             : null}
         </div>
+      ) : (
+        <NoData />
       )}
     </div>
   );

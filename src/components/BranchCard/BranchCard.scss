@@ -11,7 +11,7 @@
 
     .branch-img-container {
       height: 150px;
-      width: 200px;
+      width: 150px;
       overflow: hidden;
       box-shadow: 0 0 10px #07070732;
       border-radius: 12px;
@@ -20,8 +20,8 @@
 
       .branch-img {
         position: relative;
-        height: 100%;
-        width: 200px;
+        height: 150px;
+        width: 150px;
         border-radius: 12px;
       }
     }
@@ -41,6 +41,12 @@
         .branch-name {
           font-size: 18px;
           color: var(--mainColor);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2; /* number of lines to show */
+          line-clamp: 2; /* number of lines to show */
+          -webkit-box-orient: vertical;
         }
         .manager-name {
           font-size: 15px;
@@ -73,17 +79,18 @@
 [dir="ltr"] {
   .branch-card {
     .branch-info-actions {
-      right: 0;
+      left: 150px;
     }
     .branch-img-container {
       left: -2px;
     }
   }
 }
+
 [dir="rtl"] {
   .branch-card {
     .branch-info-actions {
-      left: 0;
+      right: 150px;
     }
     .branch-img-container {
       right: -2px;

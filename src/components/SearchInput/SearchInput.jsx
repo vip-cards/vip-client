@@ -10,7 +10,7 @@ export default function SearchInput() {
         type="text"
         name="search"
         id="search"
-        placeholder={t("What Are You Looking For?")}
+        placeholder={t("Search")}
       />
       <label className="label-search">
         <SearchIcon className="SearchLogo" />

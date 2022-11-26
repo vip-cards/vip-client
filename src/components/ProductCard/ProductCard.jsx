@@ -18,13 +18,8 @@ export default function ProductCard({ product }) {
   return (
     <div className="product-card">
       <div className="product-img-container">
-        {/* <img
-          src={`${imagesPath}${product?.image?.path}`}
-          alt="product-img"
-          className="product-img"
-        /> */}
         <img
-          src={productPlaceHolder}
+          src={`${imagesPath}${product?.image?.path}`}
           alt="product-img"
           className="product-img"
         />

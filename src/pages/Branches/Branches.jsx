@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import BranchCard from "../../components/BranchCard/BranchCard";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import NoData from "../../components/NoData/NoData";
 import SearchArea from "../../components/SearchArea/SearchArea";
 import clientServices from "../../services/clientServices";
 
@@ -40,7 +41,7 @@ export default function Branches() {
       <SearchArea />
       {loading ? (
         <LoadingSpinner />
-      ) : (
+      ) : branchesData.length > 0 ? (
         <div className="branch-cards-container">
           {branchesData.length > 0
             ? branchesData.map((branchData) => {
@@ -48,6 +49,8 @@ export default function Branches() {
               })
             : null}
         </div>
+      ) : (
+        <NoData />
       )}
     </div>
   );

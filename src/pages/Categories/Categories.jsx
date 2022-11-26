@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import NoData from "../../components/NoData/NoData";
 import SearchArea from "../../components/SearchArea/SearchArea";
-import VendorCard from "../../components/VendorCard/VendorCard";
 import clientServices from "../../services/clientServices";
 import "./Categories.scss";
 export default function Categories() {
@@ -12,7 +12,7 @@ export default function Categories() {
   async function getCategoriesHandler() {
     setLoading(true);
     try {
-      let { data } = await clientServices.listAllCategories();
+      let { data } = await clientServices.listAllVendorCategories();
       setCategories(data.records);
       console.log(data);
       setLoading(false);
@@ -30,7 +30,7 @@ export default function Categories() {
       <SearchArea />
       {loading ? (
         <LoadingSpinner />
-      ) : (
+      ) : categories.length > 0 ? (
         <div className="categories-cards-container">
           {categories.length > 0
             ? categories.map((category) => {
@@ -38,6 +38,8 @@ export default function Categories() {
               })
             : null}
         </div>
+      ) : (
+        <NoData />
       )}
     </div>
   );

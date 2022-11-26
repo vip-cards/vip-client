@@ -17,12 +17,12 @@ export default function VendorCard({ vendor }) {
       }}
     >
       <div className="vendor-img-container">
-        {/* <img
+        <img
           src={`${imagesPath}${vendor?.image?.path}`}
           alt="vendor-img"
           className="vendor-img"
-        /> */}
-        <img src={vendorPlaceHolder} alt="vendor-img" className="vendor-img" />
+        />
+        {/* <img src={vendorPlaceHolder} alt="vendor-img" className="vendor-img" /> */}
       </div>
       <div className="vendor-info-container">
         <p className="vendor-title">{vendor.name[lang]} </p>

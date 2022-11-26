@@ -8,12 +8,13 @@ import { ReactComponent as BurgerMenuIcon } from "../../assets/VIP-ICON-SVG/burg
 import "./NavBar.scss";
 import i18n from "../../locales/i18n";
 import { switchLang } from "../../helpers/lang";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../store/auth-slice";
 import SideNAv from "./SideNAv/SideNAv";
 
 export default function NavBar() {
+  const navigate = useNavigate();
   const [viweAccountMenu, setViweAccountMenu] = useState(false);
   const [showSideMenu, setShowSideMenu] = useState(false);
 
@@ -44,7 +45,12 @@ export default function NavBar() {
   return (
     <nav className="top-nav">
       <BurgerMenuIcon className="burger-menu-icon" onClick={toggleSideMenu} />
-      <NavbarLogo className="app-logo" />
+      <NavbarLogo
+        className="app-logo"
+        onClick={() => {
+          navigate("/");
+        }}
+      />
       <ul className="nav-menu">
         <li className="nav-item">
           <NavLink

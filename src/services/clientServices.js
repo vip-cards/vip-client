@@ -28,6 +28,11 @@ let clientServices = {
     return response;
   },
 
+  listAllVendorProducts: async (vendorId) => {
+    const response = await Axios.get(`/client/product/list?vendor=${vendorId}`);
+    return response;
+  },
+
   listAllProductsOfType: async (isHotDeal = false) => {
     const response = await Axios.get(
       `/client/product/list?isHotDeal=${isHotDeal}`
@@ -37,6 +42,10 @@ let clientServices = {
 
   listAllCategories: async () => {
     const response = await Axios.get(`/client/category/list`);
+    return response;
+  },
+  listAllVendorCategories: async () => {
+    const response = await Axios.get(`/client/category/list?type=vendor`);
     return response;
   },
 };
