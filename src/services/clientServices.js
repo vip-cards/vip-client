@@ -20,6 +20,11 @@ let clientServices = {
     return response;
   },
 
+  listAllBanners: async () => {
+    const response = await Axios.get(`/client/banner/list`);
+    return response;
+  },
+
   getBranchDetails: async (branchId) => {
     const response = await Axios.get(`/client/branch/get?_id=${branchId}`);
     return response;

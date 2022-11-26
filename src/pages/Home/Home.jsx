@@ -10,12 +10,14 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import VendorCard from "../../components/VendorCard/VendorCard";
 import "./Home.scss";
+import BannerCard from "../../components/BannerCard/BannerCard";
 export default function Home() {
   const [loading, setLoading] = useState(false);
   const [vendors, setVendors] = useState([]);
   const [categories, setCategories] = useState([]);
   const [offers, setOffers] = useState([]);
   const [hotDeals, setHotDeals] = useState([]);
+  const [banners, setBanners] = useState([]);
   const navigate = useNavigate();
 
   async function getHomeDataHandler() {
@@ -30,11 +32,13 @@ export default function Home() {
       let { data: allHotDeals } = await clientServices.listAllProductsOfType(
         true
       );
+      let { data: allBanners } = await clientServices.listAllBanners();
 
       setCategories(allCategories?.records);
       setVendors(allVendors?.records);
       setOffers(allOffers?.records);
       setHotDeals(allHotDeals?.records);
+      setBanners(allBanners?.records);
 
       setLoading(false);
     } catch (e) {
@@ -51,6 +55,34 @@ export default function Home() {
     <LoadingSpinner />
   ) : (
     <div className="client-home">
+      {banners.length > 0 ? (
+        <div className="carousel-container">
+          {/* <div className="add-button-container">
+            <button
+              className="add-button"
+              onClick={() => {
+                navigate(`/categories`);
+              }}
+            >
+              {t("showAllCategories")}
+            </button>
+          </div> */}
+
+          <Carousel
+            extraLarge={4.5}
+            midLarge={4}
+            large={3.5}
+            medium={3}
+            largeSmall={2.5}
+            midSmall={2}
+            extraSmall={1.25}
+            data={banners}
+            render={(props) => {
+              return <BannerCard banner={props} />;
+            }}
+          />
+        </div>
+      ) : null}
       {categories.length > 0 ? (
         <div className="carousel-container">
           <div className="add-button-container">
