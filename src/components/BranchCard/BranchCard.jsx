@@ -25,7 +25,7 @@ export default function BranchCard({ branch }) {
         <div className="branch-img-container">
           <img
             className="branch-img"
-            src={`${imagesPath}${branch?.image?.path}`}
+            src={`${imagesPath}${branch?.image?.Location}`}
             alt="branch-img"
           />
         </div>

@@ -18,7 +18,7 @@ export default function VendorCard({ vendor }) {
     >
       <div className="vendor-img-container">
         <img
-          src={`${imagesPath}${vendor?.image?.path}`}
+          src={`${imagesPath}${vendor?.image?.Location}`}
           alt="vendor-img"
           className="vendor-img"
         />

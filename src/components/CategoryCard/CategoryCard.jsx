@@ -19,7 +19,7 @@ export default function CategoryCard({ category }) {
       <div className="category-info-container">
         <div className="category-img-container">
           <img
-            src={`${imagesPath}${category?.image?.path}`}
+            src={`${imagesPath}${category?.image?.Location}`}
             alt="category-img"
             className="category-img"
           />

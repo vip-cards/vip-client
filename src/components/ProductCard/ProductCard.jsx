@@ -19,7 +19,7 @@ export default function ProductCard({ product }) {
     <div className="product-card">
       <div className="product-img-container">
         <img
-          src={`${imagesPath}${product?.image?.path}`}
+          src={`${imagesPath}${product?.image?.Location}`}
           alt="product-img"
           className="product-img"
         />

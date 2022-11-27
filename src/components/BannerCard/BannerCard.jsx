@@ -20,7 +20,7 @@ export default function BannerCard({ banner }) {
       <div className="category-info-container">
         <div className="category-img-container">
           <img
-            src={`${imagesPath}${banner?.image?.path}`}
+            src={`${imagesPath}${banner?.image?.Location}`}
             alt="category-img"
             className="category-img"
           />
