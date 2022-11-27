@@ -2,7 +2,7 @@ import React from "react";
 import "./VendorCard.scss";
 import i18n from "../../locales/i18n";
 import { useNavigate } from "react-router";
-import imagesPath from "../../services/imagesPath";
+
 import vendorPlaceHolder from "../../assets/images/vendorPlaceHolder.png";
 
 export default function VendorCard({ vendor }) {
@@ -18,7 +18,7 @@ export default function VendorCard({ vendor }) {
     >
       <div className="vendor-img-container">
         <img
-          src={`${imagesPath}${vendor?.image?.Location}`}
+          src={`${vendor?.image?.Location}`}
           alt="vendor-img"
           className="vendor-img"
         />

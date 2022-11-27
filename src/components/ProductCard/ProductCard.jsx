@@ -4,9 +4,8 @@ import "./ProductCard.scss";
 import i18n from "../../locales/i18n";
 import { useNavigate } from "react-router";
 import { t } from "i18next";
-import imagesPath from "../../services/imagesPath";
+
 import { useSelector } from "react-redux";
-import productPlaceHolder from "../../assets/images/productPlaceHolder.png";
 
 export default function ProductCard({ product }) {
   let auth = useSelector((state) => state.auth);
@@ -19,7 +18,7 @@ export default function ProductCard({ product }) {
     <div className="product-card">
       <div className="product-img-container">
         <img
-          src={`${imagesPath}${product?.image?.Location}`}
+          src={`${product?.image?.Location}`}
           alt="product-img"
           className="product-img"
         />

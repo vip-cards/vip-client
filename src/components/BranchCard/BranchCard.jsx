@@ -7,7 +7,6 @@ import i18n from "../../locales/i18n";
 import endPoint from "../../services/endPoint";
 import branchPlaceHolder from "../../assets/images/branchPlaceHolder.png";
 import "./BranchCard.scss";
-import imagesPath from "../../services/imagesPath";
 
 export default function BranchCard({ branch }) {
   const navigate = useNavigate();
@@ -25,7 +24,7 @@ export default function BranchCard({ branch }) {
         <div className="branch-img-container">
           <img
             className="branch-img"
-            src={`${imagesPath}${branch?.image?.Location}`}
+            src={`${branch?.image?.Location}`}
             alt="branch-img"
           />
         </div>
