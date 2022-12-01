@@ -64,7 +64,6 @@ export default function NavBar() {
           </NavLink>
         </li>
         <li className="nav-item">
-          {" "}
           <NavLink
             to="/categories"
             className={(navData) =>
@@ -113,6 +112,16 @@ export default function NavBar() {
             }
           >
             {t("jobs")}
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink
+            to="/wish-list"
+            className={(navData) =>
+              navData.isActive ? "active nav-link" : "nav-link"
+            }
+          >
+            {t("wishList")}
           </NavLink>
         </li>
         <li className="nav-item">

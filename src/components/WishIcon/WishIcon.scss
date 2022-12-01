@@ -1,0 +1,18 @@
+.wish-icon {
+  border: unset;
+  background-color: unset;
+  color: var(--mainColor);
+  cursor: pointer;
+  width: 1.2rem;
+  height: 1.2rem;
+  svg {
+    width: inherit;
+    height: inherit;
+  }
+  &:active {
+    transform: scale(0.9);
+  }
+  &:disabled {
+    opacity: 0.8;
+  }
+}
