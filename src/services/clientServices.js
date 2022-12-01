@@ -5,6 +5,10 @@ let clientServices = {
     const response = await Axios.post("/client/login", obj);
     return response;
   },
+  loginBy: async (obj) => {
+    const response = await Axios.post("/client/loginBy", obj);
+    return response;
+  },
 
   listAllVendors: async () => {
     const response = await Axios.get(`/client/vendor/list`);

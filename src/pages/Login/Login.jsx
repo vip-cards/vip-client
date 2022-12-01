@@ -14,6 +14,9 @@ import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth-slice";
 import jwt_decode from "jwt-decode";
 import "./Login.scss";
+import { auth, provider } from "../../services/firebase";
+import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import Axios from "../../services/Axios";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -89,6 +92,46 @@ export default function Login() {
     }
   };
 
+  async function googleLoginHandler() {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      const user = result.user;
+
+      const { data } = await clientServices.loginBy({
+        name: { en: user.displayName },
+        email: user.email,
+        googleId: user.uid,
+        image: user.photoURL,
+      });
+      console.log(data);
+      if (data.success && data.code === 200) {
+        setLoading(false);
+        toastPopup.success(t("Success"));
+        const tokenDecoded = jwt_decode(data.token);
+
+        console.log(tokenDecoded);
+        dispatch(
+          authActions.login({
+            token: data.token,
+            userId: tokenDecoded._id,
+            userRole: tokenDecoded.role,
+            userData: data.record,
+          })
+        );
+        navigate("/");
+      }
+    } catch (error) {
+      setLoading(false);
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      setErrorMessage(errorMessage);
+      toastPopup.error(t("Something went wrong"));
+      // const credential = GoogleAuthProvider.credentialFromError(error);
+    }
+  }
+
   return (
     <div className="login">
       <div className="login-logo">
@@ -153,6 +196,12 @@ export default function Login() {
             );
           })}
           <MainButton text={t("login")} loading={loading} onClick={() => {}} />
+          <MainButton
+            text="Google"
+            loading={loading}
+            className="google-button"
+            onClick={googleLoginHandler}
+          />
         </form>
       </div>
     </div>
