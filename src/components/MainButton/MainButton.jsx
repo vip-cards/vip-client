@@ -4,11 +4,12 @@ import React from "react";
 
 export default function MainButton({
   text = "",
-  onClick = () => {},
   loading = false,
+  className,
+  ...props
 }) {
   return (
-    <button className="main-button">
+    <button className={"main-button " + className} {...props}>
       {loading ? <i className="fas fa-spinner fa-spin "></i> : text}
     </button>
   );

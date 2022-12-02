@@ -14,6 +14,17 @@ import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth-slice";
 import jwt_decode from "jwt-decode";
 import "./Login.scss";
+import {
+  auth,
+  Gprovider,
+  FBprovider,
+  useSocialLogin,
+} from "../../services/firebaseServices";
+import {
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -22,6 +33,7 @@ export default function Login() {
   const [userType, setUserType] = useState("vendor");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const socialLogin = useSocialLogin();
   const { t, i18n } = useTranslation();
   function changeLang(lang) {
     i18n.changeLanguage(lang);
@@ -89,6 +101,86 @@ export default function Login() {
     }
   };
 
+  async function googleLoginHandler() {
+    try {
+      const result = await signInWithPopup(auth, Gprovider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      const user = result.user;
+
+      const { data } = await clientServices.loginBy({
+        name: { en: user.displayName },
+        email: user.email,
+        googleId: user.uid,
+        image: user.photoURL,
+      });
+      console.log(data);
+      if (data.success && data.code === 200) {
+        setLoading(false);
+        toastPopup.success(t("Success"));
+        const tokenDecoded = jwt_decode(data.token);
+
+        console.log(tokenDecoded);
+        dispatch(
+          authActions.login({
+            token: data.token,
+            userId: tokenDecoded._id,
+            userRole: tokenDecoded.role,
+            userData: data.record,
+          })
+        );
+        navigate("/");
+      }
+    } catch (error) {
+      setLoading(false);
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      setErrorMessage(errorMessage);
+      toastPopup.error(t("Something went wrong"));
+      // const credential = GoogleAuthProvider.credentialFromError(error);
+    }
+  }
+  async function facebookLoginHandler() {
+    try {
+      const result = await signInWithPopup(auth, FBprovider);
+      const credential = FacebookAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      const user = result.user;
+      console.log(result);
+      const { data } = await clientServices.loginBy({
+        name: { en: user.displayName },
+        email: user.email,
+        googleId: user.uid,
+        image: user.photoURL,
+      });
+      console.log(data);
+      if (data.success && data.code === 200) {
+        setLoading(false);
+        toastPopup.success(t("Success"));
+        const tokenDecoded = jwt_decode(data.token);
+
+        console.log(tokenDecoded);
+        dispatch(
+          authActions.login({
+            token: data.token,
+            userId: tokenDecoded._id,
+            userRole: tokenDecoded.role,
+            userData: data.record,
+          })
+        );
+        navigate("/");
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      setErrorMessage(errorMessage);
+      toastPopup.error(t("Something went wrong"));
+      // const credential = GoogleAuthProvider.credentialFromError(error);
+    }
+  }
+
   return (
     <div className="login">
       <div className="login-logo">
@@ -153,6 +245,18 @@ export default function Login() {
             );
           })}
           <MainButton text={t("login")} loading={loading} onClick={() => {}} />
+          <MainButton
+            text="Google"
+            loading={loading}
+            className="google-button"
+            onClick={() => socialLogin("google")}
+          />
+          <MainButton
+            text="Facebook"
+            loading={loading}
+            className="facebook-button"
+            onClick={() => socialLogin("facebook")}
+          />
         </form>
       </div>
     </div>
