@@ -8,6 +8,7 @@ const authSlice = createSlice({
     userRole: localStorage.getItem("userRole"),
     userData: JSON.parse(localStorage.getItem("userData")),
   },
+
   reducers: {
     login(state, action) {
       localStorage.setItem("token", action.payload.token);
@@ -21,6 +22,23 @@ const authSlice = createSlice({
       state.userId = localStorage.getItem("userId");
       state.userRole = localStorage.getItem("userRole");
       state.userData = JSON.parse(localStorage.getItem("userData"));
+    },
+
+    update(state, { payload }) {
+      const userObj = {
+        ...payload,
+        name_en: payload.name.en,
+        name_ar: payload.name.ar,
+        profession_en: payload.profession.en,
+        profession_ar: payload.profession.ar,
+      };
+      state.userData = userObj;
+      localStorage.setItem("userData", JSON.stringify(state.userData));
+    },
+
+    updateImage(state, { payload }) {
+      state.userData.image = payload;
+      localStorage.setItem("userData", JSON.stringify(state.userData));
     },
 
     logout(state) {

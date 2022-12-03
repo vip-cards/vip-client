@@ -1,8 +1,14 @@
 import store from "../store";
 import Axios from "./Axios";
 
-let clientServices = {
+const userId = store.getState().auth.userId;
+
+const clientServices = {
   /*--- AUTH ---*/
+  register: async (obj) => {
+    const response = await Axios.post("/client/register", obj);
+    return response;
+  },
   login: async (obj) => {
     const response = await Axios.post("/client/login", obj);
     return response;
@@ -11,7 +17,19 @@ let clientServices = {
     const response = await Axios.post("/client/loginBy", obj);
     return response;
   },
+  updateInfo: async (obj) => {
+    const response = await Axios.put("/client/update", obj);
+    return response;
+  },
+  uploadImg: async (obj) => {
+    const response = await Axios.post("/client/image", obj);
+    return response;
+  },
 
+  getVendor: async (vendorId) => {
+    const response = await Axios.get(`/client/vendor/get?_id=${vendorId}`);
+    return response;
+  },
   listAllVendors: async () => {
     const response = await Axios.get(`/client/vendor/list`);
     return response;
@@ -20,9 +38,16 @@ let clientServices = {
     const response = await Axios.get(`/client/vendor/list?category=${id}`);
     return response;
   },
-
+  getReview: async (id) => {
+    const response = Axios.get(`/client/review/get?_id=${id}&client=${userId}`);
+    return response;
+  },
+  listClientOrders: async () => {
+    const response = Axios.get("/client/order/get?client=" + userId);
+    return response;
+  },
   listAllVendorBranches: async (vendorId) => {
-    const response = await Axios.get(`client/branch/list/?vendor=${vendorId}`);
+    const response = await Axios.get(`/client/branch/list/?vendor=${vendorId}`);
     return response;
   },
 
@@ -66,19 +91,16 @@ let clientServices = {
   },
   /*--- WISHLIST ---*/
   listAllWishProducts: async () => {
-    const userId = store.getState().auth.userId;
     const response = await Axios.get(`/client/wishlist/get?client=${userId}`);
     return response;
   },
   addWishProduct: async (productId) => {
-    const userId = store.getState().auth.userId;
     const response = await Axios.post(
       `/client/wishlist/addItem?client=${userId}&product=${productId}`
     );
     return response;
   },
   removeWishProduct: async (productId) => {
-    const userId = store.getState().auth.userId;
     const response = await Axios.delete(
       `/client/wishlist/removeItem?client=${userId}&product=${productId}`
     );

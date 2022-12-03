@@ -4,8 +4,7 @@ import { ReactComponent as VendorLogo } from "../../assets/VIP-ICON-SVG/VendorLo
 import { ReactComponent as VendorLogoOrange } from "../../assets/VIP-ICON-SVG/VendorLogoOrange.svg";
 import MainInput from "../../components/MainInput/MainInput";
 import toastPopup from "../../helpers/toastPopup";
-import Joi from "joi";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { switchLang } from "../../helpers/lang";
 import MainButton from "../../components/MainButton/MainButton";
@@ -14,32 +13,19 @@ import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth-slice";
 import jwt_decode from "jwt-decode";
 import "./Login.scss";
-import {
-  auth,
-  Gprovider,
-  FBprovider,
-  useSocialLogin,
-} from "../../services/firebaseServices";
-import {
-  FacebookAuthProvider,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
+import { useSocialLogin } from "../../services/firebaseServices";
+
+import { loginSchema } from "../../helpers/schemas";
 
 export default function Login() {
-  const [loading, setLoading] = useState(false);
-  const [errorList, setErrorList] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [userType, setUserType] = useState("vendor");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const socialLogin = useSocialLogin();
   const { t, i18n } = useTranslation();
-  function changeLang(lang) {
-    i18n.changeLanguage(lang);
-    switchLang(lang);
-  }
 
+  const [loading, setLoading] = useState(false);
+  const [errorList, setErrorList] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
   const [user, setUser] = useState({
     email: "",
     password: "",
@@ -50,24 +36,21 @@ export default function Login() {
     { name: "password", type: "password", required: true },
   ];
 
+  function changeLang(lang) {
+    i18n.changeLanguage(lang);
+    switchLang(lang);
+  }
+
   function loginValidation(user) {
-    const schema = Joi.object({
-      email: Joi.string()
-        .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
-        .required(),
-      password: Joi.string()
-        .pattern(
-          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-        )
-        .required(),
-    });
-    return schema.validate(user);
+    return loginSchema.validate(user);
   }
 
   const loginHandler = async (e) => {
+    console.log(user);
     e.preventDefault();
     setErrorList([]);
     let validationResult = loginValidation(user);
+    console.log(validationResult);
     setLoading(true);
     if (validationResult.error) {
       setLoading(false);
@@ -100,86 +83,6 @@ export default function Login() {
       }
     }
   };
-
-  async function googleLoginHandler() {
-    try {
-      const result = await signInWithPopup(auth, Gprovider);
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-      const user = result.user;
-
-      const { data } = await clientServices.loginBy({
-        name: { en: user.displayName },
-        email: user.email,
-        googleId: user.uid,
-        image: user.photoURL,
-      });
-      console.log(data);
-      if (data.success && data.code === 200) {
-        setLoading(false);
-        toastPopup.success(t("Success"));
-        const tokenDecoded = jwt_decode(data.token);
-
-        console.log(tokenDecoded);
-        dispatch(
-          authActions.login({
-            token: data.token,
-            userId: tokenDecoded._id,
-            userRole: tokenDecoded.role,
-            userData: data.record,
-          })
-        );
-        navigate("/");
-      }
-    } catch (error) {
-      setLoading(false);
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      setErrorMessage(errorMessage);
-      toastPopup.error(t("Something went wrong"));
-      // const credential = GoogleAuthProvider.credentialFromError(error);
-    }
-  }
-  async function facebookLoginHandler() {
-    try {
-      const result = await signInWithPopup(auth, FBprovider);
-      const credential = FacebookAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-      const user = result.user;
-      console.log(result);
-      const { data } = await clientServices.loginBy({
-        name: { en: user.displayName },
-        email: user.email,
-        googleId: user.uid,
-        image: user.photoURL,
-      });
-      console.log(data);
-      if (data.success && data.code === 200) {
-        setLoading(false);
-        toastPopup.success(t("Success"));
-        const tokenDecoded = jwt_decode(data.token);
-
-        console.log(tokenDecoded);
-        dispatch(
-          authActions.login({
-            token: data.token,
-            userId: tokenDecoded._id,
-            userRole: tokenDecoded.role,
-            userData: data.record,
-          })
-        );
-        navigate("/");
-      }
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      setErrorMessage(errorMessage);
-      toastPopup.error(t("Something went wrong"));
-      // const credential = GoogleAuthProvider.credentialFromError(error);
-    }
-  }
 
   return (
     <div className="login">
@@ -244,7 +147,7 @@ export default function Login() {
               />
             );
           })}
-          <MainButton text={t("login")} loading={loading} onClick={() => {}} />
+          <MainButton text={t("login")} loading={loading} type="submit" />
           <MainButton
             text="Google"
             loading={loading}
@@ -257,6 +160,13 @@ export default function Login() {
             className="facebook-button"
             onClick={() => socialLogin("facebook")}
           />
+          <p className="login-footer">
+            <span>Not Register?</span>
+            &nbsp;
+            <Link to="/register" className="link-item">
+              Create An Account
+            </Link>
+          </p>
         </form>
       </div>
     </div>
