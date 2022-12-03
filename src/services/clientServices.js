@@ -39,13 +39,17 @@ const clientServices = {
     return response;
   },
   getReview: async (id) => {
-    const response = Axios.get(`/client/review/get?_id=${id}&client=${userId}`);
+    const response = await Axios.get(
+      `/client/review/get?_id=${id}&client=${userId}`
+    );
     return response;
   },
+
   listClientOrders: async () => {
-    const response = Axios.get("/client/order/get?client=" + userId);
+    const response = await Axios.get("/client/order/get?client=" + userId);
     return response;
   },
+  
   listAllVendorBranches: async (vendorId) => {
     const response = await Axios.get(`/client/branch/list/?vendor=${vendorId}`);
     return response;

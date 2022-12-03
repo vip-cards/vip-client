@@ -13,7 +13,8 @@ export default function AccountOrders() {
   const userId = useSelector((state) => state.auth.userId);
   const [orederList, setOrderList] = useState([]);
   useEffect(() => {
-    clientServices.listClientOrders
+    clientServices
+      .listClientOrders()
       .then((res) => {
         return res.data.records;
       })
