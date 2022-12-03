@@ -1,0 +1,77 @@
+@import "src/styles/_colors.scss";
+
+$break-md: 660px;
+.account-layout-container {
+  display: grid;
+  grid-template-areas:
+    "top-bar top-bar"
+    "side-bar outlet";
+  column-gap: 1rem;
+  grid-template-columns: min-content 1fr;
+
+  .account-topbar {
+    grid-area: top-bar;
+  }
+  .account-sidebar {
+    grid-area: side-bar;
+    width: 13rem;
+    border-right: 1px solid darken($color: $mainColor, $amount: 25);
+    @media (max-width: $break-md) {
+      width: 4rem;
+    }
+
+    /*---*/
+    .nav-menu {
+      width: 100%;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      padding-right: 1rem;
+      padding-top: 1rem;
+      row-gap: 0.5rem;
+      .nav-item {
+        width: 100%;
+        display: flex;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        @media (max-width: $break-md) {
+          width: 3rem;
+        }
+        .nav-link {
+          padding-block: 1rem;
+          text-decoration: none;
+          color: unset;
+          width: 100%;
+
+          white-space: nowrap;
+          transition: all ease-in-out 250ms;
+
+          .nav-icon {
+            margin-inline: 0.5rem;
+            color: white;
+            background-color: lighten($color: $mainColor, $amount: 10);
+            padding: 0.5rem;
+            transition: all ease-in-out 250ms;
+            border-radius: 1rem;
+            svg {
+              width: 1rem;
+              height: 1rem;
+            }
+          }
+          &.active {
+            font-weight: 600;
+            background-color: $mainColor;
+            color: white;
+            .nav-icon {
+              background-color: white;
+              color: $mainColor;
+            }
+          }
+        }
+      }
+    }
+  }
+  .account-outlet {
+    grid-area: outlet;
+  }
+}

@@ -1,0 +1,15 @@
+@import "src/styles/_media.scss";
+
+.wishlist-container {
+  &.products-container {
+    margin: 0;
+
+    grid-template-columns: repeat(3, 1fr);
+    @media (max-width: $break-xl) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: $break-lg) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+}

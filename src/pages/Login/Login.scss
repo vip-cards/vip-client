@@ -25,12 +25,17 @@
     align-items: center;
     position: relative;
     .login-box {
+      overflow-y: auto;
       width: 60%;
       min-height: 400px;
+      max-height: 100vh;
+      height: fit-content;
+      padding-block: 3rem;
       background-color: var(--secondaryColor);
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: start;
+      margin-block: auto;
       gap: 30px;
       align-items: center;
       p {
@@ -47,6 +52,7 @@
       }
       .main-button {
         width: 80%;
+        height: 50px;
       }
 
       .login-user-type {
@@ -68,6 +74,9 @@
             gap: 5px;
           }
         }
+      }
+      .login-footer {
+        font-size: 1rem;
       }
     }
 
@@ -207,5 +216,15 @@
         }
       }
     }
+  }
+}
+
+.link-item {
+  color: var(--mainColor);
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity cubic-bezier(0, 1.14, 0.57, 1) 250ms;
+  &:hover {
+    opacity: 0.8;
   }
 }

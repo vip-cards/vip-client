@@ -1,5 +1,6 @@
 .main-button {
   height: 50px;
+  min-height: 50px;
   background-color: var(--mainColor);
   border: none;
   border-radius: 15px;
@@ -20,6 +21,7 @@
   background-color: #cf4332;
   color: antiquewhite;
 }
+
 .facebook-button {
   background-color: #5890ff;
   color: antiquewhite;

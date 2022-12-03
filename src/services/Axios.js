@@ -7,22 +7,21 @@ import store from "../store";
 
 const baseURL = endPoint;
 
+const guestEndpoints = [
+  "/vendor/login",
+  "/branch/login",
+  "/client/login",
+  "/client/loginBy",
+  "/client/register",
+];
+
 const Axios = axios.create({ baseURL });
 Axios.defaults.baseURL = endPoint;
 Axios.defaults.headers["x-app-token"] = "VIP-Team";
 
 Axios.interceptors.request.use(async (req) => {
-  if (req.url === "/vendor/login") {
+  if (guestEndpoints.includes(req.url)) {
     console.log("loggingig on");
-    return req;
-  } else if (req.url === "/branch/login") {
-    console.log("loggingig on");
-    return req;
-  } else if (req.url === "/client/login") {
-    console.log("loggingig on");
-    return req;
-  } else if (req.url === "/client/loginBy") {
-    console.log("loggingig by");
     return req;
   }
 

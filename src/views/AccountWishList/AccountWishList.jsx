@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ProductCard from "../../components/ProductCard/ProductCard";
+import "./AccountWishList.scss";
 
-export default function WishList() {
+export default function AccountWishList() {
   const wishList = useSelector((state) => state.wishList.products);
   const [list, setList] = useState([]);
 
@@ -17,13 +18,11 @@ export default function WishList() {
       );
     setList(cleanedList);
   }, [wishList]);
-
   if (list.length < 1) {
     return <Link to="/">Shop for Products</Link>;
   }
-
   return (
-    <div className="products-container">
+    <div className="products-container wishlist-container">
       {list.map((product, idx) => (
         <ProductCard product={product} key={product._id} />
       ))}

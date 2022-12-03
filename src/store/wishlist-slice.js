@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import toastPopup from "../helpers/toastPopup";
 import clientServices from "../services/clientServices";
 
 /* get */
@@ -6,7 +7,6 @@ export const fetchWishList = createAsyncThunk(
   "wishList/all",
   async (_, thunkAPI) => {
     const { data } = await clientServices.listAllWishProducts();
-    console.log(data.record);
     return data.record.items;
   }
 );
@@ -16,8 +16,10 @@ export const addWishProduct = createAsyncThunk(
   "wishList/add",
   async (productId, thunkAPI) => {
     const { data } = await clientServices.addWishProduct(productId);
-    console.log(data.record);
-    return data.record.items;
+    if (data.record) {
+      toastPopup.success("Product Added to wish list");
+    }
+    return data.record.record.items;
   }
 );
 
@@ -27,6 +29,8 @@ export const removeWishProduct = createAsyncThunk(
   async (productId, thunkAPI) => {
     const { data } = await clientServices.removeWishProduct(productId);
     console.log(data.record);
+    toastPopup.success("Product removed to wish list");
+    thunkAPI.dispatch(fetchWishList());
     return data.record.items;
   }
 );
@@ -39,16 +43,19 @@ const wishListSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchWishList.fulfilled, (state, { payload }) => {
+      if (!payload) return state;
       state.products = payload;
-      state.ids = payload.map((product) => product && product._id);
+      state.ids = payload.map((product) => product && product?._id);
     });
     builder.addCase(addWishProduct.fulfilled, (state, { payload }) => {
+      if (!payload) return state;
       state.products = payload;
-      state.ids = payload.map((product) => product && product._id);
+      state.ids = payload.map((product) => product && product?._id);
     });
     builder.addCase(removeWishProduct.fulfilled, (state, { payload }) => {
+      if (!payload) return state;
       state.products = payload;
-      state.ids = payload.map((product) => product && product._id);
+      state.ids = payload.map((product) => product && product?._id);
     });
   },
 });

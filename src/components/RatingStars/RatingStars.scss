@@ -1,0 +1,8 @@
+@import "src/styles/_colors.scss";
+
+.stars-container {
+  color: $mainColor;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
