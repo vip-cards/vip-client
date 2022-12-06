@@ -24,16 +24,16 @@ const authSlice = createSlice({
       state.userData = JSON.parse(localStorage.getItem("userData"));
     },
 
-    update(state, { payload }) {
+    update(state, { payload: { userData } }) {
       const userObj = {
-        ...payload,
-        name_en: payload.name.en,
-        name_ar: payload.name.ar,
-        profession_en: payload.profession.en,
-        profession_ar: payload.profession.ar,
+        ...userData,
+        name_en: userData.name.en,
+        name_ar: userData.name.ar,
+        profession_en: userData.profession.en,
+        profession_ar: userData.profession.ar,
       };
       state.userData = userObj;
-      localStorage.setItem("userData", JSON.stringify(state.userData));
+      localStorage.setItem("userData", JSON.stringify(userObj));
     },
 
     updateImage(state, { payload }) {
