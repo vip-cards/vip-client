@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 
 import "./CategoryCard.scss";
 
-export default function CategoryCard({ category }) {
+export default function CategoryCard({ category, vendorId }) {
   const lang = i18n.language;
   const navigate = useNavigate();
 
@@ -12,7 +12,9 @@ export default function CategoryCard({ category }) {
     <div
       className="category-card"
       onClick={() => {
-        navigate(`/categories/${category._id}`);
+        vendorId
+          ? navigate(`/vendors/${vendorId}/category/${category._id}`)
+          : navigate(`/categories/${category._id}`);
       }}
     >
       <div className="category-info-container">

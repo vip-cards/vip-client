@@ -1,11 +1,7 @@
-import { t } from "i18next";
 import React from "react";
 import { useNavigate } from "react-router";
-import branchImage from "../../assets/images/productImg.png";
 import { ReactComponent as Rate } from "../../assets/VIP-ICON-SVG/rate.svg";
 import i18n from "../../locales/i18n";
-import endPoint from "../../services/endPoint";
-import branchPlaceHolder from "../../assets/images/branchPlaceHolder.png";
 import "./BranchCard.scss";
 
 export default function BranchCard({ branch }) {
@@ -18,7 +14,7 @@ export default function BranchCard({ branch }) {
       <div
         className="branch-card-container"
         onClick={() => {
-          navigate(`${branch._id}/offers`);
+          navigate(`${branch._id}`);
         }}
       >
         <div className="branch-img-container">

@@ -1,16 +1,12 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import Axios from "../../services/Axios";
-
-import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import OrderCard from "../../components/OrderCard/OrderCard";
 
 import "./AccountOrders.scss";
 import clientServices from "../../services/clientServices";
+import { t } from "i18next";
 
 export default function AccountOrders() {
-  const userId = useSelector((state) => state.auth.userId);
   const [orederList, setOrderList] = useState([]);
   useEffect(() => {
     clientServices
@@ -27,7 +23,7 @@ export default function AccountOrders() {
   return (
     <>
       <header className="orders-header">
-        <h1 className="orders-title">Orders</h1>
+        <h1 className="orders-title">{t("orders")}</h1>
         <div className="orders-details">
           <p>
             <span> Total Points</span>
@@ -48,9 +44,7 @@ export default function AccountOrders() {
               return <OrderCard key={order._id} order={order} />;
             })}
           </>
-        ) : (
-          <LoadingSpinner />
-        )}
+        ) : null}
       </div>
     </>
   );

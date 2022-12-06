@@ -20,24 +20,27 @@ export default function Vendor() {
   const [loading, setLoading] = useState(false);
   const [branches, setBranches] = useState([]);
   const [offers, setOffers] = useState([]);
-  const [hotDeals, setHotDeals] = useState([]);
+  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
   async function getVendorDataHandler() {
     setLoading(true);
     try {
+      let { data: allCategories } =
+        await clientServices.listAllVendorCategories(vendorId);
+      setCategories(allCategories?.records);
+
+      setLoading(false);
       let { data: allBranches } = await clientServices.listAllVendorBranches(
         vendorId
       );
 
+      setBranches(allBranches?.records);
       let { data: allOffers } = await clientServices.listAllVendorProducts(
         vendorId
       );
 
-      setBranches(allBranches?.records);
       setOffers(allOffers?.records);
-
-      setLoading(false);
     } catch (e) {
       console.log(e);
       setLoading(false);
@@ -53,6 +56,34 @@ export default function Vendor() {
     <LoadingSpinner />
   ) : (
     <div className="client-vendor-home">
+      {categories && categories.length > 0 ? (
+        <div className="carousel-container">
+          <div className="add-button-container">
+            <button
+              className="add-button"
+              onClick={() => {
+                navigate(`/vendors/${vendorId}/categories`);
+              }}
+            >
+              {t("showAllCategories")}
+            </button>
+          </div>
+          <Carousel
+            data={categories}
+            autoplay={false}
+            extraLarge={3.25}
+            midLarge={3}
+            large={2.5}
+            medium={2}
+            largeSmall={1.75}
+            midSmall={1.5}
+            extraSmall={1}
+            render={(props) => {
+              return <CategoryCard category={props} vendorId={vendorId} />;
+            }}
+          />
+        </div>
+      ) : null}
       {branches.length > 0 ? (
         <div className="carousel-container">
           <div className="add-button-container">
@@ -115,9 +146,7 @@ export default function Vendor() {
             }}
           /> */}
         </div>
-      ) : (
-        <NoData />
-      )}
+      ) : null}
     </div>
   );
 }
