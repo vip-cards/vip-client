@@ -11,16 +11,17 @@ import Offers from "../../pages/Offers/Offers";
 import HotDeals from "../../pages/HotDeals/HotDeals";
 import Categories from "../../pages/Categories/Categories";
 import Vendor from "../../pages/Vendor/Vendor";
-import WishList from "../../pages/WishList/WishList";
+import Wishlist from "../../pages/Wishlist/Wishlist";
 
 import AccountDetails from "../../views/AccountDetails/AccountDetails";
 import AccountOrders from "../../views/AccountOrders/AccountOrders";
-import AccountWishList from "../../views/AccountWishList/AccountWishList";
+import AccountWishlist from "../../views/AccountWishlist/AccountWishlist";
 
 import Footer from "../../components/Footer/Footer";
 import NavBar from "../../components/NavBar/NavBar";
 
 import "./ClientLayout.scss";
+import VendorCategory from "../../pages/VendorCategory/VendorCategory";
 
 export default function ClientLayout() {
   return (
@@ -44,14 +45,21 @@ export default function ClientLayout() {
           <Route path="/vendors/:vendorId/:branchId" element={<Branch />}>
             <Route path="offers" element={<BranchProducts />} />
             <Route path="hot-deals" element={<BranchProducts />} />
+            <Route path="" element={<Navigate to="offers" />} />
+          </Route>
+          <Route
+            path="/vendors/:vendorId/category/:categoryId"
+            element={<VendorCategory />}
+          >
           </Route>
 
-          <Route path="/wish-list" element={<WishList />} />
+          <Route path="/wishlist" element={<Wishlist />} />
 
           <Route path="/account" element={<AccountLayout />}>
             <Route index path="details" element={<AccountDetails />} />
             <Route path="orders" element={<AccountOrders />} />
-            <Route path="wish-list" element={<AccountWishList />} />
+            <Route path="wishlist" element={<AccountWishlist />} />
+            <Route path="" element={<Navigate to="details" />} />
           </Route>
         </Routes>
       </div>

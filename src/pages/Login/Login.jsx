@@ -127,7 +127,7 @@ export default function Login() {
               return (
                 <div key={index}>
                   <div className="err" key={index}>
-                    {t("'email' must be a valid email")}{" "}
+                    {t("'email' must be a valid email")}
                     <i className="fa-solid fa-circle-xmark"></i>
                   </div>
                 </div>
@@ -149,22 +149,24 @@ export default function Login() {
           })}
           <MainButton text={t("login")} loading={loading} type="submit" />
           <MainButton
-            text="Google"
+            type="button"
+            text={t("google")}
             loading={loading}
             className="google-button"
             onClick={() => socialLogin("google")}
           />
           <MainButton
-            text="Facebook"
+            type="button"
+            text={t("facebook")}
             loading={loading}
             className="facebook-button"
             onClick={() => socialLogin("facebook")}
           />
           <p className="login-footer">
-            <span>Not Register?</span>
+            <span>{t('notRegistered')}</span>
             &nbsp;
             <Link to="/register" className="link-item">
-              Create An Account
+              {t('createAccount')}
             </Link>
           </p>
         </form>

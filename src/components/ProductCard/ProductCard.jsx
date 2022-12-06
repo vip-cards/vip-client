@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./ProductCard.scss";
 
 import i18n from "../../locales/i18n";
@@ -6,11 +6,9 @@ import { useNavigate } from "react-router";
 import { t } from "i18next";
 
 import { useDispatch, useSelector } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   addWishProduct,
-  fetchWishList,
   removeWishProduct,
 } from "../../store/wishlist-slice";
 import WishIcon from "../WishIcon/WishIcon";
@@ -20,17 +18,17 @@ import { useState } from "react";
 export default function ProductCard({ product }) {
   const lang = i18n.language;
   const auth = useSelector((state) => state.auth);
-  const wishListIds = useSelector((state) => state.wishList.ids);
+  const wishlistIds = useSelector((state) => state.wishlist.ids);
   const [disabled, setDisabled] = useState(false);
   const userRole = auth.userRole;
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
-  function toggleWishList() {
+  function toggleWishlist() {
     setDisabled(true);
 
-    if (wishListIds.includes(product._id)) {
+    if (wishlistIds.includes(product._id)) {
       dispatch(removeWishProduct(product._id)).then(() => {
         setDisabled(false);
       });
@@ -53,9 +51,9 @@ export default function ProductCard({ product }) {
       </div>
       <div className="product-info-container">
         <WishIcon
-          wished={wishListIds.includes(product._id)}
+          wished={wishlistIds.includes(product._id)}
           disabled={disabled}
-          onClick={toggleWishList}
+          onClick={toggleWishlist}
         />
 
         <p className="product-title">{product.name[lang]} </p>

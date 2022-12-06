@@ -5,6 +5,13 @@
   height: 30px !important;
   border-radius: 50%;
   box-shadow: 0 0 10px #f89936;
+  transition: all ease-out 150ms;
+  &:hover {
+    transform: scale(1.1);
+    &:active {
+      transform: scale(0.9);
+    }
+  }
 }
 .swiper-button-prev:after,
 .swiper-button-next:after {

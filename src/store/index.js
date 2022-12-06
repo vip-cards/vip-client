@@ -5,7 +5,7 @@ import wishlistReducer from "./wishlist-slice";
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    wishList: wishlistReducer,
+    wishlist: wishlistReducer,
   },
 });
 

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Navigate, Route, Routes } from "react-router";
 import ProtectedRoute from "./routes/ProtectedRoute/ProtectedRoute";
-import { fetchWishList } from "./store/wishlist-slice";
+import { fetchWishlist } from "./store/wishlist-slice";
 import Register from "./pages/Register/Register";
 import RegisterHome from "./views/RegisterHome/RegisterHome";
 import RegisterForm from "./views/RegisterForm/RegisterForm";
@@ -24,7 +24,7 @@ function App() {
   }, [lang]);
   //get all
   useEffect(() => {
-    dispatch(fetchWishList());
+    dispatch(fetchWishlist());
   }, [auth, dispatch]);
 
   console.log(auth);

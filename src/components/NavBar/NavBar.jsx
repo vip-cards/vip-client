@@ -116,12 +116,12 @@ export default function NavBar() {
         </li>
         <li className="nav-item">
           <NavLink
-            to="/wish-list"
+            to="/wishlist"
             className={(navData) =>
               navData.isActive ? "active nav-link" : "nav-link"
             }
           >
-            {t("wishList")}
+            {t("wishlist")}
           </NavLink>
         </li>
         <li className="nav-item">

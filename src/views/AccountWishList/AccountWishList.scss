@@ -5,10 +5,10 @@
     margin: 0;
 
     grid-template-columns: repeat(3, 1fr);
-    @media (max-width: $break-xl) {
+    @media (max-width: 1540px) {
       grid-template-columns: repeat(2, 1fr);
     }
-    @media (max-width: $break-lg) {
+    @media (max-width: 1020px) {
       grid-template-columns: repeat(1, 1fr);
     }
   }

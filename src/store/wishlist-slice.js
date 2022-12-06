@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { t } from "i18next";
 import toastPopup from "../helpers/toastPopup";
 import clientServices from "../services/clientServices";
 
 /* get */
-export const fetchWishList = createAsyncThunk(
-  "wishList/all",
+export const fetchWishlist = createAsyncThunk(
+  "wishlist/all",
   async (_, thunkAPI) => {
     const { data } = await clientServices.listAllWishProducts();
     return data.record.items;
@@ -13,11 +14,11 @@ export const fetchWishList = createAsyncThunk(
 
 /* add */
 export const addWishProduct = createAsyncThunk(
-  "wishList/add",
+  "wishlist/add",
   async (productId, thunkAPI) => {
     const { data } = await clientServices.addWishProduct(productId);
     if (data.record) {
-      toastPopup.success("Product Added to wish list");
+      toastPopup.success(t("addedToWishlist"));
     }
     return data.record.record.items;
   }
@@ -25,24 +26,24 @@ export const addWishProduct = createAsyncThunk(
 
 /* remove */
 export const removeWishProduct = createAsyncThunk(
-  "wishList/remove",
+  "wishlist/remove",
   async (productId, thunkAPI) => {
     const { data } = await clientServices.removeWishProduct(productId);
     console.log(data.record);
-    toastPopup.success("Product removed to wish list");
-    thunkAPI.dispatch(fetchWishList());
+    toastPopup.success(t("removedFromWishlist"));
+    thunkAPI.dispatch(fetchWishlist());
     return data.record.items;
   }
 );
 
 const initialState = { products: [], ids: [] };
 
-const wishListSlice = createSlice({
-  name: "wishList",
+const wishlistSlice = createSlice({
+  name: "wishlist",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchWishList.fulfilled, (state, { payload }) => {
+    builder.addCase(fetchWishlist.fulfilled, (state, { payload }) => {
       if (!payload) return state;
       state.products = payload;
       state.ids = payload.map((product) => product && product?._id);
@@ -60,4 +61,4 @@ const wishListSlice = createSlice({
   },
 });
 
-export default wishListSlice.reducer;
+export default wishlistSlice.reducer;

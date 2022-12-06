@@ -38,6 +38,10 @@
       font-size: 18px;
       background-color: #00000099;
       color: var(--secondaryColor);
+      transition: opacity ease-out 250ms;
+      &:hover {
+        opacity: 0.5;
+      }
     }
   }
 }

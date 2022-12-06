@@ -16,8 +16,13 @@ $break-md: 660px;
     grid-area: side-bar;
     width: 13rem;
     border-right: 1px solid darken($color: $mainColor, $amount: 25);
+
     @media (max-width: $break-md) {
       width: 4rem;
+    }
+    [dir="rtl"] & {
+      border-right: unset;
+      border-left: 1px solid darken($color: $mainColor, $amount: 25);
     }
 
     /*---*/
@@ -27,8 +32,14 @@ $break-md: 660px;
       display: flex;
       flex-direction: column;
       padding-right: 1rem;
+
       padding-top: 1rem;
       row-gap: 0.5rem;
+
+      [dir="rtl"] & {
+        padding-right: unset;
+        padding-left: 1rem;
+      }
       .nav-item {
         width: 100%;
         display: flex;

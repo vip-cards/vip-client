@@ -3,7 +3,6 @@ import {
   getAuth,
   GoogleAuthProvider,
   FacebookAuthProvider,
-  TwitterAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
 import { t } from "i18next";
@@ -41,6 +40,12 @@ const socialLoginProviders = {
 };
 
 export const useSocialLogin = () => {
+  if (localStorage.getItem("i18nextLng") === "en") {
+    auth.languageCode = "ar";
+  } else {
+    auth.languageCode = "en";
+  }
+
   const navigate = useNavigate();
   return (platform) => {
     if (!Object.keys(socialLoginProviders).includes(platform)) {

@@ -61,8 +61,8 @@ export default function AccountDetails() {
       name: "gender",
       type: "list",
       list: [
-        { _id: 0, gender: { en: "male" } },
-        { _id: 1, gender: { en: "female" } },
+        { _id: 0, gender: { en: "male", ar: "ذكر" } },
+        { _id: 1, gender: { en: "female", ar: "أنثى" } },
       ],
       identifier: "gender",
       required: true,
@@ -81,10 +81,11 @@ export default function AccountDetails() {
      */
     e.preventDefault();
     const newDataObj = getUpdatedOnly(userInfo, oldUserInfo);
+    console.log(userData);
     const mappedData = {
       name: {
-        en: newDataObj.name_en,
-        ar: newDataObj.name_ar,
+        en: userInfo.name_en,
+        ar: userInfo.name_ar,
       },
       email: newDataObj.email,
       phone: newDataObj.phone,
@@ -100,7 +101,7 @@ export default function AccountDetails() {
       //   ar: newDataObj.description_ar,
       // },
     };
-    console.log(mappedData);
+
     clientServices
       .updateInfo(mappedData)
       .then(({ data }) => {

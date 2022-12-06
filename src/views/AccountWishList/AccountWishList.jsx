@@ -2,22 +2,22 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import "./AccountWishList.scss";
+import "./AccountWishlist.scss";
 
-export default function AccountWishList() {
-  const wishList = useSelector((state) => state.wishList.products);
+export default function AccountWishlist() {
+  const wishlist = useSelector((state) => state.wishlist.products);
   const [list, setList] = useState([]);
 
-  console.log(wishList);
+  console.log(wishlist);
   useEffect(() => {
-    const cleanedList = wishList
+    const cleanedList = wishlist
       .filter((product) => product)
       .filter(
         (value, index, arr) =>
           index === arr.findIndex((item) => item._id === value._id)
       );
     setList(cleanedList);
-  }, [wishList]);
+  }, [wishlist]);
   if (list.length < 1) {
     return <Link to="/">Shop for Products</Link>;
   }

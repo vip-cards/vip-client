@@ -1,5 +1,5 @@
 .edit-account-container {
-  margin: 50px 15%;
+  margin: 50px 5%;
   padding: 40px;
 
   .add-branch-form {
@@ -45,7 +45,8 @@
         .uploaded-img {
           width: 250px;
           height: 250px;
-          object-fit: contain;
+          object-fit: cover;
+          object-position: center;
           border-radius: 7px;
         }
         .main-input-image {
