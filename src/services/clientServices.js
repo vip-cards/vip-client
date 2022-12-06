@@ -49,9 +49,15 @@ const clientServices = {
     const response = await Axios.get("/client/order/get?client=" + userId);
     return response;
   },
-  
+
   listAllVendorBranches: async (vendorId) => {
     const response = await Axios.get(`/client/branch/list/?vendor=${vendorId}`);
+    return response;
+  },
+  listAllVendorCategories: async (vendorId) => {
+    const response = vendorId
+      ? await Axios.get(`/client/category/list/?vendor=${vendorId}`)
+      : await Axios.get(`/client/category/list?type=vendor`);
     return response;
   },
 
@@ -89,10 +95,7 @@ const clientServices = {
     const response = await Axios.get(`/client/category/list`);
     return response;
   },
-  listAllVendorCategories: async () => {
-    const response = await Axios.get(`/client/category/list?type=vendor`);
-    return response;
-  },
+
   /*--- WISHLIST ---*/
   listAllWishProducts: async () => {
     const response = await Axios.get(`/client/wishlist/get?client=${userId}`);
@@ -108,6 +111,32 @@ const clientServices = {
     const response = await Axios.delete(
       `/client/wishlist/removeItem?client=${userId}&product=${productId}`
     );
+    return response;
+  },
+
+  /*--- SEARCH ---*/
+  vendorQuery: async (params) => {
+    const response = await Axios.get(`/client/vendor/list`, {
+      params,
+    });
+    return response;
+  },
+  categoryQuery: async (params) => {
+    const response = await Axios.get(`/client/category/list`, {
+      params,
+    });
+    return response;
+  },
+  searchOffersDeals: async (params) => {
+    const response = await Axios.get(`/client/product/list`, {
+      params,
+    });
+    return response;
+  },
+  searchProducts: async (params) => {
+    const response = await Axios.get(`/client/product/list`, {
+      params,
+    });
     return response;
   },
 };

@@ -4,41 +4,45 @@ import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import NoData from "../../components/NoData/NoData";
 import SearchArea from "../../components/SearchArea/SearchArea";
 import VendorCard from "../../components/VendorCard/VendorCard";
+import useSearch from "../../helpers/search";
 import clientServices from "../../services/clientServices";
 import "./Vendors.scss";
+
 export default function Vendors() {
+  const { categoryId } = useParams();
   const [loading, setLoading] = useState(false);
   const [vendors, setVendors] = useState([]);
-  const params = useParams();
-  const categoryId = params.categoryId;
+  const { renderedList, setQuery } = useSearch(
+    clientServices.vendorQuery,
+    vendors
+  );
 
   async function getVendorsHandler() {
     setLoading(true);
     try {
-      let { data } = categoryId
+      const { data } = categoryId
         ? await clientServices.listAllVendorsInCategory(categoryId)
         : await clientServices.listAllVendors();
       setVendors(data.records);
-      console.log(data);
       setLoading(false);
     } catch (e) {
       setLoading(false);
-      console.log(e);
     }
   }
 
   useEffect(() => {
     getVendorsHandler();
   }, []);
+
   return (
     <div className="vendors-page">
-      <SearchArea />
+      <SearchArea onChange={(e) => setQuery(e.target.value)} />
       {loading ? (
         <LoadingSpinner />
-      ) : vendors.length > 0 ? (
+      ) : renderedList.length > 0 ? (
         <div className="vendors-cards-container">
-          {vendors.length > 0
-            ? vendors.map((vendor) => {
+          {renderedList.length > 0
+            ? renderedList.map((vendor) => {
                 return <VendorCard key={vendor._id} vendor={vendor} />;
               })
             : null}

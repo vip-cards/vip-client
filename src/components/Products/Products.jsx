@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
+import useSearch from "../../helpers/search";
 import clientServices from "../../services/clientServices";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import NoData from "../NoData/NoData";
 import ProductCard from "../ProductCard/ProductCard";
+import SearchArea from "../SearchArea/SearchArea";
 import "./Products.scss";
 
 export default function Products() {
   const location = useLocation();
-  const vendorId = useSelector((state) => state.auth.vendorId);
   const [offers, setOffers] = useState([]);
   const [Loading, setLoading] = useState(false);
-
+  const { renderedList, setQuery, setParams } = useSearch(
+    clientServices.searchOffersDeals,
+    offers
+  );
   function isHotDeal() {
     if (location.pathname.includes("hot-deals")) {
+      setParams({ isHotDeal: true });
       return true;
     } else {
+      setParams({ isHotDeal: false });
       return false;
     }
   }
@@ -40,12 +45,13 @@ export default function Products() {
 
   return (
     <>
+      <SearchArea onChange={(e) => setQuery(e.target.value)} />
       {Loading ? (
         <LoadingSpinner />
-      ) : offers.length > 0 ? (
+      ) : renderedList.length > 0 ? (
         <div className="products-container">
-          {offers?.length > 0 &&
-            offers.map((offer) => {
+          {renderedList?.length > 0 &&
+            renderedList.map((offer) => {
               return <ProductCard key={offer._id} product={offer} />;
             })}
         </div>
