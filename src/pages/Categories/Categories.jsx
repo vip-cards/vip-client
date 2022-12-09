@@ -9,10 +9,12 @@ import "./Categories.scss";
 export default function Categories() {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
-  const { renderedList, setQuery } = useSearch(
-    clientServices.categoryQuery,
-    categories
-  );
+
+  const {
+    loading: searching,
+    renderedList,
+    setQuery,
+  } = useSearch(clientServices.categoryQuery, categories);
   async function getCategoriesHandler() {
     setLoading(true);
     try {
@@ -31,7 +33,10 @@ export default function Categories() {
   }, []);
   return (
     <div className="categories-page">
-      <SearchArea onChange={(e) => setQuery(e.target.value)} />
+      <SearchArea
+        onChange={(e) => setQuery(e.target.value)}
+        loading={searching}
+      />
       {loading ? (
         <LoadingSpinner />
       ) : renderedList.length > 0 ? (

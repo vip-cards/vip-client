@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useCallback } from "react";
 import { useParams } from "react-router";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import NoData from "../../components/NoData/NoData";
@@ -12,31 +13,38 @@ export default function Vendors() {
   const { categoryId } = useParams();
   const [loading, setLoading] = useState(false);
   const [vendors, setVendors] = useState([]);
-  const { renderedList, setQuery } = useSearch(
-    clientServices.vendorQuery,
-    vendors
-  );
+  const {
+    loading: searching,
+    renderedList,
+    setQuery,
+  } = useSearch(clientServices.vendorQuery, vendors);
 
-  async function getVendorsHandler() {
-    setLoading(true);
-    try {
-      const { data } = categoryId
-        ? await clientServices.listAllVendorsInCategory(categoryId)
-        : await clientServices.listAllVendors();
-      setVendors(data.records);
-      setLoading(false);
-    } catch (e) {
-      setLoading(false);
-    }
-  }
+  const getVendorsHandler = useCallback(
+    async function () {
+      setLoading(true);
+      try {
+        const { data } = categoryId
+          ? await clientServices.listAllVendorsInCategory(categoryId)
+          : await clientServices.listAllVendors();
+        setVendors(data.records);
+        setLoading(false);
+      } catch (e) {
+        setLoading(false);
+      }
+    },
+    [categoryId]
+  );
 
   useEffect(() => {
     getVendorsHandler();
-  }, []);
+  }, [getVendorsHandler]);
 
   return (
     <div className="vendors-page">
-      <SearchArea onChange={(e) => setQuery(e.target.value)} />
+      <SearchArea
+        onChange={(e) => setQuery(e.target.value)}
+        loading={searching}
+      />
       {loading ? (
         <LoadingSpinner />
       ) : renderedList.length > 0 ? (
