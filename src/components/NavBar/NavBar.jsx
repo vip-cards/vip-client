@@ -9,7 +9,7 @@ import "./NavBar.scss";
 import i18n from "../../locales/i18n";
 import { switchLang } from "../../helpers/lang";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth-slice";
 import SideNAv from "./SideNAv/SideNAv";
 
@@ -18,11 +18,27 @@ export default function NavBar() {
   const [viweAccountMenu, setViweAccountMenu] = useState(false);
   const [showSideMenu, setShowSideMenu] = useState(false);
 
-  let auth = useSelector((state) => state.auth);
-
   const dispatch = useDispatch();
 
   const lang = i18n.language;
+
+  const navItems = [
+    { link: "/home", title: "home" },
+    { link: "/categories", title: "categories" },
+    { link: "/vendors", title: "vendors" },
+    { link: "/hot-deals", title: "hotDeals" },
+    { link: "/offers", title: "offers" },
+    { link: "/jobs", title: "jobs" },
+    { link: "/wishlist", title: "wishlist" },
+    { link: "/account", title: "myAccount" },
+    {
+      link: "/logout",
+      title: "logout",
+      onClick: (e) => {
+        logoutHandler(e);
+      },
+    },
+  ];
 
   function toggleSideMenu() {
     setShowSideMenu((prevState) => !prevState);
@@ -53,100 +69,19 @@ export default function NavBar() {
         }}
       />
       <ul className="nav-menu">
-        <li className="nav-item">
-          <NavLink
-            to="/home"
-            className={(navData) =>
-              navData.isActive ? "active nav-link" : "nav-link"
-            }
-          >
-            {t("home")}
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink
-            to="/categories"
-            className={(navData) =>
-              navData.isActive ? "active nav-link" : "nav-link"
-            }
-          >
-            {t("categories")}
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink
-            to="/vendors"
-            className={(navData) =>
-              navData.isActive ? "active nav-link" : "nav-link"
-            }
-          >
-            {t("vendors")}
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          {" "}
-          <NavLink
-            to="/hot-deals"
-            className={(navData) =>
-              navData.isActive ? "active nav-link" : "nav-link"
-            }
-          >
-            {t("hotDeals")}
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink
-            to="/offers"
-            className={(navData) =>
-              navData.isActive ? "active nav-link" : "nav-link"
-            }
-          >
-            {t("offers")}
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink
-            to="/jobs"
-            className={(navData) =>
-              navData.isActive ? "active nav-link" : "nav-link"
-            }
-          >
-            {t("jobs")}
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink
-            to="/wishlist"
-            className={(navData) =>
-              navData.isActive ? "active nav-link" : "nav-link"
-            }
-          >
-            {t("wishlist")}
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink
-            to="/account"
-            className={(navData) =>
-              navData.isActive ? "active nav-link" : "nav-link"
-            }
-          >
-            {t("myAccount")}
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink
-            to="/logout"
-            onClick={(e) => {
-              logoutHandler(e);
-            }}
-            className={(navData) =>
-              navData.isActive ? "active nav-link" : "nav-link"
-            }
-          >
-            {t("logout")}
-          </NavLink>
-        </li>
+        {navItems.map((item, idx) => (
+          <li key={idx} className="nav-item">
+            <NavLink
+              to={item.link}
+              className={(navData) =>
+                navData.isActive ? "active nav-link" : "nav-link"
+              }
+              onClick={item.onClick}
+            >
+              {t(item.title)}
+            </NavLink>
+          </li>
+        ))}
       </ul>
 
       <div className="notifictation-language">
@@ -167,7 +102,7 @@ export default function NavBar() {
         <Notification className="notification-icon" />
       </div>
       <Notification className="small-notification-icon" />
-      {showSideMenu && <SideNAv />}
+      {showSideMenu && <SideNAv onToggle={toggleSideMenu} items={navItems} />}
     </nav>
   );
 }
