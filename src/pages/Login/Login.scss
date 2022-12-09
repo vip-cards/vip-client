@@ -34,7 +34,7 @@
       background-color: var(--secondaryColor);
       display: flex;
       flex-direction: column;
-      justify-content: start;
+      justify-content: flex-start;
       margin-block: auto;
       gap: 30px;
       align-items: center;
@@ -84,6 +84,10 @@
       position: absolute;
       top: 10%;
       right: 8%;
+      [dir="rtl"] & {
+        right: unset;
+        left: 6%;
+      }
       button {
         font-family: "Noto Sans Arabic", sans-serif;
         font-size: 16px;

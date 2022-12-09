@@ -7,13 +7,10 @@ import MainInput from "../../components/MainInput/MainInput";
 import { registerSchema } from "../../helpers/schemas";
 import toastPopup from "../../helpers/toastPopup";
 import clientServices from "../../services/clientServices";
-import { useDispatch } from "react-redux";
-import { authActions } from "../../store/auth-slice";
 import { useNavigate } from "react-router";
 
 export default function RegisterForm() {
-  const dispatch = useDispatch();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [errorList, setErrorList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");

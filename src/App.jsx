@@ -11,6 +11,7 @@ import { fetchWishlist } from "./store/wishlist-slice";
 import Register from "./pages/Register/Register";
 import RegisterHome from "./views/RegisterHome/RegisterHome";
 import RegisterForm from "./views/RegisterForm/RegisterForm";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
 
 function App() {
   let lang = i18n.language;
@@ -45,6 +46,10 @@ function App() {
           <Route index element={<RegisterHome />} />
           <Route path="create" element={<RegisterForm />} />
         </Route>
+        <Route
+          path="/reset-password"
+          element={auth.token ? <Navigate to="/" /> : <ResetPassword />}
+        />
       </Routes>
     </div>
   );

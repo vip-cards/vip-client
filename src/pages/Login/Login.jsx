@@ -60,8 +60,10 @@ export default function Login() {
       try {
         const { data } = await clientServices.login(user);
         console.log(data);
+        console.log(data.token);
         if (data.success && data.code === 200) {
           setLoading(false);
+
           toastPopup.success(t("Success"));
           const tokenDecoded = jwt_decode(data.token);
 
@@ -163,10 +165,10 @@ export default function Login() {
             onClick={() => socialLogin("facebook")}
           />
           <p className="login-footer">
-            <span>{t('notRegistered')}</span>
+            <span>{t("notRegistered")}</span>
             &nbsp;
             <Link to="/register" className="link-item">
-              {t('createAccount')}
+              {t("CreateAccount")}
             </Link>
           </p>
         </form>

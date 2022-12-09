@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import MainButton from "../../components/MainButton/MainButton";
@@ -6,7 +5,7 @@ import { useSocialLogin } from "../../services/firebaseServices";
 
 export default function RegisterHome() {
   const socialLogin = useSocialLogin();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <>
@@ -16,12 +15,12 @@ export default function RegisterHome() {
         onClick={() => navigate("create")}
       />
       <MainButton
-        text="Google"
+        text={t("google")}
         className="google-button"
         onClick={() => socialLogin("google")}
       />
       <MainButton
-        text="Facebook"
+        text={t("facebook")}
         className="facebook-button"
         onClick={() => socialLogin("facebook")}
       />
