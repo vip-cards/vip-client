@@ -27,6 +27,7 @@ export default function ClientLayout() {
   return (
     <div className="base-layout">
       <NavBar />
+      <div className="base-nav-item"></div>
       <div className="page-content">
         <Routes>
           <Route path="/" element={<Navigate replace to="/home" />} />
@@ -50,8 +51,7 @@ export default function ClientLayout() {
           <Route
             path="/vendors/:vendorId/category/:categoryId"
             element={<VendorCategory />}
-          >
-          </Route>
+          ></Route>
 
           <Route path="/wishlist" element={<Wishlist />} />
 
