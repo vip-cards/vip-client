@@ -1,7 +1,7 @@
 .wish-icon {
   border: unset;
   background-color: unset;
-  color: var(--mainColor);
+  // color: var(--mainColor);
   cursor: pointer;
   width: 1.2rem;
   height: 1.2rem;
@@ -15,4 +15,5 @@
   &:disabled {
     opacity: 0.8;
   }
+ 
 }

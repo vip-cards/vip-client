@@ -13,7 +13,11 @@ export default function WishIcon({ wished, ...props }) {
     );
 
   return (
-    <button className="wish-icon" {...props}>
+    <button
+      className="wish-icon"
+      {...props}
+    
+    >
       <Icon />
     </button>
   );
