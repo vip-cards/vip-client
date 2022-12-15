@@ -22,8 +22,21 @@ import NavBar from "../../components/NavBar/NavBar";
 
 import "./ClientLayout.scss";
 import VendorCategory from "../../pages/VendorCategory/VendorCategory";
+import CartPage from "../../pages/CartPage/CartPage";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getCurrentCartThunk } from "../../store/cart-slice";
 
 export default function ClientLayout() {
+  const dispatch = useDispatch()
+  useEffect(() => {
+   dispatch(getCurrentCartThunk())
+  
+    return () => {
+      
+    }
+  }, [])
+  
   return (
     <div className="base-layout">
       <NavBar />
@@ -61,6 +74,7 @@ export default function ClientLayout() {
             <Route path="wishlist" element={<AccountWishlist />} />
             <Route path="" element={<Navigate to="details" />} />
           </Route>
+          <Route path="/cart" element={<CartPage />} />
         </Routes>
       </div>
       <Footer />

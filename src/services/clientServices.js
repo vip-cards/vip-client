@@ -139,6 +139,18 @@ const clientServices = {
     });
     return response;
   },
+
+  /*--- CART ---*/
+  getCart: async () => {
+    const response = await Axios.get(`/client/cart/get?client=${userId}`);
+    return response;
+  },
+  addCartItem: async ({ branchId, productId, quantity = 1 }) => {
+    const response = await Axios.post(
+      `/client/cart/item?client=${userId}&product=${productId}&branch=${branchId}&quantity=${quantity}`
+    );
+    return response;
+  },
 };
 
 export default clientServices;
