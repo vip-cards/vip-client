@@ -22,7 +22,12 @@ export default function ProductCard({ product }) {
   useEffect(() => {
     const bodyElement = document.body;
     const removePopUp = (e) => {
-      if (componentRef.current && !componentRef.current.contains(e.target)) {
+      console.log(e.target);
+      if (
+        componentRef.current &&
+        !componentRef.current.contains(e.target) &&
+        !e.target.matches(".branch-item")
+      ) {
         popupRef.current && popupRef.current.classList.add("close");
       } else {
         return;

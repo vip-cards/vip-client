@@ -23,18 +23,21 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
   const cartBranch = useSelector((state) => state.cart.branch);
   const wishlistIds = useSelector((state) => state.wishlist.ids);
 
-  function cofirmAddToCartStateHandler(branchId) {
+  async function cofirmAddToCartStateHandler(branchId) {
     if (branchId !== cartBranch._id) {
       setError(true);
       return;
     }
-    dispatch(
+    setPopupLoading(true);
+    const result = await dispatch(
       addToCartThunk({
         _id: product._id,
         branchId,
         quantity: addToCartState.count,
       })
-    );
+    ).unwrap();
+    setPopupLoading(false);
+    setActive(false);
   }
 
   const setError = (check) => {

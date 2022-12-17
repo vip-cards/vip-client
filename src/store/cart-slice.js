@@ -1,4 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  isPending,
+  isRejected,
+} from "@reduxjs/toolkit";
+import toastPopup from "../helpers/toastPopup";
 import clientServices from "../services/clientServices";
 
 /**
@@ -26,6 +32,18 @@ export const addToCartThunk = createAsyncThunk(
     };
 
     const { data } = await clientServices.addCartItem(product);
+    console.log(data);
+    return data.record;
+  }
+);
+export const removeFromCartThunk = createAsyncThunk(
+  "cart/remove",
+  async (payload, thunkAPI) => {
+    const product = {
+      productId: payload._id,
+      quantity: payload.quantity,
+    };
+    const { data } = await clientServices.removeCartItem(product);
     console.log(data);
     return data.record;
   }
@@ -60,14 +78,10 @@ const cartSlice = createSlice({
       state.branch = payload.branch;
       state.price = { original: payload.originalTotal, current: payload.total };
       state.points = payload.points;
-      return state;
+
+      state.loading = false;
     });
 
-    builder.addCase(addToCartThunk.pending, (state, { payload }) => {
-      state.loading = true;
-      return state;
-    });
- 
     builder.addCase(addToCartThunk.fulfilled, (state, { payload }) => {
       console.log(payload);
       state._id = payload._id;
@@ -76,7 +90,35 @@ const cartSlice = createSlice({
       state.branch._id = payload.branch;
       state.price = { original: payload.originalTotal, current: payload.total };
       state.points = payload.points;
+      toastPopup.success("Product added to cart!");
+      state.loading = false;
     });
+
+    builder.addCase(removeFromCartThunk.fulfilled, (state, { payload }) => {
+      console.log(payload);
+      state._id = payload._id;
+      state.vendor = payload.vendor;
+      state.products = payload.items;
+      state.branch._id = payload.branch;
+      state.price = { original: payload.originalTotal, current: payload.total };
+      state.points = payload.points;
+
+      state.loading = false;
+    });
+
+    builder.addMatcher(
+      isPending(addToCartThunk, removeFromCartThunk),
+      (state, { payload }) => {
+        state.loading = true;
+      }
+    );
+    builder.addMatcher(
+      isRejected(addToCartThunk, removeFromCartThunk),
+      (state, { payload }) => {
+        state.loading = false;
+        toastPopup.error("something went wrong, please try again later!");
+      }
+    );
   },
 });
 

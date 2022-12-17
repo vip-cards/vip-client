@@ -151,6 +151,12 @@ const clientServices = {
     );
     return response;
   },
+  removeCartItem: async ({ productId, quantity }) => {
+    const response = await Axios.delete(
+      `/client/cart/item?client=${userId}&product=${productId}&quantity=${quantity}`
+    );
+    return response;
+  },
 };
 
 export default clientServices;

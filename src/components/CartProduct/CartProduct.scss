@@ -95,5 +95,19 @@ $media-md: 800px;
   }
   .cart-product-actions {
     grid-area: actions;
+    span {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      color: lighten($color: $mainColor, $amount: 10);
+      user-select: none;
+      cursor: pointer;
+      &:hover {
+        color: $mainColor;
+      }
+      &[disabled] {
+        opacity: 0.8;
+        pointer-events: none;
+      }
+    }
   }
 }
