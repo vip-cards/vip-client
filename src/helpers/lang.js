@@ -1,10 +1,10 @@
-export function editTitle(lang) {
-  if (lang === "ar") {
-    document.title = "VIP";
-  } else {
-    document.title = "VIP";
-  }
-}
+// export function editTitle(lang) {
+//   if (lang === "ar") {
+//     document.title = "VIP";
+//   } else {
+//     document.title = "VIP";
+//   }
+// }
 
 export function checkFixLang(lang) {
   if (lang === "en") {
@@ -32,7 +32,7 @@ export function switchLang(lang) {
   } else document.getElementsByTagName("body")[0].classList.remove("ar-lang");
   document.getElementsByTagName("html")[0].setAttribute("lang", lang);
 
-  editTitle(lang);
+  // editTitle(lang);
 
   window.location.reload();
 }

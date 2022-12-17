@@ -1,7 +1,6 @@
-import "./App.scss";
 import Login from "./pages/Login/Login";
 import i18n from "./locales/i18n";
-import { checkFixLang, editTitle } from "./helpers/lang";
+import { checkFixLang } from "./helpers/lang";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -12,6 +11,7 @@ import Register from "./pages/Register/Register";
 import RegisterHome from "./views/RegisterHome/RegisterHome";
 import RegisterForm from "./views/RegisterForm/RegisterForm";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import { Helmet } from "react-helmet-async";
 
 function App() {
   let lang = i18n.language;
@@ -21,7 +21,7 @@ function App() {
 
   useEffect(() => {
     checkFixLang(lang);
-    editTitle(lang);
+    // editTitle(lang);
   }, [lang]);
   //get all
   useEffect(() => {
@@ -32,6 +32,9 @@ function App() {
 
   return (
     <div className="App">
+      <Helmet>
+        <title>VIP</title>
+      </Helmet>
       <Routes>
         <Route path="/*" element={<ProtectedRoute />} />
 
