@@ -1,6 +1,4 @@
-import { t } from "i18next";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router";
 import clientServices from "../../services/clientServices";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
@@ -8,7 +6,6 @@ import ProductCard from "../ProductCard/ProductCard";
 import "./BranchProducts.scss";
 export default function BranchProducts() {
   const params = useParams();
-  console.log("braaaaaaaanchhhhh products");
   const navigate = useNavigate();
   const location = useLocation();
 

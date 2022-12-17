@@ -1,0 +1,99 @@
+@import "../../styles/colors";
+@import "../../styles/dimensions";
+@import "../../styles/globals";
+$image-size: 120px;
+$media-md: 800px;
+.cart-product-container {
+  display: grid;
+  position: relative;
+  $py: 0.5rem;
+  grid:
+    "image title quantity total" auto
+    "image description . ." auto
+    "image actions actions actions" auto
+    "image . . ." #{$py} / #{$image-size} 1fr auto 4rem;
+
+  column-gap: 8px;
+
+  @media screen and (max-width: $media-md) {
+    grid:
+      "image image image" auto
+      "title title title" auto
+      "description description description" auto
+      "actions quantity total" auto;
+  }
+
+  .cart-product-img-container {
+    grid-area: image;
+    width: 100%;
+    aspect-ratio: 1;
+    outline: 1px solid red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: $image-size;
+    overflow: hidden;
+    border-radius: 1rem;
+
+    .cart-product-img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+  .cart-product-title {
+    grid-area: title;
+    text-transform: capitalize;
+    font-size: 1.1rem;
+    margin-top: $py;
+    width: 102.5%;
+  }
+  .cart-product-description {
+    grid-area: description;
+    font-size: 0.9rem;
+    padding-top: 0.3rem;
+  }
+  .cart-product-qty {
+    margin-top: $py;
+    grid-area: quantity;
+    height: min-content;
+    width: max-content;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    .qty-value {
+      width: 3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .qty-action {
+      @include product-icon;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 3px;
+      border-radius: 10px;
+
+      svg {
+        width: $icon-size-xs;
+        height: $icon-size-xs;
+      }
+      &:active {
+        * {
+          transform: scale(0.9);
+        }
+      }
+    }
+  }
+  .cart-product-total {
+    margin-top: $py;
+    grid-area: total;
+    color: $secondary;
+    font-weight: bolder;
+  }
+  .cart-product-actions {
+    grid-area: actions;
+  }
+}

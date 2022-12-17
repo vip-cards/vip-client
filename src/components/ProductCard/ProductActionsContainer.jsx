@@ -1,9 +1,16 @@
 import { useState, forwardRef } from "react";
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleNotch,
+  faHeart,
+  faMinus,
+  faPlus,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import i18n from "../../locales/i18n";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCartThunk } from "../../store/cart-slice";
+import { addWishProduct } from "../../store/wishlist-slice";
 
 export const ProductActionsContainer = forwardRef(({ product }, ref) => {
   const lang = i18n.language;
@@ -11,9 +18,21 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
   const [addToCartState, setAddToCartState] = useState({
     active: false,
     count: 1,
+    error: false,
   });
 
+  const cartBranch = useSelector((state) => state.cart.branch);
+  const wishlistIds = useSelector((state) => state.wishlist.ids);
+  console.log(cartBranch);
+
   function cofirmAddToCartStateHandler(branchId) {
+    console.log(branchId);
+    console.log(cartBranch);
+    if (branchId !== cartBranch._id) {
+      setAddToCartState((state) => ({ ...state, error: true }));
+
+      return;
+    }
     dispatch(
       addToCartThunk({
         _id: product._id,
@@ -27,6 +46,38 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
     // setAddToCartState((state) => ({ ...state, count: 1, active: false }));
   }
 
+  const BranchSelectPopup = () => {
+    return (
+      <div className="branch-select-error">
+        <p>You can only choose the branch in your cart</p>
+        <div className="branch-select-error-actions">
+          <button
+            className="action-cancel"
+            onClick={() =>
+              setAddToCartState((state) => ({ ...state, error: false }))
+            }
+          >
+            <FontAwesomeIcon icon={faXmark} />
+          </button>
+          {console.log(product._id)}
+          {console.log(wishlistIds.includes(product._id))}
+          {wishlistIds.includes(product._id) ? (
+            <div className="already-whishlisted">already in whishlist</div>
+          ) : (
+            <button
+              onClick={() => {
+                dispatch(addWishProduct(product._id)).then(() => {
+                  setTimeout(() => {}, 900);
+                });
+              }}
+            >
+              add to wishlist
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  };
   return (
     <>
       <div className="product-actions">
@@ -55,7 +106,7 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
               }));
             }}
           >
-            <FontAwesomeIcon icon={faPlus} className="" />
+            <FontAwesomeIcon icon={faPlus} className="fa-xs" />
           </span>
         </div>
         <div
@@ -77,11 +128,17 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
               setAddToCartState((state) => ({ ...state, active: false }));
           }}
         >
+          <div className="loading-icon">
+
+          <FontAwesomeIcon icon={faCircleNotch} className="fa-spin" />
+          </div>
           {product.branches?.map((branch) => {
             return (
               <div
                 key={branch._id}
-                className="branch-item"
+                className={`branch-item ${
+                  branch._id !== cartBranch._id ? "disabled" : null
+                }`}
                 onClick={() => cofirmAddToCartStateHandler(branch._id)}
               >
                 {branch.name[lang]}
@@ -90,6 +147,7 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
           })}
         </div>
       ) : null}
+      {addToCartState.active && addToCartState.error && <BranchSelectPopup />}{" "}
     </>
   );
 });
