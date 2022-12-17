@@ -1,16 +1,14 @@
-import { t } from "i18next";
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import React,{ useEffect,useState } from "react";
 import clientServices from "../../services/clientServices";
-import Carousel from "../../components/Carousel/Carousel";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import VendorCard from "../../components/VendorCard/VendorCard";
-import "./Home.scss";
 import BannerCard from "../../components/BannerCard/BannerCard";
+import SectionView from "../../views/Home/SectionView/SectionView";
+
+import "./Home.scss";
+
 export default function Home() {
   const [loading, setLoading] = useState(false);
   const [vendors, setVendors] = useState([]);
@@ -18,29 +16,33 @@ export default function Home() {
   const [offers, setOffers] = useState([]);
   const [hotDeals, setHotDeals] = useState([]);
   const [banners, setBanners] = useState([]);
-  const navigate = useNavigate();
 
   async function getHomeDataHandler() {
     setLoading(true);
     try {
-      let { data: allCategories } =
-        await clientServices.listAllVendorCategories();
-      let { data: allVendors } = await clientServices.listAllVendors();
-      let { data: allOffers } = await clientServices.listAllProductsOfType(
-        false
-      );
-      let { data: allHotDeals } = await clientServices.listAllProductsOfType(
-        true
-      );
-      let { data: allBanners } = await clientServices.listAllBanners();
-
-      setCategories(allCategories?.records);
-      setVendors(allVendors?.records);
-      setOffers(allOffers?.records);
-      setHotDeals(allHotDeals?.records);
-      setBanners(allBanners?.records);
-
-      setLoading(false);
+      Promise.any([
+        clientServices.listAllBanners().then(({ data }) => {
+          setBanners(data?.records);
+        }),
+        clientServices.listAllVendorCategories().then(({ data }) => {
+          setCategories(data?.records);
+          return data;
+        }),
+        clientServices.listAllVendors().then(({ data }) => {
+          setVendors(data?.records);
+          return data;
+        }),
+        clientServices.listAllProductsOfType(false).then(({ data }) => {
+          setOffers(data?.records);
+          return data;
+        }),
+        clientServices.listAllProductsOfType(true).then(({ data }) => {
+          setHotDeals(data?.records);
+          return data;
+        }),
+      ]).then(() => {
+        setLoading(false);
+      });
     } catch (e) {
       console.log(e);
       setLoading(false);
@@ -51,153 +53,74 @@ export default function Home() {
     getHomeDataHandler();
   }, []);
 
-  return loading ? (
-    <LoadingSpinner />
-  ) : (
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  return (
     <div className="client-home">
-      {banners.length > 0 ? (
-        <div className="carousel-container">
-          {/* <div className="add-button-container">
-            <button
-              className="add-button"
-              onClick={() => {
-                navigate(`/categories`);
-              }}
-            >
-              {t("showAllCategories")}
-            </button>
-          </div> */}
-
-          <Carousel
-            extraLarge={4.5}
-            midLarge={4}
-            large={3.5}
-            medium={3}
-            largeSmall={2.5}
-            midSmall={2}
-            extraSmall={1.25}
-            data={banners}
-            render={(props) => {
-              return <BannerCard banner={props} />;
-            }}
-          />
-        </div>
-      ) : null}
-      {categories.length > 0 ? (
-        <div className="carousel-container">
-          <div className="add-button-container">
-            <button
-              className="add-button"
-              onClick={() => {
-                navigate(`/categories`);
-              }}
-            >
-              {t("showAllCategories")}
-            </button>
-          </div>
-
-          <Carousel
-            extraLarge={4.5}
-            midLarge={4}
-            large={3.5}
-            medium={3}
-            largeSmall={2.5}
-            midSmall={2}
-            extraSmall={1.25}
-            data={categories}
-            render={(props) => {
-              return <CategoryCard category={props} />;
-            }}
-          />
-        </div>
-      ) : null}
-
-      {vendors.length > 0 ? (
-        <div className="carousel-container">
-          <div className="add-button-container">
-            <button
-              className="add-button"
-              onClick={() => {
-                navigate(`/vendors`);
-              }}
-            >
-              {t("showAllVendors")}
-            </button>
-          </div>
-          <Carousel
-            data={vendors}
-            autoplay={false}
-            extraLarge={4.5}
-            midLarge={4}
-            large={3.5}
-            medium={3}
-            largeSmall={2.5}
-            midSmall={2}
-            extraSmall={1.25}
-            render={(props) => {
-              return <VendorCard vendor={props} />;
-            }}
-          />
-        </div>
-      ) : null}
-
-      {offers.length > 0 ? (
-        <div className="carousel-container">
-          <div className="add-button-container">
-            <button
-              className="add-button"
-              onClick={() => {
-                navigate(`/offers`);
-              }}
-            >
-              {t("showAllOffers")}
-            </button>
-          </div>
-          <Carousel
-            data={offers}
-            autoplay={false}
-            extraLarge={4.5}
-            midLarge={4}
-            large={3.5}
-            medium={3}
-            largeSmall={2.5}
-            midSmall={2}
-            extraSmall={1.25}
-            render={(props) => {
-              return <ProductCard product={props} />;
-            }}
-          />
-        </div>
-      ) : null}
-
-      {hotDeals.length > 0 ? (
-        <div className="carousel-container">
-          <div className="add-button-container">
-            <button
-              className="add-button"
-              onClick={() => {
-                navigate(`/hot-deals`);
-              }}
-            >
-              {t("showAllHotDeals")}
-            </button>
-          </div>
-          <Carousel
-            extraLarge={4.5}
-            midLarge={4}
-            large={3.5}
-            medium={3}
-            largeSmall={2.5}
-            midSmall={2}
-            extraSmall={1.25}
-            autoplay={false}
-            data={hotDeals}
-            render={(props) => {
-              return <ProductCard product={props} />;
-            }}
-          />
-        </div>
-      ) : null}
+      <section className="home-section">
+        <SectionView
+          items={banners}
+          render={(props) => {
+            return <BannerCard banner={props} />;
+          }}
+        />
+      </section>
+      <section className="home-section">
+        <SectionView
+          items={categories}
+          link={"/categories"}
+          linkTitle={"showAllCategories"}
+          render={(props) => {
+            return <CategoryCard category={props} />;
+          }}
+        />
+      </section>
+      <section className="home-section">
+        <SectionView
+          items={vendors}
+          link={"/vendors"}
+          linkTitle={"showAllVendors"}
+          render={(props) => {
+            return <VendorCard vendor={props} />;
+          }}
+        />
+      </section>
+      <section className="home-section">
+        <SectionView
+          items={offers}
+          link={"/offers"}
+          linkTitle={"showAllOffers"}
+          render={(props) => {
+            return <ProductCard product={props} />;
+          }}
+        />
+      </section>
+      <section className="home-section">
+        <SectionView
+          items={hotDeals}
+          link={"/hot-deals"}
+          linkTitle={"showAllHotDeals"}
+          render={(props) => {
+            return <ProductCard product={props} />;
+          }}
+        />
+      </section>
     </div>
   );
 }
+
+/** OLD FUNCTIONS **
+  // let { data: allCategories } = await clientServices.listAllVendorCategories();
+  // let { data: allVendors }    = await clientServices.listAllVendors();
+  // let { data: allOffers }     = await clientServices.listAllProductsOfType(false);
+  // let { data: allHotDeals }   = await clientServices.listAllProductsOfType(true);
+  // let { data: allBanners }    = await clientServices.listAllBanners();
+
+  // setCategories(allCategories?.records);
+  // setVendors(allVendors?.records);
+  // setOffers(allOffers?.records);
+  // setHotDeals(allHotDeals?.records);
+  // setBanners(allBanners?.records);
+ */
