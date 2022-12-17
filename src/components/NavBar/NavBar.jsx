@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 
 import { t } from "i18next";
+import i18n from "../../locales/i18n";
 import { ReactComponent as NavbarLogo } from "../../assets/VIP-ICON-SVG/NavbarLogo.svg";
 import { ReactComponent as Notification } from "../../assets/VIP-ICON-SVG/notification.svg";
 import { ReactComponent as BurgerMenuIcon } from "../../assets/VIP-ICON-SVG/burgerMenu.svg";
-
-import "./NavBar.scss";
-import i18n from "../../locales/i18n";
 import { switchLang } from "../../helpers/lang";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth-slice";
-import SideNAv from "./SideNAv/SideNAv";
+import SideNav from "./SideNav/SideNav";
+import "./NavBar.scss";
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -30,6 +29,7 @@ export default function NavBar() {
     { link: "/offers", title: "offers" },
     { link: "/jobs", title: "jobs" },
     { link: "/wishlist", title: "wishlist" },
+    { link: "/cart", title: "cart" },
     { link: "/account", title: "myAccount" },
     {
       link: "/logout",
@@ -102,7 +102,7 @@ export default function NavBar() {
         <Notification className="notification-icon" />
       </div>
       <Notification className="small-notification-icon" />
-      {showSideMenu && <SideNAv onToggle={toggleSideMenu} items={navItems} />}
+      {showSideMenu && <SideNav onToggle={toggleSideMenu} items={navItems} />}
     </nav>
   );
 }

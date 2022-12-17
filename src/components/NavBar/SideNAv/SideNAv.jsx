@@ -1,14 +1,16 @@
 import { t } from "i18next";
-import React from "react";
+import React, { useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { switchLang } from "../../../helpers/lang";
 import i18n from "../../../locales/i18n";
 
-import "./SideNAv.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-export default function SideNAv({ items, onToggle }) {
+import "./SideNav.scss";
+
+export default function SideNav({ items, onToggle }) {
   const lang = i18n.language;
+  const sideNavRef = useRef();
 
   function changeLang(lang) {
     i18n.changeLanguage(lang);
@@ -17,9 +19,21 @@ export default function SideNAv({ items, onToggle }) {
   function onSideNavClose() {
     onToggle();
   }
+
+  function backDropClickHandler(e) {
+    console.log(e.target.classList.contains("nav-link"));
+    if (sideNavRef.current && !sideNavRef.current.contains(e.target)) {
+      onToggle();
+    } else if (e.target.classList.contains("nav-link")) {
+      sideNavRef.current.classList.add("close");
+      setTimeout(() => {
+        onToggle();
+      }, 300);
+    }
+  }
   return (
-    <aside className="side-nav-container" /*onClick={onSideNavClose}*/>
-      <div className="side-nav">
+    <aside className="side-nav-container" onClick={backDropClickHandler}>
+      <div className="side-nav" ref={sideNavRef}>
         <ul className="side-nav-menu">
           <div className="nav-icon-container">
             <FontAwesomeIcon

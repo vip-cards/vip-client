@@ -21,6 +21,9 @@
     [dir="rtl"] & {
       animation: open-nav-right 300ms cubic-bezier(0.22, 0.61, 0.36, 1);
     }
+    &.close {
+      animation: close-nav 300ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+    }
     .nav-icon-container {
       text-align: right;
       [dir="rtl"] & {
@@ -112,5 +115,14 @@
 @keyframes open-nav-right {
   0% {
     right: -100%;
+  }
+}
+@keyframes close-nav {
+  100% {
+    left: -100%;
+    [dir="ltr"] {
+      left: unset;
+      right: -100%;
+    }
   }
 }
