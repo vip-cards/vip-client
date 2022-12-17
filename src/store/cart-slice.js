@@ -19,7 +19,6 @@ export const getCurrentCartThunk = createAsyncThunk(
 export const addToCartThunk = createAsyncThunk(
   "cart/add",
   async (payload, thunkAPI) => {
-    console.log(payload);
     const product = {
       branchId: payload.branchId,
       productId: payload._id,
@@ -63,12 +62,18 @@ const cartSlice = createSlice({
       state.points = payload.points;
       return state;
     });
+
+    builder.addCase(addToCartThunk.pending, (state, { payload }) => {
+      state.loading = true;
+      return state;
+    });
+ 
     builder.addCase(addToCartThunk.fulfilled, (state, { payload }) => {
       console.log(payload);
       state._id = payload._id;
       state.vendor = payload.vendor;
       state.products = payload.items;
-      state.branch = payload.branch;
+      state.branch._id = payload.branch;
       state.price = { original: payload.originalTotal, current: payload.total };
       state.points = payload.points;
     });

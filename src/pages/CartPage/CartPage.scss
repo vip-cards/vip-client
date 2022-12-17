@@ -1,0 +1,101 @@
+@import "../../styles/colors";
+.cart-page {
+  margin: 5% 5%;
+  padding: 15px 8px;
+  .cart-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    @media screen and (max-width: 520px) {
+      flex-direction: column;
+    }
+    .cart-details {
+      padding: 1rem;
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      row-gap: 1rem;
+    }
+    .cart-summary {
+      flex: 1;
+      border-left: 1px solid brown;
+      padding: 1rem;
+      .checkout-summary {
+        display: flex;
+        flex-direction: column;
+        border: 1px dashed red;
+        padding: 10px;
+        border-radius: 10px;
+        min-width: 210px;
+
+        .checkout-title {
+          text-align: center;
+          font-size: 1.7rem;
+        }
+        .checkout-total-title {
+          font-size: 1.3rem;
+          font-weight: bold;
+          color: rgba(0, 0, 0, 0.7);
+        }
+        .total-price {
+          font-size: 3rem;
+          color: $secondary;
+          margin-block: 1rem;
+        }
+
+        .checkout-btn {
+          font-size: 1.5rem;
+          text-transform: capitalize;
+          font-weight: bolder;
+          margin-bottom: 0.5rem;
+          cursor: pointer;
+          color: white;
+          background: linear-gradient(
+            to bottom,
+            lighten($color: $primary, $amount: 10),
+            $primary 70%,
+            darken($color: $primary, $amount: 10)
+          );
+          border-radius: 0.5rem;
+          border-width: 1px;
+          height: 50px;
+          position: relative;
+
+          box-shadow: 1px 2px 5px 2px rgba(0, 0, 0, 0.3);
+
+          &:hover {
+            box-shadow: 1px 2px 4px 1px rgba(0, 0, 0, 0.3);
+          }
+          &:active {
+            box-shadow: 1px 2px 1px 1px rgba(0, 0, 0, 0.3);
+          }
+        }
+      }
+
+      .checkout-more {
+        margin-top: 1rem;
+        display: grid;
+        row-gap: 0.5rem;
+        border-block: 1px dashed red;
+        padding: 10px;
+        .vendor-title {
+          grid-column: 1/2;
+        }
+        .vendor-name {
+          grid-column: 2/3;
+        }
+        .branch-title {
+          grid-column: 1/2;
+        }
+        .branch-name {
+          grid-column: 2/3;
+        }
+        .original-price-value {
+          color: gray;
+          text-decoration: line-through;
+        }
+      }
+    }
+  }
+}
