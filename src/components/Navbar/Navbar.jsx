@@ -12,7 +12,7 @@ import { authActions } from "../../store/auth-slice";
 import SideNav from "./SideNav/SideNav";
 import "./Navbar.scss";
 
-export default function NavBar() {
+export default function Navbar() {
   const navigate = useNavigate();
   const [viweAccountMenu, setViweAccountMenu] = useState(false);
   const [showSideMenu, setShowSideMenu] = useState(false);
