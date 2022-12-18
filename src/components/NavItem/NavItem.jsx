@@ -10,7 +10,7 @@ export default function NavItem({ to, icon, title }) {
             <FontAwesomeIcon icon={icon} />
           </span>
         )}
-        <span>{title}</span>
+        <span className="nav-title">{title}</span>
       </NavLink>
     </li>
   );
