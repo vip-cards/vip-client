@@ -18,7 +18,7 @@ import AccountOrders from "../../views/AccountOrders/AccountOrders";
 import AccountWishlist from "../../views/AccountWishlist/AccountWishlist";
 
 import Footer from "../../components/Footer/Footer";
-import NavBar from "../../components/NavBar/NavBar";
+import Navbar from "../../components/Navbar/Navbar";
 
 import "./ClientLayout.scss";
 import VendorCategory from "../../pages/VendorCategory/VendorCategory";
@@ -38,7 +38,7 @@ export default function ClientLayout() {
 
   return (
     <div className="base-layout">
-      <NavBar />
+      <Navbar />
       <div className="base-nav-item"></div>
       <div className="page-content">
         <Routes>

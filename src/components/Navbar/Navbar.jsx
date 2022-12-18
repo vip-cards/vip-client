@@ -10,7 +10,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth-slice";
 import SideNav from "./SideNav/SideNav";
-import "./NavBar.scss";
+import "./Navbar.scss";
 
 export default function NavBar() {
   const navigate = useNavigate();
