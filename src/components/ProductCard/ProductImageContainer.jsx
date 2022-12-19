@@ -4,6 +4,7 @@ import { faCircleNotch, faStopwatch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { addWishProduct, removeWishProduct } from "../../store/wishlist-slice";
 import WishIcon from "../WishIcon/WishIcon";
+import { Link } from "react-router-dom";
 
 export function ProductImageContainer({ product }) {
   const wishlistIds = useSelector((state) => state.wishlist.ids);
@@ -28,7 +29,7 @@ export function ProductImageContainer({ product }) {
     }
   }
   return (
-    <div className="product-img-container">
+    <Link to={`/product/${product._id}`} className="product-img-container">
       <img
         src={`${product?.image?.Location}`}
         alt="product-img"
@@ -68,6 +69,6 @@ export function ProductImageContainer({ product }) {
           />
         )}
       </span>
-    </div>
+    </Link>
   );
 }

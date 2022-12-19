@@ -27,6 +27,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getCurrentCartThunk } from "../../store/cart-slice";
 import AccountBarcode from "../../views/AccountBarcode/AccountBarcode";
+import ProductDetails from "../../pages/ProductDetails/ProductDetails";
 
 export default function ClientLayout() {
   const dispatch = useDispatch();
@@ -63,7 +64,8 @@ export default function ClientLayout() {
           <Route
             path="/vendors/:vendorId/category/:categoryId"
             element={<VendorCategory />}
-          ></Route>
+          />
+          <Route path="/product/:productId" element={<ProductDetails />} />
 
           <Route path="/wishlist" element={<Wishlist />} />
 
