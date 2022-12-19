@@ -3,7 +3,13 @@ import { t } from "i18next";
 import Carousel from "../../../components/Carousel/Carousel";
 import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
 
-export default function SectionView({ items, link, linkTitle, render }) {
+export default function SectionView({
+  items,
+  link,
+  linkTitle,
+  render,
+  autoplay = false,
+}) {
   const navigate = useNavigate();
   if (!items || items.length <= 0) {
     return <LoadingSpinner />;
@@ -24,14 +30,14 @@ export default function SectionView({ items, link, linkTitle, render }) {
       )}
       <Carousel
         data={items}
-        autoplay={false}
+        autoplay={autoplay}
         extraLarge={4.5}
         midLarge={4}
         large={3.5}
         medium={3}
         largeSmall={2.5}
-        midSmall={2}
-        extraSmall={1.25}
+        midSmall={1.7}
+        extraSmall={1.05}
         render={render}
       />
     </div>

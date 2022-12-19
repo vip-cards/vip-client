@@ -57,7 +57,7 @@ export default function Carousel({
             slidesPerView: largeSmall || 1,
             spaceBetween: 20,
           },
-          600: {
+          480: {
             slidesPerView: midSmall || 1,
             spaceBetween: 20,
           },

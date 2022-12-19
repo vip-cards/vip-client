@@ -1,4 +1,4 @@
-import React,{ useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import clientServices from "../../services/clientServices";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
@@ -65,6 +65,7 @@ export default function Home() {
           render={(props) => {
             return <BannerCard banner={props} />;
           }}
+          autoplay={true}
         />
       </section>
       <section className="home-section">

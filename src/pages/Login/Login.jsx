@@ -1,28 +1,25 @@
 import React, { useState } from "react";
-
-import { ReactComponent as VendorLogo } from "../../assets/VIP-ICON-SVG/VendorLogo.svg";
-import { ReactComponent as VendorLogoOrange } from "../../assets/VIP-ICON-SVG/VendorLogoOrange.svg";
-import MainInput from "../../components/MainInput/MainInput";
-import toastPopup from "../../helpers/toastPopup";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 import { useTranslation } from "react-i18next";
 import { switchLang } from "../../helpers/lang";
-import MainButton from "../../components/MainButton/MainButton";
-import clientServices from "../../services/clientServices";
-import { useDispatch } from "react-redux";
-import { authActions } from "../../store/auth-slice";
-import jwt_decode from "jwt-decode";
-import "./Login.scss";
-import { useSocialLogin } from "../../services/firebaseServices";
-
 import { loginSchema } from "../../helpers/schemas";
+import toastPopup from "../../helpers/toastPopup";
+import { authActions } from "../../store/auth-slice";
+import clientServices from "../../services/clientServices";
+import { useSocialLogin } from "../../services/firebaseServices";
+import MainInput from "../../components/MainInput/MainInput";
+import MainButton from "../../components/MainButton/MainButton";
+import { ReactComponent as VendorLogoOrange } from "../../assets/VIP-ICON-SVG/VendorLogoOrange.svg";
+import { ReactComponent as VendorLogo } from "../../assets/VIP-ICON-SVG/VendorLogo.svg";
+import "./Login.scss";
 
 export default function Login() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const socialLogin = useSocialLogin();
   const { t, i18n } = useTranslation();
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [errorList, setErrorList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");

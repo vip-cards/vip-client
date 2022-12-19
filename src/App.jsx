@@ -4,7 +4,7 @@ import { checkFixLang } from "./helpers/lang";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Navigate, Route, Routes } from "react-router";
+import { Navigate, Route, Routes, useLocation } from "react-router";
 import ProtectedRoute from "./routes/ProtectedRoute/ProtectedRoute";
 import { fetchWishlist } from "./store/wishlist-slice";
 import Register from "./pages/Register/Register";
@@ -18,17 +18,19 @@ function App() {
 
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     checkFixLang(lang);
-    // editTitle(lang);
   }, [lang]);
-  //get all
+
   useEffect(() => {
     dispatch(fetchWishlist());
   }, [auth, dispatch]);
 
-  console.log(auth);
+  useEffect(() => {
+    document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
 
   return (
     <div className="App">
