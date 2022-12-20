@@ -30,10 +30,12 @@ export const addToCartThunk = createAsyncThunk(
       productId: payload._id,
       quantity: payload.quantity,
     };
-
-    const { data } = await clientServices.addCartItem(product);
-    console.log(data);
-    return data.record;
+    try {
+      const { data } = await clientServices.addCartItem(product);
+      return data.record;
+    } catch (err) {
+      return thunkAPI.rejectWithValue({ ...err.response.data });
+    }
   }
 );
 export const removeFromCartThunk = createAsyncThunk(
@@ -92,6 +94,9 @@ const cartSlice = createSlice({
       state.points = payload.points;
       toastPopup.success("Product added to cart!");
       state.loading = false;
+    });
+    builder.addCase(addToCartThunk.rejected, (state, { payload }) => {
+      toastPopup.error(payload.error);
     });
 
     builder.addCase(removeFromCartThunk.fulfilled, (state, { payload }) => {

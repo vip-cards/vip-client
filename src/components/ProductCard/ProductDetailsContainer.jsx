@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import i18n from "../../locales/i18n";
 
 export function ProductDetailsContainer({ product }) {
@@ -5,7 +6,9 @@ export function ProductDetailsContainer({ product }) {
   console.log(product);
   return (
     <>
-      <p className="product-title">{product?.name?.[lang]} </p>
+      <Link to={`/product/${product._id}`} className="product-title">
+        <p>{product?.name?.[lang]}</p>
+      </Link>
       <p className="product-vendor">{product?.vendor?.name?.[lang]} </p>
       <div className="product-price">
         <div className="current-price">
