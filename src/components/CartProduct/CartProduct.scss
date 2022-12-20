@@ -95,12 +95,16 @@ $media-md: 800px;
   }
   .cart-product-actions {
     grid-area: actions;
+    margin-top: auto;
+    display: flex;
+    flex-flow: row wrap;
     span {
       text-decoration: underline;
       text-underline-offset: 2px;
       color: lighten($color: $mainColor, $amount: 10);
       user-select: none;
       cursor: pointer;
+      white-space: nowrap;
       &:hover {
         color: $mainColor;
       }

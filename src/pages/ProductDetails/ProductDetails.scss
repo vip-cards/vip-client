@@ -1,72 +1,155 @@
 @import "../../styles/colors";
+@import "../../styles/dimensions";
 @import "../../styles/globals";
+
+$media-lg: 850px;
+$media-md: 500px;
+$media-sm: 300px;
+
 .product-details-page {
   margin: 5%;
   padding: 1rem;
   display: grid;
   grid-template-areas:
-    "image details"
-    "reviews reviews";
-  grid-template-columns: min-content 1fr;
+    "image details cart"
+    "reviews reviews reviews";
+  grid-template-columns: clamp(200px, 30%, 300px) 1fr min-content;
   gap: 1rem;
 
+  @media screen and (max-width: $media-lg) {
+    grid-template-areas:
+      "image details"
+      "cart cart"
+      "reviews reviews";
+    grid-template-columns: clamp(200px, 30%, 300px) 1fr;
+  }
+  @media screen and (max-width: $media-md) {
+    grid-template-areas:
+      "image"
+      "details"
+      "cart"
+      "reviews";
+    grid-template-columns: auto;
+    // grid-template-rows: 1fr 1fr 1fr 1fr;
+  }
+  // image
   .product-image-container {
     grid-area: image;
-    width: 300px;
-
-    border: 3px solid rebeccapurple;
-    border-radius: 15px;
+    width: 100%;
     overflow: hidden;
     // aspect-ratio: 1;
     .product-image {
+      border: 3px solid rebeccapurple;
+      border-radius: 15px;
       max-width: 100%;
       object-fit: cover;
     }
   }
+  // details
   .product-details-container {
     grid-area: details;
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
+    font-size: clamp(0.8rem, 1.5vw, 1.2rem);
     .product-details {
       flex-grow: 1;
       display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
+      flex-flow: column nowrap;
       align-items: flex-start;
       justify-content: flex-start;
+      gap: 0.4rem;
+      // @media screen and {
+
+      // }
       .product-title {
         text-transform: capitalize;
       }
     }
-
-    .product-cart {
-      width: 15rem;
-      box-shadow: 0px 0px 4px 2px red;
-      padding: 1rem;
-      border-radius: 0.5rem;
+  }
+  // cart
+  .product-cart {
+    grid-area: cart;
+    width: 15rem;
+    box-shadow: 0px 0px 4px 2px red;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    margin: 0 auto auto;
+    gap: 0.5rem;
+    @media screen and (min-width: $media-md) and (max-width: $media-lg) {
+      flex-flow: row nowrap;
+      width: 100%;
+    }
+    .cart-branch-select {
+      height: 2rem;
+      font-size: 1rem;
+      font-weight: lighter;
+      width: 100%;
+      border-radius: 8px;
+      padding-inline: 0.5rem;
+      background-color: white;
+      flex: 3;
+    }
+    .cart-quantity {
+      flex: 1;
       display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
-      margin-bottom: auto;
-      .cart-branch-select {
-        height: 2rem;
-        font-size: 1rem;
-        font-weight: lighter;
-        width: 100%;
-        border-radius: 8px;
-        padding-inline: 0.5rem;
-        background-color: white;
-      }
+      align-items: center;
+      justify-content: center;
+      margin: 0.3rem 0;
+      height: min-content;
+      .qty-action {
+        @include product-icon;
+        background-color: $mainColor;
+        height: inherit;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 1.5rem;
 
+        transition: transform ease-in-out 200ms;
+        aspect-ratio: 1;
+        border-radius: 0.9rem;
+        svg {
+          width: $icon-size-xs;
+          height: $icon-size-xs;
+        }
+        &:active {
+          * {
+            transform: scale(0.9);
+          }
+        }
+      }
+      .qty-value {
+        width: 3rem;
+        text-align: center;
+      }
+    }
+    .cart-actions {
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+
+      gap: 0.4rem;
+      flex: 2;
+      white-space: nowrap;
       .add-to-cart-btn {
         @include cart-btn;
         font-size: 1rem;
         width: 100%;
         height: 2.5rem;
       }
+      .add-to-wishlist-btn {
+        text-decoration: underline;
+        text-underline-offset: 1px;
+        cursor: pointer;
+        transition: color 150ms ease-in-out;
+        &:hover {
+          color: darken($color: $primary, $amount: 10);
+        }
+      }
     }
   }
+  // reviews
   .product-reviews-container {
     grid-area: reviews;
   }
