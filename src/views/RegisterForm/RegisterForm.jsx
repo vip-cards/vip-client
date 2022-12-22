@@ -46,7 +46,6 @@ export default function RegisterForm() {
     setLoading(true);
     if (error) {
       setErrorList(error.details);
-
       setErrorMessage(error.message);
       console.log(error.details);
       toast.error(error.name);
@@ -57,7 +56,6 @@ export default function RegisterForm() {
         if (data.success && data.code === 201) {
           setLoading(false);
           toastPopup.success(t("Success"));
-
           navigate("/login");
         }
       } catch (e) {
@@ -115,7 +113,7 @@ export default function RegisterForm() {
       <div className="main-input-label radio-input">
         <div className="radio-checkbox">
           <label htmlFor="male">
-            Male
+            {t("male")}
             <input
               value={"male"}
               onChange={(e) => {
@@ -134,7 +132,7 @@ export default function RegisterForm() {
         </div>
         <div className="radio-checkbox">
           <label htmlFor="female">
-            Female
+            {t("female")}
             <input
               value={"female"}
               onChange={(e) => {
@@ -152,7 +150,7 @@ export default function RegisterForm() {
           </label>
         </div>
         <label className="main-label" htmlFor="gender">
-          gender
+          {t("gender")}
         </label>
       </div>
       <MainButton
