@@ -4,12 +4,13 @@ import { faCircleNotch, faStopwatch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { addWishProduct, removeWishProduct } from "../../store/wishlist-slice";
 import WishIcon from "../WishIcon/WishIcon";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function ProductImageContainer({ product }) {
   const wishlistIds = useSelector((state) => state.wishlist.ids);
   const [disabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function toggleWishlist() {
     setDisabled(true);
@@ -28,8 +29,12 @@ export function ProductImageContainer({ product }) {
       });
     }
   }
+  // Link to={`/product/${product._id}`}
   return (
-    <Link to={`/product/${product._id}`} className="product-img-container">
+    <div
+      className="product-img-container pointer"
+      onClick={() => navigate(`/product/${product._id}`)}
+    >
       <img
         src={`${product?.image?.Location}`}
         alt="product-img"
@@ -58,7 +63,10 @@ export function ProductImageContainer({ product }) {
       )}
       <span
         className={`add-to-wishlist ${disabled ? "disabled" : ""}`}
-        onClick={toggleWishlist}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleWishlist();
+        }}
       >
         {disabled ? (
           <FontAwesomeIcon icon={faCircleNotch} className="fa-spin" />
@@ -69,6 +77,6 @@ export function ProductImageContainer({ product }) {
           />
         )}
       </span>
-    </Link>
+    </div>
   );
 }
