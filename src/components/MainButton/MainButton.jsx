@@ -1,3 +1,5 @@
+import classNames from "classnames";
+import "../../index.scss";
 import "./MainButton.scss";
 
 export default function MainButton({
@@ -7,7 +9,7 @@ export default function MainButton({
   ...props
 }) {
   return (
-    <button className={"main-button " + className} {...props}>
+    <button className={classNames(className, "main-button")} {...props}>
       {loading ? <i className="fas fa-spinner fa-spin "></i> : text}
     </button>
   );
