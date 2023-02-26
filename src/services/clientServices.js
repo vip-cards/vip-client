@@ -6,139 +6,139 @@ const userId = store.getState().auth.userId;
 const clientServices = {
   /*--- AUTH ---*/
   register: async (obj) => {
-    const response = await Axios.post("/client/register", obj);
+    const response = await Axios.post("/register", obj);
     return response;
   },
   login: async (obj) => {
-    const response = await Axios.post("/client/login", obj);
+    const response = await Axios.post("/login", obj);
     return response;
   },
   loginBy: async (obj) => {
-    const response = await Axios.post("/client/loginBy", obj);
+    const response = await Axios.post("/loginBy", obj);
     return response;
   },
   updateInfo: async (obj) => {
-    const response = await Axios.put("/client/update", obj);
+    const response = await Axios.put("/update", obj);
     return response;
   },
   uploadImg: async (obj) => {
-    const response = await Axios.post("/client/image", obj);
+    const response = await Axios.post("/image", obj);
     return response;
   },
 
   getVendor: async (vendorId) => {
-    const response = await Axios.get(`/client/vendor/get?_id=${vendorId}`);
+    const response = await Axios.get(`/vendor/get?_id=${vendorId}`);
     return response;
   },
   listAllVendors: async () => {
-    const response = await Axios.get(`/client/vendor/list`);
+    const response = await Axios.get(`/vendor/list`);
     return response;
   },
   listAllVendorsInCategory: async (id) => {
-    const response = await Axios.get(`/client/vendor/list?category=${id}`);
+    const response = await Axios.get(`/vendor/list?category=${id}`);
     return response;
   },
   getReview: async (id) => {
-    const response = await Axios.get(
-      `/client/review/get?_id=${id}&client=${userId}`
-    );
+    const response = await Axios.get(`/review/get?_id=${id}&client=${userId}`);
     return response;
   },
 
   listClientOrders: async () => {
-    const response = await Axios.get("/client/order/get?client=" + userId);
+    const response = await Axios.get("/order/get?client=" + userId);
     return response;
   },
 
   listAllVendorBranches: async (vendorId) => {
-    const response = await Axios.get(`/client/branch/list/?vendor=${vendorId}`);
+    const response = await Axios.get(`/branch/list/?vendor=${vendorId}`);
     return response;
   },
   listAllVendorCategories: async (vendorId) => {
     const response = vendorId
-      ? await Axios.get(`/client/category/list/?vendor=${vendorId}`)
-      : await Axios.get(`/client/category/list?type=vendor`);
+      ? await Axios.get(`/category/list/?vendor=${vendorId}`)
+      : await Axios.get(`/category/list?type=vendor`);
     return response;
   },
 
   listAllBanners: async () => {
-    const response = await Axios.get(`/client/banner/list`);
+    const response = await Axios.get(`/banner/list`);
+    return response;
+  },
+  listAllAds: async () => {
+    const response = await Axios.get(`/ad/list`);
     return response;
   },
 
   getBranchDetails: async (branchId) => {
-    const response = await Axios.get(`/client/branch/get?_id=${branchId}`);
+    const response = await Axios.get(`/branch/get?_id=${branchId}`);
     return response;
   },
 
   /*--- PRODUCTS ---*/
   getProductDetails: async (productId) => {
-    const response = await Axios.get(`/client/product/get?_id=${productId}`);
+    const response = await Axios.get(`/product/get?_id=${productId}`);
     return response;
   },
   listAllBranchProductsOfType: async (branchId, isHotDeal = false) => {
     const response = await Axios.get(
-      `/client/product/list?branch=${branchId}&isHotDeal=${isHotDeal}`
+      `/product/list?branch=${branchId}&isHotDeal=${isHotDeal}`
     );
     return response;
   },
 
   listAllVendorProducts: async (vendorId) => {
-    const response = await Axios.get(`/client/product/list?vendor=${vendorId}`);
+    const response = await Axios.get(`/product/list?vendor=${vendorId}`);
     return response;
   },
 
   listAllProductsOfType: async (isHotDeal = false) => {
-    const response = await Axios.get(
-      `/client/product/list?isHotDeal=${isHotDeal}`
-    );
+    const response = await Axios.get(`/product/list?isHotDeal=${isHotDeal}`);
     return response;
   },
 
   listAllCategories: async () => {
-    const response = await Axios.get(`/client/category/list`);
+    const response = await Axios.get(`/category/list`);
     return response;
   },
 
   /*--- WISHLIST ---*/
   listAllWishProducts: async () => {
-    const response = await Axios.get(`/client/wishlist/get?client=${userId}`);
+    const response = await Axios.get(`/wishlist/get?client=${userId}`);
     return response;
   },
   addWishProduct: async (productId) => {
     const response = await Axios.post(
-      `/client/wishlist/addItem?client=${userId}&product=${productId}`
+      `/wishlist/addItem?client=${userId}&product=${productId}`
     );
     return response;
   },
   removeWishProduct: async (productId) => {
     const response = await Axios.delete(
-      `/client/wishlist/removeItem?client=${userId}&product=${productId}`
+      `/wishlist/removeItem?client=${userId}&product=${productId}`
     );
     return response;
   },
 
   /*--- SEARCH ---*/
   vendorQuery: async (params) => {
-    const response = await Axios.get(`/client/vendor/list`, {
+    const response = await Axios.get(`/vendor/list`, {
       params,
     });
     return response;
   },
   categoryQuery: async (params) => {
-    const response = await Axios.get(`/client/category/list`, {
+    const response = await Axios.get(`/category/list`, {
       params,
     });
     return response;
   },
   searchOffersDeals: async (params) => {
-    const response = await Axios.get(`/client/product/list`, {
+    const response = await Axios.get(`/product/list`, {
       params,
     });
     return response;
   },
   searchProducts: async (params) => {
-    const response = await Axios.get(`/client/product/list`, {
+    const response = await Axios.get(`/product/list`, {
       params,
     });
     return response;
@@ -146,19 +146,27 @@ const clientServices = {
 
   /*--- CART ---*/
   getCart: async () => {
-    const response = await Axios.get(`/client/cart/get?client=${userId}`);
+    const response = await Axios.get(`/cart/get?client=${userId}`);
     return response;
   },
   addCartItem: async ({ branchId, productId, quantity = 1 }) => {
     const response = await Axios.post(
-      `/client/cart/item?client=${userId}&product=${productId}&branch=${branchId}&quantity=${quantity}`
+      `/cart/item?client=${userId}&product=${productId}&branch=${branchId}&quantity=${quantity}`
     );
     return response;
   },
   removeCartItem: async ({ productId, quantity }) => {
     const response = await Axios.delete(
-      `/client/cart/item?client=${userId}&product=${productId}&quantity=${quantity}`
+      `/cart/item?client=${userId}&product=${productId}&quantity=${quantity}`
     );
+    return response;
+  },
+
+  /*--- JOBS ---*/
+  listAllJobs: async ({ page, list }) => {
+    const response = await Axios.get("/job/list", {
+      params: { page, list },
+    });
     return response;
   },
 };

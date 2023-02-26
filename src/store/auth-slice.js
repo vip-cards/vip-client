@@ -1,5 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+if (
+  localStorage.getItem("userRole") === "vendor" ||
+  localStorage.getItem("userRole") === "branch"
+) {
+  ["token", "vendorId", "branchId", "userRole", "userData", "userId"].forEach(
+    (element) => {
+      localStorage.removeItem(element);
+    }
+  );
+}
 const authSlice = createSlice({
   name: "auth",
   initialState: {
