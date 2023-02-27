@@ -55,9 +55,9 @@ export default function Login() {
     } else {
       setLoading(true);
       try {
-        const { data } = await clientServices.login(user);
-        console.log(data);
-        console.log(data.token);
+        const result = await clientServices.login(user);
+        const data = result.data;
+
         if (data.success && data.code === 200) {
           setLoading(false);
 

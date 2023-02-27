@@ -70,4 +70,61 @@
       }
     }
   }
+
+  .create-job-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 80%;
+    margin-inline: auto;
+
+    .create-job-container {
+      display: grid;
+      gap: 1rem;
+      padding: 1rem 0;
+      grid-template-areas:
+        "company job"
+        "address description"
+        "whatsapp description"
+        "telegram category"
+        "phone ."
+        "error error"
+        "confirm confirm";
+      .company-input {
+        grid-area: company;
+      }
+      .job-input {
+        grid-area: job;
+      }
+      .address-input {
+        grid-area: address;
+      }
+      .description-input {
+        grid-area: description;
+      }
+      .whatsapp-input {
+        grid-area: whatsapp;
+      }
+      .telegram-input {
+        grid-area: telegram;
+      }
+      .category-input {
+        grid-area: category;
+      }
+      .phone-input {
+        grid-area: phone;
+      }
+      .error-message {
+        grid-area: error;
+        text-align: center;
+        font-size: 0.8rem;
+        color: darken($color: $warning, $amount: 20);
+        font-weight: 600;
+      }
+      .confirm {
+        grid-area: confirm;
+      }
+    }
+  }
 }

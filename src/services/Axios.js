@@ -7,13 +7,7 @@ import endPoint from "./endPoint";
 
 const baseURL = endPoint;
 
-const guestEndpoints = [
-  "/vendor/login",
-  "/branch/login",
-  "/client/login",
-  "/client/loginBy",
-  "/client/register",
-];
+const guestEndpoints = ["/login", "/loginBy", "/register"];
 
 const Axios = axios.create({ baseURL });
 Axios.defaults.baseURL = endPoint + "/client";
