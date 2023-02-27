@@ -9,9 +9,14 @@
   color: var(--secondaryColor);
   cursor: pointer;
   transition: all 0.4s;
+
+  &:disabled {
+    cursor: default;
+    opacity: 80%;
+  }
 }
 
-.main-button:hover {
+.main-button:hover:not(:disabled) {
   background-color: var(--secondaryColor);
   color: var(--mainColor);
   border: 1px solid var(--mainColor);

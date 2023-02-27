@@ -4,18 +4,20 @@
   flex-direction: row;
   align-items: center;
 
-  .main-input {
+  .main-input,
+  textarea.main-input {
     height: 50px;
     background-color: #f1f1f1;
     border: none;
     border-radius: 15px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 0 20px;
     font-size: 16px;
     font-family: "Open Sans", sans-serif;
+
     &:focus {
       outline-color: #f89936;
     }
+
     &:focus ~ .main-label,
     &:not(:placeholder-shown).main-input:not(:focus) ~ .main-label {
       top: 0;
@@ -26,7 +28,14 @@
       border-radius: 10px;
       font-weight: 100;
     }
+
+    &.main-input {
+      height: 100%;
+      width: 100%;
+      padding-block: 1rem;
+    }
   }
+
   .main-label {
     position: absolute;
     top: 50%;
