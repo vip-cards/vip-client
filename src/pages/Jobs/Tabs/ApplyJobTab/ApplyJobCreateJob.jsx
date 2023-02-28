@@ -6,13 +6,13 @@ import { createJobSchema } from "../../../../helpers/schemas";
 import clientServices from "../../../../services/clientServices";
 
 export default function ApplyJobCreateJob() {
+  const ref = useRef(null);
   const userId = localStorage.getItem("userId");
+
   const [formError, setFormError] = useState(false);
   const [disabled, setDisabled] = useState(true);
-  const ref = useRef(null);
-  const [jobForm, setJobForm] = useState({
-    client: userId,
-  });
+  const [jobForm, setJobForm] = useState({ client: userId });
+
   const formData = [
     {
       name: "companyName",
@@ -58,6 +58,7 @@ export default function ApplyJobCreateJob() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+
     const newJobForm = {
       client: jobForm.client,
       companyName: {
@@ -78,10 +79,9 @@ export default function ApplyJobCreateJob() {
         telegram: jobForm.telegram,
       },
     };
-    const { value, error, warning } = createJobSchema.validate(newJobForm);
-    console.log(value);
-    console.log(error);
-    console.log(warning);
+
+    const { value, error } = createJobSchema.validate(newJobForm);
+
     if (error) {
       setFormError(true);
     } else {

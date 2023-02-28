@@ -127,4 +127,14 @@
       }
     }
   }
+
+  .job-details-page {
+    margin-inline: auto;
+    width: 80%;
+    min-width: 300px;
+    max-width: 1200px;
+
+    display: flex;
+    flex-direction: column;
+  }
 }
