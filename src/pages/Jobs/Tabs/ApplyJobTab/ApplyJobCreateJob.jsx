@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import MainButton from "../../../../components/MainButton/MainButton";
 import MainInput from "../../../../components/MainInput/MainInput";
 import { createJobSchema } from "../../../../helpers/schemas";
+import clientServices from "../../../../services/clientServices";
 
 export default function ApplyJobCreateJob() {
   const userId = localStorage.getItem("userId");
@@ -37,7 +39,7 @@ export default function ApplyJobCreateJob() {
       type: "list",
       required: false,
       className: "category-input",
-      list:[]
+      list: [],
     },
     { name: "phone", type: "phone", required: true, className: "phone-input" },
     {
@@ -82,6 +84,11 @@ export default function ApplyJobCreateJob() {
     console.log(warning);
     if (error) {
       setFormError(true);
+    } else {
+      setFormError(false);
+      clientServices
+        .createJob(value)
+        .then((res) => toast.success("Created Successfully"));
     }
   };
 

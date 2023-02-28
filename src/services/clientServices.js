@@ -1,22 +1,11 @@
 import store from "../store";
 import Axios from "./Axios";
+import { authServices } from "./modules/authServices";
+import { jobsServices } from "./modules/jobsServices";
 
 const userId = store.getState().auth.userId;
 
 const clientServices = {
-  /*--- AUTH ---*/
-  register: async (obj) => {
-    const response = await Axios.post("/register", obj);
-    return response;
-  },
-  login: async (obj) => {
-    const response = await Axios.post("/login", obj);
-    return response;
-  },
-  loginBy: async (obj) => {
-    const response = await Axios.post("/loginBy", obj);
-    return response;
-  },
   updateInfo: async (obj) => {
     const response = await Axios.put("/update", obj);
     return response;
@@ -161,14 +150,8 @@ const clientServices = {
     );
     return response;
   },
-
-  /*--- JOBS ---*/
-  listAllJobs: async ({ page, list }) => {
-    const response = await Axios.get("/job/list", {
-      params: { page, list },
-    });
-    return response;
-  },
+  ...authServices,
+  ...jobsServices,
 };
 
 export default clientServices;
