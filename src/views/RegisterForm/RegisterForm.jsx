@@ -2,12 +2,13 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import MainButton from "../../components/MainButton/MainButton";
-import MainInput from "../../components/MainInput/MainInput";
+
 import { registerSchema } from "../../helpers/schemas";
 import toastPopup from "../../helpers/toastPopup";
 import clientServices from "../../services/clientServices";
 import { useNavigate } from "react-router";
+import { MainInput } from "components/Inputs";
+import { MainButton } from "components/Buttons";
 
 export default function RegisterForm() {
   const { t } = useTranslation();

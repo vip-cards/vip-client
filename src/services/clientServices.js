@@ -1,5 +1,6 @@
 import store from "../store";
 import Axios from "./Axios";
+import { adsServices } from "./modules/adsServices";
 import { authServices } from "./modules/authServices";
 import { jobsServices } from "./modules/jobsServices";
 
@@ -52,10 +53,7 @@ const clientServices = {
     const response = await Axios.get(`/banner/list`);
     return response;
   },
-  listAllAds: async () => {
-    const response = await Axios.get(`/ad/list`);
-    return response;
-  },
+
 
   getBranchDetails: async (branchId) => {
     const response = await Axios.get(`/branch/get?_id=${branchId}`);
@@ -152,6 +150,7 @@ const clientServices = {
   },
   ...authServices,
   ...jobsServices,
+  ...adsServices
 };
 
 export default clientServices;

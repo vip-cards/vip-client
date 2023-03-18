@@ -41,6 +41,7 @@ export default function Navbar() {
     { link: "/jobs", title: "jobs" },
     { link: "/wishlist", title: "wishlist" },
     { link: "/cart", title: "cart" },
+    { link: "/ads", title: "ads" },
     { link: "/account", title: "myAccount" },
     {
       link: "/logout",

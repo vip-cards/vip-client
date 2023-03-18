@@ -9,11 +9,12 @@ import toastPopup from "../../helpers/toastPopup";
 import { authActions } from "../../store/auth-slice";
 import clientServices from "../../services/clientServices";
 import { useSocialLogin } from "../../services/firebaseServices";
-import MainInput from "../../components/MainInput/MainInput";
-import MainButton from "../../components/MainButton/MainButton";
+
 import { ReactComponent as VendorLogoOrange } from "../../assets/VIP-ICON-SVG/VendorLogoOrange.svg";
 import { ReactComponent as VendorLogo } from "../../assets/VIP-ICON-SVG/VendorLogo.svg";
 import "./Login.scss";
+import { MainInput } from "components/Inputs";
+import { MainButton } from "components/Buttons";
 
 export default function Login() {
   const socialLogin = useSocialLogin();
@@ -28,7 +29,7 @@ export default function Login() {
     password: "",
   });
 
-  let formData = [
+  const formData = [
     { name: "email", type: "email", required: true },
     { name: "password", type: "password", required: true },
   ];

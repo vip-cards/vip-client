@@ -1,0 +1,114 @@
+.create-ad-page {
+  .page-title {
+    color: var(--mainColor);
+    text-align: center;
+    padding-block: 2rem;
+  }
+
+  .create-ad-form {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1.5rem;
+    padding: 1rem;
+    width: clamp(250px, 80%, 500px);
+    margin-inline: auto;
+    .field-title {
+      font-size: 15px;
+      color: var(--mainColor);
+      top: 0;
+      margin-left: 20px;
+      background-color: var(--mainColor);
+      color: var(--secondaryColor);
+      font-size: 13px;
+      padding: 2px 10px 3px;
+      border-radius: 10px;
+      font-weight: 100;
+      width: fit-content;
+    }
+    .check-field {
+      .form-check {
+        label {
+          flex-grow: 1;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-evenly;
+          align-content: center;
+          align-items: center;
+          width: 100%;
+          padding-inline: 1rem;
+
+          height: 50px;
+          background-color: #f1f1f1;
+          border: none;
+          border-radius: 15px;
+          padding-left: 10px;
+          padding-right: 10px;
+          font-size: 16px;
+          gap: 0.4rem;
+
+          @media (max-width: 400px) {
+            justify-content: flex-start;
+            gap: 1rem;
+            padding-inline: 1rem;
+          }
+        }
+      }
+    }
+    .main-input-label {
+      select,
+      input {
+        width: 100%;
+      }
+    }
+
+    .main-image-label {
+      grid-area: img;
+      border: 1px solid #707070;
+      border-radius: 7px;
+      // width: 250px;
+      height: 250px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      aspect-ratio: 9 / 6;
+      max-width: 100%;
+
+      .uploaded-img {
+        // width: 250px;
+        height: 250px;
+        object-fit: contain;
+        border-radius: 7px;
+      }
+      .main-input-image {
+        display: none;
+      }
+      .main-label-image {
+        z-index: 3;
+        position: absolute;
+        height: 30px;
+        width: 30px;
+        right: 1rem;
+        bottom: 1rem;
+        display: flex;
+        font-size: 20px;
+        color: var(--secondaryColor);
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background-color: #00000040;
+        border-radius: 70px;
+        padding: 20px;
+        transition: color ease-in-out 150ms;
+        &:hover {
+          background-color: var(--mainColor);
+          color: #00000080;
+          outline: 1px solid var(--mainColor);
+        }
+        &:active {
+          transform: scale(0.9);
+        }
+      }
+    }
+  }
+}

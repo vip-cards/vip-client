@@ -2,11 +2,11 @@ import React, { useState } from "react";
 
 import { ReactComponent as VendorLogo } from "../../assets/VIP-ICON-SVG/VendorLogo.svg";
 import { ReactComponent as VendorLogoOrange } from "../../assets/VIP-ICON-SVG/VendorLogoOrange.svg";
-import MainInput from "../../components/MainInput/MainInput";
 
 import { useTranslation } from "react-i18next";
 import { switchLang } from "../../helpers/lang";
-import MainButton from "../../components/MainButton/MainButton";
+import { MainInput } from "components/Inputs";
+import { MainButton } from "components/Buttons";
 
 export default function ResetPassword() {
   const { t, i18n } = useTranslation();

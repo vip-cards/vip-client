@@ -1,7 +1,8 @@
+import { MainButton } from "components/Buttons";
+import { MainInput } from "components/Inputs";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import MainButton from "../../../../components/MainButton/MainButton";
-import MainInput from "../../../../components/MainInput/MainInput";
+
 import { createJobSchema } from "../../../../helpers/schemas";
 import clientServices from "../../../../services/clientServices";
 

@@ -35,6 +35,9 @@ import HiringTabHome from "../../pages/Jobs/Tabs/HiringEmployeeTab/HiringTabHome
 import HiringTabViewCreatedJobs from "../../pages/Jobs/Tabs/HiringEmployeeTab/HiringTabViewCreatedJobs";
 import HiringTabCreateJob from "../../pages/Jobs/Tabs/HiringEmployeeTab/HiringTabCreateJob";
 import JobPage from "../../pages/Jobs/views/JobPage";
+import SponsorAds from "pages/Ads/Ads";
+import CreateAd from "pages/Ads/CreateAd/CreateAd";
+import PreviousAds from "pages/Ads/PreviousAds/PreviousAds";
 
 export default function ClientLayout() {
   const dispatch = useDispatch();
@@ -55,6 +58,9 @@ export default function ClientLayout() {
           <Route path="/home" element={<Home />} />
           <Route path="/vendors" element={<Vendors />} />
           <Route path="/offers" element={<Offers />} />
+          <Route path="/ads" element={<SponsorAds />} />
+          <Route path="/ads/create" element={<CreateAd />} />
+          <Route path="/ads/list" element={<PreviousAds />} />
           <Route path="/jobs" element={<Jobs />}>
             <Route path=":id" element={<JobPage />} />
             <Route path="apply" element={<ApplyJobTab />}></Route>
