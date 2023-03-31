@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import "./DropDown.scss";
 
-const Dropdown = ({ menu, children }) => {
+const Dropdown = ({ menu, children, right, left, itemRender, listRender }) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = (event) => {
@@ -13,6 +12,7 @@ const Dropdown = ({ menu, children }) => {
 
   const TriggerComponent = () => children;
   if (!menu?.length) return <TriggerComponent />;
+  const transormX = left ? "-90%" : right ? "-10%" : "-50%";
 
   return (
     <div
@@ -22,12 +22,8 @@ const Dropdown = ({ menu, children }) => {
     >
       {children && <TriggerComponent />}
       {showMenu && (
-        <ul>
-          {menu.map((item, idx) => (
-            <li key={item.key || "menu-item-" + idx}>
-              <Link to={item.to || ""}>{item.content || "Menu Item"}</Link>
-            </li>
-          ))}
+        <ul style={{ transform: `translate(${transormX}, 0)` }}>
+          {listRender ? listRender(menu) : menu.map(itemRender)}
         </ul>
       )}
     </div>

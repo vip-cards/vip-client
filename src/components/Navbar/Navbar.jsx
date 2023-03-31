@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { t } from "i18next";
 import { useDispatch } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { ReactComponent as BurgerMenuIcon } from "../../assets/VIP-ICON-SVG/burgerMenu.svg";
 import { ReactComponent as NavbarLogo } from "../../assets/VIP-ICON-SVG/NavbarLogo.svg";
 import { ReactComponent as Notification } from "../../assets/VIP-ICON-SVG/notification.svg";
@@ -107,7 +107,26 @@ export default function Navbar() {
       <ul className="nav-menu">
         {navItems.map((item, idx) => (
           <li key={idx} className="nav-item">
-            <Dropdown menu={lists[item.title] || undefined}>
+            <Dropdown
+              menu={lists[item.title] || undefined}
+              listRender={(menu) => (
+                <>
+                  {menu.slice(0, 5).map((subItem, idx) => (
+                    <li key={subItem.key || "menu-item-" + idx}>
+                      <Link to={subItem.to || ""}>
+                        {subItem.content || "Menu Item"}
+                      </Link>
+                    </li>
+                  ))}
+
+                  {menu.length > 5 && (
+                    <li>
+                      <Link to={item.link || ""}>See All ...</Link>
+                    </li>
+                  )}
+                </>
+              )}
+            >
               <NavLink
                 to={item.link}
                 className={(navData) =>
