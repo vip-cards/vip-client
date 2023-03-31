@@ -1,5 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+if (
+  localStorage.getItem("userRole") === "vendor" ||
+  localStorage.getItem("userRole") === "branch"
+) {
+  ["token", "vendorId", "branchId", "userRole", "userData", "userId"].forEach(
+    (element) => {
+      localStorage.removeItem(element);
+    }
+  );
+}
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -51,4 +61,5 @@ const authSlice = createSlice({
 });
 
 export const authActions = authSlice.actions;
+export const selectAuth = (state) => state.auth;
 export default authSlice.reducer;

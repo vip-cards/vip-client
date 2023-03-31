@@ -1,13 +1,14 @@
+import classNames from "classnames";
 import { t } from "i18next";
 import React from "react";
 import { NavLink, useParams } from "react-router-dom";
 import "./RoutingTab.scss";
-export default function RoutingTab({ routes }) {
+export default function RoutingTab({ routes, className }) {
   const params = useParams();
   const branchId = params.branchId;
   console.log("routing params", params);
   return (
-    <div className="routing-tabs-container">
+    <div className={classNames(className, "routing-tabs-container")}>
       <div className="tab-route">
         <NavLink
           to={routes[0].route}

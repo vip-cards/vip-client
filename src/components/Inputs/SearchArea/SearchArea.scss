@@ -1,0 +1,75 @@
+@import "src/styles/colors";
+
+.search-area {
+  width: 100%;
+  background-color: var(--mainColorLight);
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .search-input-container {
+    width: 50%;
+  }
+}
+.search-icon-container {
+  position: relative;
+  margin-inline: 1rem;
+
+  background: unset;
+  border: unset;
+  cursor: default;
+  transition: all ease-out 50ms;
+
+  .search-icon-bg {
+    width: 25px;
+    height: auto;
+    color: transparent;
+    transition: all ease-in-out 200ms;
+  }
+  .search-icon-mag {
+    position: absolute;
+    inset: 0;
+    color: lighten($color: $mainColor, $amount: 50);
+    width: 25px;
+    height: auto;
+    transition: all ease-in-out 200ms;
+  }
+  &.searching {
+    .search-icon-bg {
+      color: darken($color: $mainColor, $amount: 10);
+    }
+    .search-icon-mag {
+      inset: unset;
+      animation: search-spinner 1.25s ease-in-out infinite;
+      animation-fill-mode: forwards;
+    }
+  }
+}
+@keyframes search-spinner {
+  $x0: -20%;
+  $x1: 40%;
+  $y0: -20%;
+  $y1: 40%;
+
+  0% {
+    right: $x0;
+    top: $y0;
+  }
+  25% {
+    right: $x1;
+    top: $y0;
+  }
+  50% {
+    right: $x1;
+    top: $y1;
+  }
+  75% {
+    right: $x0;
+    top: $y1;
+  }
+  100% {
+    right: $x0;
+    top: $y0;
+  }
+}

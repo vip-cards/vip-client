@@ -1,21 +1,31 @@
 import React, { useEffect, useState } from "react";
-import clientServices from "../../services/clientServices";
+import BannerCard from "../../components/BannerCard/BannerCard";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import VendorCard from "../../components/VendorCard/VendorCard";
-import BannerCard from "../../components/BannerCard/BannerCard";
+import clientServices from "../../services/clientServices";
 import SectionView from "../../views/Home/SectionView/SectionView";
+import { A11y, Mousewheel, Keyboard, Autoplay } from "swiper";
+import classNames from "classnames";
+import classes from "./Home.module.scss";
 
-import "./Home.scss";
+import { Swiper, SwiperSlide } from "swiper/react";
+// Import Swiper styles
+import "swiper/scss"; // core Swiper
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
+  // refactor to useReducer
   const [vendors, setVendors] = useState([]);
   const [categories, setCategories] = useState([]);
   const [offers, setOffers] = useState([]);
   const [hotDeals, setHotDeals] = useState([]);
   const [banners, setBanners] = useState([]);
+  const [ads, setAds] = useState({});
 
   async function getHomeDataHandler() {
     setLoading(true);
@@ -23,7 +33,16 @@ export default function Home() {
       Promise.any([
         clientServices.listAllBanners().then(({ data }) => {
           setBanners(data?.records);
+          setAds({
+            large: data?.records.filter((item) =>
+              item.size.includes("large")
+            ),
+            small: data?.records.filter((item) =>
+              item.size.includes("small")
+            ),
+          });
         }),
+        // clientServices.listAllAds().then(({ data }) => {}),
         clientServices.listAllVendorCategories().then(({ data }) => {
           setCategories(data?.records);
           return data;
@@ -58,8 +77,44 @@ export default function Home() {
   }
 
   return (
-    <div className="client-home">
-      <section className="home-section">
+    <div className={classes["client-home"]}>
+      <section
+        className={classNames(classes["home-section"], classes["top-ad"])}
+      >
+        <div className={classes["large-ad"]}>test</div>
+        <div className={classes["small-ads-container"]}>
+          <Swiper
+            style={{
+              height: "450px",
+            }}
+            direction="vertical"
+            loop
+            autoplay={true}
+            spaceBetween={20}
+            slidesPerView={3}
+            onSlideChange={() => console.log("slide change")}
+            onSwiper={(swiper) => console.log(swiper)}
+            mousewheel={false}
+            modules={[A11y, Mousewheel, Keyboard, Autoplay]}
+            keyboard={{ enabled: true }}
+            freeMode={true}
+            centeredSlides
+            centeredSlidesBounds
+            rewind
+          >
+            {ads.small?.map((item, idx) => {
+              return (
+                <SwiperSlide className={classes["small-ad"]}>
+                  {({ isActive, isDuplicate, isNext, isPrev, isVisible }) => (
+                    <BannerCard banner={item} />
+                  )}
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        </div>
+      </section>
+      <section className={classes["home-section"]}>
         <SectionView
           items={banners}
           render={(props) => {
@@ -68,7 +123,7 @@ export default function Home() {
           autoplay={true}
         />
       </section>
-      <section className="home-section">
+      <section className={classes["home-section"]}>
         <SectionView
           items={categories}
           link={"/categories"}
@@ -78,7 +133,7 @@ export default function Home() {
           }}
         />
       </section>
-      <section className="home-section">
+      <section className={classes["home-section"]}>
         <SectionView
           items={vendors}
           link={"/vendors"}
@@ -88,7 +143,7 @@ export default function Home() {
           }}
         />
       </section>
-      <section className="home-section">
+      <section className={classes["home-section"]}>
         <SectionView
           items={offers}
           link={"/offers"}
@@ -98,7 +153,7 @@ export default function Home() {
           }}
         />
       </section>
-      <section className="home-section">
+      <section className={classes["home-section"]}>
         <SectionView
           items={hotDeals}
           link={"/hot-deals"}

@@ -5,8 +5,6 @@ import i18n from "../../locales/i18n";
 import { authActions } from "../../store/auth-slice";
 import clientServices from "../../services/clientServices";
 
-import MainInput from "../../components/MainInput/MainInput";
-import MainButton from "../../components/MainButton/MainButton";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import toastPopup from "../../helpers/toastPopup";
@@ -14,6 +12,8 @@ import { faImage } from "@fortawesome/free-solid-svg-icons";
 import branchBlaceHolder from "../../assets/images/branchPlaceHolder.png";
 
 import "./AccountDetails.scss";
+import { MainInput } from "components/Inputs";
+import { MainButton } from "components/Buttons";
 /**
  * {obj1} new object
  * {obj2} old object

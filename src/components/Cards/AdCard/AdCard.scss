@@ -1,0 +1,53 @@
+@import "src/styles/colors";
+
+.axd-card-container {
+  // x: for ad blocker not to detect the class
+
+  @apply flex flex-col flex-nowrap p-3 shadow-md gap-3 relative;
+  width: 25rem;
+  height: 12rem;
+  border-radius: 12px;
+  &:hover {
+    @apply shadow;
+  }
+  .ad-type-badge {
+    @apply flex flex-row gap-3 items-center absolute;
+    right: -0.5rem;
+    top: 1rem;
+    background-color: $secondary;
+    color: white;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.7rem;
+    font-weight: bolder;
+    letter-spacing: 1pt;
+    border-radius: 1rem;
+    box-shadow: 1px 1px 1px gray;
+  }
+  .card-body {
+    @apply flex flex-row flex-nowrap h-full divide-x-2 gap-3 w-full overflow-hidden p-1;
+    .card-image {
+      @apply w-80 flex justify-center items-center;
+      img {
+        @apply rounded-lg overflow-hidden object-contain max-w-full max-h-full;
+      }
+    }
+    .card-details {
+      @apply flex flex-col gap-3 w-full;
+      .detail-row {
+        @apply flex flex-row flex-nowrap items-center;
+
+        .icon {
+          color: $primary;
+          @apply w-8 text-center;
+        }
+
+        .content {
+          @apply flex-grow text-left whitespace-nowrap text-sm;
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}

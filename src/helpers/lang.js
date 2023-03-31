@@ -6,6 +6,8 @@
 //   }
 // }
 
+import i18n from "locales/i18n";
+
 export function checkFixLang(lang) {
   if (lang === "en") {
     document.getElementsByTagName("html")[0].setAttribute("dir", "ltr");
@@ -35,4 +37,9 @@ export function switchLang(lang) {
   // editTitle(lang);
 
   window.location.reload();
+}
+
+export function getLocalizedWord(word) {
+  const lang = i18n.language;
+  return word[lang] || word.en || word.ar;
 }

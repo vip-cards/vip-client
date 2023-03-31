@@ -1,22 +1,16 @@
 import axios from "axios";
-import jwt_decode from "jwt-decode";
 import dayjs from "dayjs";
-import endPoint from "./endPoint";
-import { authActions } from "../store/auth-slice";
+import jwt_decode from "jwt-decode";
 import store from "../store";
+import { authActions } from "../store/auth-slice";
+import endPoint from "./endPoint";
 
 const baseURL = endPoint;
 
-const guestEndpoints = [
-  "/vendor/login",
-  "/branch/login",
-  "/client/login",
-  "/client/loginBy",
-  "/client/register",
-];
+const guestEndpoints = ["/login", "/loginBy", "/register"];
 
 const Axios = axios.create({ baseURL });
-Axios.defaults.baseURL = endPoint;
+Axios.defaults.baseURL = endPoint + "/client";
 Axios.defaults.headers["x-app-token"] = "VIP-Team";
 
 Axios.interceptors.request.use(async (req) => {
