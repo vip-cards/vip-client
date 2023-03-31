@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { t } from "i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { ReactComponent as BurgerMenuIcon } from "../../assets/VIP-ICON-SVG/burgerMenu.svg";
 import { ReactComponent as NavbarLogo } from "../../assets/VIP-ICON-SVG/NavbarLogo.svg";
@@ -13,6 +13,9 @@ import { authActions } from "../../store/auth-slice";
 import Dropdown from "../DropDown/DropDown";
 import "./Navbar.scss";
 import SideNav from "./SideNav/SideNav";
+import classNames from "classnames";
+import { markAsSeen } from "services/socket/notification";
+import { selectNotification } from "store/notification-slice";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -20,6 +23,7 @@ export default function Navbar() {
   const [lists, setLists] = useState({});
   const [viweAccountMenu, setViweAccountMenu] = useState(false);
   const [showSideMenu, setShowSideMenu] = useState(false);
+  const notificationList = useSelector(selectNotification);
 
   const dispatch = useDispatch();
 
@@ -42,6 +46,7 @@ export default function Navbar() {
     { link: "/wishlist", title: "wishlist" },
     { link: "/cart", title: "cart" },
     { link: "/ads", title: "ads" },
+    { link: "/chat", title: "chat" },
     { link: "/account", title: "myAccount" },
     {
       link: "/logout",
@@ -69,6 +74,10 @@ export default function Navbar() {
     localStorage.removeItem("userData");
     dispatch(authActions.logout());
     setViweAccountMenu((prevState) => !prevState);
+  }
+
+  function handleNotificationClick(notificationId, link) {
+    markAsSeen(notificationId);
   }
 
   useEffect(() => {
@@ -156,7 +165,32 @@ export default function Navbar() {
         >
           {t("lang")}
         </button>
-        <Notification className="notification-icon" />
+        <Dropdown
+          menu={notificationList.list}
+          left
+          listRender={(menu) =>
+            menu.slice(0, 10).map((item, idx) => (
+              <li
+                key={item._id}
+                className={classNames("relative cursor-pointer px-3 py-5", {
+                  "bg-slate-100/40 border-0 border-b-2 border-b-slate-300/40":
+                    !item.seen,
+                })}
+                onClick={() => handleNotificationClick(item._id, item.link)}
+              >
+                {!item.seen && (
+                  <span className="ml-auto absolute w-2 h-2 bg-primary rounded-full right-2 top-2 animate-pulse"></span>
+                )}
+                <a href={item.link} target="_blank" rel="noopener noreferrer">
+                  {item.text.slice(0, 30) +
+                    (item.text.length > 30 ? "..." : "") ?? "No text"}
+                </a>
+              </li>
+            ))
+          }
+        >
+          <Notification className="notification-icon" />
+        </Dropdown>{" "}
       </div>
       <Notification className="small-notification-icon" />
       {showSideMenu && <SideNav onToggle={toggleSideMenu} items={navItems} />}

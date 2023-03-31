@@ -1,4 +1,4 @@
-import toastPopup from "app/utils/toastPopup";
+import toastPopup from "helpers/toastPopup";
 import { EVENTS, socket } from "./config";
 
 export function createRoom(members) {

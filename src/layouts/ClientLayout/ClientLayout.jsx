@@ -38,6 +38,7 @@ import JobPage from "../../pages/Jobs/views/JobPage";
 import SponsorAds from "pages/Ads/Ads";
 import CreateAd from "pages/Ads/CreateAd/CreateAd";
 import PreviousAds from "pages/Ads/PreviousAds/PreviousAds";
+import Chat from "pages/Chat/Chat";
 
 export default function ClientLayout() {
   const dispatch = useDispatch();
@@ -61,6 +62,7 @@ export default function ClientLayout() {
           <Route path="/ads" element={<SponsorAds />} />
           <Route path="/ads/create" element={<CreateAd />} />
           <Route path="/ads/list" element={<PreviousAds />} />
+          <Route path="/chat" element={<Chat />} />
           <Route path="/jobs" element={<Jobs />}>
             <Route path=":id" element={<JobPage />} />
             <Route path="apply" element={<ApplyJobTab />}></Route>

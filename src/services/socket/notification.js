@@ -3,17 +3,17 @@ import { EVENTS, socket } from "./config";
 
 export function markAsSeen(notificationId) {
   const auth = store.getState().auth;
-  const role = auth.profile?.role || auth.role || "";
+  const role = auth.userData?.role || auth.role || "";
   console.log({
     notification: notificationId,
-    [role]: auth._id,
+    [role]: auth.userData._id,
     connected: socket.connected,
   });
   socket.emit(
     EVENTS.NOTIFICATION.MARK_SEEN,
     {
       notification: notificationId,
-      [role]: auth._id,
+      [role]: auth.userData._id,
     },
     (res) => console.log(res)
   );
