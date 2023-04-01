@@ -14,11 +14,10 @@ const notificationSlice = createSlice({
       }
 
       const userId = JSON.parse(localStorage.getItem("userData"))._id;
-      console.log(userId);
       state.list = payload.records.map((item) => {
         if (
           item.seenBy?.length &&
-          item.seenBy.findIndex((item) => item._id === userId) > -1
+          item.seenBy.findIndex((item) => item === userId) > -1
         ) {
           return {
             ...item,

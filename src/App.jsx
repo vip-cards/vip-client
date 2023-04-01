@@ -46,14 +46,13 @@ function App() {
 
   useEffect(() => {
     connectSocket();
+    listenToNotification((first) => console.log(first));
     socket.on(EVENTS.CONNECTION.OPEN, () => toastPopup.success("connected"));
     listenToNotification((res) => console.log(res));
-    listNotification(
-      {
-        "city.en": "Alexandria",
-        // gender: "male",
-      },
-      (response) => setNotifications(response)
+    listNotification();
+
+    socket.on(EVENTS.NOTIFICATION.LIST, (response) =>
+      setNotifications(response)
     );
     return () => {
       socket.off(EVENTS.CONNECTION.OPEN);
