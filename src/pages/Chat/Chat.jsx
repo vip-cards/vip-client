@@ -108,8 +108,8 @@ function Chat() {
   }, [messageList]);
 
   useEffect(() => {
-    if (state.roomId) {
-      setActiveRoom(state.roomId);
+    if (state?.roomId) {
+      handleSelectRoom(state.roomId);
     }
   }, [state]);
 
