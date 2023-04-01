@@ -1,45 +1,56 @@
+import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { t } from "i18next";
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import i18n from "locales/i18n";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
-import clientServices from "../../services/clientServices";
+import { createRoom } from "services/socket/chat";
+import { selectAuth } from "store/auth-slice";
+import BranchCard from "../../components/BranchCard/BranchCard";
 import Carousel from "../../components/Carousel/Carousel";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import VendorCard from "../../components/VendorCard/VendorCard";
+import clientServices from "../../services/clientServices";
 import "./Vendor.scss";
-import BranchCard from "../../components/BranchCard/BranchCard";
-import NoData from "../../components/NoData/NoData";
 
 export default function Vendor() {
   const params = useParams();
   const vendorId = params.vendorId;
+  const lang = i18n.language;
 
   const [loading, setLoading] = useState(false);
+  const [vendor, setVendor] = useState({});
   const [branches, setBranches] = useState([]);
   const [offers, setOffers] = useState([]);
   const [categories, setCategories] = useState([]);
+  const auth = useSelector(selectAuth);
   const navigate = useNavigate();
 
   async function getVendorDataHandler() {
+    setVendor({});
+    setBranches([]);
+    setOffers([]);
     setLoading(true);
     try {
-      let { data: allCategories } =
+      const { data: vendor } = await clientServices.getVendor(vendorId);
+      setVendor(vendor.record[0]);
+
+      const { data: allCategories } =
         await clientServices.listAllVendorCategories(vendorId);
       setCategories(allCategories?.records);
 
-      setLoading(false);
-      let { data: allBranches } = await clientServices.listAllVendorBranches(
+      const { data: allBranches } = await clientServices.listAllVendorBranches(
         vendorId
       );
 
       setBranches(allBranches?.records);
-      let { data: allOffers } = await clientServices.listAllVendorProducts(
+      setLoading(false);
+
+      const { data: allOffers } = await clientServices.listAllVendorProducts(
         vendorId
       );
-
       setOffers(allOffers?.records);
     } catch (e) {
       console.log(e);
@@ -48,14 +59,33 @@ export default function Vendor() {
   }
 
   console.log("allBarnches", branches);
+
+  function startChatHandler() {
+    createRoom({ vendor: vendorId });
+  }
+
   useEffect(() => {
     getVendorDataHandler();
-  }, []);
+  }, [vendorId]);
 
   return loading ? (
     <LoadingSpinner />
   ) : (
     <div className="client-vendor-home">
+      <div className="rounded-2xl border-2 p-4 flex flex-row justify-between mx-8">
+        <h4 className="text-primary">{vendor?.name?.[lang]}</h4>
+        <button
+          className="flex flex-row gap-3 justify-center items-center cursor-pointer p-0 m-0"
+          onClick={startChatHandler}
+        >
+          <span className="font-semibold text-primary">Chat with us</span>
+          <FontAwesomeIcon
+            icon={faCommentDots}
+            size="2x"
+            className="text-primary"
+          />
+        </button>
+      </div>
       {categories && categories.length > 0 ? (
         <div className="carousel-container">
           <div className="add-button-container">

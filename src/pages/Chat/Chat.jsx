@@ -12,6 +12,7 @@ import { getLocalizedWord } from "helpers/lang";
 import toastPopup from "helpers/toastPopup";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router";
 import { chatServices } from "services/modules/chatServices";
 import {
   createRoom,
@@ -28,6 +29,9 @@ const { CHAT, CONNECTION } = EVENTS;
 function Chat() {
   const chatRef = useRef(null);
   const user = useSelector(selectAuth);
+  const location = useLocation();
+  const { state } = location;
+
   const [adminsList, setAdminsList] = useState([]);
   const [roomList, setRoomList] = useState([]);
   const [subAgents, setSubAgents] = useState([]);
@@ -41,7 +45,7 @@ function Chat() {
   const handleCreateRoomModal = () => {
     setIsModalVisible(true);
     setStatus(API_STATUS.LOADING);
-    // agentServices.listAllAgents({ parent: user._id }).then(({ record }) => {
+    // agentServices.listAllAgents({ parent: user.userData._id }).then(({ record }) => {
     //   setSubAgents(record);
     //   setStatus(API_STATUS.SUCCESS);
     // });
@@ -52,7 +56,7 @@ function Chat() {
     setIsModalVisible(false);
   };
   const handleCreateAdminRoom = (_id) => {
-    createRoom({ client: user.userData._id, admin: _id });
+    createRoom({ admin: _id });
     setIsModalVisible(false);
   };
 
@@ -104,6 +108,12 @@ function Chat() {
   }, [messageList]);
 
   useEffect(() => {
+    if (state.roomId) {
+      setActiveRoom(state.roomId);
+    }
+  }, [state]);
+
+  useEffect(() => {
     listRooms({ client: user.userData._id, page: 1, limit: 20 }, onListRooms);
     chatServices.getAdmins().then((data) => setAdminsList(data.record));
     socket.on(CHAT.CREATE, onCreateRoom);
@@ -131,7 +141,7 @@ function Chat() {
             const otherChatter =
               members[
                 Object.keys(members).filter(
-                  (item) => members[item]._id !== user._id
+                  (item) => members[item]._id !== user.userData._id
                 )[0]
               ];
 
@@ -186,12 +196,12 @@ function Chat() {
                 key={message.timetamp}
                 className={classNames("py-3 px-5 rounded", {
                   "bg-slate-600 ml-auto w-fit rounded-l-full rounded-tr-full text-slate-100":
-                    message.agent === user._id ||
-                    message.agent?._id === user._id,
+                    message.client === user.userData._id ||
+                    message.client?._id === user.userData._id,
                   "bg-slate-300 mr-auto w-fit rounded-r-full rounded-bl-full text-slate-900":
                     !(
-                      message.agent === user._id ||
-                      message.agent?._id === user._id
+                      message.client === user.userData._id ||
+                      message.client?._id === user.userData._id
                     ),
                 })}
               >
@@ -249,35 +259,6 @@ function Chat() {
               </button>
             ))}
           {/* Parent Agent */}
-
-          {/* Agnets */}
-          {!!subAgents.length &&
-            subAgents?.map((agent) => (
-              <button
-                onClick={() => handleCreateRoom(agent?._id)}
-                key={agent?._id + "-item"}
-                className="flex-row flex-nowrap flex items-center gap-3 hover:ring border-2 px-3 py-1 rounded-xl"
-              >
-                <span className="w-12 flex  items-center border bg-slate-200/50 justify-center aspect-square rounded-3xl overflow-hidden">
-                  {agent?.image ? (
-                    <img
-                      src={agent?.image?.Location}
-                      alt={getLocalizedWord(agent?.name)}
-                      className="max-h-full max-w-full object-cover h-full w-full"
-                    />
-                  ) : (
-                    <FontAwesomeIcon
-                      icon={faUser}
-                      size="xl"
-                      className="text-slate-800"
-                    />
-                  )}
-                </span>
-                <span className="flex-grow text-lg whitespace-nowrap overflow-hidden text-ellipsis">
-                  {getLocalizedWord(agent?.name)}
-                </span>
-              </button>
-            ))}
         </div>
       </Modal>
     </div>

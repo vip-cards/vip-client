@@ -1,10 +1,9 @@
 import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { createPortal } from "react-dom";
-import classes from "./Modal.module.scss";
-import PropTypes from "prop-types";
 import classNames from "classnames";
+import PropTypes from "prop-types";
+import { createPortal } from "react-dom";
 import { IconButton } from "../Buttons";
-import { useRef } from "react";
+import classes from "./Modal.module.scss";
 
 const Modal = ({
   visible = false,

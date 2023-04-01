@@ -91,6 +91,7 @@ export default function Navbar() {
 
       setListItem({ categories: categoryList });
     });
+
     clientServices.vendorQuery().then((response) => {
       const vendorList = response.data.records.map((item) => ({
         key: item._id,
@@ -193,7 +194,7 @@ export default function Navbar() {
           }
         >
           <Notification className="notification-icon" />
-        </Dropdown>{" "}
+        </Dropdown>
       </div>
       <Notification className="small-notification-icon" />
       {showSideMenu && <SideNav onToggle={toggleSideMenu} items={navItems} />}
