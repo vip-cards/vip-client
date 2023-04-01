@@ -6,7 +6,13 @@ import Login from "./pages/Login/Login";
 
 import toastPopup from "helpers/toastPopup";
 import { Helmet } from "react-helmet-async";
-import { Navigate, Route, Routes, useLocation } from "react-router";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router";
 import {
   connectSocket,
   disconnectSocket,
@@ -29,6 +35,7 @@ function App() {
   let lang = i18n.language;
 
   const auth = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
@@ -46,15 +53,24 @@ function App() {
 
   useEffect(() => {
     connectSocket();
-    socket.on(EVENTS.CONNECTION.OPEN, () => toastPopup.success("connected"));
+    listenToNotification((first) => console.log(first));
+    socket.on(EVENTS.CONNECTION.OPEN, () => {});
     listenToNotification((res) => console.log(res));
-    listNotification(
-      {
-        "city.en": "Alexandria",
-        // gender: "male",
-      },
-      (response) => setNotifications(response)
+    listNotification();
+
+    socket.on(EVENTS.NOTIFICATION.LIST, (response) =>
+      setNotifications(response)
     );
+
+    socket.on(EVENTS.CHAT.CREATE, (res) => {
+      console.log(res);
+      if (!res.success) {
+        return;
+      }
+      const roomId = res.record?._id;
+      navigate("/chat", { state: { roomId } });
+      console.log(res);
+    });
     return () => {
       socket.off(EVENTS.CONNECTION.OPEN);
       disconnectSocket();

@@ -1,8 +1,10 @@
 import toastPopup from "helpers/toastPopup";
+import store from "store";
 import { EVENTS, socket } from "./config";
 
-export function createRoom(members) {
-  socket.emit(EVENTS.CHAT.CREATE, { members });
+export function createRoom(reciever) {
+  const userId = store.getState().auth.userId;
+  socket.emit(EVENTS.CHAT.CREATE, { members: { client: userId, ...reciever } });
 }
 
 export function getRoom(_id, onEvent) {

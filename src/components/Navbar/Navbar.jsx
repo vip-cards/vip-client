@@ -91,6 +91,7 @@ export default function Navbar() {
 
       setListItem({ categories: categoryList });
     });
+
     clientServices.vendorQuery().then((response) => {
       const vendorList = response.data.records.map((item) => ({
         key: item._id,
@@ -169,28 +170,31 @@ export default function Navbar() {
           menu={notificationList.list}
           left
           listRender={(menu) =>
-            menu.slice(0, 10).map((item, idx) => (
-              <li
-                key={item._id}
-                className={classNames("relative cursor-pointer px-3 py-5", {
-                  "bg-slate-100/40 border-0 border-b-2 border-b-slate-300/40":
-                    !item.seen,
-                })}
-                onClick={() => handleNotificationClick(item._id, item.link)}
-              >
-                {!item.seen && (
-                  <span className="ml-auto absolute w-2 h-2 bg-primary rounded-full right-2 top-2 animate-pulse"></span>
-                )}
-                <a href={item.link} target="_blank" rel="noopener noreferrer">
-                  {item.text.slice(0, 30) +
-                    (item.text.length > 30 ? "..." : "") ?? "No text"}
-                </a>
-              </li>
-            ))
+            menu
+              .filter((item) => !item.seen)
+              .slice(0, 10)
+              .map((item, idx) => (
+                <li
+                  key={item._id}
+                  className={classNames("relative cursor-pointer px-3 py-5", {
+                    "bg-slate-100/40 border-0 border-b-2 border-b-slate-300/40":
+                      !item.seen,
+                  })}
+                  onClick={() => handleNotificationClick(item._id, item.link)}
+                >
+                  {!item.seen && (
+                    <span className="ml-auto absolute w-2 h-2 bg-primary rounded-full right-2 top-2 animate-pulse"></span>
+                  )}
+                  <a href={item.link} target="_blank" rel="noopener noreferrer">
+                    {item.text.slice(0, 30) +
+                      (item.text.length > 30 ? "..." : "") ?? "No text"}
+                  </a>
+                </li>
+              ))
           }
         >
           <Notification className="notification-icon" />
-        </Dropdown>{" "}
+        </Dropdown>
       </div>
       <Notification className="small-notification-icon" />
       {showSideMenu && <SideNav onToggle={toggleSideMenu} items={navItems} />}

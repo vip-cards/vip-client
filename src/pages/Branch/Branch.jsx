@@ -7,6 +7,9 @@ import RoutingTab from "../../components/RoutingTab/RoutingTab";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import i18n from "../../locales/i18n";
 import clientServices from "../../services/clientServices";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
+import { createRoom } from "services/socket/chat";
 export default function Branch() {
   const params = useParams();
   let branchId = params.branchId;
@@ -17,8 +20,8 @@ export default function Branch() {
   const [branchhInfo, setBranchInfo] = useState({
     name_en: "",
     name_ar: "",
-    lat: "31.21417631969772",
-    lng: "29.945998297003165",
+    lat: "",
+    lng: "",
     email: "",
     address_en: "",
     address_ar: "",
@@ -27,30 +30,15 @@ export default function Branch() {
     vendor: "",
   });
 
-  useEffect(() => {
-    getBranchDetailsHandler();
-  }, []);
-
   console.log(branchhInfo);
 
   async function getBranchDetailsHandler() {
     setLoading(true);
     try {
-      let { data } = await clientServices.getBranchDetails(branchId);
-      setBranchInfo({
-        name_en: data?.record[0]?.name?.en,
-        name_ar: data?.record[0]?.name?.ar,
-        lat: "31.21417631969772",
-        lng: "29.945998297003165",
-        email: data?.record[0]?.email,
-        address_en: data?.record[0]?.address.en,
-        address_ar: data?.record[0]?.address.ar,
-        phone: data?.record[0]?.phone,
-        governorate: data?.record[0]?.governorate.en,
-        vendor: data?.record[0]?.vendor,
-      });
+      const { data } = await clientServices.getBranchDetails(branchId);
 
-      console.log(data);
+      setBranchInfo(data.record[0]);
+
       setLoading(false);
     } catch (e) {
       console.log(e);
@@ -62,6 +50,13 @@ export default function Branch() {
     { name: "offers", route: `/vendors/${vendorId}/${branchId}/offers` },
     { name: "hot-deals", route: `/vendors/${vendorId}/${branchId}/hot-deals` },
   ];
+  function startChatHandler() {
+    createRoom({ branch: branchId });
+  }
+
+  useEffect(() => {
+    getBranchDetailsHandler();
+  }, [params]);
 
   return (
     <div className="app-card-shadow branch-container">
@@ -69,18 +64,27 @@ export default function Branch() {
         <LoadingSpinner />
       ) : (
         <div className="branch-details">
-          <p className="branch-name">{`${branchhInfo?.vendor?.name?.[lang]} - ${
-            branchhInfo?.[`name_${lang}`]
-          }`}</p>
-          <div className="rate">
-            <Rate className="rate-icon" />
-            <Rate className="rate-icon" />
-            <Rate className="rate-icon" />
-            <Rate className="rate-icon" />
-            <Rate className="rate-icon" />
-            (653 Reviews)
+          <div className="rounded-2xl border-2 p-4 flex flex-row justify-between w-full">
+            <div className="flex flex-col">
+              <h3 className="branch-name">{`${
+                branchhInfo?.vendor?.name?.[lang] || ""
+              } - ${branchhInfo?.name?.[lang]}`}</h3>
+              {console.log(branchhInfo)}
+              <p className="address">{branchhInfo?.address?.[lang]} </p>
+            </div>
+
+            <button
+              className="flex flex-row gap-3 justify-center items-center cursor-pointer p-0 m-0"
+              onClick={startChatHandler}
+            >
+              <span className="font-semibold text-primary">Chat with us</span>
+              <FontAwesomeIcon
+                icon={faCommentDots}
+                size="2x"
+                className="text-primary"
+              />
+            </button>
           </div>
-          <p className="address">{branchhInfo?.[`address_${lang}`]}</p>
         </div>
       )}
       <div className="search-input-container">
