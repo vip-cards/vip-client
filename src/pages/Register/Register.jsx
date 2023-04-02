@@ -37,10 +37,10 @@ export default function Register() {
           <p>{t("signUp")}</p>
           <Outlet />
           <p className="login-footer">
-            <span>Already Have An Account?</span>
+            <span>{t("alreadyHaveAccount")} </span>
             &nbsp;
             <Link to="/login" className="link-item">
-              Login
+              {t("login")}
             </Link>
           </p>
         </form>

@@ -1,22 +1,41 @@
-import Login from "./pages/Login/Login";
-import i18n from "./locales/i18n";
-import { checkFixLang } from "./helpers/lang";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { checkFixLang } from "./helpers/lang";
+import i18n from "./locales/i18n";
+import Login from "./pages/Login/Login";
 
-import { Navigate, Route, Routes, useLocation } from "react-router";
+import toastPopup from "helpers/toastPopup";
+import { Helmet } from "react-helmet-async";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router";
+import {
+  connectSocket,
+  disconnectSocket,
+  EVENTS,
+  socket,
+} from "services/socket/config";
+import {
+  listenToNotification,
+  listNotification,
+} from "services/socket/notification";
+import { setNotifications } from "store/actions";
+import Register from "./pages/Register/Register";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import ProtectedRoute from "./routes/ProtectedRoute/ProtectedRoute";
 import { fetchWishlist } from "./store/wishlist-slice";
-import Register from "./pages/Register/Register";
-import RegisterHome from "./views/RegisterHome/RegisterHome";
 import RegisterForm from "./views/RegisterForm/RegisterForm";
-import ResetPassword from "./pages/ResetPassword/ResetPassword";
-import { Helmet } from "react-helmet-async";
+import RegisterHome from "./views/RegisterHome/RegisterHome";
 
 function App() {
   let lang = i18n.language;
 
   const auth = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
@@ -31,6 +50,32 @@ function App() {
   useEffect(() => {
     document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
+
+  useEffect(() => {
+    connectSocket();
+    listenToNotification((first) => console.log(first));
+    socket.on(EVENTS.CONNECTION.OPEN, () => {});
+    listenToNotification((res) => console.log(res));
+    listNotification();
+
+    socket.on(EVENTS.NOTIFICATION.LIST, (response) =>
+      setNotifications(response)
+    );
+
+    socket.on(EVENTS.CHAT.CREATE, (res) => {
+      console.log(res);
+      if (!res.success) {
+        return;
+      }
+      const roomId = res.record?._id;
+      navigate("/chat", { state: { roomId } });
+      console.log(res);
+    });
+    return () => {
+      socket.off(EVENTS.CONNECTION.OPEN);
+      disconnectSocket();
+    };
+  }, []);
 
   return (
     <div className="App">

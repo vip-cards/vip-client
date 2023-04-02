@@ -1,6 +1,6 @@
+import { MainButton } from "components/Buttons";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
-import MainButton from "../../components/MainButton/MainButton";
 import { useSocialLogin } from "../../services/firebaseServices";
 
 export default function RegisterHome() {

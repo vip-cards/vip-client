@@ -7,23 +7,23 @@ import useSearch from "../../helpers/search";
 import clientServices from "../../services/clientServices";
 import "./Categories.scss";
 export default function Categories() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState("idle");
   const [categories, setCategories] = useState([]);
-
   const {
     loading: searching,
     renderedList,
     setQuery,
   } = useSearch(clientServices.categoryQuery, categories);
+
   async function getCategoriesHandler() {
-    setLoading(true);
+    setLoading("loading");
     try {
       let { data } = await clientServices.listAllVendorCategories();
       setCategories(data.records);
       console.log(data);
-      setLoading(false);
+      setLoading("done");
     } catch (e) {
-      setLoading(false);
+      setLoading("done");
       console.log(e);
     }
   }
@@ -31,25 +31,28 @@ export default function Categories() {
   useEffect(() => {
     getCategoriesHandler();
   }, []);
+
+  const RenderedList = () => {
+    if (renderedList.length > 0) {
+      return (
+        <div className="categories-cards-container">
+          {renderedList.map((category) => {
+            return <CategoryCard key={category._id} category={category} />;
+          })}
+        </div>
+      );
+    } else {
+      return <NoData />;
+    }
+  };
   return (
     <div className="categories-page">
       <SearchArea
         onChange={(e) => setQuery(e.target.value)}
         loading={searching}
       />
-      {loading ? (
-        <LoadingSpinner />
-      ) : renderedList.length > 0 ? (
-        <div className="categories-cards-container">
-          {renderedList.length > 0
-            ? renderedList.map((category) => {
-                return <CategoryCard key={category._id} category={category} />;
-              })
-            : null}
-        </div>
-      ) : (
-        <NoData />
-      )}
+
+      {loading === "loading" ? <LoadingSpinner /> : <RenderedList />}
     </div>
   );
 }
