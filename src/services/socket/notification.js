@@ -20,7 +20,7 @@ export function listNotification() {
   const userData = JSON.parse(localStorage.getItem("userData"));
 
   socket.emit(EVENTS.NOTIFICATION.LIST, {
-    "city.en": userData.city.en,
-    gender: userData.gender,
+    "city.en": userData?.city?.en,
+    gender: userData?.gender,
   });
 }

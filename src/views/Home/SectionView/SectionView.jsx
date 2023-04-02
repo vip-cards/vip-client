@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import { t } from "i18next";
 import Carousel from "../../../components/Carousel/Carousel";
 import LoadingSpinner from "../../../components/LoadingSpinner/LoadingSpinner";
+import NoData from "components/NoData/NoData";
 
 export default function SectionView({
   items,
@@ -11,8 +12,15 @@ export default function SectionView({
   autoplay = false,
 }) {
   const navigate = useNavigate();
-  if (!items || items.length <= 0) {
+  if (!items || items.length < 0) {
     return <LoadingSpinner />;
+  }
+  if (items.length === 0) {
+    return (
+      <>
+        <NoData />
+      </>
+    );
   }
   return (
     <div className="carousel-container">

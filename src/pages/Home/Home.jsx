@@ -6,8 +6,18 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import VendorCard from "../../components/VendorCard/VendorCard";
 import clientServices from "../../services/clientServices";
 import SectionView from "../../views/Home/SectionView/SectionView";
-import { A11y, Mousewheel, Keyboard, Autoplay } from "swiper";
+import {
+  A11y,
+  Mousewheel,
+  Keyboard,
+  Autoplay,
+  Pagination,
+  Navigation,
+} from "swiper";
 import classNames from "classnames";
+
+import dummyData from "mock/ad.json";
+
 import classes from "./Home.module.scss";
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -34,12 +44,8 @@ export default function Home() {
         clientServices.listAllBanners().then(({ data }) => {
           setBanners(data?.records);
           setAds({
-            large: data?.records.filter((item) =>
-              item.size.includes("large")
-            ),
-            small: data?.records.filter((item) =>
-              item.size.includes("small")
-            ),
+            large: data?.records.filter((item) => item.size.includes("large")),
+            small: data?.records.filter((item) => item.size.includes("small")),
           });
         }),
         // clientServices.listAllAds().then(({ data }) => {}),
@@ -68,6 +74,8 @@ export default function Home() {
     }
   }
 
+  console.log(dummyData);
+
   useEffect(() => {
     getHomeDataHandler();
   }, []);
@@ -77,43 +85,166 @@ export default function Home() {
   }
 
   return (
-    <div className={classes["client-home"]}>
-      <section
-        className={classNames(classes["home-section"], classes["top-ad"])}
-      >
-        <div className={classes["large-ad"]}>test</div>
-        <div className={classes["small-ads-container"]}>
-          <Swiper
-            style={{
-              height: "450px",
-            }}
-            direction="vertical"
-            loop
-            autoplay={true}
-            spaceBetween={20}
-            slidesPerView={3}
-            onSlideChange={() => console.log("slide change")}
-            onSwiper={(swiper) => console.log(swiper)}
-            mousewheel={false}
-            modules={[A11y, Mousewheel, Keyboard, Autoplay]}
-            keyboard={{ enabled: true }}
-            freeMode={true}
-            centeredSlides
-            centeredSlidesBounds
-            rewind
-          >
-            {ads.small?.map((item, idx) => {
-              return (
-                <SwiperSlide className={classes["small-ad"]}>
-                  {({ isActive, isDuplicate, isNext, isPrev, isVisible }) => (
-                    <BannerCard banner={item} />
-                  )}
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
-        </div>
-      </section>
+    <div
+      className={classNames(
+        classes["client-home"],
+        "max-w-[1150px] min-w-[300px] w-[80vw] mx-auto"
+      )}
+    >
+      <header className="flex flex-col gap-8  mb-8">
+        <section className="w-full flex flex-row gap-3 h-96">
+          <div className="flex-grow min-w-[200px] rounded-xl  flex justify-center items-center overflow-hidden max-w-[70%]">
+            <Swiper
+              direction="horizontal"
+              style={{ height: "100%" }}
+              loop
+              autoplay={true}
+              spaceBetween={20}
+              slidesPerView={1}
+              onSlideChange={() => console.log("slide change")}
+              onSwiper={(swiper) => console.log(swiper)}
+              mousewheel={false}
+              modules={[
+                A11y,
+                Mousewheel,
+                Keyboard,
+                Autoplay,
+                Navigation,
+                Pagination,
+              ]}
+              keyboard={{ enabled: true }}
+              freeMode={true}
+              centeredSlides
+              centeredSlidesBounds
+              rewind
+              navigation
+              pagination={{
+                clickable: true,
+                el: ".swiper-pagination",
+                renderBullet: function (index, className) {
+                  return `<span class="${className} bg-green-700" style=""></span>`;
+                },
+              }}
+            >
+              {dummyData
+                .filter((ad) => ad.bannerSize === "large")
+                .map((ad) => {
+                  return (
+                    <SwiperSlide
+                      key={ad._id}
+                      className="w-full h-full rounded-xl shadow"
+                    >
+                      <a
+                        href={ad.link}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                      >
+                        <img
+                          className="w-full h-full object-cover"
+                          src={ad.image.url}
+                          alt={ad.name}
+                        />
+                      </a>
+                    </SwiperSlide>
+                  );
+                })}
+              <div
+                className="swiper-pagination"
+                style={{
+                  position: "absolute",
+                  bottom: "10px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                }}
+              >
+                <span className="swiper-pagination-bullet">start</span>
+                <span className="swiper-pagination-bullet">end</span>
+              </div>
+            </Swiper>
+          </div>
+          <div className="w-64 flex flex-grow justify-center items-center rounded-xl shadow overflow-hidden max-w-[30%]">
+            <Swiper
+              direction="vertical"
+              loop
+              style={{
+                height: "100%",
+                minWidth: "10rem",
+              }}
+              autoplay={false}
+              spaceBetween={20}
+              slidesPerView={2.1}
+              onSlideChange={() => console.log("slide change")}
+              onSwiper={(swiper) => console.log(swiper)}
+              mousewheel={false}
+              modules={[A11y, Mousewheel, Keyboard, Navigation, Autoplay]}
+              keyboard={{ enabled: true }}
+              freeMode={true}
+              centeredSlides
+              navigation
+              centeredSlidesBounds
+              rewind
+            >
+              {dummyData
+                .filter((ad) => ad.bannerSize === "medium")
+                .map((ad) => {
+                  return (
+                    <SwiperSlide
+                      key={ad._id}
+                      className="w-full h-full rounded-xl shadow"
+                    >
+                      {({
+                        isActive,
+                        isDuplicate,
+                        isNext,
+                        isPrev,
+                        isVisible,
+                      }) => <BannerCard banner={ad} />}
+                    </SwiperSlide>
+                  );
+                })}
+            </Swiper>
+          </div>
+        </section>
+        <section className="w-full flex flex-row gap-3 ">
+          <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full shadow-primary/20 shadow-lg">
+            <Swiper
+              direction="horizontal"
+              loop
+              autoplay={false}
+              spaceBetween={20}
+              slidesPerView={3.7}
+              onSlideChange={() => console.log("slide change")}
+              onSwiper={(swiper) => console.log(swiper)}
+              mousewheel={false}
+              modules={[A11y, Mousewheel, Keyboard, Navigation, Autoplay]}
+              keyboard={{ enabled: true }}
+              freeMode={true}
+              centeredSlides
+              centeredSlidesBounds
+              navigation
+              rewind
+              className="p-4 h-full"
+            >
+              {dummyData
+                .filter((ad) => ad.bannerSize === "small")
+                .map((ad) => {
+                  return (
+                    <SwiperSlide key={ad._id} className="rounded-xl shadow">
+                      {({
+                        isActive,
+                        isDuplicate,
+                        isNext,
+                        isPrev,
+                        isVisible,
+                      }) => <BannerCard banner={ad} />}
+                    </SwiperSlide>
+                  );
+                })}
+            </Swiper>
+          </div>
+        </section>
+      </header>
+
       <section className={classes["home-section"]}>
         <SectionView
           items={banners}
