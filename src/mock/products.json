@@ -1,0 +1,311 @@
+[
+  {
+    "_id": "6429bfbba2b22ea7d6816f80",
+    "name": {
+      "ar": "sunt adipisicing",
+      "en": "eu mollit"
+    },
+    "rank": 21,
+    "rate": 3.67,
+    "image": [
+      {
+        "alt": "Et deserunt nisi irure esse qui ad pariatur officia et.",
+        "url": "https://picsum.photos/800/600?random=2"
+      },
+      {
+        "length": 2
+      }
+    ],
+    "price": 872,
+    "vendor": "6429bfbb50a4c722789ea5bb",
+    "branches": [
+      {
+        "_id": "6429bfbb282c2cadf8710f47",
+        "name": {
+          "ar": "mollit ea",
+          "en": "cillum do"
+        }
+      },
+      {
+        "length": 7
+      }
+    ],
+    "category": "6429bfbb4184da4c637eee19",
+    "isActive": false,
+    "isHotDeal": true,
+    "isLimited": true,
+    "isEditable": true,
+    "vendorRank": 72,
+    "description": {
+      "ar": "Proident excepteur laborum et in duis consectetur. Ullamco excepteur Lorem commodo commodo do minim veniam ea officia. Amet esse aliqua commodo amet magna dolore proident sunt laboris sint do mollit tempor qui. Exercitation nulla veniam fugiat amet non in ea excepteur mollit cupidatat mollit tempor reprehenderit.",
+      "en": "Eu ex sint id proident laboris id cupidatat cupidatat. Sunt cillum laborum culpa mollit nisi. Sit non laboris nisi voluptate fugiat fugiat commodo commodo sit enim do voluptate. Reprehenderit excepteur tempor quis officia adipisicing sint labore exercitation do Lorem officia fugiat aliquip culpa. Et consequat proident quis id enim enim consectetur voluptate Lorem. Sint anim fugiat esse mollit ea."
+    },
+    "numOfReviews": 68,
+    "originalPrice": 3277
+  },
+  {
+    "_id": "6429bfbb9259779c02899c4a",
+    "name": {
+      "ar": "qui quis",
+      "en": "eu sunt"
+    },
+    "rank": 50,
+    "rate": 2.96,
+    "image": [
+      {
+        "alt": "Ea quis sunt in tempor deserunt deserunt est magna ad ea est enim.",
+        "url": "https://picsum.photos/800/600?random=3"
+      },
+      {
+        "length": 1
+      }
+    ],
+    "price": 687,
+    "vendor": "6429bfbb093925a7f4434e4a",
+    "branches": [
+      {
+        "_id": "6429bfbb3da2f7341224f77a",
+        "name": {
+          "ar": "est laborum",
+          "en": "amet ipsum"
+        }
+      },
+      {
+        "length": 2
+      }
+    ],
+    "category": "6429bfbbe2e0af81c7d0e187",
+    "isActive": true,
+    "isHotDeal": false,
+    "isLimited": false,
+    "isEditable": true,
+    "vendorRank": 29,
+    "description": {
+      "ar": "Ex incididunt eu minim consectetur irure proident ipsum cupidatat nulla deserunt consectetur quis. Sint dolor ad labore occaecat consectetur ad. Esse ad cillum minim elit anim cillum adipisicing dolore in do Lorem et.",
+      "en": "Consectetur culpa sint enim dolor nulla. Aliquip magna anim cillum nostrud incididunt duis occaecat ex cupidatat occaecat fugiat. Pariatur eu dolore ex voluptate nisi id Lorem pariatur. Consectetur magna nulla proident nisi incididunt quis id qui."
+    },
+    "numOfReviews": 29,
+    "originalPrice": 3311
+  },
+  {
+    "_id": "6429bfbb8a9f69d15993ad96",
+    "name": {
+      "ar": "officia minim",
+      "en": "esse Lorem"
+    },
+    "rank": 34,
+    "rate": 2.85,
+    "image": [
+      {
+        "alt": "Id tempor dolore laboris esse aliquip do.",
+        "url": "https://picsum.photos/800/600?random=2"
+      },
+      {
+        "length": 2
+      }
+    ],
+    "price": 131,
+    "vendor": "6429bfbba4e0586a6502109d",
+    "branches": [
+      {
+        "_id": "6429bfbb8c4ee61a2977536d",
+        "name": {
+          "ar": "exercitation laborum",
+          "en": "deserunt non"
+        }
+      },
+      {
+        "length": 8
+      }
+    ],
+    "category": "6429bfbbda910af8065d9118",
+    "isActive": false,
+    "isHotDeal": false,
+    "isLimited": true,
+    "isEditable": false,
+    "vendorRank": 90,
+    "description": {
+      "ar": "Mollit dolor enim et veniam. Tempor et laborum aliqua id et dolore. Do mollit eiusmod nulla adipisicing ea. Nostrud fugiat do elit veniam eiusmod cillum fugiat aliqua in anim. Fugiat magna aliqua ipsum aute cillum esse ut veniam duis aute id dolore non laborum.",
+      "en": "Mollit id cupidatat irure minim ullamco laboris dolor sit id velit nulla proident ipsum Lorem. Duis officia in et laboris exercitation cillum labore sint eu cupidatat esse ex sit occaecat. Commodo nostrud nostrud ea laborum nostrud id eu eiusmod tempor officia et aute."
+    },
+    "numOfReviews": 77,
+    "originalPrice": 1663
+  },
+  {
+    "_id": "6429bfbb2ac5dac58b691ec3",
+    "name": {
+      "ar": "proident officia",
+      "en": "quis adipisicing"
+    },
+    "rank": 16,
+    "rate": 1.15,
+    "image": [
+      {
+        "alt": "Labore eu exercitation enim id laborum cillum pariatur reprehenderit.",
+        "url": "https://picsum.photos/800/600?random=2"
+      },
+      {
+        "length": 2
+      }
+    ],
+    "price": 61,
+    "vendor": "6429bfbb53431008d4c5cd08",
+    "branches": [
+      {
+        "_id": "6429bfbb0194e4c593b8bef4",
+        "name": {
+          "ar": "velit adipisicing",
+          "en": "ex minim"
+        }
+      },
+      {
+        "length": 8
+      }
+    ],
+    "category": "6429bfbb3612e804076c8e80",
+    "isActive": false,
+    "isHotDeal": false,
+    "isLimited": true,
+    "isEditable": true,
+    "vendorRank": 5,
+    "description": {
+      "ar": "Aliqua duis in incididunt sit ipsum sint cupidatat culpa irure consequat duis ut. Fugiat adipisicing voluptate Lorem ad incididunt id ullamco aliqua nulla in qui sint. Eiusmod minim aute eu cupidatat ullamco proident. Est sit cupidatat ad aute eu labore aute do reprehenderit id. Ex exercitation sint aute labore est irure mollit ipsum quis anim cupidatat cupidatat nostrud est. Sint ullamco ullamco exercitation consectetur do.",
+      "en": "Ex consectetur tempor eiusmod occaecat deserunt ad tempor amet eu velit voluptate. Adipisicing magna culpa do aliqua cillum labore fugiat aliqua ex velit mollit. Sit velit laborum qui dolore eu est commodo qui ex excepteur aute in."
+    },
+    "numOfReviews": 46,
+    "originalPrice": 3918
+  },
+  {
+    "_id": "6429bfbb6c9211861fd16b12",
+    "name": {
+      "ar": "velit quis",
+      "en": "occaecat sit"
+    },
+    "rank": 94,
+    "rate": 3.58,
+    "image": [
+      {
+        "alt": "Eu aute enim deserunt ad aute exercitation.",
+        "url": "https://picsum.photos/800/600?random=3"
+      },
+      {
+        "length": 2
+      }
+    ],
+    "price": 946,
+    "vendor": "6429bfbbd90c1888f7291a74",
+    "branches": [
+      {
+        "_id": "6429bfbb271f8394e8d3f5f8",
+        "name": {
+          "ar": "ea magna",
+          "en": "laborum mollit"
+        }
+      },
+      {
+        "length": 9
+      }
+    ],
+    "category": "6429bfbbd28cc92cd1237267",
+    "isActive": false,
+    "isHotDeal": true,
+    "isLimited": true,
+    "isEditable": false,
+    "vendorRank": 63,
+    "description": {
+      "ar": "Non qui fugiat ipsum velit sint sunt nisi adipisicing adipisicing non cupidatat sit non. Pariatur eiusmod eiusmod duis reprehenderit eiusmod officia fugiat qui ut tempor nisi culpa velit irure. Culpa do esse ipsum minim minim proident culpa reprehenderit. Sint nulla laborum officia velit.",
+      "en": "Duis laboris dolor reprehenderit ad cillum nisi excepteur esse. Pariatur duis elit est minim sit et laborum enim. Minim consectetur esse fugiat adipisicing voluptate adipisicing esse excepteur veniam sunt ipsum Lorem qui ut. Quis est ut magna adipisicing eu eiusmod in. Ad in ipsum in sint reprehenderit consequat."
+    },
+    "numOfReviews": 43,
+    "originalPrice": 1182
+  },
+  {
+    "_id": "6429bfbbf82e46e4939352a2",
+    "name": {
+      "ar": "Lorem nulla",
+      "en": "aliqua reprehenderit"
+    },
+    "rank": 76,
+    "rate": 1.78,
+    "image": [
+      {
+        "alt": "Officia consequat Lorem aliqua cillum nulla elit mollit culpa qui.",
+        "url": "https://picsum.photos/800/600?random=1"
+      },
+      {
+        "length": 2
+      }
+    ],
+    "price": 785,
+    "vendor": "6429bfbb5897991a7729d365",
+    "branches": [
+      {
+        "_id": "6429bfbbf5da61805f018062",
+        "name": {
+          "ar": "sint ex",
+          "en": "commodo elit"
+        }
+      },
+      {
+        "length": 1
+      }
+    ],
+    "category": "6429bfbbd5540873ea3522a9",
+    "isActive": true,
+    "isHotDeal": false,
+    "isLimited": false,
+    "isEditable": true,
+    "vendorRank": 5,
+    "description": {
+      "ar": "Mollit amet id minim eiusmod consectetur veniam eu cupidatat eu anim consequat est enim. Cillum aliqua voluptate incididunt ullamco sit proident et. Qui occaecat esse incididunt id. Ipsum cupidatat nostrud qui dolore ut incididunt ex magna laboris esse.",
+      "en": "Aliquip commodo esse duis anim do eu laborum Lorem consectetur. Laborum ullamco elit cupidatat aliqua ipsum. Sit id aute aute labore duis ex esse occaecat adipisicing magna labore aute minim. Esse non qui enim non labore mollit in proident reprehenderit occaecat minim reprehenderit laboris tempor."
+    },
+    "numOfReviews": 20,
+    "originalPrice": 3560
+  },
+  {
+    "_id": "6429bfbb602192f24334e562",
+    "name": {
+      "ar": "officia quis",
+      "en": "officia adipisicing"
+    },
+    "rank": 91,
+    "rate": 2.22,
+    "image": [
+      {
+        "alt": "Pariatur veniam enim laborum anim.",
+        "url": "https://picsum.photos/800/600?random=1"
+      },
+      {
+        "length": 4
+      }
+    ],
+    "price": 61,
+    "vendor": "6429bfbb6ec5600ad8b470e2",
+    "branches": [
+      {
+        "_id": "6429bfbb63e00a73fbfbbb77",
+        "name": {
+          "ar": "exercitation cupidatat",
+          "en": "aliquip pariatur"
+        }
+      },
+      {
+        "length": 2
+      }
+    ],
+    "category": "6429bfbbbf465b73be21c99f",
+    "isActive": false,
+    "isHotDeal": true,
+    "isLimited": true,
+    "isEditable": true,
+    "vendorRank": 84,
+    "description": {
+      "ar": "Magna est ut magna dolor pariatur dolor occaecat. Reprehenderit est in proident anim id culpa dolor exercitation. Incididunt consectetur ad excepteur qui ad occaecat. Qui irure occaecat aliqua adipisicing non nisi commodo ipsum magna et.",
+      "en": "Sunt aute ad aute nulla officia aliqua cupidatat et veniam qui. Laboris anim deserunt Lorem consectetur. Pariatur ullamco Lorem ipsum magna velit officia cupidatat veniam. Deserunt aute dolor ea fugiat et proident amet ad id magna dolor proident ea ipsum. Laboris duis cillum duis deserunt ullamco do laboris. Lorem quis magna Lorem consectetur enim. Duis esse elit amet labore."
+    },
+    "numOfReviews": 32,
+    "originalPrice": 2743
+  }
+]
+

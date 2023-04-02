@@ -20,14 +20,11 @@ const clientServices = {
     const response = await Axios.get(`/vendor/get?_id=${vendorId}`);
     return response;
   },
-  listAllVendors: async () => {
-    const response = await Axios.get(`/vendor/list`);
-    return response;
-  },
-  listAllVendorsInCategory: async (id) => {
-    const response = await Axios.get(`/vendor/list?category=${id}`);
-    return response;
-  },
+  listAllVendors: async () => (await Axios.get(`/vendor/list`)).data?.records,
+
+  listAllVendorsInCategory: async (id) =>
+    (await Axios.get(`/vendor/list?category=${id}`)).data?.records,
+
   getReview: async (id) => {
     const response = await Axios.get(`/review/get?_id=${id}&client=${userId}`);
     return response;
@@ -54,7 +51,6 @@ const clientServices = {
     return response;
   },
 
-
   getBranchDetails: async (branchId) => {
     const response = await Axios.get(`/branch/get?_id=${branchId}`);
     return response;
@@ -76,6 +72,8 @@ const clientServices = {
     const response = await Axios.get(`/product/list?vendor=${vendorId}`);
     return response;
   },
+
+  listAllProducts: async () => (await Axios.get(`/product/list`)).data?.records,
 
   listAllProductsOfType: async (isHotDeal = false) => {
     const response = await Axios.get(`/product/list?isHotDeal=${isHotDeal}`);
@@ -150,7 +148,7 @@ const clientServices = {
   },
   ...authServices,
   ...jobsServices,
-  ...adsServices
+  ...adsServices,
 };
 
 export default clientServices;

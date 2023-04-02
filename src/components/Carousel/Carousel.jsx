@@ -1,22 +1,21 @@
+import {
+  A11y,
+  Autoplay,
+  Keyboard,
+  Mousewheel,
+  Navigation,
+  Pagination,
+} from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "./Carousel.scss";
 
 // Import Swiper styles
 import "swiper/css";
-import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
-import {
-  Navigation,
-  Pagination,
-  Scrollbar,
-  A11y,
-  Mousewheel,
-  Keyboard,
-  Autoplay,
-} from "swiper";
+import { Scrollbar } from "swiper";
 
 export default function Carousel({
   extraLarge,

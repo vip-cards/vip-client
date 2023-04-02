@@ -17,6 +17,7 @@ import {
 import classNames from "classnames";
 
 import dummyData from "mock/ad.json";
+import dummyProducts from "mock/products.json";
 
 import classes from "./Home.module.scss";
 
@@ -26,14 +27,34 @@ import "swiper/scss"; // core Swiper
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import SectionContainer from "./SectionContainer";
+import { getLocalizedWord } from "helpers/lang";
+import { Link, useNavigate } from "react-router-dom";
+import { t } from "i18next";
+import useSWR from "swr";
+import NoData from "components/NoData/NoData";
 
 export default function Home() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  // refactor to useReducer
-  const [vendors, setVendors] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [offers, setOffers] = useState([]);
-  const [hotDeals, setHotDeals] = useState([]);
+
+  const {
+    data: products,
+    error,
+    isLoading: productsLoading,
+    isValidating,
+    mutate,
+  } = useSWR("all-products", clientServices.listAllProducts);
+
+  const { data: vendors, isLoading: vendorsLoading } = useSWR(
+    "all-vendors",
+    clientServices.listAllVendors
+  );
+  const { data: categories, isLoading: categoriesLoading } = useSWR(
+    "all-vendors",
+    clientServices.listAllVendorCategories
+  );
+
   const [banners, setBanners] = useState([]);
   const [ads, setAds] = useState({});
 
@@ -48,23 +69,6 @@ export default function Home() {
             small: data?.records.filter((item) => item.size.includes("small")),
           });
         }),
-        // clientServices.listAllAds().then(({ data }) => {}),
-        clientServices.listAllVendorCategories().then(({ data }) => {
-          setCategories(data?.records);
-          return data;
-        }),
-        clientServices.listAllVendors().then(({ data }) => {
-          setVendors(data?.records);
-          return data;
-        }),
-        clientServices.listAllProductsOfType(false).then(({ data }) => {
-          setOffers(data?.records);
-          return data;
-        }),
-        clientServices.listAllProductsOfType(true).then(({ data }) => {
-          setHotDeals(data?.records);
-          return data;
-        }),
       ]).then(() => {
         setLoading(false);
       });
@@ -74,8 +78,6 @@ export default function Home() {
     }
   }
 
-  console.log(dummyData);
-
   useEffect(() => {
     getHomeDataHandler();
   }, []);
@@ -84,6 +86,77 @@ export default function Home() {
     return <LoadingSpinner />;
   }
 
+  const renderAds = (size) =>
+    dummyData
+      .filter((ad) => ad.bannerSize === size)
+      .map((ad) => {
+        return (
+          <SwiperSlide key={ad._id} className="w-full h-full rounded-xl shadow">
+            <a href={ad.link} target="_blank" rel="noreferrer noopener">
+              <img
+                className="w-full h-full object-cover"
+                src={ad.image.url}
+                alt={ad.name}
+              />
+            </a>
+          </SwiperSlide>
+        );
+      });
+
+  const renderProducts = (type) => {
+    if (productsLoading || !products) return <LoadingSpinner />;
+    const productList = products?.filter(
+      (product) =>
+        (type === "hotDeal" && product.isHotDeal) ||
+        (type !== "hotDeal" && !product.isHotDeal)
+    );
+
+    if (!productList.length) {
+      return <NoData />;
+    }
+    return products
+      .filter(
+        (product) =>
+          (type === "hotDeal" && product.isHotDeal) ||
+          (type !== "hotDeal" && !product.isHotDeal)
+      )
+      .map((product) => {
+        return (
+          <SwiperSlide key={product._id} className="w-fit h-full">
+            <ProductCard product={product} />
+          </SwiperSlide>
+        );
+      });
+  };
+
+  const renderVendors = () => {
+    if (vendorsLoading || !vendors) return <LoadingSpinner />;
+    if (!vendors.length) {
+      return <NoData />;
+    }
+    return vendors.map((vendor) => {
+      return (
+        <SwiperSlide key={vendor._id} className="w-fit h-full">
+          <VendorCard vendor={vendor} />
+        </SwiperSlide>
+      );
+    });
+  };
+
+  const renderCategories = () => {
+    if (categoriesLoading || !categories) return <LoadingSpinner />;
+    if (!categories.length) {
+      return <NoData />;
+    }
+    return categories.map((category) => {
+      return (
+        <SwiperSlide key={category._id} className="w-fit h-full">
+          <CategoryCard category={category} />
+        </SwiperSlide>
+      );
+    });
+  };
+
   return (
     <div
       className={classNames(
@@ -91,161 +164,77 @@ export default function Home() {
         "max-w-[1150px] min-w-[300px] w-[80vw] mx-auto"
       )}
     >
-      <header className="flex flex-col gap-8  mb-8">
-        <section className="w-full flex flex-row gap-3 h-96">
-          <div className="flex-grow min-w-[200px] rounded-xl  flex justify-center items-center overflow-hidden max-w-[70%]">
-            <Swiper
+      <header className="flex flex-col gap-8 my-8">
+        <SectionContainer direction="col" className="lg:flex-row lg:h-96">
+          <div className="flex-grow max-lg:h-72 min-w-[200px] rounded-xl overflow-hidden flex justify-center items-center lg:max-w-[70%] max-w-full">
+            <HomeSwiper
               direction="horizontal"
-              style={{ height: "100%" }}
-              loop
-              autoplay={true}
-              spaceBetween={20}
               slidesPerView={1}
-              onSlideChange={() => console.log("slide change")}
-              onSwiper={(swiper) => console.log(swiper)}
-              mousewheel={false}
-              modules={[
-                A11y,
-                Mousewheel,
-                Keyboard,
-                Autoplay,
-                Navigation,
-                Pagination,
-              ]}
-              keyboard={{ enabled: true }}
-              freeMode={true}
-              centeredSlides
-              centeredSlidesBounds
-              rewind
-              navigation
+              style={{ height: "100%" }}
+              spaceBetween={20}
               pagination={{
                 clickable: true,
                 el: ".swiper-pagination",
                 renderBullet: function (index, className) {
-                  return `<span class="${className} bg-green-700" style=""></span>`;
+                  return `<span class="${className} bg-primary" style=""></span>`;
                 },
               }}
             >
-              {dummyData
-                .filter((ad) => ad.bannerSize === "large")
-                .map((ad) => {
-                  return (
-                    <SwiperSlide
-                      key={ad._id}
-                      className="w-full h-full rounded-xl shadow"
-                    >
-                      <a
-                        href={ad.link}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                      >
-                        <img
-                          className="w-full h-full object-cover"
-                          src={ad.image.url}
-                          alt={ad.name}
-                        />
-                      </a>
-                    </SwiperSlide>
-                  );
-                })}
-              <div
-                className="swiper-pagination"
-                style={{
-                  position: "absolute",
-                  bottom: "10px",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                }}
-              >
-                <span className="swiper-pagination-bullet">start</span>
-                <span className="swiper-pagination-bullet">end</span>
-              </div>
-            </Swiper>
+              {renderAds("large")}
+            </HomeSwiper>
           </div>
-          <div className="w-64 flex flex-grow justify-center items-center rounded-xl shadow overflow-hidden max-w-[30%]">
-            <Swiper
+          {/* large screens */}
+          <div className="w-fit hidden lg:flex flex-grow justify-center items-center rounded-xl overflow-hidden max-w-[30%]">
+            <HomeSwiper
               direction="vertical"
-              loop
               style={{
                 height: "100%",
                 minWidth: "10rem",
               }}
-              autoplay={false}
               spaceBetween={20}
               slidesPerView={2.1}
-              onSlideChange={() => console.log("slide change")}
-              onSwiper={(swiper) => console.log(swiper)}
-              mousewheel={false}
-              modules={[A11y, Mousewheel, Keyboard, Navigation, Autoplay]}
-              keyboard={{ enabled: true }}
-              freeMode={true}
-              centeredSlides
-              navigation
-              centeredSlidesBounds
-              rewind
             >
-              {dummyData
-                .filter((ad) => ad.bannerSize === "medium")
-                .map((ad) => {
-                  return (
-                    <SwiperSlide
-                      key={ad._id}
-                      className="w-full h-full rounded-xl shadow"
-                    >
-                      {({
-                        isActive,
-                        isDuplicate,
-                        isNext,
-                        isPrev,
-                        isVisible,
-                      }) => <BannerCard banner={ad} />}
-                    </SwiperSlide>
-                  );
-                })}
-            </Swiper>
+              {renderAds("medium")}
+            </HomeSwiper>
           </div>
-        </section>
-        <section className="w-full flex flex-row gap-3 ">
-          <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full shadow-primary/20 shadow-lg">
-            <Swiper
+          {/* small screens */}
+          <div className="w-full flex lg:hidden flex-grow justify-center items-center rounded-xl overflow-hidden max-w-full">
+            <HomeSwiper
               direction="horizontal"
-              loop
-              autoplay={false}
+              breakpoints={{
+                300: { slidesPerView: 1.2 },
+                480: { slidesPerView: 1.5 },
+                540: { slidesPerView: 1.8 },
+                768: { slidesPerView: 2.4 },
+                860: { slidesPerView: 2.8 },
+              }}
               spaceBetween={20}
-              slidesPerView={3.7}
-              onSlideChange={() => console.log("slide change")}
-              onSwiper={(swiper) => console.log(swiper)}
-              mousewheel={false}
-              modules={[A11y, Mousewheel, Keyboard, Navigation, Autoplay]}
-              keyboard={{ enabled: true }}
-              freeMode={true}
-              centeredSlides
-              centeredSlidesBounds
-              navigation
-              rewind
-              className="p-4 h-full"
             >
-              {dummyData
-                .filter((ad) => ad.bannerSize === "small")
-                .map((ad) => {
-                  return (
-                    <SwiperSlide key={ad._id} className="rounded-xl shadow">
-                      {({
-                        isActive,
-                        isDuplicate,
-                        isNext,
-                        isPrev,
-                        isVisible,
-                      }) => <BannerCard banner={ad} />}
-                    </SwiperSlide>
-                  );
-                })}
-            </Swiper>
+              {renderAds("medium")}
+            </HomeSwiper>
           </div>
-        </section>
+        </SectionContainer>
+        <SectionContainer direction="row">
+          <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full h-40">
+            <HomeSwiper
+              direction="horizontal"
+              spaceBetween={20}
+              breakpoints={{
+                300: { slidesPerView: 1.2 },
+                480: { slidesPerView: 1.5 },
+                540: { slidesPerView: 1.8 },
+                768: { slidesPerView: 2.4 },
+                860: { slidesPerView: 2.8 },
+                992: { slidesPerView: 3.1 },
+              }}
+            >
+              {renderAds("small")}
+            </HomeSwiper>
+          </div>
+        </SectionContainer>
       </header>
 
-      <section className={classes["home-section"]}>
+      {/* <section className={classes["home-section"]}>
         <SectionView
           items={banners}
           render={(props) => {
@@ -253,47 +242,127 @@ export default function Home() {
           }}
           autoplay={true}
         />
-      </section>
-      <section className={classes["home-section"]}>
-        <SectionView
-          items={categories}
-          link={"/categories"}
-          linkTitle={"showAllCategories"}
-          render={(props) => {
-            return <CategoryCard category={props} />;
-          }}
-        />
-      </section>
-      <section className={classes["home-section"]}>
-        <SectionView
-          items={vendors}
-          link={"/vendors"}
-          linkTitle={"showAllVendors"}
-          render={(props) => {
-            return <VendorCard vendor={props} />;
-          }}
-        />
-      </section>
-      <section className={classes["home-section"]}>
-        <SectionView
-          items={offers}
-          link={"/offers"}
-          linkTitle={"showAllOffers"}
-          render={(props) => {
-            return <ProductCard product={props} />;
-          }}
-        />
-      </section>
-      <section className={classes["home-section"]}>
-        <SectionView
-          items={hotDeals}
-          link={"/hot-deals"}
-          linkTitle={"showAllHotDeals"}
-          render={(props) => {
-            return <ProductCard product={props} />;
-          }}
-        />
-      </section>
+      </section> */}
+
+      {/* Vendors */}
+      <SectionContainer direction="col">
+        <div className="flex w-full flex-row justify-between px-3">
+          <h4 className="text-primary">Categories</h4>
+          <button
+            className="shadow text-primary px-3 font-semibold rounded-lg"
+            onClick={() => navigate("/categories")}
+          >
+            {t("categories")}
+          </button>
+        </div>
+        <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full">
+          <HomeSwiper
+            direction="horizontal"
+            spaceBetween={20}
+            breakpoints={{
+              300: { slidesPerView: 1 },
+              480: { slidesPerView: 1.25 },
+              540: { slidesPerView: 1.45 },
+              768: { slidesPerView: 2.1 },
+              860: { slidesPerView: 2.5 },
+              992: { slidesPerView: 3 },
+              1024: { slidesPerView: 3.35 },
+            }}
+          >
+            {renderCategories()}
+          </HomeSwiper>
+        </div>
+      </SectionContainer>
+
+      {/* Vendors */}
+      <SectionContainer direction="col">
+        <div className="flex w-full flex-row justify-between px-3">
+          <h4 className="text-primary">Vendors</h4>
+          <button
+            className="shadow text-primary px-3 font-semibold rounded-lg"
+            onClick={() => navigate("/vendors")}
+          >
+            {t("vendors")}
+          </button>
+        </div>
+        <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full">
+          <HomeSwiper
+            direction="horizontal"
+            spaceBetween={20}
+            breakpoints={{
+              300: { slidesPerView: 1 },
+              480: { slidesPerView: 1.25 },
+              540: { slidesPerView: 1.45 },
+              768: { slidesPerView: 2.1 },
+              860: { slidesPerView: 2.5 },
+              992: { slidesPerView: 3 },
+              1024: { slidesPerView: 3.35 },
+            }}
+          >
+            {renderVendors()}
+          </HomeSwiper>
+        </div>
+      </SectionContainer>
+
+      {/* Offers */}
+      <SectionContainer direction="col">
+        <div className="flex w-full flex-row justify-between px-3">
+          <h4 className="text-primary">Offers</h4>
+          <button
+            className="shadow text-primary px-3 font-semibold rounded-lg"
+            onClick={() => navigate("/offers")}
+          >
+            {t("offers")}
+          </button>
+        </div>
+        <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full">
+          <HomeSwiper
+            direction="horizontal"
+            spaceBetween={20}
+            breakpoints={{
+              300: { slidesPerView: 1 },
+              480: { slidesPerView: 1.25 },
+              540: { slidesPerView: 1.45 },
+              768: { slidesPerView: 2.1 },
+              860: { slidesPerView: 2.5 },
+              992: { slidesPerView: 3 },
+              1024: { slidesPerView: 3.35 },
+            }}
+          >
+            {renderProducts("")}
+          </HomeSwiper>
+        </div>
+      </SectionContainer>
+
+      {/* Hot Deals */}
+      <SectionContainer direction="col">
+        <div className="flex w-full flex-row justify-between px-3">
+          <h4 className="text-primary">Hot Deals</h4>
+          <button
+            className="shadow text-primary px-3 font-semibold rounded-lg"
+            onClick={() => navigate("/hot-deals")}
+          >
+            {t("hotDeals")}
+          </button>
+        </div>
+        <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full">
+          <HomeSwiper
+            direction="horizontal"
+            spaceBetween={20}
+            breakpoints={{
+              300: { slidesPerView: 1 },
+              480: { slidesPerView: 1.25 },
+              540: { slidesPerView: 1.45 },
+              768: { slidesPerView: 2.1 },
+              860: { slidesPerView: 2.5 },
+              992: { slidesPerView: 3 },
+              1024: { slidesPerView: 3.35 },
+            }}
+          >
+            {renderProducts("hotDeal")}
+          </HomeSwiper>
+        </div>
+      </SectionContainer>
     </div>
   );
 }
@@ -311,3 +380,33 @@ export default function Home() {
   // setHotDeals(allHotDeals?.records);
   // setBanners(allBanners?.records);
  */
+
+const HomeSwiper = ({ children, ...props }) => (
+  <Swiper
+    loop
+    autoplay={false}
+    onSlideChange={() => console.log("slide change")}
+    onSwiper={(swiper) => console.log(swiper)}
+    mousewheel={false}
+    modules={[A11y, Mousewheel, Keyboard, Navigation, Autoplay, Pagination]}
+    keyboard={{ enabled: true }}
+    freeMode={true}
+    centeredSlides
+    navigation
+    centeredSlidesBounds
+    rewind
+    className="p-4 h-full w-full"
+    {...props}
+  >
+    {children}
+    <div
+      className="swiper-pagination"
+      style={{
+        position: "absolute",
+        bottom: "10px",
+        left: "50%",
+        transform: "translateX(-50%)",
+      }}
+    ></div>
+  </Swiper>
+);

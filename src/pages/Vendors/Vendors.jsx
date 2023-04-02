@@ -26,7 +26,7 @@ export default function Vendors() {
         const { data } = categoryId
           ? await clientServices.listAllVendorsInCategory(categoryId)
           : await clientServices.listAllVendors();
-        setVendors(data.records);
+        setVendors(data);
         setLoading(false);
       } catch (e) {
         setLoading(false);
