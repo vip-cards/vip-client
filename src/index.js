@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { HelmetProvider } from "react-helmet-async";
 import "./index.scss";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import ErrorBoundary from "layouts/ErrorBoundary/ErrorBoundary";
 
 const helmetContext = {};
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -17,7 +18,9 @@ root.render(
   <BrowserRouter>
     <Provider store={store}>
       <HelmetProvider context={helmetContext}>
-        <App />
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
       </HelmetProvider>
     </Provider>
   </BrowserRouter>
