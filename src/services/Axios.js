@@ -14,10 +14,7 @@ Axios.defaults.baseURL = endPoint + "/client";
 Axios.defaults.headers["x-app-token"] = "VIP-Team";
 
 Axios.interceptors.request.use(async (req) => {
-  if (guestEndpoints.includes(req.url)) {
-
-    return req;
-  }
+  if (guestEndpoints.includes(req.url)) return req;
 
   let auth = store.getState().auth;
 
@@ -27,10 +24,11 @@ Axios.interceptors.request.use(async (req) => {
 
   if (!isTokenExpired) {
     req.headers.Authorization = `Bearer ${auth.token}`;
+    if (req.method === "get") {
+      req.params = { ...req.params, isActive: true };
+    }
     return req;
-  }
-
-  if (isTokenExpired) {
+  } else {
     localStorage.removeItem("token");
     store.dispatch(authActions.logout());
 
