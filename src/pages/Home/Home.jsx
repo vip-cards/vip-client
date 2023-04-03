@@ -234,7 +234,7 @@ export default function Home() {
         </SectionContainer>
       </header>
 
-      {/* <section className={classes["home-section"]}>
+      <SectionContainer direction="col">
         <SectionView
           items={banners}
           render={(props) => {
@@ -242,7 +242,7 @@ export default function Home() {
           }}
           autoplay={true}
         />
-      </section> */}
+      </SectionContainer>
 
       {/* Vendors */}
       <SectionContainer direction="col">

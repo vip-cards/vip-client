@@ -29,7 +29,6 @@ export function ProductImageContainer({ product }) {
       });
     }
   }
-  // Link to={`/product/${product._id}`}
   return (
     <div
       className="product-img-container pointer"

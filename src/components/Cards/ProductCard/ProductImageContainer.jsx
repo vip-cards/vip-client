@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { faCircleNotch, faStopwatch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { addWishProduct, removeWishProduct } from "../../store/wishlist-slice";
-import WishIcon from "../WishIcon/WishIcon";
-import { Link, useNavigate } from "react-router-dom";
+import WishIcon from "components/WishIcon/WishIcon";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { useNavigate } from "react-router-dom";
+import { addWishProduct, removeWishProduct } from "store/wishlist-slice";
 
 export function ProductImageContainer({ product }) {
   const wishlistIds = useSelector((state) => state.wishlist.ids);
@@ -36,7 +37,7 @@ export function ProductImageContainer({ product }) {
       onClick={() => navigate(`/product/${product._id}`)}
     >
       <img
-        src={`${product?.image?.Location ??product?.image?.[0].Location}`}
+        src={`${product?.image?.Location ?? product?.image?.[0]?.Location}`}
         alt="product-img"
         className="product-img"
       />

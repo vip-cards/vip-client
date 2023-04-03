@@ -80,10 +80,8 @@ const clientServices = {
     return response;
   },
 
-  listAllCategories: async () => {
-    const response = await Axios.get(`/category/list`);
-    return response;
-  },
+  listAllCategories: async () =>
+    (await Axios.get(`/category/list`)).data?.records,
 
   /*--- WISHLIST ---*/
   listAllWishProducts: async () => {

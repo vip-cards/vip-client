@@ -1,15 +1,12 @@
-import React, { useEffect, useRef } from "react";
-import "./ProductCard.scss";
-
-import i18n from "../../locales/i18n";
-import { useNavigate } from "react-router";
-import { t } from "i18next";
-
+import i18n from "locales/i18n";
+import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-
-import { ProductImageContainer } from "./ProductImageContainer";
-import { ProductDetailsContainer } from "./ProductDetailsContainer";
+import { useNavigate } from "react-router";
+import { selectAuth } from "store/auth-slice";
 import { ProductActionsContainer } from "./ProductActionsContainer";
+import "./ProductCard.scss";
+import { ProductDetailsContainer } from "./ProductDetailsContainer";
+import { ProductImageContainer } from "./ProductImageContainer";
 
 export default function ProductCard({ product }) {
   const lang = i18n.language;
@@ -17,7 +14,7 @@ export default function ProductCard({ product }) {
   const navigate = useNavigate();
   const popupRef = useRef(null);
   const componentRef = useRef(null);
-  const { userRole } = useSelector((state) => state.auth);
+  const { userRole } = useSelector(selectAuth);
 
   useEffect(() => {
     const bodyElement = document.body;

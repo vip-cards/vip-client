@@ -6,10 +6,10 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import i18n from "../../locales/i18n";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCartThunk } from "../../store/cart-slice";
-import { addWishProduct } from "../../store/wishlist-slice";
+import i18n from "locales/i18n";
+import { addToCartThunk } from "store/cart-slice";
+import { addWishProduct } from "store/wishlist-slice";
 
 export const ProductActionsContainer = forwardRef(({ product }, ref) => {
   const lang = i18n.language;
