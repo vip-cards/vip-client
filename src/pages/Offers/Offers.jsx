@@ -50,40 +50,25 @@ export default function Offers() {
   };
 
   return (
-    <div className="flex flex-row p-8 gap-4 min-h-[80vh] max-h-screen overflow-hidden">
-      <aside className="flex flex-col w-52 mr-4 border-r-2 h-inherit max-h-[85vh] overflow-y-auto border-black/50 ">
-        <h5>Filter by</h5>
+    <div className="flex flex-col p-8 gap-4 min-h-[80vh] max-h-screen overflow-hidden">
+      <aside className="flex flex-col h-inherit overflow-y-auto border-[1px] w-full">
+        filters
         <FilterGroup
           listApi={clientServices.listAllVendors}
           title="vendor"
           onToggle={toggleFilter}
           filter={filter}
         />
+        {/* <h5>Filter by</h5>
+        
         <FilterGroup
           listApi={clientServices.listAllCategories}
           title="category"
           onToggle={toggleFilter}
           filter={filter}
-        />
+        /> */}
       </aside>
       <div className="flex flex-row w-full h-full gap-8 flex-wrap max-h-[85vh] overflow-y-auto p-5">
-        {productListRender()}
-        {productListRender()}
-        {productListRender()}
-        {productListRender()}
-        {productListRender()}
-        {productListRender()}
-        {productListRender()}
-        {productListRender()}
-        {productListRender()}
-        {productListRender()}
-        {productListRender()}
-        {productListRender()}
-        {productListRender()}
-        {productListRender()}
-        {productListRender()}
-        {productListRender()}
-        {productListRender()}
         {productListRender()}
       </div>
     </div>

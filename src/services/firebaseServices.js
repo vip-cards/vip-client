@@ -3,6 +3,7 @@ import {
   getAuth,
   GoogleAuthProvider,
   FacebookAuthProvider,
+  TwitterAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
 import { t } from "i18next";
@@ -26,6 +27,7 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const Gprovider = new GoogleAuthProvider();
 export const FBprovider = new FacebookAuthProvider();
+export const Twtrprovider = new TwitterAuthProvider();
 export const auth = getAuth(app);
 
 const socialLoginProviders = {
@@ -36,6 +38,10 @@ const socialLoginProviders = {
   google: {
     app: Gprovider,
     class: GoogleAuthProvider,
+  },
+  twitter: {
+    app: Twtrprovider,
+    class: TwitterAuthProvider,
   },
 };
 

@@ -162,6 +162,13 @@ export default function Login() {
             className="facebook-button"
             onClick={() => socialLogin("facebook")}
           />
+          <MainButton
+            type="button"
+            text={t("twitter")}
+            loading={loading}
+            className="twitter-button"
+            onClick={() => socialLogin("twitter")}
+          />
           <p className="login-footer">
             <span>{t("notRegistered")}</span>
             &nbsp;
