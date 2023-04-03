@@ -15,7 +15,7 @@ Axios.defaults.headers["x-app-token"] = "VIP-Team";
 
 Axios.interceptors.request.use(async (req) => {
   if (guestEndpoints.includes(req.url)) {
-    console.log("loggingig on");
+
     return req;
   }
 
@@ -23,18 +23,14 @@ Axios.interceptors.request.use(async (req) => {
 
   const token = jwt_decode(auth.token);
 
-  console.log("itercepting the request", token);
-
   const isTokenExpired = dayjs.unix(token.exp).diff(dayjs()) <= 1;
 
   if (!isTokenExpired) {
-    console.log("token not expired");
     req.headers.Authorization = `Bearer ${auth.token}`;
     return req;
   }
 
   if (isTokenExpired) {
-    console.log(req, "expired token");
     localStorage.removeItem("token");
     store.dispatch(authActions.logout());
 

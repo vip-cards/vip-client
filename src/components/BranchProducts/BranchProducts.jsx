@@ -24,7 +24,6 @@ export default function BranchProducts() {
   }
 
   async function getBranchProductsHandler() {
-    console.log("user is vendor");
     try {
       setLoading(true);
       const { data } = await clientServices.listAllBranchProductsOfType(
@@ -35,23 +34,18 @@ export default function BranchProducts() {
       setBranchProducts(data.records);
 
       setLoading(false);
-      console.log("data", data);
     } catch (e) {
-      console.log(e);
       setLoading(false);
     }
   }
 
   useEffect(() => {
-    console.log("inside use effect");
     try {
       getBranchProductsHandler();
     } catch (e) {
-      console.log(e);
     }
   }, [location.pathname]);
 
-  console.log("branch routing", params, location);
   return (
     <>
       {loading ? (

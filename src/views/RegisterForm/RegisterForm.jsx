@@ -43,24 +43,20 @@ export default function RegisterForm() {
     };
     delete mappedData.name_en;
     delete mappedData["re-password"];
-    console.log(mappedData);
     setLoading(true);
     if (error) {
       setErrorList(error.details);
       setErrorMessage(error.message);
-      console.log(error.details);
       toast.error(error.name);
     } else {
       try {
         const { data } = await clientServices.register(mappedData);
-        console.log(data);
         if (data.success && data.code === 201) {
           setLoading(false);
           toastPopup.success(t("Success"));
           navigate("/login");
         }
       } catch (e) {
-        console.log(e);
         if (e.response.data.code === 409) {
           toast.error(e.response.data.error);
           timer = setTimeout(() => {

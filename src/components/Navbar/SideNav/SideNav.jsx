@@ -21,7 +21,6 @@ export default function SideNav({ items, onToggle }) {
   }
 
   function backDropClickHandler(e) {
-    console.log(e.target.classList.contains("nav-link"));
     if (sideNavRef.current && !sideNavRef.current.contains(e.target)) {
       onToggle();
     } else if (e.target.classList.contains("nav-link")) {

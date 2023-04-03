@@ -14,7 +14,7 @@ export default function CartPage() {
 
   const cart = useSelector((state) => state.cart);
   const cartLoading = cart.loading;
-  console.log(cart);
+
   if (!cart._id) {
     return <LoadingSpinner />;
   }

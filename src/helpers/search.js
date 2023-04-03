@@ -31,7 +31,6 @@ export default function useSearch(queryAPI, fullList, debounce = 1000) {
     })();
   }, []);
   useEffect(() => {
-    // console.log("search hook start");
     if (initial) {
       setInitial(false);
       return;

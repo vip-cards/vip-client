@@ -63,13 +63,11 @@ function App() {
     );
 
     socket.on(EVENTS.CHAT.CREATE, (res) => {
-      console.log(res);
       if (!res.success) {
         return;
       }
       const roomId = res.record?._id;
       navigate("/chat", { state: { roomId } });
-      console.log(res);
     });
     return () => {
       socket.off(EVENTS.CONNECTION.OPEN);

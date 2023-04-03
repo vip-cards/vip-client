@@ -46,7 +46,6 @@ export const removeFromCartThunk = createAsyncThunk(
       quantity: payload.quantity,
     };
     const { data } = await clientServices.removeCartItem(product);
-    console.log(data);
     return data.record;
   }
 );
@@ -85,7 +84,6 @@ const cartSlice = createSlice({
     });
 
     builder.addCase(addToCartThunk.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state._id = payload._id;
       state.vendor = payload.vendor;
       state.products = payload.items;
@@ -100,7 +98,6 @@ const cartSlice = createSlice({
     });
 
     builder.addCase(removeFromCartThunk.fulfilled, (state, { payload }) => {
-      console.log(payload);
       state._id = payload._id;
       state.vendor = payload.vendor;
       state.products = payload.items;

@@ -30,7 +30,6 @@ export default function Branch() {
     vendor: "",
   });
 
-  console.log(branchhInfo);
 
   async function getBranchDetailsHandler() {
     setLoading(true);
@@ -41,7 +40,6 @@ export default function Branch() {
 
       setLoading(false);
     } catch (e) {
-      console.log(e);
       setLoading(false);
     }
   }
@@ -69,7 +67,6 @@ export default function Branch() {
               <h3 className="branch-name">{`${
                 branchhInfo?.vendor?.name?.[lang] || ""
               } - ${branchhInfo?.name?.[lang]}`}</h3>
-              {console.log(branchhInfo)}
               <p className="address">{branchhInfo?.address?.[lang]} </p>
             </div>
 

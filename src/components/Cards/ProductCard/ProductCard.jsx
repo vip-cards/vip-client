@@ -19,7 +19,6 @@ export default function ProductCard({ product }) {
   useEffect(() => {
     const bodyElement = document.body;
     const removePopUp = (e) => {
-      console.log(e.target);
       if (
         componentRef.current &&
         !componentRef.current.contains(e.target) &&
@@ -30,7 +29,6 @@ export default function ProductCard({ product }) {
         return;
       }
     };
-    console.log(bodyElement);
     bodyElement.addEventListener(
       "ontouchstart" in window ? "touchstart" : "click",
       removePopUp

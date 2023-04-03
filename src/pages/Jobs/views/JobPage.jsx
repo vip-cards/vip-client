@@ -8,7 +8,6 @@ export default function JobPage() {
   const { id } = useParams();
   const [job, setJob] = useState({});
   const lang = i18n.language;
-  console.log(id);
 
   useEffect(() => {
     clientServices.getJobDetails(id).then(({ data }) => setJob(data.record[0]));

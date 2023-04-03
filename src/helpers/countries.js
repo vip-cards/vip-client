@@ -6,7 +6,6 @@ export const useAddressList = () => {
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
   const [countryId, setCountryId] = useState();
-  console.log("USEADDDDRESSSS RUN");
   const lang = i18n.language;
 
   useEffect(() => {

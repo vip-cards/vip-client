@@ -39,7 +39,6 @@ export default function AccountDetails() {
   const [imageLoading, setImageLoading] = useState(false);
   const [updateImage, setUpdateImage] = useState(userData.image?.Location);
   const [uploadImage, setUploadImage] = useState(updateImage);
-  console.log(uploadImage);
   const [imgUpdated, setImgUpdated] = useState(false);
   const [oldUserInfo, setOldUserInfo] = useState({
     name_en: userData.name.en,
@@ -81,7 +80,6 @@ export default function AccountDetails() {
      */
     e.preventDefault();
     const newDataObj = getUpdatedOnly(userInfo, oldUserInfo);
-    console.log(userData);
     const mappedData = {
       name: {
         en: userInfo.name_en,
@@ -161,7 +159,6 @@ export default function AccountDetails() {
                   alt={userData.name.en}
                   className="uploaded-img"
                   onClick={() => {
-                    console.log("IMAGE");
                     window.open(
                       uploadImage ? URL.createObjectURL(uploadImage) : null
                     );

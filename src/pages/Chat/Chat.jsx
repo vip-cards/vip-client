@@ -93,7 +93,6 @@ function Chat() {
 
   const onSentMessage = (data) => {
     if (socket.recovered) {
-      console.log("Recovered");
       // recovery was successful: socket.id, socket.rooms and socket.data were restored
     } else {
       // new or unrecoverable session

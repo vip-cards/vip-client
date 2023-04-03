@@ -6,7 +6,6 @@ import "./RoutingTab.scss";
 export default function RoutingTab({ routes, className }) {
   const params = useParams();
   const branchId = params.branchId;
-  console.log("routing params", params);
   return (
     <div className={classNames(className, "routing-tabs-container")}>
       <div className="tab-route">

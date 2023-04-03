@@ -18,7 +18,6 @@ export function listRooms(members, onEvent) {
 }
 
 export function sendMessage(message) {
-  console.log(socket.connected);
 
   if (socket.connected) {
     socket.emit(EVENTS.CHAT.MESSAGE, message);

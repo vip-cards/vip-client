@@ -44,11 +44,11 @@ export default function Login() {
   }
 
   const loginHandler = async (e) => {
-    console.log(user);
+
     e.preventDefault();
     setErrorList([]);
     let validationResult = loginValidation(user);
-    console.log(validationResult);
+
     setLoading(true);
     if (validationResult.error) {
       setLoading(false);
@@ -65,7 +65,7 @@ export default function Login() {
           toastPopup.success(t("Success"));
           const tokenDecoded = jwt_decode(data.token);
 
-          console.log(tokenDecoded);
+
           dispatch(
             authActions.login({
               token: data.token,
@@ -77,7 +77,7 @@ export default function Login() {
           navigate("/");
         }
       } catch (e) {
-        console.log(e);
+
         setLoading(false);
         setErrorMessage(e.response.data.error);
       }

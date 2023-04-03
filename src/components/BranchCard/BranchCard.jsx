@@ -8,7 +8,6 @@ export default function BranchCard({ branch }) {
   const navigate = useNavigate();
   const lang = i18n.language;
 
-  console.log(branch);
   return (
     <div className="branch-card">
       <div

@@ -29,7 +29,6 @@ export const removeWishProduct = createAsyncThunk(
   "wishlist/remove",
   async (productId, thunkAPI) => {
     const { data } = await clientServices.removeWishProduct(productId);
-    console.log(data.record);
     toastPopup.success(t("removedFromWishlist"));
     thunkAPI.dispatch(fetchWishlist());
     return data.record.items;

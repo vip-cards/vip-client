@@ -72,7 +72,7 @@ export const useSocialLogin = () => {
         if (data.success && data.code === 200) {
           toastPopup.success(t("Success"));
           const tokenDecoded = jwt_decode(data.token);
-          console.log(tokenDecoded);
+
           store.dispatch(
             authActions.login({
               token: data.token,

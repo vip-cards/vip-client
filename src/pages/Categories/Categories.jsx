@@ -20,11 +20,10 @@ export default function Categories() {
     try {
       let { data } = await clientServices.listAllVendorCategories();
       setCategories(data.records);
-      console.log(data);
+
       setLoading("done");
     } catch (e) {
       setLoading("done");
-      console.log(e);
     }
   }
 

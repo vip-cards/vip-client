@@ -21,7 +21,7 @@ export default function Offers() {
   } = useSWR("all-products", clientServices.listAllProducts);
 
   const toggleFilter = (arrayKey = "vendors", itemId) => {
-    console.log(itemId);
+
     const newVendorFilterList = [...filter[arrayKey]];
     const idx = filter[arrayKey].findIndex((value) => value === itemId);
     if (idx > -1) {

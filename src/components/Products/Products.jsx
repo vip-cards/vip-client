@@ -32,10 +32,8 @@ export default function Products() {
       const { data } = await clientServices.listAllProductsOfType(isHotDeal());
       setOffers(data.records);
       setLoading(false);
-      console.log("data", data);
     } catch (e) {
       setLoading(false);
-      console.log(e);
     }
   }
 

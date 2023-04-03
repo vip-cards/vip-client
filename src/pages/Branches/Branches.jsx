@@ -32,7 +32,6 @@ export default function Branches() {
         throw Error;
       }
     } catch (e) {
-      console.log(e);
     }
   }
 

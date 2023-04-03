@@ -53,13 +53,13 @@ export default function Vendor() {
       );
       setOffers(allOffers?.records);
     } catch (e) {
-      console.log(e);
+
       setLoading(false);
     }
   }
 
-  console.log("allBarnches", branches);
 
+  
   function startChatHandler() {
     createRoom({ vendor: vendorId });
   }

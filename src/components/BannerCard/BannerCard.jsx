@@ -6,7 +6,6 @@ export default function BannerCard({ banner }) {
   const lang = i18n.language;
   const navigate = useNavigate();
   const { bannerSize } = banner;
-  console.log(bannerSize);
 
   return (
     <div

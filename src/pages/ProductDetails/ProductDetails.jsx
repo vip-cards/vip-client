@@ -26,12 +26,12 @@ function ProductDetails(props) {
     try {
       const { data } = await clientServices.getProductDetails(productId);
       setProduct(data.record[0]);
-      console.log(data.record[0]);
+
     } catch (e) {}
   }
 
   async function addToCartHandler() {
-    console.log(cart.branchId);
+
     if (!cart.branchId || cart.branchId < 0) return;
     if (cart.branchId !== cartBranch._id) {
       toastPopup.error("You can only choose the branch in your cart");

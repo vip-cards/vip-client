@@ -7,7 +7,7 @@ export default function Wishlist() {
   const wishlist = useSelector((state) => state.wishlist.products);
   const [list, setList] = useState([]);
 
-  console.log(wishlist);
+
   useEffect(() => {
     const cleanedList = wishlist
       .filter((product) => product)
