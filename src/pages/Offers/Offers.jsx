@@ -21,7 +21,6 @@ export default function Offers() {
   } = useSWR("all-products", clientServices.listAllProducts);
 
   const toggleFilter = (arrayKey = "vendors", itemId) => {
-
     const newVendorFilterList = [...filter[arrayKey]];
     const idx = filter[arrayKey].findIndex((value) => value === itemId);
     if (idx > -1) {
@@ -41,7 +40,7 @@ export default function Offers() {
         ? filter.vendor?.includes(product.vendor._id)
         : true;
       const isInCategory = filter.category.length
-        ? filter.category?.includes(product.category._id)
+        ? filter.category?.includes(product.category?._id)
         : true;
       return isInVendor && isInCategory;
     });
@@ -52,7 +51,7 @@ export default function Offers() {
 
   return (
     <div className="flex flex-row p-8 gap-4 min-h-[80vh] max-h-screen overflow-hidden">
-      <aside className="flex flex-col w-40 mr-4 border-r-2 h-inherit max-h-[85vh] overflow-y-auto border-black/50 ">
+      <aside className="flex flex-col w-52 mr-4 border-r-2 h-inherit max-h-[85vh] overflow-y-auto border-black/50 ">
         <h5>Filter by</h5>
         <FilterGroup
           listApi={clientServices.listAllVendors}
@@ -101,12 +100,17 @@ const FilterToggle = ({ name = "filter", onToggle, selected = false, id }) => {
       className="group  max-w-full flex flex-row w-full flex-nowrap justify-between items-center my-1 px-2 border-b-[1px] border-slate-400"
       onClick={handleFilterToggle}
     >
-      <p className="text-lg">{name}</p>
+      <p className="text-lg whitespace-nowrap max-w-[8rem] text-ellipsis overflow-hidden">
+        {name}
+      </p>
       <div
-        className={classNames("w-4 h-4 rounded-full border-2 border-black", {
-          "bg-primary": selected,
-          "bg-transparent group-hover:bg-primary/50": !selected,
-        })}
+        className={classNames(
+          "aspect-square w-4 h-4 rounded-full border-2 border-black",
+          {
+            "bg-primary": selected,
+            "bg-transparent group-hover:bg-primary/50": !selected,
+          }
+        )}
       ></div>
     </button>
   );
