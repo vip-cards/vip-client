@@ -24,9 +24,9 @@ Axios.interceptors.request.use(async (req) => {
 
   if (!isTokenExpired) {
     req.headers.Authorization = `Bearer ${auth.token}`;
-    if (req.method === "get") {
-      req.params = { ...req.params, isActive: true };
-    }
+    // if (req.method === "get") {
+    //   req.params = { ...req.params, isActive: true };
+    // }
     return req;
   } else {
     localStorage.removeItem("token");

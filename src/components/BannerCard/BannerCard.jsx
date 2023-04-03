@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { useNavigate } from "react-router";
 import i18n from "../../locales/i18n";
+import { getLocalizedWord } from "helpers/lang";
 
 export default function BannerCard({ banner }) {
   const lang = i18n.language;
@@ -26,7 +27,7 @@ export default function BannerCard({ banner }) {
           />
         </div>
         <div className="absolute inset-0 bg-black/10 text-lg font-bold drop-shadow-sm hover:drop-shadow text-primary/70 flex justify-center items-center hover:bg-transparent hover:text-white transition-colors">
-          <p className="mt-auto mb-4">{banner.name}</p>
+          <p className="mt-auto mb-4">{getLocalizedWord(banner.name)}</p>
         </div>
       </div>
     </div>

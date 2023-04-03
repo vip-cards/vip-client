@@ -1,42 +1,34 @@
-import React, { useEffect, useState } from "react";
+import classNames from "classnames";
+import NoData from "components/NoData/NoData";
+import { t } from "i18next";
+import { useNavigate } from "react-router-dom";
+import {
+  A11y,
+  Autoplay,
+  Keyboard,
+  Mousewheel,
+  Navigation,
+  Pagination,
+  Virtual,
+} from "swiper";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/scss"; // core Swiper
+import useSWR from "swr";
 import BannerCard from "../../components/BannerCard/BannerCard";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import VendorCard from "../../components/VendorCard/VendorCard";
 import clientServices from "../../services/clientServices";
-import SectionView from "../../views/Home/SectionView/SectionView";
-import {
-  A11y,
-  Mousewheel,
-  Keyboard,
-  Autoplay,
-  Pagination,
-  Navigation,
-} from "swiper";
-import classNames from "classnames";
-
-import dummyData from "mock/ad.json";
-import dummyProducts from "mock/products.json";
-
 import classes from "./Home.module.scss";
-
-import { Swiper, SwiperSlide } from "swiper/react";
-// Import Swiper styles
-import "swiper/scss"; // core Swiper
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
+import dummyAds from "mock/ad.json";
 import SectionContainer from "./SectionContainer";
-import { getLocalizedWord } from "helpers/lang";
-import { Link, useNavigate } from "react-router-dom";
-import { t } from "i18next";
-import useSWR from "swr";
-import NoData from "components/NoData/NoData";
 
 export default function Home() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
 
   const {
     data: products,
@@ -51,42 +43,23 @@ export default function Home() {
     clientServices.listAllVendors
   );
   const { data: categories, isLoading: categoriesLoading } = useSWR(
-    "all-vendors",
-    clientServices.listAllVendorCategories
+    "all-categories",
+    clientServices.listAllCategories
+  );
+  const { data: adverts, isLoading: advertsLoading } = useSWR(
+    "all-adverts",
+    clientServices.listAllAds
+  );
+  const { data: banners, isLoading: bannersLoading } = useSWR(
+    "all-banners",
+    clientServices.listAllBanners
   );
 
-  const [banners, setBanners] = useState([]);
-  const [ads, setAds] = useState({});
+  const renderAds = (size) => {
+    if (advertsLoading || !adverts) return <LoadingSpinner />;
+    // if (!adverts.length) return <NoData />;
 
-  async function getHomeDataHandler() {
-    setLoading(true);
-    try {
-      Promise.any([
-        clientServices.listAllBanners().then(({ data }) => {
-          setBanners(data?.records);
-          setAds({
-            large: data?.records.filter((item) => item.size.includes("large")),
-            small: data?.records.filter((item) => item.size.includes("small")),
-          });
-        }),
-      ]).then(() => {
-        setLoading(false);
-      });
-    } catch (e) {
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    getHomeDataHandler();
-  }, []);
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
-
-  const renderAds = (size) =>
-    dummyData
+    return dummyAds
       .filter((ad) => ad.bannerSize === size)
       .map((ad) => {
         return (
@@ -101,6 +74,23 @@ export default function Home() {
           </SwiperSlide>
         );
       });
+  };
+
+  const renderBanners = () => {
+    if (bannersLoading || !banners) return <LoadingSpinner />;
+    if (!banners.length) return <NoData />;
+
+    return banners.map((banner) => {
+      return (
+        <SwiperSlide
+          key={banner._id}
+          className="w-full h-full rounded-xl shadow"
+        >
+          <BannerCard banner={banner} />
+        </SwiperSlide>
+      );
+    });
+  };
 
   const renderProducts = (type) => {
     if (productsLoading || !products) return <LoadingSpinner />;
@@ -233,14 +223,25 @@ export default function Home() {
         </SectionContainer>
       </header>
 
+      {/* Banners */}
       <SectionContainer direction="col">
-        <SectionView
-          items={banners}
-          render={(props) => {
-            return <BannerCard banner={props} />;
-          }}
-          autoplay={true}
-        />
+        <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full">
+          <HomeSwiper
+            direction="horizontal"
+            spaceBetween={20}
+            breakpoints={{
+              300: { slidesPerView: 1 },
+              480: { slidesPerView: 1.25 },
+              540: { slidesPerView: 1.45 },
+              768: { slidesPerView: 2.1 },
+              860: { slidesPerView: 2.5 },
+              992: { slidesPerView: 3 },
+              1024: { slidesPerView: 3.35 },
+            }}
+          >
+            {renderBanners()}
+          </HomeSwiper>
+        </div>
       </SectionContainer>
 
       {/* Vendors */}
@@ -380,32 +381,43 @@ export default function Home() {
   // setBanners(allBanners?.records);
  */
 
-const HomeSwiper = ({ children, ...props }) => (
-  <Swiper
-    loop
-    autoplay={false}
-    onSlideChange={() => console.log("slide change")}
-    onSwiper={(swiper) => console.log(swiper)}
-    mousewheel={false}
-    modules={[A11y, Mousewheel, Keyboard, Navigation, Autoplay, Pagination]}
-    keyboard={{ enabled: true }}
-    freeMode={true}
-    centeredSlides
-    navigation
-    centeredSlidesBounds
-    rewind
-    className="p-4 h-full w-full"
-    {...props}
-  >
-    {children}
-    <div
-      className="swiper-pagination"
-      style={{
-        position: "absolute",
-        bottom: "10px",
-        left: "50%",
-        transform: "translateX(-50%)",
-      }}
-    ></div>
-  </Swiper>
-);
+const HomeSwiper = ({ children, ...props }) => {
+  return (
+    <Swiper
+      virtual
+      loop
+      autoplay={true}
+      onSlideChange={() => console.log("slide change")}
+      onSwiper={(swiper) => console.log(swiper)}
+      mousewheel={false}
+      modules={[
+        A11y,
+        Mousewheel,
+        Keyboard,
+        Navigation,
+        Autoplay,
+        Pagination,
+        Virtual,
+      ]}
+      keyboard={{ enabled: true }}
+      freeMode={true}
+      centeredSlides
+      navigation
+      centeredSlidesBounds
+      rewind
+      className="p-4 h-full w-full"
+      {...props}
+    >
+      {children}
+      <div
+        className="swiper-pagination"
+        style={{
+          position: "absolute",
+          bottom: "1rem",
+          left: "50%",
+          transform: "translateX(-50%)",
+        }}
+      ></div>
+    </Swiper>
+  );
+};

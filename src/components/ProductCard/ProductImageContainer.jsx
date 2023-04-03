@@ -35,7 +35,9 @@ export function ProductImageContainer({ product }) {
       onClick={() => navigate(`/product/${product._id}`)}
     >
       <img
-        src={`${product?.image?.[0].Location ?? product?.image?.[0].url}`}
+        src={`${
+          product?.image?.[0]?.Location ?? product?.image?.[0]?.url ?? ""
+        }`}
         alt="product-img"
         className="product-img"
       />
