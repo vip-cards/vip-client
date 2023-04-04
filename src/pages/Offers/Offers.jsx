@@ -7,18 +7,32 @@ import useSWR from "swr";
 import "./Offers.scss";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import NoData from "components/NoData/NoData";
+import MainInput from "components/MainInput/MainInput";
+import { IconButton, MainButton } from "components/Buttons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+
+const LIMIT = 6;
 
 export default function Offers() {
   const [filter, setFilter] = useState({ vendor: [], category: [] });
+  const [queryParams, setQueryParams] = useState({
+    test: "ar",
+    page: 1,
+    limit: LIMIT,
+  });
   const [searchQuery, setSearchQuery] = useState("");
 
   const {
-    data: products,
+    data: productsData,
     error,
     isLoading: productsLoading,
     isValidating,
     mutate,
-  } = useSWR("all-products", clientServices.listAllProducts);
+  } = useSWR(["all-products", queryParams], () =>
+    clientServices.listAllProducts(queryParams)
+  );
+  const { records: products = undefined, counts } = productsData ?? {};
+  const totalPages = Math.ceil(counts / LIMIT);
 
   const toggleFilter = (arrayKey = "vendors", itemId) => {
     const newVendorFilterList = [...filter[arrayKey]];
@@ -49,27 +63,73 @@ export default function Offers() {
     });
   };
 
+  const handleProductSearch = () => {};
+
   return (
     <div className="flex flex-col p-8 gap-4 min-h-[80vh] max-h-screen overflow-hidden">
-      <aside className="flex flex-col h-inherit overflow-y-auto border-[1px] w-full">
-        filters
-        <FilterGroup
-          listApi={clientServices.listAllVendors}
-          title="vendor"
-          onToggle={toggleFilter}
-          filter={filter}
+      <div className="flex flex-row gap-4 w-full justify-center items-center">
+        <MainInput
+          name="search"
+          className="flex-grow"
+          setState={setSearchQuery}
+          searchQuery={searchQuery}
         />
-        {/* <h5>Filter by</h5>
-        
-        <FilterGroup
-          listApi={clientServices.listAllCategories}
-          title="category"
-          onToggle={toggleFilter}
-          filter={filter}
-        /> */}
-      </aside>
-      <div className="flex flex-row w-full h-full gap-8 flex-wrap max-h-[85vh] overflow-y-auto p-5">
+        <MainButton
+          className="h-full aspect-square"
+          onClick={handleProductSearch}
+        >
+          <IconButton icon={faMagnifyingGlass} variant="secondary" />
+        </MainButton>
+      </div>
+      <div className="flex flex-row w-full h-full gap-8 flex-wrap max-h-[85vh] overflow-y-auto p-5 justify-between flex-grow">
         {productListRender()}
+      </div>
+      <div className="flex flex-row gap-3 justify-center items-center">
+        <MainButton
+          disabled={1 === queryParams.page}
+          onClick={() =>
+            setQueryParams((params) => ({
+              ...params,
+              page: params.page > 1 ? params.page - 1 : 1,
+            }))
+          }
+          className="p-2 !rounded-full justify-center items-center flex aspect-square disabled:bg-primary/50"
+          size="small"
+        >
+          {"<"}
+        </MainButton>
+        {[...Array.from({ length: totalPages }, (v, i) => i + 1)]?.map(
+          (item) => (
+            <MainButton
+              disabled={item === queryParams.page}
+              onClick={() =>
+                setQueryParams((params) => ({ ...params, page: item }))
+              }
+              className={classNames(
+                {
+                  "!bg-primary/50": item !== queryParams.page,
+                },
+                "p-2 !rounded-full justify-center items-center flex aspect-square"
+              )}
+              size="small"
+            >
+              {item}
+            </MainButton>
+          )
+        )}
+        <MainButton
+          disabled={totalPages === queryParams.page}
+          onClick={() =>
+            setQueryParams((params) => ({
+              ...params,
+              page: params.page < totalPages ? params.page + 1 : totalPages,
+            }))
+          }
+          className="p-2 !rounded-full justify-center items-center flex aspect-square disabled:bg-primary/50"
+          size="small"
+        >
+          {">"}
+        </MainButton>
       </div>
     </div>
   );

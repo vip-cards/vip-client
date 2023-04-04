@@ -1,9 +1,8 @@
 import classNames from "classnames";
 import NoData from "components/NoData/NoData";
 import { t } from "i18next";
-import { useNavigate } from "react-router-dom";
-
 import dummyAds from "mock/ad.json";
+import { useNavigate } from "react-router-dom";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
@@ -22,14 +21,15 @@ import SectionContainer from "./SectionContainer";
 export default function Home() {
   const navigate = useNavigate();
 
-  const { data: products, isLoading: productsLoading } = useSWR(
+  const { data: productsData, isLoading: productsLoading } = useSWR(
     "all-products",
-    clientServices.listAllProducts
+    () => clientServices.listAllProducts() // to prevent sending the string in the params
   );
+  const { records: products = undefined } = productsData ?? {};
 
   const { data: vendors, isLoading: vendorsLoading } = useSWR(
     "all-vendors",
-    clientServices.listAllVendors
+    () => clientServices.listAllVendors() // to prevent sending the string in the params
   );
   const { data: categories, isLoading: categoriesLoading } = useSWR(
     "all-categories",

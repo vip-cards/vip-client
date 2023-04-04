@@ -131,13 +131,14 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
               {product.branches?.map((branch) => {
                 return (
                   <div
-                    key={branch._id}
+                    key={branch}
+                    
                     className={`branch-item ${
-                      branch._id !== cartBranch._id ? "disabled" : null
+                      branch !== cartBranch._id ? "disabled" : null
                     }`}
-                    onClick={() => cofirmAddToCartStateHandler(branch._id)}
+                    onClick={() => cofirmAddToCartStateHandler(branch)}
                   >
-                    {branch.name[lang]}
+                    {branch?.name[lang]}
                   </div>
                 );
               })}

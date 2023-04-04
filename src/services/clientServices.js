@@ -20,7 +20,8 @@ const clientServices = {
     const response = await Axios.get(`/vendor/get?_id=${vendorId}`);
     return response;
   },
-  listAllVendors: async () => (await Axios.get(`/vendor/list`)).data?.records,
+  listAllVendors: async (params) =>
+    (await Axios.get(`/vendor/list`, { params })).data?.records,
 
   listAllVendorsInCategory: async (id) =>
     (await Axios.get(`/vendor/list?category=${id}`)).data?.records,
@@ -73,7 +74,8 @@ const clientServices = {
     return response;
   },
 
-  listAllProducts: async () => (await Axios.get(`/product/list`)).data?.records,
+  listAllProducts: async (params) =>
+    (await Axios.get(`/product/list`, { params })).data,
 
   listAllProductsOfType: async (isHotDeal = false) => {
     const response = await Axios.get(`/product/list?isHotDeal=${isHotDeal}`);

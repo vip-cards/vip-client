@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
+import useSWR from "swr";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import NoData from "../../components/NoData/NoData";
 import SearchArea from "../../components/SearchArea/SearchArea";
@@ -13,6 +13,7 @@ export default function Vendors() {
   const { categoryId } = useParams();
   const [loading, setLoading] = useState(false);
   const [vendors, setVendors] = useState([]);
+  const { data } = useSWR("all-vendors", clientServices.listAllVendors);
   const {
     loading: searching,
     renderedList,
@@ -47,9 +48,9 @@ export default function Vendors() {
       />
       {loading ? (
         <LoadingSpinner />
-      ) : renderedList.length > 0 ? (
+      ) : !!renderedList?.length ? (
         <div className="vendors-cards-container">
-          {renderedList.length > 0
+          {!!renderedList?.length
             ? renderedList.map((vendor) => {
                 return <VendorCard key={vendor._id} vendor={vendor} />;
               })
