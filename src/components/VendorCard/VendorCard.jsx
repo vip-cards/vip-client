@@ -1,9 +1,7 @@
-import React from "react";
-import "./VendorCard.scss";
-import i18n from "../../locales/i18n";
 import { useNavigate } from "react-router";
-
 import vendorPlaceHolder from "../../assets/images/vendorPlaceHolder.png";
+import i18n from "../../locales/i18n";
+import "./VendorCard.scss";
 
 export default function VendorCard({ vendor }) {
   const lang = i18n.language;
@@ -18,7 +16,11 @@ export default function VendorCard({ vendor }) {
     >
       <div className="vendor-img-container">
         <img
-          src={`${vendor?.image?.Location}`}
+          src={`${
+            vendor?.image?.Location ??
+            vendor?.cover?.Location ??
+            vendorPlaceHolder
+          }`}
           alt="vendor-img"
           className="vendor-img"
         />

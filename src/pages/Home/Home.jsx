@@ -2,20 +2,12 @@ import classNames from "classnames";
 import NoData from "components/NoData/NoData";
 import { t } from "i18next";
 import { useNavigate } from "react-router-dom";
-import {
-  A11y,
-  Autoplay,
-  Keyboard,
-  Mousewheel,
-  Navigation,
-  Pagination,
-  Virtual,
-} from "swiper";
+
+import dummyAds from "mock/ad.json";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/scss"; // core Swiper
+import { SwiperSlide } from "swiper/react";
 import useSWR from "swr";
 import BannerCard from "../../components/BannerCard/BannerCard";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
@@ -24,19 +16,16 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import VendorCard from "../../components/VendorCard/VendorCard";
 import clientServices from "../../services/clientServices";
 import classes from "./Home.module.scss";
-import dummyAds from "mock/ad.json";
+import HomeSwiper from "./HomeSwiper";
 import SectionContainer from "./SectionContainer";
 
 export default function Home() {
   const navigate = useNavigate();
 
-  const {
-    data: products,
-    error,
-    isLoading: productsLoading,
-    isValidating,
-    mutate,
-  } = useSWR("all-products", clientServices.listAllProducts);
+  const { data: products, isLoading: productsLoading } = useSWR(
+    "all-products",
+    clientServices.listAllProducts
+  );
 
   const { data: vendors, isLoading: vendorsLoading } = useSWR(
     "all-vendors",
@@ -57,9 +46,26 @@ export default function Home() {
 
   const renderAds = (size) => {
     if (advertsLoading || !adverts) return <LoadingSpinner />;
-    // if (!adverts.length) return <NoData />;
-
-    return dummyAds
+    if (!adverts.length)
+      return dummyAds
+        .filter((ad) => ad.bannerSize === size)
+        .map((ad) => {
+          return (
+            <SwiperSlide
+              key={ad._id}
+              className="w-full h-full rounded-xl shadow"
+            >
+              <a href={ad.link} target="_blank" rel="noreferrer noopener">
+                <img
+                  className="w-full h-full object-cover"
+                  src={ad.image.url}
+                  alt={ad.name}
+                />
+              </a>
+            </SwiperSlide>
+          );
+        });
+    return adverts
       .filter((ad) => ad.bannerSize === size)
       .map((ad) => {
         return (
@@ -236,7 +242,7 @@ export default function Home() {
               768: { slidesPerView: 2.1 },
               860: { slidesPerView: 2.5 },
               992: { slidesPerView: 3 },
-              1024: { slidesPerView: 3.35 },
+              1024: { slidesPerView: 3.2 },
             }}
           >
             {renderBanners()}
@@ -266,7 +272,7 @@ export default function Home() {
               768: { slidesPerView: 2.1 },
               860: { slidesPerView: 2.5 },
               992: { slidesPerView: 3 },
-              1024: { slidesPerView: 3.35 },
+              1024: { slidesPerView: 3.2 },
             }}
           >
             {renderCategories()}
@@ -296,7 +302,7 @@ export default function Home() {
               768: { slidesPerView: 2.1 },
               860: { slidesPerView: 2.5 },
               992: { slidesPerView: 3 },
-              1024: { slidesPerView: 3.35 },
+              1024: { slidesPerView: 3.2 },
             }}
           >
             {renderVendors()}
@@ -326,7 +332,7 @@ export default function Home() {
               768: { slidesPerView: 2.1 },
               860: { slidesPerView: 2.5 },
               992: { slidesPerView: 3 },
-              1024: { slidesPerView: 3.35 },
+              1024: { slidesPerView: 3.2 },
             }}
           >
             {renderProducts("")}
@@ -356,7 +362,7 @@ export default function Home() {
               768: { slidesPerView: 2.1 },
               860: { slidesPerView: 2.5 },
               992: { slidesPerView: 3 },
-              1024: { slidesPerView: 3.35 },
+              1024: { slidesPerView: 3.2 },
             }}
           >
             {renderProducts("hotDeal")}
@@ -366,58 +372,3 @@ export default function Home() {
     </div>
   );
 }
-
-/** OLD FUNCTIONS **
-  // let { data: allCategories } = await clientServices.listAllVendorCategories();
-  // let { data: allVendors }    = await clientServices.listAllVendors();
-  // let { data: allOffers }     = await clientServices.listAllProductsOfType(false);
-  // let { data: allHotDeals }   = await clientServices.listAllProductsOfType(true);
-  // let { data: allBanners }    = await clientServices.listAllBanners();
-
-  // setCategories(allCategories?.records);
-  // setVendors(allVendors?.records);
-  // setOffers(allOffers?.records);
-  // setHotDeals(allHotDeals?.records);
-  // setBanners(allBanners?.records);
- */
-
-const HomeSwiper = ({ children, ...props }) => {
-  return (
-    <Swiper
-      virtual
-      loop
-      autoplay={true}
-      onSlideChange={() => console.log("slide change")}
-      onSwiper={(swiper) => console.log(swiper)}
-      mousewheel={false}
-      modules={[
-        A11y,
-        Mousewheel,
-        Keyboard,
-        Navigation,
-        Autoplay,
-        Pagination,
-        Virtual,
-      ]}
-      keyboard={{ enabled: true }}
-      freeMode={true}
-      centeredSlides
-      navigation
-      centeredSlidesBounds
-      rewind
-      className="p-4 h-full w-full"
-      {...props}
-    >
-      {children}
-      <div
-        className="swiper-pagination"
-        style={{
-          position: "absolute",
-          bottom: "1rem",
-          left: "50%",
-          transform: "translateX(-50%)",
-        }}
-      ></div>
-    </Swiper>
-  );
-};

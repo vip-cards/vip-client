@@ -1,6 +1,7 @@
 import React from "react";
 import i18n from "../../locales/i18n";
 import { useNavigate } from "react-router";
+import categoryPlaceholder from "assets/images/categoreyPlaceHolder.png";
 
 import "./CategoryCard.scss";
 
@@ -20,7 +21,7 @@ export default function CategoryCard({ category, vendorId }) {
       <div className="category-info-container">
         <div className="category-img-container">
           <img
-            src={`${category?.image?.Location}`}
+            src={`${category?.image?.Location ?? categoryPlaceholder}`}
             alt="category-img"
             className="category-img"
           />

@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { faCircleNotch, faStopwatch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { addWishProduct, removeWishProduct } from "../../store/wishlist-slice";
 import WishIcon from "../WishIcon/WishIcon";
-import { Link, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch, faStopwatch } from "@fortawesome/free-solid-svg-icons";
 
 export function ProductImageContainer({ product }) {
   const wishlistIds = useSelector((state) => state.wishlist.ids);
   const [disabled, setDisabled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const swiperRef = useRef(null);
 
   function toggleWishlist() {
     setDisabled(true);
@@ -29,55 +31,64 @@ export function ProductImageContainer({ product }) {
       });
     }
   }
+
+  console.log(product);
+  console.log(wishlistIds.findIndex((item) => item === product._id) > -1);
   return (
-    <div
+    <Swiper
+      ref={swiperRef}
+      loop={true}
+      autoplay={{ delay: 5000 }}
+      spaceBetween={10}
       className="product-img-container pointer"
-      onClick={() => navigate(`/product/${product._id}`)}
     >
-      <img
-        src={`${
-          product?.image?.[0]?.Location ?? product?.image?.[0]?.url ?? ""
-        }`}
-        alt="product-img"
-        className="product-img"
-      />
-      {!!(product.originalPrice - product.price) && (
-        <span className="offer-icon">
-          <span>
-            {parseInt(
-              ((product.originalPrice - product.price) /
-                product.originalPrice) *
-                100
-            )}
-            %
-          </span>
-          <span style={{ fontSize: "0.7rem", fontWeight: 400 }}> OFF</span>
-        </span>
-      )}
-      {product.isLimited && (
-        <div className="limited-icon">
-          <span>
-            <FontAwesomeIcon icon={faStopwatch} />
-          </span>
-          <span> limited</span>
-        </div>
-      )}
-      <span
-        className={`add-to-wishlist ${disabled ? "disabled" : ""}`}
-        onClick={(e) => {
-          e.stopPropagation();
-          toggleWishlist();
-        }}
-      >
-        {disabled ? (
-          <FontAwesomeIcon icon={faCircleNotch} className="fa-spin" />
-        ) : (
-          <WishIcon
-            wished={wishlistIds.includes(product._id)}
-            disabled={disabled}
+      {product.image.map((image, index) => (
+        <SwiperSlide key={image?.Location ?? index}>
+          <img
+            src={image?.Location ?? ""}
+            alt="product-img"
+            className="product-img"
+            onClick={() => navigate("/product/" + product._id)}
           />
-        )}
-      </span>
-    </div>
+          {!!(product.originalPrice - product.price) && (
+            <span className="offer-icon">
+              <span>
+                {parseInt(
+                  ((product.originalPrice - product.price) /
+                    product.originalPrice) *
+                    100
+                )}
+                %
+              </span>
+              <span style={{ fontSize: "0.7rem", fontWeight: 400 }}> OFF</span>
+            </span>
+          )}
+          {product.isLimited && (
+            <div className="limited-icon">
+              <span>
+                <FontAwesomeIcon icon={faStopwatch} />
+              </span>
+              <span> limited</span>
+            </div>
+          )}
+          <span
+            className={`add-to-wishlist ${disabled ? "disabled" : ""}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleWishlist();
+            }}
+          >
+            {disabled ? (
+              <FontAwesomeIcon icon={faCircleNotch} className="fa-spin" />
+            ) : (
+              <WishIcon
+                wished={wishlistIds.includes(product._id)}
+                disabled={disabled}
+              />
+            )}
+          </span>
+        </SwiperSlide>
+      ))}
+    </Swiper>
   );
 }
