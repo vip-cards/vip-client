@@ -10,10 +10,13 @@ import { useEffect, useState } from "react";
 import clientServices from "services/clientServices";
 import useSWR from "swr";
 import "./Offers.scss";
+import { useLocation } from "react-router";
 
 const LIMIT = 9;
 
 export default function Offers() {
+  const { state } = useLocation();
+  console.log(state);
   const [filter, setFilter] = useState({ vendor: [], category: [] });
   const [queryParams, setQueryParams] = useState({
     test: "ar",

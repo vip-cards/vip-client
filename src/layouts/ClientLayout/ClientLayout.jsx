@@ -59,6 +59,7 @@ export default function ClientLayout() {
           <Route path="/home" element={<Home />} />
           <Route path="/vendors" element={<Vendors />} />
           <Route path="/offers" element={<Offers />} />
+          <Route path="/hot-deals" element={<HotDeals />} />
           <Route path="/ads" element={<SponsorAds />} />
           <Route path="/ads/create" element={<CreateAd />} />
           <Route path="/ads/list" element={<PreviousAds />} />
@@ -80,8 +81,6 @@ export default function ClientLayout() {
 
           <Route path="/categories" element={<Categories />} />
           <Route path="/categories/:categoryId" element={<Vendors />} />
-
-          <Route path="/hot-deals" element={<HotDeals />} />
 
           <Route path="/vendors/:vendorId" element={<Vendor />} />
           <Route path="/vendors/:vendorId/branches" element={<Branches />} />
