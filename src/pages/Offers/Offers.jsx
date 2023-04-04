@@ -1,17 +1,17 @@
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
+import { IconButton, MainButton } from "components/Buttons";
 import ProductCard from "components/Cards/ProductCard/ProductCard";
+import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
+import MainInput from "components/MainInput/MainInput";
+import NoData from "components/NoData/NoData";
 import { getLocalizedWord } from "helpers/lang";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import clientServices from "services/clientServices";
 import useSWR from "swr";
 import "./Offers.scss";
-import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
-import NoData from "components/NoData/NoData";
-import MainInput from "components/MainInput/MainInput";
-import { IconButton, MainButton } from "components/Buttons";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-const LIMIT = 6;
+const LIMIT = 9;
 
 export default function Offers() {
   const [filter, setFilter] = useState({ vendor: [], category: [] });
@@ -63,11 +63,25 @@ export default function Offers() {
     });
   };
 
-  const handleProductSearch = () => {};
+  const handleProductSearch = () => {
+    const arabicReg = /[\u0621-\u064A]/g;
+    const isArabic = arabicReg.test(searchQuery.search);
+    const queryObj = {
+      ...(!isArabic && { "name.en": searchQuery.search }),
+      ...(isArabic && { "name.ar": searchQuery.search }),
+    };
+    setQueryParams((prev) => ({ ...prev, page: 1, ...queryObj }));
+  };
+
+  useEffect(() => {
+    if (!searchQuery.search) {
+      setQueryParams((prev) => ({ page: 1, limit: LIMIT }));
+    }
+  }, [searchQuery]);
 
   return (
     <div className="flex flex-col p-8 gap-4 min-h-[80vh] max-h-screen overflow-hidden">
-      <div className="flex flex-row gap-4 w-full justify-center items-center">
+      <div className="flex flex-row gap-4 w-full justify-center items-center mx-4">
         <MainInput
           name="search"
           className="flex-grow"
