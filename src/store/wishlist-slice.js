@@ -45,17 +45,17 @@ const wishlistSlice = createSlice({
     builder.addCase(fetchWishlist.fulfilled, (state, { payload }) => {
       if (!payload) return state;
       state.products = payload;
-      state.ids = payload.map((product) => product && product?._id);
+      state.ids = payload.map((product) => product && product?.product._id);
     });
     builder.addCase(addWishProduct.fulfilled, (state, { payload }) => {
       if (!payload) return state;
       state.products = payload;
-      state.ids = payload.map((product) => product && product?._id);
+      state.ids = payload.map((product) => product && product?.product._id);
     });
     builder.addCase(removeWishProduct.fulfilled, (state, { payload }) => {
       if (!payload) return state;
       state.products = payload;
-      state.ids = payload.map((product) => product && product?._id);
+      state.ids = payload.map((product) => product && product?.product._id);
     });
   },
 });
