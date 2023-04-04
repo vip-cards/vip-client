@@ -9,15 +9,14 @@ import { getLocalizedWord } from "helpers/lang";
 import { useEffect, useState } from "react";
 import clientServices from "services/clientServices";
 import useSWR from "swr";
-import "./Offers.scss";
 import { useLocation } from "react-router";
 
 const LIMIT = 9;
 
-export default function Offers() {
+export default function Offers({ isHotDeal = false }) {
   const { state } = useLocation();
   console.log(state);
-  const [filter, setFilter] = useState({ vendor: [], category: [] });
+  const [filter, setFilter] = useState({ vendors: [], categories: [] });
   const [queryParams, setQueryParams] = useState({
     test: "ar",
     page: 1,
@@ -31,8 +30,17 @@ export default function Offers() {
     isLoading: productsLoading,
     isValidating,
     mutate,
-  } = useSWR(["all-products", queryParams], () =>
-    clientServices.listAllProducts(queryParams)
+  } = useSWR(["all-products", isHotDeal, queryParams], () =>
+    clientServices.listAllProducts({ isHotDeal, ...queryParams })
+  );
+
+  const { data: categories } = useSWR(
+    "all-categories",
+    clientServices.listAllCategories
+  );
+  const { data: vendors } = useSWR(
+    "all-vendors",
+    clientServices.listAllVendors
   );
   const { records: products = undefined, counts } = productsData ?? {};
   const totalPages = Math.ceil(counts / LIMIT);
@@ -52,16 +60,8 @@ export default function Offers() {
   const productListRender = () => {
     if (productsLoading) return <LoadingSpinner />;
     if (!products.length) return <NoData />;
-    const filteredProducts = products.filter((product) => {
-      const isInVendor = filter.vendor.length
-        ? filter.vendor?.includes(product.vendor._id)
-        : true;
-      const isInCategory = filter.category.length
-        ? filter.category?.includes(product.category?._id)
-        : true;
-      return isInVendor && isInCategory;
-    });
-    return filteredProducts.map((offer) => {
+
+    return products.map((offer) => {
       return <ProductCard key={offer._id} product={offer} />;
     });
   };
@@ -78,9 +78,25 @@ export default function Offers() {
 
   useEffect(() => {
     if (!searchQuery.search) {
-      setQueryParams((prev) => ({ page: 1, limit: LIMIT }));
+      setQueryParams({ page: 1, limit: LIMIT });
     }
   }, [searchQuery]);
+
+  useEffect(() => {
+    setQueryParams((q) => {
+      const category = filter.categories.length
+        ? { category: filter.categories }
+        : null;
+      const vendor = filter.vendors.length ? { vendor: filter.vendors } : null;
+      if (!category && "category" in q) delete q.category;
+      if (!vendor && "vendor" in q) delete q.vendor;
+      return {
+        ...q,
+        ...category,
+        ...vendor,
+      };
+    });
+  }, [filter]);
 
   return (
     <div className="flex flex-col p-8 gap-4 min-h-[80vh] max-h-screen overflow-hidden">
@@ -98,7 +114,56 @@ export default function Offers() {
           <IconButton icon={faMagnifyingGlass} variant="secondary" />
         </MainButton>
       </div>
-      <div className="flex flex-row w-full h-full gap-8 flex-wrap max-h-[85vh] overflow-y-auto p-5 justify-between flex-grow">
+
+      <div className="flex flex-row flex-wrap gap-4 justify-start items-start ">
+        <button
+          onClick={() => setFilter((f) => ({ ...f, categories: [] }))}
+          className={classNames("px-3 py-1 rounded-lg border bg-primary")}
+        >
+          Reset
+        </button>
+        {categories?.map((category) => (
+          <button
+            onClick={() => toggleFilter("categories", category._id)}
+            key={category._id}
+            className={classNames("px-3 py-1 rounded-lg border", {
+              "bg-primary":
+                filter.categories?.findIndex((item) => item === category._id) >
+                -1,
+              "bg-transparent group-hover:bg-primary/50": !(
+                filter.categories?.findIndex((item) => item === category._id) >
+                -1
+              ),
+            })}
+          >
+            {getLocalizedWord(category.name)}
+          </button>
+        ))}
+      </div>
+      <div className="flex flex-row flex-wrap gap-4 justify-start items-start ">
+        <button
+          onClick={() => setFilter((f) => ({ ...f, vendors: [] }))}
+          className={classNames("px-3 py-1 rounded-lg border bg-primary")}
+        >
+          Reset
+        </button>
+        {vendors?.map((vendor) => (
+          <button
+            onClick={() => toggleFilter("vendors", vendor._id)}
+            key={vendor._id}
+            className={classNames("px-3 py-1 rounded-lg border", {
+              "bg-primary":
+                filter.vendors?.findIndex((item) => item === vendor._id) > -1,
+              "bg-transparent group-hover:bg-primary/50": !(
+                filter.vendors?.findIndex((item) => item === vendor._id) > -1
+              ),
+            })}
+          >
+            {getLocalizedWord(vendor.name)}
+          </button>
+        ))}
+      </div>
+      <div className="flex flex-row w-full h-full gap-8 flex-wrap max-h-[85vh] overflow-y-auto p-5 justify-around flex-grow">
         {productListRender()}
       </div>
       <div className="flex flex-row gap-3 justify-center items-center">
