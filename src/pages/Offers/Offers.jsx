@@ -10,28 +10,19 @@ import { useEffect, useState } from "react";
 import clientServices from "services/clientServices";
 import useSWR from "swr";
 import { useLocation } from "react-router";
+import Search from "components/Inputs/Search/Search";
 
 const LIMIT = 9;
 
 export default function Offers({ isHotDeal = false }) {
-  const { state } = useLocation();
-  console.log(state);
+  const location = useLocation();
   const [filter, setFilter] = useState({ vendors: [], categories: [] });
-  const [queryParams, setQueryParams] = useState({
-    test: "ar",
-    page: 1,
-    limit: LIMIT,
-  });
+  const [queryParams, setQueryParams] = useState({ page: 1, limit: LIMIT });
   const [searchQuery, setSearchQuery] = useState("");
 
-  const {
-    data: productsData,
-    error,
-    isLoading: productsLoading,
-    isValidating,
-    mutate,
-  } = useSWR(["all-products", isHotDeal, queryParams], () =>
-    clientServices.listAllProducts({ isHotDeal, ...queryParams })
+  const { data: productsData, isLoading: productsLoading } = useSWR(
+    ["all-products", isHotDeal, queryParams],
+    () => clientServices.listAllProducts({ isHotDeal, ...queryParams })
   );
 
   const { data: categories } = useSWR(
@@ -42,6 +33,7 @@ export default function Offers({ isHotDeal = false }) {
     "all-vendors",
     clientServices.listAllVendors
   );
+
   const { records: products = undefined, counts } = productsData ?? {};
   const totalPages = Math.ceil(counts / LIMIT);
 
@@ -67,17 +59,18 @@ export default function Offers({ isHotDeal = false }) {
   };
 
   const handleProductSearch = () => {
+    if (!searchQuery) return;
     const arabicReg = /[\u0621-\u064A]/g;
-    const isArabic = arabicReg.test(searchQuery.search);
+    const isArabic = arabicReg.test(searchQuery);
     const queryObj = {
-      ...(!isArabic && { "name.en": searchQuery.search }),
-      ...(isArabic && { "name.ar": searchQuery.search }),
+      ...(!isArabic && { "name.en": searchQuery }),
+      ...(isArabic && { "name.ar": searchQuery }),
     };
     setQueryParams((prev) => ({ ...prev, page: 1, ...queryObj }));
   };
 
   useEffect(() => {
-    if (!searchQuery.search) {
+    if (!searchQuery) {
       setQueryParams({ page: 1, limit: LIMIT });
     }
   }, [searchQuery]);
@@ -98,122 +91,122 @@ export default function Offers({ isHotDeal = false }) {
     });
   }, [filter]);
 
-  return (
-    <div className="flex flex-col p-8 gap-4 min-h-[80vh] max-h-screen overflow-hidden">
-      <div className="flex flex-row gap-4 w-full justify-center items-center mx-4">
-        <MainInput
-          name="search"
-          className="flex-grow"
-          setState={setSearchQuery}
-          searchQuery={searchQuery}
-        />
-        <MainButton
-          className="h-full aspect-square"
-          onClick={handleProductSearch}
-        >
-          <IconButton icon={faMagnifyingGlass} variant="secondary" />
-        </MainButton>
-      </div>
+  useEffect(() => {
+    setSearchQuery("");
+    setQueryParams({ page: 1, limit: LIMIT });
+    setFilter({ vendors: [], categories: [] });
+  }, [location.pathname]);
 
-      <div className="flex flex-row flex-wrap gap-4 justify-start items-start ">
-        <button
-          onClick={() => setFilter((f) => ({ ...f, categories: [] }))}
-          className={classNames("px-3 py-1 rounded-lg border bg-primary")}
-        >
-          Reset
-        </button>
-        {categories?.map((category) => (
+  return (
+    <>
+      <Search
+        setSearchQuery={setSearchQuery}
+        searchQuery={searchQuery}
+        onClick={handleProductSearch}
+      />
+      <main className="flex flex-col p-8 gap-4 min-h-[80vh] max-h-screen overflow-hidden">
+        <div className="flex flex-row flex-wrap gap-4 justify-start items-start ">
           <button
-            onClick={() => toggleFilter("categories", category._id)}
-            key={category._id}
-            className={classNames("px-3 py-1 rounded-lg border", {
-              "bg-primary":
-                filter.categories?.findIndex((item) => item === category._id) >
-                -1,
-              "bg-transparent group-hover:bg-primary/50": !(
-                filter.categories?.findIndex((item) => item === category._id) >
-                -1
-              ),
-            })}
+            onClick={() => setFilter((f) => ({ ...f, categories: [] }))}
+            className={classNames("px-3 py-1 rounded-lg border bg-primary")}
           >
-            {getLocalizedWord(category.name)}
+            Reset
           </button>
-        ))}
-      </div>
-      <div className="flex flex-row flex-wrap gap-4 justify-start items-start ">
-        <button
-          onClick={() => setFilter((f) => ({ ...f, vendors: [] }))}
-          className={classNames("px-3 py-1 rounded-lg border bg-primary")}
-        >
-          Reset
-        </button>
-        {vendors?.map((vendor) => (
-          <button
-            onClick={() => toggleFilter("vendors", vendor._id)}
-            key={vendor._id}
-            className={classNames("px-3 py-1 rounded-lg border", {
-              "bg-primary":
-                filter.vendors?.findIndex((item) => item === vendor._id) > -1,
-              "bg-transparent group-hover:bg-primary/50": !(
-                filter.vendors?.findIndex((item) => item === vendor._id) > -1
-              ),
-            })}
-          >
-            {getLocalizedWord(vendor.name)}
-          </button>
-        ))}
-      </div>
-      <div className="flex flex-row w-full h-full gap-8 flex-wrap max-h-[85vh] overflow-y-auto p-5 justify-around flex-grow">
-        {productListRender()}
-      </div>
-      <div className="flex flex-row gap-3 justify-center items-center">
-        <MainButton
-          disabled={1 === queryParams.page}
-          onClick={() =>
-            setQueryParams((params) => ({
-              ...params,
-              page: params.page > 1 ? params.page - 1 : 1,
-            }))
-          }
-          className="p-2 !rounded-full justify-center items-center flex aspect-square disabled:bg-primary/50"
-          size="small"
-        >
-          {"<"}
-        </MainButton>
-        {[...Array.from({ length: totalPages }, (v, i) => i + 1)]?.map(
-          (item) => (
-            <MainButton
-              disabled={item === queryParams.page}
-              onClick={() =>
-                setQueryParams((params) => ({ ...params, page: item }))
-              }
-              className={classNames(
-                {
-                  "!bg-primary/50": item !== queryParams.page,
-                },
-                "p-2 !rounded-full justify-center items-center flex aspect-square"
-              )}
-              size="small"
+          {categories?.map((category) => (
+            <button
+              onClick={() => toggleFilter("categories", category._id)}
+              key={category._id}
+              className={classNames("px-3 py-1 rounded-lg border", {
+                "bg-primary":
+                  filter.categories?.findIndex(
+                    (item) => item === category._id
+                  ) > -1,
+                "bg-transparent group-hover:bg-primary/50": !(
+                  filter.categories?.findIndex(
+                    (item) => item === category._id
+                  ) > -1
+                ),
+              })}
             >
-              {item}
-            </MainButton>
-          )
-        )}
-        <MainButton
-          disabled={totalPages === queryParams.page}
-          onClick={() =>
-            setQueryParams((params) => ({
-              ...params,
-              page: params.page < totalPages ? params.page + 1 : totalPages,
-            }))
-          }
-          className="p-2 !rounded-full justify-center items-center flex aspect-square disabled:bg-primary/50"
-          size="small"
-        >
-          {">"}
-        </MainButton>
-      </div>
-    </div>
+              {getLocalizedWord(category.name)}
+            </button>
+          ))}
+        </div>
+        <div className="flex flex-row flex-wrap gap-4 justify-start items-start ">
+          <button
+            onClick={() => setFilter((f) => ({ ...f, vendors: [] }))}
+            className={classNames("px-3 py-1 rounded-lg border bg-primary")}
+          >
+            Reset
+          </button>
+          {vendors?.map((vendor) => (
+            <button
+              onClick={() => toggleFilter("vendors", vendor._id)}
+              key={vendor._id}
+              className={classNames("px-3 py-1 rounded-lg border", {
+                "bg-primary":
+                  filter.vendors?.findIndex((item) => item === vendor._id) > -1,
+                "bg-transparent group-hover:bg-primary/50": !(
+                  filter.vendors?.findIndex((item) => item === vendor._id) > -1
+                ),
+              })}
+            >
+              {getLocalizedWord(vendor.name)}
+            </button>
+          ))}
+        </div>
+        <div className="flex flex-row w-full h-full gap-8 flex-wrap max-h-[85vh] overflow-y-auto p-5 justify-around flex-grow">
+          {productListRender()}
+        </div>
+        <div className="flex flex-row gap-3 justify-center items-center">
+          <MainButton
+            disabled={1 === queryParams.page}
+            onClick={() =>
+              setQueryParams((params) => ({
+                ...params,
+                page: params.page > 1 ? params.page - 1 : 1,
+              }))
+            }
+            className="p-2 !rounded-full justify-center items-center flex aspect-square disabled:bg-primary/50"
+            size="small"
+          >
+            {"<"}
+          </MainButton>
+          {[...Array.from({ length: totalPages }, (v, i) => i + 1)]?.map(
+            (item) => (
+              <MainButton
+                disabled={item === queryParams.page}
+                onClick={() =>
+                  setQueryParams((params) => ({ ...params, page: item }))
+                }
+                className={classNames(
+                  {
+                    "!bg-primary/50": item !== queryParams.page,
+                  },
+                  "p-2 !rounded-full justify-center items-center flex aspect-square"
+                )}
+                size="small"
+              >
+                {item}
+              </MainButton>
+            )
+          )}
+          <MainButton
+            disabled={totalPages === queryParams.page}
+            onClick={() =>
+              setQueryParams((params) => ({
+                ...params,
+                page: params.page < totalPages ? params.page + 1 : totalPages,
+              }))
+            }
+            className="p-2 !rounded-full justify-center items-center flex aspect-square disabled:bg-primary/50"
+            size="small"
+          >
+            {">"}
+          </MainButton>
+        </div>
+      </main>
+    </>
   );
 }
 

@@ -1,13 +1,11 @@
-import { t } from "i18next";
-import { useEffect, useRef, useState } from "react";
-import i18n from "../../locales/i18n";
-
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
+import { t } from "i18next";
+import { useEffect, useRef, useState } from "react";
 import { ReactComponent as EyeClose } from "../../assets/VIP-ICON-SVG/eye_close.svg";
 import { ReactComponent as EyeOPen } from "../../assets/VIP-ICON-SVG/eye_open.svg";
-
-import classNames from "classnames";
+import i18n from "../../locales/i18n";
 import "./MainInput.scss";
 
 export default function MainInput({
@@ -43,10 +41,6 @@ export default function MainInput({
       );
     else return null;
   };
-
-  useEffect(() => {
-    if (toEdit && !disableState) inputRef.current && inputRef.current.focus();
-  }, [toEdit, disableState]);
 
   const renderInput = () => {
     const inputProps = {
@@ -114,9 +108,12 @@ export default function MainInput({
     }
   };
 
+  useEffect(() => {
+    if (toEdit && !disableState) inputRef.current && inputRef.current.focus();
+  }, [toEdit, disableState]);
+  
   return (
     <div className={classNames(className, "main-input-label")}>
-      
       {renderInput()}
       <label className="main-label" htmlFor={name}>
         {t(name)}

@@ -22,6 +22,7 @@ export default function MainInput(props) {
     toEdit = false,
     invalid = false,
     className,
+    ...rest
   } = props;
 
   const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +43,7 @@ export default function MainInput(props) {
         name={name}
         identifier={identifier}
         setState={setState}
-        {...props}
+        {...rest}
       />
     );
 
@@ -69,7 +70,7 @@ export default function MainInput(props) {
       onBlur: () => toEdit && setDisabledState(true),
       onChange: (e) => setState({ ...state, [name]: e.target.value }),
 
-      ...props,
+      ...rest,
     };
 
     switch (type) {
