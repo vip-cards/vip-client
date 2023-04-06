@@ -1,57 +1,73 @@
-import React, { useEffect, useState } from "react";
+import Search from "components/Inputs/Search/Search";
+import { useEffect, useState } from "react";
+import useSWR from "swr";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import NoData from "../../components/NoData/NoData";
-import SearchArea from "../../components/SearchArea/SearchArea";
-import useSearch from "../../helpers/search";
 import clientServices from "../../services/clientServices";
 import "./Categories.scss";
+
+const LIMIT = 9;
+
 export default function Categories() {
-  const [loading, setLoading] = useState("idle");
-  const [categories, setCategories] = useState([]);
+  const [queryParams, setQueryParams] = useState({ page: 1, limit: LIMIT });
+
+  const [searchQuery, setSearchQuery] = useState("");
+
   const {
-    loading: searching,
-    renderedList,
-    setQuery,
-  } = useSearch(clientServices.categoryQuery, categories);
+    data: categoriesData,
+    isLoading: cateogoriesLoading,
+    isValidating,
+  } = useSWR(["all-categories", queryParams], () =>
+    clientServices.listAllCategories({ ...queryParams, type: "vendor" })
+  );
 
-  async function getCategoriesHandler() {
-    setLoading("loading");
-    try {
-      let { data } = await clientServices.listAllVendorCategories();
-      setCategories(data.records);
-
-      setLoading("done");
-    } catch (e) {
-      setLoading("done");
-    }
-  }
-
-  useEffect(() => {
-    getCategoriesHandler();
-  }, []);
+  const { records: categories = undefined, counts: categoriesCount } =
+    categoriesData ?? {};
+  const totalPages = Math.ceil(categoriesCount / LIMIT);
 
   const RenderedList = () => {
-    if (renderedList.length > 0) {
-      return (
-        <div className="categories-cards-container">
-          {renderedList.map((category) => {
-            return <CategoryCard key={category._id} category={category} />;
-          })}
-        </div>
-      );
-    } else {
-      return <NoData />;
-    }
-  };
-  return (
-    <div className="categories-page">
-      <SearchArea
-        onChange={(e) => setQuery(e.target.value)}
-        loading={searching}
-      />
+    if (cateogoriesLoading) return <LoadingSpinner />;
+    if (!categories.length) return <NoData />;
 
-      {loading === "loading" ? <LoadingSpinner /> : <RenderedList />}
+    return (
+      <div className="categories-cards-container">
+        {categories.map((category) => {
+          return <CategoryCard key={category._id} category={category} />;
+        })}
+      </div>
+    );
+  };
+
+  const handleCategorySearch = () => {
+    if (!searchQuery) return;
+    const arabicReg = /[\u0621-\u064A]/g;
+    const isArabic = arabicReg.test(searchQuery);
+    const queryObj = {
+      ...(!isArabic && { "name.en": searchQuery }),
+      ...(isArabic && { "name.ar": searchQuery }),
+    };
+    setQueryParams((prev) => ({ ...prev, page: 1, ...queryObj }));
+  };
+
+  useEffect(() => {
+    if (!searchQuery) {
+      setQueryParams({ page: 1, limit: LIMIT });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery]);
+
+  return (
+    <div className="categories-page relative">
+      {cateogoriesLoading && (
+        <div className="w-full absolute h-3 bg-green-600 animate-pulse"></div>
+      )}
+      <Search
+        setSearchQuery={setSearchQuery}
+        searchQuery={searchQuery}
+        onClick={handleCategorySearch}
+      />
+      <RenderedList />
     </div>
   );
 }

@@ -12,6 +12,7 @@ const Search = ({ setSearchQuery, searchQuery, onClick }) => {
           className="flex-grow"
           onChange={(e) => setSearchQuery(e.target.value)}
           onClick={onClick}
+          onKeyUp={(e) => e.code === "Enter" && onClick()}
           value={searchQuery}
         />
         <MainButton

@@ -21,7 +21,7 @@ const clientServices = {
     return response;
   },
   listAllVendors: async (params) =>
-    (await Axios.get(`/vendor/list`, { params })).data?.records,
+    (await Axios.get(`/vendor/list`, { params })).data,
 
   listAllVendorsInCategory: async (id) =>
     (await Axios.get(`/vendor/list?category=${id}`)).data?.records,
@@ -82,8 +82,8 @@ const clientServices = {
     return response;
   },
 
-  listAllCategories: async () =>
-    (await Axios.get(`/category/list`)).data?.records,
+  listAllCategories: async (params) =>
+    (await Axios.get(`/category/list`, { params })).data,
 
   /*--- WISHLIST ---*/
   listAllWishProducts: async () => {

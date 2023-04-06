@@ -27,13 +27,13 @@ export default function Home() {
   );
   const { records: products = undefined } = productsData ?? {};
 
-  const { data: vendors, isLoading: vendorsLoading } = useSWR(
+  const { data: vendorsData, isLoading: vendorsLoading } = useSWR(
     "all-vendors",
     () => clientServices.listAllVendors() // to prevent sending the string in the params
   );
-  const { data: categories, isLoading: categoriesLoading } = useSWR(
+  const { data: categoriesData, isLoading: categoriesLoading } = useSWR(
     "all-categories",
-    clientServices.listAllCategories
+    () => clientServices.listAllCategories()
   );
   const { data: adverts, isLoading: advertsLoading } = useSWR(
     "all-adverts",
@@ -43,6 +43,9 @@ export default function Home() {
     "all-banners",
     clientServices.listAllBanners
   );
+
+  const { records: categories = undefined } = categoriesData ?? {};
+  const { records: vendors = undefined } = vendorsData ?? {};
 
   const renderAds = (size) => {
     if (advertsLoading || !adverts) return <LoadingSpinner />;

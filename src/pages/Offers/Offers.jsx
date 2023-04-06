@@ -1,16 +1,14 @@
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
-import { IconButton, MainButton } from "components/Buttons";
+import { MainButton } from "components/Buttons";
 import ProductCard from "components/Cards/ProductCard/ProductCard";
+import Search from "components/Inputs/Search/Search";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
-import MainInput from "components/MainInput/MainInput";
 import NoData from "components/NoData/NoData";
 import { getLocalizedWord } from "helpers/lang";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 import clientServices from "services/clientServices";
 import useSWR from "swr";
-import { useLocation } from "react-router";
-import Search from "components/Inputs/Search/Search";
 
 const LIMIT = 9;
 
@@ -25,17 +23,19 @@ export default function Offers({ isHotDeal = false }) {
     () => clientServices.listAllProducts({ isHotDeal, ...queryParams })
   );
 
-  const { data: categories } = useSWR(
-    "all-categories",
-    clientServices.listAllCategories
-  );
-  const { data: vendors } = useSWR(
-    "all-vendors",
-    clientServices.listAllVendors
+  const { data: categoriesData } = useSWR("all-categories", () =>
+    clientServices.listAllCategories()
   );
 
-  const { records: products = undefined, counts } = productsData ?? {};
-  const totalPages = Math.ceil(counts / LIMIT);
+  const { data: vendorsData } = useSWR("all-vendors", () =>
+    clientServices.listAllVendors()
+  );
+
+  const { records: products = undefined, counts: productsCount } =
+    productsData ?? {};
+  const { records: categories = undefined } = categoriesData ?? {};
+  const { records: vendors = undefined } = vendorsData ?? {};
+  const totalPages = Math.ceil(productsCount / LIMIT);
 
   const toggleFilter = (arrayKey = "vendors", itemId) => {
     const newVendorFilterList = [...filter[arrayKey]];
@@ -209,50 +209,3 @@ export default function Offers({ isHotDeal = false }) {
     </>
   );
 }
-
-const FilterToggle = ({ name = "filter", onToggle, selected = false, id }) => {
-  const handleFilterToggle = () => {
-    onToggle(id);
-  };
-
-  return (
-    <button
-      className="group  max-w-full flex flex-row w-full flex-nowrap justify-between items-center my-1 px-2 border-b-[1px] border-slate-400"
-      onClick={handleFilterToggle}
-    >
-      <p className="text-lg whitespace-nowrap max-w-[8rem] text-ellipsis overflow-hidden">
-        {name}
-      </p>
-      <div
-        className={classNames(
-          "aspect-square w-4 h-4 rounded-full border-2 border-black",
-          {
-            "bg-primary": selected,
-            "bg-transparent group-hover:bg-primary/50": !selected,
-          }
-        )}
-      ></div>
-    </button>
-  );
-};
-
-const FilterGroup = ({ title, filter, onToggle, listApi }) => {
-  const { data: list, isLoading: vendorsLoading } = useSWR(
-    `all-${title}s`,
-    listApi
-  );
-  const group = filter[title];
-  return (
-    <div className="py-5 px-1 max-w-full">
-      <h6 className="font-semibold capitalize">{title}</h6>
-      {list?.map((item) => (
-        <FilterToggle
-          onToggle={(id) => onToggle(title, id)}
-          selected={group.includes(item._id)}
-          name={getLocalizedWord(item.name)}
-          id={item._id}
-        />
-      ))}
-    </div>
-  );
-};
