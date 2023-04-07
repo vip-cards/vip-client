@@ -50,7 +50,7 @@ export default function CartPage() {
           </div>
           <div className="checkout-more">
             <b className="vendor-title">Vendor</b>
-            <p className="vendor-name">{cart.vendor.name?.[lang]}</p>
+            <p className="vendor-name">{cart.vendor?.name?.[lang]}</p>
             <b className="branch-title">Branch</b>
             <p className="branch-name">{cart?.branch?.name?.[lang]}</p>
             <b className="original-price-title">Original price</b>
