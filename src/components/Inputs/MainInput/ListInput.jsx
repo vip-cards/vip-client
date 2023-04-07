@@ -7,7 +7,7 @@ export const ListInput = forwardRef(function ListInput(
     list,
     name,
     identifier,
-    disableState,
+    disabled,
     setDisabledState,
     toEdit,
     state,
@@ -16,13 +16,14 @@ export const ListInput = forwardRef(function ListInput(
   inputRef
 ) {
   const lang = i18n.language;
+  console.log(state);
   return (
     <>
       <select
         required
-        disabled={disableState}
+        disabled={disabled}
         className="main-input"
-        selected={state[name]}
+        selected={state[name] ?? ""}
         value={state[name] || "0"}
         onChange={(e) => {
           setState({ ...state, [name]: e.target.value });
@@ -37,13 +38,14 @@ export const ListInput = forwardRef(function ListInput(
           {t("choose")}
         </option>
 
-        {list.map((li) => {
-          return (
-            <option key={li._id} value={li._id}>
-              {li[identifier][lang]}
-            </option>
-          );
-        })}
+        {list?.length &&
+          list?.map((li) => {
+            return (
+              <option key={li._id} value={li._id}>
+                {li[identifier][lang]}
+              </option>
+            );
+          })}
       </select>
       <label className="main-label" htmlFor={name}>
         {t(name)}

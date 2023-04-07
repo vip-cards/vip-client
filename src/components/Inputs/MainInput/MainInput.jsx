@@ -22,7 +22,7 @@ export default function MainInput(props) {
     toEdit = false,
     invalid = false,
     className,
-    ...rest
+    ...restProps
   } = props;
 
   const [showPassword, setShowPassword] = useState(false);
@@ -43,7 +43,7 @@ export default function MainInput(props) {
         name={name}
         identifier={identifier}
         setState={setState}
-        {...rest}
+        {...restProps}
       />
     );
 
@@ -66,16 +66,19 @@ export default function MainInput(props) {
       placeholder: " ",
       min: type === "number" ? 0 : null,
       autoComplete: type === "password" ? "off" : type,
-
+      state,
+      setState,
       onBlur: () => toEdit && setDisabledState(true),
       onChange: (e) => setState({ ...state, [name]: e.target.value }),
 
-      ...rest,
+      ...restProps,
     };
 
     switch (type) {
       case "list":
-        return <ListInput {...inputProps} />;
+        return (
+          <ListInput list={list} identifier={identifier} {...inputProps} />
+        );
 
       case "textarea":
         return <textarea {...inputProps} />;
