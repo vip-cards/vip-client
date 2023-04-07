@@ -1,4 +1,10 @@
 import classNames from "classnames";
+import {
+  BannerCard,
+  CategoryCard,
+  ProductCard,
+  VendorCard,
+} from "components/Cards";
 import NoData from "components/NoData/NoData";
 import { t } from "i18next";
 import dummyAds from "mock/ad.json";
@@ -7,10 +13,10 @@ import { SwiperSlide } from "swiper/react";
 import useSWR from "swr";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import clientServices from "../../services/clientServices";
-import classes from "./Home.module.scss";
 import HomeSwiper from "./HomeSwiper";
 import SectionContainer from "./SectionContainer";
-import { BannerCard, CategoryCard, ProductCard, VendorCard } from "components/Cards";
+
+import classes from "./Home.module.scss";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -33,13 +39,14 @@ export default function Home() {
     "all-adverts",
     clientServices.listAllAds
   );
-  const { data: banners, isLoading: bannersLoading } = useSWR(
+  const { data: bannersData, isLoading: bannersLoading } = useSWR(
     "all-banners",
     clientServices.listAllBanners
   );
 
   const { records: categories = undefined } = categoriesData ?? {};
   const { records: vendors = undefined } = vendorsData ?? {};
+  const { records: banners = undefined } = vendorsData ?? {};
 
   const renderAds = (size) => {
     if (advertsLoading || !adverts) return <LoadingSpinner />;
@@ -83,6 +90,7 @@ export default function Home() {
     if (bannersLoading || !banners) return <LoadingSpinner />;
     if (!banners.length) return <NoData />;
 
+    console.log(banners);
     return banners.map((banner) => {
       return (
         <SwiperSlide
@@ -206,6 +214,7 @@ export default function Home() {
             </HomeSwiper>
           </div>
         </SectionContainer>
+
         <SectionContainer direction="row">
           <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full h-40">
             <HomeSwiper

@@ -12,7 +12,6 @@ import { Swiper } from "swiper/react";
 const HomeSwiper = ({ children, ...props }) => {
   return (
     <Swiper
-      virtual
       loop
       autoplay={process.env.NODE_ENV !== "production" ? false : { delay: 5000 }}
       onSlideChange={() => console.log("slide change")}
@@ -27,8 +26,6 @@ const HomeSwiper = ({ children, ...props }) => {
         Pagination,
         Virtual,
       ]}
-      keyboard={{ enabled: true }}
-      freeMode={true}
       centeredSlides
       navigation
       centeredSlidesBounds

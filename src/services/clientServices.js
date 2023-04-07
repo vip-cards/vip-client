@@ -47,11 +47,7 @@ const clientServices = {
     return response;
   },
 
-  listAllBanners: async () => {
-    const response = await Axios.get(`/banner/list`);
-    return response;
-  },
-
+  listAllBanners: async () => (await Axios.get(`/banner/list`))?.data,
   getBranchDetails: async (branchId) => {
     const response = await Axios.get(`/branch/get?_id=${branchId}`);
     return response;

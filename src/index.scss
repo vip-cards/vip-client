@@ -146,8 +146,16 @@ $font-size-dec: 0.25rem;
   margin: auto;
   color: var(--mainColor);
 }
+.module-card {
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+}
 
 .swiper {
+  .banner-card {
+    margin: 10px 0;
+  }
   .category-card {
     margin: 10px 0;
   }
