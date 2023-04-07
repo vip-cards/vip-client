@@ -5,7 +5,7 @@ import { MainButton } from "components/Buttons";
 
 function Pagination({ queryParams, setQueryParams, count }) {
   return (
-    <footer className="p-8 flex flex-row gap-3 justify-center items-center">
+    <footer className="p-8 flex flex-row gap-3 justify-center items-center mt-auto">
       <MainButton
         disabled={1 === queryParams.page}
         onClick={() =>

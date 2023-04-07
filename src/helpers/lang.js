@@ -33,5 +33,5 @@ export function switchLang(lang) {
 
 export function getLocalizedWord(word) {
   const lang = i18n.language;
-  return word[lang] ?? word.en ?? word.ar ?? word ?? "";
+  return word?.[lang] ?? word?.en ?? word?.ar ?? word ?? "";
 }

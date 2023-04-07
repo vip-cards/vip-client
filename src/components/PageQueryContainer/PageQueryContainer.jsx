@@ -1,8 +1,8 @@
 import { faRankingStar, faStreetView } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import { MainButton } from "components/Buttons";
 import Search from "components/Inputs/Search/Search";
+import Pagination from "components/Pagination/Pagination";
 import { getLocalizedWord } from "helpers/lang";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
@@ -99,53 +99,11 @@ export default function PageQueryContainer({
             {listRenderFn()}
           </main>
         </div>
-        <footer className="p-8 flex flex-row gap-3 justify-center items-center">
-          <MainButton
-            disabled={1 === queryParams.page}
-            onClick={() =>
-              setQueryParams((params) => ({
-                ...params,
-                page: params.page > 1 ? params.page - 1 : 1,
-              }))
-            }
-            className="p-2 !rounded-full justify-center items-center flex aspect-square disabled:bg-primary/50"
-            size="small"
-          >
-            {"<"}
-          </MainButton>
-          {[...Array.from({ length: totalPages }, (v, i) => i + 1)]?.map(
-            (item) => (
-              <MainButton
-                disabled={item === queryParams.page}
-                onClick={() =>
-                  setQueryParams((params) => ({ ...params, page: item }))
-                }
-                className={classNames(
-                  {
-                    "!bg-primary/50": item !== queryParams.page,
-                  },
-                  "p-2 !rounded-full justify-center items-center flex aspect-square"
-                )}
-                size="small"
-              >
-                {item}
-              </MainButton>
-            )
-          )}
-          <MainButton
-            disabled={totalPages === queryParams.page}
-            onClick={() =>
-              setQueryParams((params) => ({
-                ...params,
-                page: params.page < totalPages ? params.page + 1 : totalPages,
-              }))
-            }
-            className="p-2 !rounded-full justify-center items-center flex aspect-square disabled:bg-primary/50"
-            size="small"
-          >
-            {">"}
-          </MainButton>
-        </footer>
+        <Pagination
+          count={totalPages}
+          queryParams={queryParams}
+          setQueryParams={setQueryParams}
+        />
       </section>
     </>
   );
