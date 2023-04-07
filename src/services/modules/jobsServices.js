@@ -2,12 +2,8 @@ import Axios from "../Axios";
 
 export const jobsServices = {
   /*--- JOBS ---*/
-  listAllJobs: async (params) => {
-    const response = await Axios.get("/job/list", {
-      params,
-    });
-    return response;
-  },
+  listAllJobs: async (params) =>
+    (await Axios.get("/job/list", { params }))?.data,
 
   getJobDetails: async (_id) => {
     const response = await Axios.get("/job/get", {

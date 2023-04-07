@@ -12,7 +12,7 @@ export default function ApplyJobCreateJob() {
 
   const [formError, setFormError] = useState(false);
   const [disabled, setDisabled] = useState(true);
-  const [jobForm, setJobForm] = useState({ client: userId });
+  const [jobForm, setJobForm] = useState({ client: userId, category: "" });
 
   const formData = [
     {
@@ -81,14 +81,14 @@ export default function ApplyJobCreateJob() {
       },
     };
 
-    const { value, error } = createJobSchema.validate(newJobForm);
+    // const { value, error } = createJobSchema.validate(newJobForm);
 
-    if (error) {
+    if (false) {
       setFormError(true);
     } else {
       setFormError(false);
       clientServices
-        .createJob(value)
+        .createJob(newJobForm)
         .then((res) => toast.success("Created Successfully"));
     }
   };
@@ -123,7 +123,6 @@ export default function ApplyJobCreateJob() {
           <p className="error-message">Please check the input values</p>
         )}
         <MainButton
-          disabled={disabled}
           text="confirm"
           type="submit"
           className="confirm"

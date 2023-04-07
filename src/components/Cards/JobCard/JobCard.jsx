@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { useNavigate } from "react-router";
-import i18n from "../../locales/i18n";
+import i18n from "../../../locales/i18n";
 
 const JobCard = ({ job }) => {
   const lang = i18n.language;
@@ -8,7 +8,7 @@ const JobCard = ({ job }) => {
   return (
     <div
       key={job._id}
-      className="job-card"
+      className="job-card cursor-pointer"
       onClick={() => navigate("/jobs/" + job._id)}
     >
       <h3 className="title">
