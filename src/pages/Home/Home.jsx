@@ -33,7 +33,7 @@ export default function Home() {
   );
   const { data: categoriesData, isLoading: categoriesLoading } = useSWR(
     "all-categories",
-    () => clientServices.listAllCategories()
+    () => clientServices.listAllCategories({ type: "vendor" })
   );
   const { data: adverts, isLoading: advertsLoading } = useSWR(
     "all-adverts",
