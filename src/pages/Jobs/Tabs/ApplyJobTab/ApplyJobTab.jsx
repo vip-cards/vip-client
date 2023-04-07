@@ -17,7 +17,7 @@ const ApplyJobTab = () => {
 
     viewCreatedJob: {
       label: "View Created Job",
-      panel: <ApplyJobViewCreatedJob />,
+      panel: <ApplyJobHome id={localStorage.getItem("userId") ?? ""} />,
     },
   };
 
