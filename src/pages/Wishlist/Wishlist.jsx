@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
+import { ProductCard } from "components/Cards";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import ProductCard from "../../components/ProductCard/ProductCard";
 
 export default function Wishlist() {
   const wishlist = useSelector((state) => state.wishlist.products);
   const [list, setList] = useState([]);
-
 
   useEffect(() => {
     const cleanedList = wishlist

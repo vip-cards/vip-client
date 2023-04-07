@@ -1,7 +1,7 @@
+import { ProductCard } from "components/Cards";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import ProductCard from "../../components/ProductCard/ProductCard";
 import "./AccountWishlist.scss";
 
 export default function AccountWishlist() {

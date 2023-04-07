@@ -3,20 +3,14 @@ import NoData from "components/NoData/NoData";
 import { t } from "i18next";
 import dummyAds from "mock/ad.json";
 import { useNavigate } from "react-router-dom";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
 import { SwiperSlide } from "swiper/react";
 import useSWR from "swr";
-import BannerCard from "../../components/BannerCard/BannerCard";
-import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
-import ProductCard from "../../components/ProductCard/ProductCard";
-import VendorCard from "../../components/VendorCard/VendorCard";
 import clientServices from "../../services/clientServices";
 import classes from "./Home.module.scss";
 import HomeSwiper from "./HomeSwiper";
 import SectionContainer from "./SectionContainer";
+import { BannerCard, CategoryCard, ProductCard, VendorCard } from "components/Cards";
 
 export default function Home() {
   const navigate = useNavigate();

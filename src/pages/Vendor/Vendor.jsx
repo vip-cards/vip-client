@@ -1,5 +1,6 @@
 import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { BranchCard, CategoryCard, ProductCard } from "components/Cards";
 import { t } from "i18next";
 import i18n from "locales/i18n";
 import { useEffect, useState } from "react";
@@ -7,11 +8,8 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { createRoom } from "services/socket/chat";
 import { selectAuth } from "store/auth-slice";
-import BranchCard from "../../components/BranchCard/BranchCard";
 import Carousel from "../../components/Carousel/Carousel";
-import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
-import ProductCard from "../../components/ProductCard/ProductCard";
 import clientServices from "../../services/clientServices";
 import "./Vendor.scss";
 

@@ -1,12 +1,9 @@
-import React from "react";
-import "./VendorCard.scss";
-import i18n from "../../locales/i18n";
+import vendorPlaceHolder from "assets/images/vendorPlaceHolder.png";
+import { getLocalizedWord } from "helpers/lang";
 import { useNavigate } from "react-router";
-
-import vendorPlaceHolder from "../../assets/images/vendorPlaceHolder.png";
+import "./VendorCard.scss";
 
 export default function VendorCard({ vendor }) {
-  const lang = i18n.language;
   const navigate = useNavigate();
 
   return (
@@ -18,16 +15,16 @@ export default function VendorCard({ vendor }) {
     >
       <div className="vendor-img-container">
         <img
-          src={`${vendor?.image?.Location}`}
+          src={`${vendor?.image?.Location ?? vendorPlaceHolder}`}
           alt="vendor-img"
           className="vendor-img"
         />
         {/* <img src={vendorPlaceHolder} alt="vendor-img" className="vendor-img" /> */}
       </div>
       <div className="vendor-info-container">
-        <p className="vendor-title">{vendor.name[lang]} </p>
+        <p className="vendor-title">{getLocalizedWord(vendor.name)} </p>
         <div className="vendor-description">
-          <p className="price">{vendor.description[lang]}</p>
+          <p className="price">{getLocalizedWord(vendor.description)}</p>
         </div>
       </div>
     </div>

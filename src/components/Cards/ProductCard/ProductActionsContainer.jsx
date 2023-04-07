@@ -1,4 +1,3 @@
-import { useState, forwardRef } from "react";
 import {
   faCircleNotch,
   faMinus,
@@ -6,8 +5,9 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDispatch, useSelector } from "react-redux";
 import i18n from "locales/i18n";
+import { forwardRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCartThunk } from "store/cart-slice";
 import { addWishProduct } from "store/wishlist-slice";
 

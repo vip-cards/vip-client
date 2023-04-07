@@ -4,11 +4,13 @@ import ReactDOM from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import "swiper/scss"; // core Swiper
 import App from "./App";
-import "./index.scss";
-import reportWebVitals from "./reportWebVitals";
 import store from "./store";
+
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
+import "swiper/scss"; // core Swiperimport "swiper/css/navigation";
+import "./index.scss";
 
 const helmetContext = {};
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -25,5 +27,3 @@ root.render(
     </Provider>
   </BrowserRouter>
 );
-
-reportWebVitals();

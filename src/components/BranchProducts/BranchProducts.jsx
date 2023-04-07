@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import clientServices from "../../services/clientServices";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import ProductCard from "../ProductCard/ProductCard";
 import "./BranchProducts.scss";
+import { ProductCard } from "components/Cards";
 export default function BranchProducts() {
   const params = useParams();
   const navigate = useNavigate();
@@ -42,8 +42,7 @@ export default function BranchProducts() {
   useEffect(() => {
     try {
       getBranchProductsHandler();
-    } catch (e) {
-    }
+    } catch (e) {}
   }, [location.pathname]);
 
   return (

@@ -1,10 +1,10 @@
+import { VendorCard } from "components/Cards";
 import PageQueryContainer from "components/PageQueryContainer/PageQueryContainer";
 import { useState } from "react";
 import { useParams } from "react-router";
 import useSWR from "swr";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import NoData from "../../components/NoData/NoData";
-import VendorCard from "../../components/VendorCard/VendorCard";
 import clientServices from "../../services/clientServices";
 import "./Vendors.scss";
 

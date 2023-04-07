@@ -2,13 +2,13 @@ import { t } from "i18next";
 import React, { useEffect, useState } from "react";
 
 import { useNavigate, useParams } from "react-router";
-import BranchCard from "../../components/BranchCard/BranchCard";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import NoData from "../../components/NoData/NoData";
 import SearchArea from "../../components/SearchArea/SearchArea";
 import clientServices from "../../services/clientServices";
 
 import "./Branchs.scss";
+import { BranchCard } from "components/Cards";
 
 export default function Branches() {
   const params = useParams();

@@ -1,12 +1,10 @@
-import React from "react";
+import { ReactComponent as Rate } from "assets/VIP-ICON-SVG/rate.svg";
+import { getLocalizedWord } from "helpers/lang";
 import { useNavigate } from "react-router";
-import { ReactComponent as Rate } from "../../assets/VIP-ICON-SVG/rate.svg";
-import i18n from "../../locales/i18n";
 import "./BranchCard.scss";
 
 export default function BranchCard({ branch }) {
   const navigate = useNavigate();
-  const lang = i18n.language;
 
   return (
     <div className="branch-card">
@@ -25,7 +23,7 @@ export default function BranchCard({ branch }) {
         </div>
         <div className="branch-info-actions">
           <div className="brcanch-info">
-            <p className="branch-name">{branch.name[lang]}</p>
+            <p className="branch-name">{getLocalizedWord(branch.name)}</p>
             {/* <p className="manager-name">Manager Name</p> */}
             <p className="rate">
               <Rate className="rate-icon" /> 4

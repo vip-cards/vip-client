@@ -1,11 +1,11 @@
 import Search from "components/Inputs/Search/Search";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
-import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import NoData from "../../components/NoData/NoData";
 import clientServices from "../../services/clientServices";
 import "./Categories.scss";
+import { CategoryCard } from "components/Cards";
 
 const LIMIT = 9;
 

@@ -77,8 +77,12 @@ export default function PageQueryContainer({
       />
       <section className="flex flex-col p-8 min-h-[80vh]">
         <header className="flex flex-row">
-          <button>sort by rating <FontAwesomeIcon icon={faRankingStar} /></button>
-          <button>sort by rating <FontAwesomeIcon icon={faStreetView} /></button>
+          <button>
+            sort by rating <FontAwesomeIcon icon={faRankingStar} />
+          </button>
+          <button>
+            sort by rating <FontAwesomeIcon icon={faStreetView} />
+          </button>
         </header>
         <div className="flex flex-row gap-2 h-full max-h-screen">
           {withSideFilter && (
@@ -175,7 +179,6 @@ const FilterToggle = ({ name = "filter", onToggle, selected = false, id }) => {
 
 const FilterGroup = ({ title, filter, onToggle, listApi }) => {
   const LIMIT = 5;
-  const [page, setPage] = useState(1);
   const {
     data: listData,
     size,
@@ -185,7 +188,7 @@ const FilterGroup = ({ title, filter, onToggle, listApi }) => {
     isValidating,
   } = useSWRInfinite(
     (index) => [`all-${title}s`, index + 1],
-    ([, page]) => listApi({ page, limit: LIMIT })
+    ([, page]) => listApi({ type: "vendor", page, limit: LIMIT })
   );
   const list = listData ? listData.flatMap((arr) => arr.records) : [];
   const totalItems = listData ? listData?.[0].counts : 0;

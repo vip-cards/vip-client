@@ -1,3 +1,4 @@
+import { getLocalizedWord } from "helpers/lang";
 import i18n from "locales/i18n";
 import { Link } from "react-router-dom";
 
@@ -6,9 +7,11 @@ export function ProductDetailsContainer({ product }) {
   return (
     <>
       <Link to={`/product/${product._id}`} className="product-title">
-        <p>{product?.name?.[lang]}</p>
+        <p>{getLocalizedWord(product?.name)}</p>
       </Link>
-      <p className="product-vendor">{product?.vendor?.name?.[lang]} </p>
+      <p className="product-vendor">
+        {getLocalizedWord(product?.vendor?.name)}
+      </p>
       <div className="product-price">
         <div className="current-price">
           <span className="number">{product.price}</span>&nbsp;

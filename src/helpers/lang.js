@@ -1,11 +1,3 @@
-// export function editTitle(lang) {
-//   if (lang === "ar") {
-//     document.title = "VIP";
-//   } else {
-//     document.title = "VIP";
-//   }
-// }
-
 import i18n from "locales/i18n";
 
 export function checkFixLang(lang) {
@@ -41,5 +33,5 @@ export function switchLang(lang) {
 
 export function getLocalizedWord(word) {
   const lang = i18n.language;
-  return word[lang] || word.en || word.ar;
+  return word[lang] ?? word.en ?? word.ar ?? word ?? "";
 }

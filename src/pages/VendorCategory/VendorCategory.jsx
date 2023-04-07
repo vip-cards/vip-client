@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { useParams } from "react-router";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import NoData from "../../components/NoData/NoData";
-import ProductCard from "../../components/ProductCard/ProductCard";
 import SearchArea from "../../components/SearchArea/SearchArea";
 import useSearch from "../../helpers/search";
 import clientServices from "../../services/clientServices";
+import { ProductCard } from "components/Cards";
 
 export default function VendorCategory() {
   const { vendorId, categoryId } = useParams();

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import clientServices from "../../services/clientServices";
-import RatingStars from "../../RatingStars/RatingStars";
+
 import "./OrderCard.scss";
+import clientServices from "services/clientServices";
+import RatingStars from "components/RatingStars/RatingStars";
 
 export default function OrderCard({ order }) {
   const [vendor, setVendor] = useState({
