@@ -158,12 +158,7 @@ export default function Home() {
   };
 
   return (
-    <div
-      className={classNames(
-        classes["client-home"],
-        "max-w-[1150px] min-w-[300px] w-[80vw] mx-auto"
-      )}
-    >
+    <div className={classNames(classes["client-home"], "page-wrapper")}>
       <header className="flex flex-col gap-8 my-8">
         <SectionContainer direction="col" className="lg:flex-row lg:h-96">
           <div className="flex-grow max-lg:h-72 min-w-[200px] rounded-xl overflow-hidden flex justify-center items-center lg:max-w-[70%] max-w-full">

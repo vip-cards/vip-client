@@ -17,15 +17,20 @@ export default function Wishlist() {
     setList(cleanedList);
   }, [wishlist]);
 
-  if (list.length < 1) {
+  if (!list?.length) {
     return <Link to="/">Shop for Products</Link>;
   }
-
   return (
-    <div className="products-container">
-      {list.map((product, idx) => (
-        <ProductCard product={product} key={product._id} />
-      ))}
-    </div>
+    <main className="products-container app-card-shadow page-wrapper my-16">
+      <h3 className="text-center text-primary my-8 border-b-gray-100 border-b-2">
+        Wishlist
+      </h3>
+      <div className="flex flex-row flex-wrap gap-4 justify-around items-center p-8">
+        {list.length &&
+          list?.map(({ product }, idx) => (
+            <ProductCard product={product} key={product._id} />
+          ))}
+      </div>
+    </main>
   );
 }
