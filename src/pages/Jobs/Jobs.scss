@@ -92,6 +92,19 @@
         "phone ."
         "error error"
         "confirm confirm";
+      @media screen and (max-width: 500px) {
+        grid-template-areas:
+          "company"
+          "job"
+          "address"
+          "description"
+          "category"
+          "whatsapp"
+          "telegram "
+          "phone"
+          "error"
+          "confirm";
+      }
       .company-input {
         grid-area: company;
       }

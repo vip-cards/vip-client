@@ -5,7 +5,7 @@ const HiringEmployeeTab = () => {
   const btnClass = ({ isActive }) =>
     classNames("subroute-btn", { active: isActive });
   return (
-    <div className="page-wrapper app-card-shadow px-0 md:px-5 lg:px-8 py-8 m-8">
+    <>
       <div>HiringEmployeeTab</div>
       <div className="subroute-container">
         <NavLink to="home" className={btnClass}>
@@ -19,7 +19,7 @@ const HiringEmployeeTab = () => {
         </NavLink>
       </div>
       <Outlet />
-    </div>
+    </>
   );
 };
 
