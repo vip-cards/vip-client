@@ -39,7 +39,7 @@ import AccountWishlist from "../../views/AccountWishlist/AccountWishlist";
 import AccountLayout from "../AccountLayout/AccountLayout";
 
 import "./ClientLayout.scss";
-import { ServiceDetails } from "pages/Services/Services";
+import { ServiceDetails } from "pages/Services/ServiceDetails";
 
 const PageLoader = () => (
   <div className="h-[80vh] w-[80vw] m-auto flex justify-center items-center">
