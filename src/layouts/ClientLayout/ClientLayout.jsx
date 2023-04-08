@@ -1,44 +1,50 @@
+import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
+import { ROUTES } from "constants/routes";
+import {
+  ApplyJobTab,
+  Branch,
+  Branches,
+  CartPage,
+  Categories,
+  Chat,
+  CreateAd,
+  HiringEmployeeTab,
+  HiringTabCreateJob,
+  HiringTabHome,
+  HiringTabViewCreatedJobs,
+  Home,
+  JobPage,
+  Jobs,
+  Offers,
+  PreviousAds,
+  ProductDetails,
+  Services,
+  SponsorAds,
+  Vendor,
+  VendorCategory,
+  Vendors,
+  Wishlist,
+} from "pages";
+import { Suspense, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
-
-import AccountLayout from "../AccountLayout/AccountLayout";
-
-import Home from "../../pages/Home/Home";
-import Vendors from "../../pages/Vendors/Vendors";
-import Branches from "../../pages/Branches/Branches";
-import Branch from "../../pages/Branch/Branch";
 import BranchProducts from "../../components/BranchProducts/BranchProducts";
-import Offers from "../../pages/Offers/Offers";
-import HotDeals from "../../pages/HotDeals/HotDeals";
-import Categories from "../../pages/Categories/Categories";
-import Vendor from "../../pages/Vendor/Vendor";
-import Wishlist from "../../pages/Wishlist/Wishlist";
-
+import Footer from "../../components/Footer/Footer";
+import Navbar from "../../components/Navbar/Navbar";
+import { getCurrentCartThunk } from "../../store/cart-slice";
+import AccountBarcode from "../../views/AccountBarcode/AccountBarcode";
 import AccountDetails from "../../views/AccountDetails/AccountDetails";
 import AccountOrders from "../../views/AccountOrders/AccountOrders";
 import AccountWishlist from "../../views/AccountWishlist/AccountWishlist";
-
-import Footer from "../../components/Footer/Footer";
-import Navbar from "../../components/Navbar/Navbar";
+import AccountLayout from "../AccountLayout/AccountLayout";
 
 import "./ClientLayout.scss";
-import VendorCategory from "../../pages/VendorCategory/VendorCategory";
-import CartPage from "../../pages/CartPage/CartPage";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getCurrentCartThunk } from "../../store/cart-slice";
-import AccountBarcode from "../../views/AccountBarcode/AccountBarcode";
-import ProductDetails from "../../pages/ProductDetails/ProductDetails";
-import Jobs from "../../pages/Jobs/Jobs";
-import ApplyJobTab from "../../pages/Jobs/Tabs/ApplyJobTab/ApplyJobTab";
-import HiringEmployeeTab from "../../pages/Jobs/Tabs/HiringEmployeeTab/HiringEmployeeTab";
-import HiringTabHome from "../../pages/Jobs/Tabs/HiringEmployeeTab/HiringTabHome";
-import HiringTabViewCreatedJobs from "../../pages/Jobs/Tabs/HiringEmployeeTab/HiringTabViewCreatedJobs";
-import HiringTabCreateJob from "../../pages/Jobs/Tabs/HiringEmployeeTab/HiringTabCreateJob";
-import JobPage from "../../pages/Jobs/views/JobPage";
-import SponsorAds from "pages/Ads/Ads";
-import CreateAd from "pages/Ads/CreateAd/CreateAd";
-import PreviousAds from "pages/Ads/PreviousAds/PreviousAds";
-import Chat from "pages/Chat/Chat";
+
+const PageLoader = () => (
+  <div className="h-[80vh] w-[80vw] m-auto flex justify-center items-center">
+    <LoadingSpinner />
+  </div>
+);
 
 export default function ClientLayout() {
   const dispatch = useDispatch();
@@ -53,59 +59,93 @@ export default function ClientLayout() {
       <Navbar />
       <div className="base-nav-item"></div>
       <div className="page-content">
-        <Routes>
-          <Route path="/" element={<Navigate replace to="/home" />} />
-          <Route path="/*" element={<Navigate replace to="/home" />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/vendors" element={<Vendors />} />
-          <Route path="/offers" element={<Offers />} />
-          <Route path="/hot-deals" element={<Offers isHotDeal />} />
-          <Route path="/ads" element={<SponsorAds />} />
-          <Route path="/ads/create" element={<CreateAd />} />
-          <Route path="/ads/list" element={<PreviousAds />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/jobs" element={<Jobs />}>
-            <Route path=":id" element={<JobPage />} />
-            <Route path="apply" element={<ApplyJobTab />}></Route>
-            <Route path="hire" element={<HiringEmployeeTab />}>
-              <Route path="home" element={<HiringTabHome />} />
-              <Route path="create" element={<HiringTabCreateJob />} />
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route
+              path="/"
+              element={<Navigate replace to={`/${ROUTES.HOME}`} />}
+            />
+            <Route
+              path="/*"
+              element={<Navigate replace to={`/${ROUTES.HOME}`} />}
+            />
+            <Route path={`/${ROUTES.HOME}`} element={<Home />} />
+            <Route path={`/${ROUTES.VENDORS}`} element={<Vendors />} />
+            <Route path={`/${ROUTES.OFFERS}`} element={<Offers />} />
+            <Route
+              path={`/${ROUTES.HOT_DEALS}`}
+              element={<Offers isHotDeal />}
+            />
+            <Route path={`/${ROUTES.ADS.MAIN}`} element={<SponsorAds />} />
+            <Route path={`/${ROUTES.ADS.CREATE}`} element={<CreateAd />} />
+            <Route path={`/${ROUTES.ADS.LIST}`} element={<PreviousAds />} />
+            <Route path={`/${ROUTES.CHAT}`} element={<Chat />} />
+
+            <Route path={`services`} element={<Services />} />
+            <Route path={`${ROUTES.JOBS.MAIN}`} element={<Jobs />}>
+              <Route path={`/${ROUTES.JOBS.MAIN}/:id`} element={<JobPage />} />
               <Route
-                path="view-created"
-                element={<HiringTabViewCreatedJobs />}
+                path={`${ROUTES.JOBS.APPLY}`}
+                element={<ApplyJobTab />}
+              ></Route>
+              <Route path={`hire`} element={<HiringEmployeeTab />}>
+                <Route path="home" element={<HiringTabHome />} />
+                <Route path="create" element={<HiringTabCreateJob />} />
+                <Route
+                  path="view-created"
+                  element={<HiringTabViewCreatedJobs />}
+                />
+                <Route path="" element={<Navigate to="home" />} />
+              </Route>
+              <Route
+                path=""
+                element={<Navigate to={`${ROUTES.JOBS.APPLY}`} />}
               />
-              <Route path="" element={<Navigate to="home" />} />
             </Route>
-            <Route path="" element={<Navigate to="apply" />} />
-          </Route>
 
-          <Route path="/categories" element={<Categories />} />
-          <Route path="/categories/:categoryId" element={<Vendors />} />
+            <Route path={`/${ROUTES.CATEGORIES}`} element={<Categories />} />
+            <Route
+              path={`/${ROUTES.CATEGORIES}/:categoryId`}
+              element={<Vendors />}
+            />
 
-          <Route path="/vendors/:vendorId" element={<Vendor />} />
-          <Route path="/vendors/:vendorId/branches" element={<Branches />} />
-          <Route path="/vendors/:vendorId/:branchId" element={<Branch />}>
-            <Route path="offers" element={<BranchProducts />} />
-            <Route path="hot-deals" element={<BranchProducts />} />
-            <Route path="" element={<Navigate to="offers" />} />
-          </Route>
-          <Route
-            path="/vendors/:vendorId/category/:categoryId"
-            element={<VendorCategory />}
-          />
-          <Route path="/product/:productId" element={<ProductDetails />} />
+            <Route path={`/${ROUTES.VENDORS}/:vendorId`} element={<Vendor />} />
+            <Route
+              path={`/${ROUTES.VENDORS}/:vendorId/branches`}
+              element={<Branches />}
+            />
+            <Route
+              path={`/${ROUTES.VENDORS}/:vendorId/:branchId`}
+              element={<Branch />}
+            >
+              <Route path={`${ROUTES.OFFERS}`} element={<BranchProducts />} />
+              <Route
+                path={`${ROUTES.HOT_DEALS}`}
+                element={<BranchProducts />}
+              />
+              <Route path="" element={<Navigate to={`${ROUTES.OFFERS}`} />} />
+            </Route>
+            <Route
+              path={`/${ROUTES.VENDORS}/:vendorId/category/:categoryId`}
+              element={<VendorCategory />}
+            />
+            <Route
+              path={`/${ROUTES.PRODUCT}/:productId`}
+              element={<ProductDetails />}
+            />
 
-          <Route path="/wishlist" element={<Wishlist />} />
+            <Route path={`/${ROUTES.WISHLIST}`} element={<Wishlist />} />
 
-          <Route path="/account" element={<AccountLayout />}>
-            <Route index path="details" element={<AccountDetails />} />
-            <Route path="orders" element={<AccountOrders />} />
-            <Route path="wishlist" element={<AccountWishlist />} />
-            <Route path="barcode" element={<AccountBarcode />} />
-            <Route path="" element={<Navigate to="details" />} />
-          </Route>
-          <Route path="/cart" element={<CartPage />} />
-        </Routes>
+            <Route path={`/${ROUTES.ACCOUNT}`} element={<AccountLayout />}>
+              <Route index path="details" element={<AccountDetails />} />
+              <Route path="orders" element={<AccountOrders />} />
+              <Route path="wishlist" element={<AccountWishlist />} />
+              <Route path="barcode" element={<AccountBarcode />} />
+              <Route path="" element={<Navigate to="details" />} />
+            </Route>
+            <Route path={`/${ROUTES.CART}`} element={<CartPage />} />
+          </Routes>
+        </Suspense>
       </div>
       <Footer />
     </div>

@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
+import classNames from "classnames";
+import { ROUTES } from "constants/routes";
 import { t } from "i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { ReactComponent as BurgerMenuIcon } from "../../assets/VIP-ICON-SVG/burgerMenu.svg";
+import { markAsSeen } from "services/socket/notification";
+import { selectNotification } from "store/notification-slice";
 import { ReactComponent as NavbarLogo } from "../../assets/VIP-ICON-SVG/NavbarLogo.svg";
+import { ReactComponent as BurgerMenuIcon } from "../../assets/VIP-ICON-SVG/burgerMenu.svg";
 import { ReactComponent as Notification } from "../../assets/VIP-ICON-SVG/notification.svg";
 import { switchLang } from "../../helpers/lang";
 import i18n from "../../locales/i18n";
 import clientServices from "../../services/clientServices";
 import { authActions } from "../../store/auth-slice";
 import Dropdown from "../DropDown/DropDown";
-import "./Navbar.scss";
 import SideNav from "./SideNav/SideNav";
-import classNames from "classnames";
-import { markAsSeen } from "services/socket/notification";
-import { selectNotification } from "store/notification-slice";
+
+import "./Navbar.scss";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -34,22 +36,20 @@ export default function Navbar() {
   };
 
   const navItems = [
-    { link: "/home", title: "home" },
+    { link: ROUTES.HOME, title: "home" },
+    { link: ROUTES.CATEGORIES, title: "categories" },
+    { link: ROUTES.VENDORS, title: "vendors" },
+    { link: ROUTES.HOT_DEALS, title: "hotDeals" },
+    { link: `/${ROUTES.OFFERS}`, title: "offers" },
+    { link: `/${ROUTES.JOBS.MAIN}`, title: "jobs" },
+    { link: `/${ROUTES.WISHLIST}`, title: "wishlist" },
+    { link: `/${ROUTES.CART}`, title: "cart" },
+    { link: `/${ROUTES.ADS.MAIN}`, title: "ads" },
+    { link: "/services", title: "service" },
+    { link: `/${ROUTES.CHAT}`, title: "chat" },
+    { link: `/${ROUTES.ACCOUNT}`, title: "myAccount" },
     {
-      link: "/categories",
-      title: "categories",
-    },
-    { link: "/vendors", title: "vendors" },
-    { link: "/hot-deals", title: "hotDeals" },
-    { link: "/offers", title: "offers" },
-    { link: "/jobs", title: "jobs" },
-    { link: "/wishlist", title: "wishlist" },
-    { link: "/cart", title: "cart" },
-    { link: "/ads", title: "ads" },
-    { link: "/chat", title: "chat" },
-    { link: "/account", title: "myAccount" },
-    {
-      link: "/logout",
+      link: `/${ROUTES.LOGOUT}`,
       title: "logout",
       onClick: (e) => {
         logoutHandler(e);
