@@ -10,6 +10,8 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import clientServices from "services/clientServices";
 import useSWR from "swr";
+import ApplyJobCreateJob from "./CreateServiceForm";
+
 import "./Services.scss";
 
 const LIMIT = 9;
@@ -188,7 +190,7 @@ export default function Services() {
 
     createJob: {
       label: "Create Job",
-      panel: <div>Hi</div>,
+      panel: <ApplyJobCreateJob />,
     },
 
     viewCreatedJob: {

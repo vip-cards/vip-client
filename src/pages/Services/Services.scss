@@ -46,7 +46,7 @@
     row-gap: 2rem;
     column-gap: 1rem;
 
-    .job-card {
+    .service-card {
       width: 20rem;
       padding: 1rem;
       display: flex;
@@ -72,64 +72,7 @@
     }
   }
 
-  .create-job-panel {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    max-width: 80%;
-    margin-inline: auto;
-
-    .create-job-container {
-      display: grid;
-      gap: 1rem;
-      padding: 1rem 0;
-      grid-template-areas:
-        "company job"
-        "address description"
-        "whatsapp description"
-        "telegram category"
-        "phone ."
-        "error error"
-        "confirm confirm";
-      .company-input {
-        grid-area: company;
-      }
-      .job-input {
-        grid-area: job;
-      }
-      .address-input {
-        grid-area: address;
-      }
-      .description-input {
-        grid-area: description;
-      }
-      .whatsapp-input {
-        grid-area: whatsapp;
-      }
-      .telegram-input {
-        grid-area: telegram;
-      }
-      .category-input {
-        grid-area: category;
-      }
-      .phone-input {
-        grid-area: phone;
-      }
-      .error-message {
-        grid-area: error;
-        text-align: center;
-        font-size: 0.8rem;
-        color: darken($color: $warning, $amount: 20);
-        font-weight: 600;
-      }
-      .confirm {
-        grid-area: confirm;
-      }
-    }
-  }
-
-  .job-details-page {
+  .service-details-page {
     margin-inline: auto;
     width: 80%;
     min-width: 300px;
@@ -149,15 +92,15 @@
       border-bottom: 1px solid black;
       padding: 1rem 0;
     }
-    .job-details-header,
-    .job-details-details,
-    .job-details-applicants {
+    .service-details-header,
+    .service-details-details,
+    .service-details-applicants {
       display: flex;
       flex-flow: column nowrap;
       gap: 1rem;
-      .job-company {
+      .service-company {
       }
-      .job-title {
+      .service-title {
         color: $primary;
       }
       .applicants-container {
@@ -191,6 +134,81 @@
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
+    }
+  }
+}
+
+.create-service-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 80%;
+  margin-inline: auto;
+
+  .create-service-container {
+    display: grid;
+    gap: 1rem;
+    padding: 1rem 0;
+
+    grid-template-areas:
+      "service-en service-ar"
+      "provider-en provider-ar"
+      "address-en address-ar"
+      "description-en description-ar"
+      "description-en description-ar"
+      "category category"
+      "phone phone"
+      "error error"
+      "confirm confirm";
+
+    @media screen and (max-width: 500px) {
+      grid-template-areas:
+        "company"
+        "job"
+        "address"
+        "description"
+        "category"
+        "whatsapp"
+        "telegram "
+        "phone"
+        "error"
+        "confirm";
+    }
+
+    .company-input {
+      grid-area: company;
+    }
+    .service-input {
+      grid-area: service;
+    }
+    .address-input {
+      grid-area: address;
+    }
+    .description-input {
+      grid-area: description;
+    }
+    .whatsapp-input {
+      grid-area: whatsapp;
+    }
+    .telegram-input {
+      grid-area: telegram;
+    }
+    .category-input {
+      grid-area: category;
+    }
+    .phone-input {
+      grid-area: phone;
+    }
+    .error-message {
+      grid-area: error;
+      text-align: center;
+      font-size: 0.8rem;
+      color: darken($color: $warning, $amount: 20);
+      font-weight: 600;
+    }
+    .confirm {
+      grid-area: confirm;
     }
   }
 }

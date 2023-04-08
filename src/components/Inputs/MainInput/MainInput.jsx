@@ -87,7 +87,7 @@ export default function MainInput(props) {
         );
 
       case "textarea":
-        return <textarea {...inputProps} />;
+        return <textarea {...inputProps}  />;
 
       case "password":
         return (
