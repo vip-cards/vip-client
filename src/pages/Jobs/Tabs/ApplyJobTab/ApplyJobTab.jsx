@@ -1,7 +1,6 @@
 import Tabs from "../../../../components/Tabs/Tabs";
 import ApplyJobCreateJob from "./ApplyJobCreateJob";
 import ApplyJobHome from "./ApplyJobHome";
-import ApplyJobViewCreatedJob from "./ApplyJobViewCreatedJob";
 
 const ApplyJobTab = () => {
   const tabs = {
@@ -21,7 +20,11 @@ const ApplyJobTab = () => {
     },
   };
 
-  return <Tabs tabs={tabs} />;
+  return (
+    <div className="page-wrapper app-card-shadow px-0 md:px-5 lg:px-8 py-8 m-8">
+      <Tabs tabs={tabs} />
+    </div>
+  );
 };
 
 export default ApplyJobTab;

@@ -1,7 +1,6 @@
 import { MainButton } from "components/Buttons";
 import { MainInput } from "components/Inputs";
 import { getLocalizedWord } from "helpers/lang";
-import i18n from "locales/i18n";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
@@ -85,6 +84,7 @@ export default function JobPage() {
         </footer>
       </main>
     );
+    
   return (
     <main className="job-details-page app-card-shadow">
       <header className="job-details-header">
