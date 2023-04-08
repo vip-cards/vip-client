@@ -12,7 +12,10 @@ function CardContainer({ children, title, className }) {
           <h1 className="page-title">{title}</h1> <hr />
         </>
       )}
+      <div className="p-4">
+
       {children}
+      </div>
     </main>
   );
 }
