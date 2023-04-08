@@ -39,6 +39,7 @@ import AccountWishlist from "../../views/AccountWishlist/AccountWishlist";
 import AccountLayout from "../AccountLayout/AccountLayout";
 
 import "./ClientLayout.scss";
+import { ServiceDetails } from "pages/Services/Services";
 
 const PageLoader = () => (
   <div className="h-[80vh] w-[80vw] m-auto flex justify-center items-center">
@@ -82,6 +83,7 @@ export default function ClientLayout() {
             <Route path={`/${ROUTES.CHAT}`} element={<Chat />} />
 
             <Route path={`services`} element={<Services />} />
+            <Route path={`services/:id`} element={<ServiceDetails />} />
             <Route path={`${ROUTES.JOBS.MAIN}`} element={<Jobs />}>
               <Route path={`/${ROUTES.JOBS.MAIN}/:id`} element={<JobPage />} />
               <Route
