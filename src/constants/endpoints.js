@@ -7,6 +7,12 @@ export const API = Object.freeze({
   ADMINS: {
     GET: "admin/get",
   },
+  SERVICES: {
+    GET: "service/get",
+    CREATE: "service/create",
+    LSIT: "service/list",
+    UPDATE: "service/update",
+  },
   AGENTS: {
     GET: "get",
     LIST: "list",

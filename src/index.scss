@@ -119,6 +119,16 @@ $font-size-dec: 0.25rem;
 }
 .page-wrapper {
   @apply max-w-[1150px] min-w-[300px] w-[80vw] mx-auto;
+
+  .page-title {
+    color: var(--mainColor);
+    text-align: center;
+    padding-block: 2rem;
+    &,
+    & * {
+      text-transform: capitalize;
+    }
+  }
 }
 
 .add-button-container {

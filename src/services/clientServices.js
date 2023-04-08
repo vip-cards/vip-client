@@ -3,6 +3,7 @@ import Axios from "./Axios";
 import { adsServices } from "./modules/adsServices";
 import { authServices } from "./modules/authServices";
 import { jobsServices } from "./modules/jobsServices";
+import { servicesServices } from "./modules/servicesServices";
 
 const userId = store.getState().auth.userId;
 
@@ -145,6 +146,7 @@ const clientServices = {
   ...authServices,
   ...jobsServices,
   ...adsServices,
+  ...servicesServices,
 };
 
 export default clientServices;

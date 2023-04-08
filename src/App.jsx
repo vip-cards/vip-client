@@ -4,7 +4,6 @@ import { checkFixLang } from "./helpers/lang";
 import i18n from "./locales/i18n";
 import Login from "./pages/Login/Login";
 
-import toastPopup from "helpers/toastPopup";
 import { Helmet } from "react-helmet-async";
 import {
   Navigate,
@@ -14,14 +13,14 @@ import {
   useNavigate,
 } from "react-router";
 import {
+  EVENTS,
   connectSocket,
   disconnectSocket,
-  EVENTS,
   socket,
 } from "services/socket/config";
 import {
-  listenToNotification,
   listNotification,
+  listenToNotification,
 } from "services/socket/notification";
 import { setNotifications } from "store/actions";
 import Register from "./pages/Register/Register";
@@ -80,6 +79,7 @@ function App() {
       <Helmet>
         <title>VIP</title>
       </Helmet>
+
       <Routes>
         <Route path="/*" element={<ProtectedRoute />} />
 
