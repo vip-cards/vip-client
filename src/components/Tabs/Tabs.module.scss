@@ -6,6 +6,10 @@
   max-width: 80%;
   margin-inline: auto;
 
+  @media screen and (max-width: 500px) {
+    max-width: 90%;
+  }
+
   .tab-btns {
     margin-block: 1rem;
     max-width: 80%;
@@ -37,6 +41,13 @@
         color: $secondaryColor;
         background-color: $primary;
         box-shadow: 1px 2px 1px 1px rgba(0, 0, 0, 0.25);
+      }
+    }
+
+    @media screen and (max-width: 500px) {
+      flex-direction: column;
+      .btn {
+        width: 100%;
       }
     }
   }

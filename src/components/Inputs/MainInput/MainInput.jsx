@@ -6,8 +6,9 @@ import { useEffect, useId, useRef, useState } from "react";
 import { ReactComponent as EyeClose } from "../../../assets/VIP-ICON-SVG/eye_close.svg";
 import { ReactComponent as EyeOPen } from "../../../assets/VIP-ICON-SVG/eye_open.svg";
 import { ListInput } from "./ListInput";
-import "./MainInput.scss";
 import { InputSelect } from "./SelectInput";
+
+import "./MainInput.scss";
 
 export default function MainInput(props) {
   const {
@@ -66,8 +67,7 @@ export default function MainInput(props) {
       placeholder: " ",
       min: type === "number" ? 0 : null,
       autoComplete: type === "password" ? "off" : type,
-      state,
-      setState,
+
       onBlur: () => toEdit && setDisabledState(true),
       onChange: (e) => setState({ ...state, [name]: e.target.value }),
 
@@ -77,7 +77,13 @@ export default function MainInput(props) {
     switch (type) {
       case "list":
         return (
-          <ListInput list={list} identifier={identifier} {...inputProps} />
+          <ListInput
+            list={list}
+            identifier={identifier}
+            state={state}
+            setState={setState}
+            {...inputProps}
+          />
         );
 
       case "textarea":

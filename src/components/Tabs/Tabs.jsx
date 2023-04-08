@@ -11,7 +11,7 @@ export default function Tabs({ tabs, defaultTab }) {
 
   return (
     <div className={classes["tabs-container"]}>
-      <div className={classes["tab-btns"]}>
+      <div className={classNames(classes["tab-btns"], "flex-col")}>
         {Object.entries(tabs).map(([key, { label }]) => (
           <button
             key={key}
