@@ -80,6 +80,42 @@ export default function Navbar() {
     markAsSeen(notificationId);
   }
 
+  const NofificationRing = () => (
+    <Dropdown
+      className="ml-auto lg:ml-0"
+      menu={notificationList.list}
+      left
+      listRender={(menu) =>
+        menu
+          .filter((item) => !item.seen)
+          .slice(0, 10)
+          .map((item, idx) => (
+            <li
+              key={item._id}
+              className={classNames("relative cursor-pointer px-3 py-5", {
+                "bg-slate-100/40 border-0 border-b-2 border-b-slate-300/40":
+                  !item.seen,
+              })}
+              onClick={() => handleNotificationClick(item._id, item.link)}
+            >
+              {!item.seen && (
+                <span className="ml-auto absolute w-2 h-2 bg-primary rounded-full right-2 top-2 animate-pulse"></span>
+              )}
+              <a href={item.link} target="_blank" rel="noopener noreferrer">
+                {item.text.slice(0, 30) +
+                  (item.text.length > 30 ? "..." : "") ?? "No text"}
+              </a>
+            </li>
+          ))
+      }
+    >
+      {!!notificationList.list.filter((item) => !item.seen).length && (
+        <div className="h-2 w-2 bg-green-500 absolute right-0 top-0 animate-fade-pulse rounded-full"></div>
+      )}
+      <Notification className="notification-icon" />
+    </Dropdown>
+  );
+
   useEffect(() => {
     clientServices.categoryQuery().then((response) => {
       const categoryList = response.data.records.map((item) => ({
@@ -166,40 +202,9 @@ export default function Navbar() {
         >
           {t("lang")}
         </button>
-        <Dropdown
-          menu={notificationList.list}
-          left
-          listRender={(menu) =>
-            menu
-              .filter((item) => !item.seen)
-              .slice(0, 10)
-              .map((item, idx) => (
-                <li
-                  key={item._id}
-                  className={classNames("relative cursor-pointer px-3 py-5", {
-                    "bg-slate-100/40 border-0 border-b-2 border-b-slate-300/40":
-                      !item.seen,
-                  })}
-                  onClick={() => handleNotificationClick(item._id, item.link)}
-                >
-                  {!item.seen && (
-                    <span className="ml-auto absolute w-2 h-2 bg-primary rounded-full right-2 top-2 animate-pulse"></span>
-                  )}
-                  <a href={item.link} target="_blank" rel="noopener noreferrer">
-                    {item.text.slice(0, 30) +
-                      (item.text.length > 30 ? "..." : "") ?? "No text"}
-                  </a>
-                </li>
-              ))
-          }
-        >
-          {!!notificationList.list.filter((item) => !item.seen).length && (
-            <div className="h-2 w-2 bg-green-500 absolute right-0 top-0 animate-fade-pulse rounded-full"></div>
-          )}
-          <Notification className="notification-icon" />
-        </Dropdown>
       </div>
-      <Notification className="small-notification-icon" />
+      <NofificationRing />
+      {/* <NofificationRing /> */}
       {showSideMenu && <SideNav onToggle={toggleSideMenu} items={navItems} />}
     </nav>
   );

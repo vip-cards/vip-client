@@ -1,7 +1,16 @@
 import { useState } from "react";
 import "./DropDown.scss";
+import classNames from "classnames";
 
-const Dropdown = ({ menu, children, right, left, itemRender, listRender }) => {
+const Dropdown = ({
+  menu,
+  children,
+  right,
+  left,
+  itemRender,
+  listRender,
+  className,
+}) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = (event) => {
@@ -16,7 +25,7 @@ const Dropdown = ({ menu, children, right, left, itemRender, listRender }) => {
 
   return (
     <div
-      className="dropdown-menu"
+      className={classNames(className, "dropdown-menu")}
       onMouseEnter={toggleMenu}
       onMouseLeave={toggleMenu}
     >

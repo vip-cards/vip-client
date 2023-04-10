@@ -1,8 +1,7 @@
 .top-nav {
   position: fixed;
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  grid-template-areas: "logo menunav lang";
+  display: flex;
+  @apply flex-row flex-nowrap gap-4;
   grid-area: nav;
   background-color: var(--mainColor);
   box-shadow: 0px 1px 7px 0px rgba(0, 0, 0, 0.2),
@@ -29,6 +28,9 @@
     justify-content: flex-end;
     gap: 7px;
     grid-area: menunav;
+    max-width: 85%;
+
+    @apply ml-auto;
     .nav-item {
       cursor: pointer;
       font-size: 18px;
@@ -104,13 +106,12 @@
         border-radius: 5px;
       }
     }
-
-    .notification-icon {
-      cursor: pointer;
-      width: 20px;
-      height: 20px;
-      fill: var(--secondaryColor);
-    }
+  }
+  .notification-icon {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    fill: var(--secondaryColor);
   }
   .small-notification-icon {
     display: none;
