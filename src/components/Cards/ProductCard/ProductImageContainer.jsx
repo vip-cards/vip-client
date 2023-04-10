@@ -32,8 +32,6 @@ export function ProductImageContainer({ product }) {
     }
   }
 
-  console.log(product);
-  console.log(wishlistIds.findIndex((item) => item === product._id) > -1);
   return (
     <Swiper
       ref={swiperRef}

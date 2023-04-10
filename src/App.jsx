@@ -1,9 +1,11 @@
+import { checkFixLang } from "helpers/lang";
+import i18n from "locales/i18n";
+import Login from "pages/Login/Login";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { checkFixLang } from "./helpers/lang";
-import i18n from "./locales/i18n";
-import Login from "./pages/Login/Login";
 
+import Register from "pages/Register/Register";
+import ResetPassword from "pages/ResetPassword/ResetPassword";
 import { Helmet } from "react-helmet-async";
 import {
   Navigate,
@@ -12,6 +14,7 @@ import {
   useLocation,
   useNavigate,
 } from "react-router";
+import ProtectedRoute from "routes/ProtectedRoute/ProtectedRoute";
 import {
   EVENTS,
   connectSocket,
@@ -23,17 +26,15 @@ import {
   listenToNotification,
 } from "services/socket/notification";
 import { setNotifications } from "store/actions";
-import Register from "./pages/Register/Register";
-import ResetPassword from "./pages/ResetPassword/ResetPassword";
-import ProtectedRoute from "./routes/ProtectedRoute/ProtectedRoute";
-import { fetchWishlist } from "./store/wishlist-slice";
-import RegisterForm from "./views/RegisterForm/RegisterForm";
-import RegisterHome from "./views/RegisterHome/RegisterHome";
+import { fetchWishlist } from "store/wishlist-slice";
+import RegisterForm from "views/RegisterForm/RegisterForm";
+import RegisterHome from "views/RegisterHome/RegisterHome";
 
 function App() {
-  let lang = i18n.language;
+  const lang = i18n.language;
 
   const auth = useSelector((state) => state.auth);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { pathname } = useLocation();

@@ -36,7 +36,7 @@ export default function Vendors() {
       return <VendorCard key={vendor._id} vendor={vendor} />;
     });
   };
-  console.log(filter);
+
   return (
     <PageQueryContainer
       withSideFilter={!categoryId}

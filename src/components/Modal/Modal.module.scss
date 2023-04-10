@@ -52,3 +52,8 @@
     }
   }
 }
+
+:global(.modal-open) {
+  position: fixed;
+  inset: 0;
+}

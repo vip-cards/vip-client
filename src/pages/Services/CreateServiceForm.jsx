@@ -10,8 +10,8 @@ import useSWR from "swr";
 export default function CreateServiceForm() {
   const ref = useRef(null);
   const userId = localStorage.getItem("userId");
-  const location = useLocation()
-  const navigate = useNavigate()
+  const location = useLocation();
+  const navigate = useNavigate();
   const [formError, setFormError] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [jobForm, setJobForm] = useState({ client: userId, category: [] });
@@ -24,7 +24,6 @@ export default function CreateServiceForm() {
     clientServices.listAllCategories({ type: "service" })
   );
 
-  console.log(records);
   const formData = [
     {
       name: "serviceName.en",
@@ -99,7 +98,7 @@ export default function CreateServiceForm() {
       className: "telegram-input",
     },
   ];
-  console.log(formData);
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
 
@@ -113,7 +112,7 @@ export default function CreateServiceForm() {
         en: jobForm["providerName.en"],
         ar: jobForm["providerName.ar"],
       },
-     
+
       description: {
         en: jobForm["description.en"],
         ar: jobForm["description.ar"],
@@ -136,9 +135,10 @@ export default function CreateServiceForm() {
       setFormError(true);
     } else {
       setFormError(false);
-      clientServices
-        .createService(newJobForm)
-        .then((res) => {toast.success("Created Successfully");navigate(location.pathname,{state:{openedTap:'viewCreatedJob'}})});
+      clientServices.createService(newJobForm).then((res) => {
+        toast.success("Created Successfully");
+        navigate(location.pathname, { state: { openedTap: "viewCreatedJob" } });
+      });
     }
   };
 

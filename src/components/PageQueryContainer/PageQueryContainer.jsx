@@ -37,7 +37,6 @@ export default function PageQueryContainer({
   };
 
   const handleFilterToggle = (title, id) => {
-    console.log(filter);
     if (filter?.[title]?.findIndex((item) => id === item) > -1) {
       const newArr = filter[title];
       newArr.splice(
@@ -153,13 +152,10 @@ const FilterGroup = ({ title, filter, onToggle, listApi }) => {
 
   const group = filter?.[title];
   const totalPages = Math.floor(totalItems / LIMIT);
-  console.log(group);
-  console.log(filter);
 
   function handleLoadMore() {
     setSize(size + 1);
   }
-  console.log(list);
 
   return (
     <div className="py-5 px-1 max-w-full">

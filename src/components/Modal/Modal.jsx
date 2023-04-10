@@ -1,6 +1,7 @@
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 import PropTypes from "prop-types";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { IconButton } from "../Buttons";
 import classes from "./Modal.module.scss";
@@ -33,6 +34,21 @@ const Modal = ({
       </div>
     </div>
   );
+
+  useEffect(() => {
+    if (visible) {
+      const toToDistance = document.documentElement.scrollTop;
+      // When the modal is shown, we want a fixed body
+      document.body.classList.add("modal-open");
+      document.body.style.top = `-${toToDistance}px`;
+    } else {
+      // When the modal is hidden...
+      const scrollY = document.body.style.top;
+      document.body.classList.remove("modal-open");
+      document.body.style.top = "";
+      window.scrollTo(0, parseInt(scrollY || "0") * -1);
+    }
+  }, [visible]);
 
   if (visible) return createPortal(content, document.getElementById("root"));
   return null;

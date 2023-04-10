@@ -1,4 +1,4 @@
-import store from "../../store";
+import store from "store";
 import { EVENTS, socket } from "./config";
 
 export function markAsSeen(notificationId) {

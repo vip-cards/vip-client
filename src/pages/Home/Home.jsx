@@ -16,16 +16,18 @@ import clientServices from "../../services/clientServices";
 import HomeSwiper from "./HomeSwiper";
 import SectionContainer from "./SectionContainer";
 
+import Modal from "components/Modal/Modal";
+import { useEffect, useMemo, useState } from "react";
 import classes from "./Home.module.scss";
 
 export default function Home() {
   const navigate = useNavigate();
+  const [popUpModalVisible, setPopUpModalVisible] = useState(false);
 
   const { data: productsData, isLoading: productsLoading } = useSWR(
     "all-products",
     () => clientServices.listAllProducts() // to prevent sending the string in the params
   );
-  const { records: products = undefined } = productsData ?? {};
 
   const { data: vendorsData, isLoading: vendorsLoading } = useSWR(
     "all-vendors",
@@ -35,18 +37,27 @@ export default function Home() {
     "all-categories",
     () => clientServices.listAllCategories({ type: "vendor" })
   );
-  const { data: adverts, isLoading: advertsLoading } = useSWR(
+  const { data: advertsData, isLoading: advertsLoading } = useSWR(
     "all-adverts",
-    clientServices.listAllAds
+    () => clientServices.listAllAds()
   );
   const { data: bannersData, isLoading: bannersLoading } = useSWR(
     "all-banners",
-    clientServices.listAllBanners
+    () => clientServices.listAllBanners()
   );
 
+  const { records: products = undefined } = productsData ?? {};
   const { records: categories = undefined } = categoriesData ?? {};
   const { records: vendors = undefined } = vendorsData ?? {};
-  const { records: banners = undefined } = vendorsData ?? {};
+  const { records: banners = undefined } = bannersData ?? {};
+  const { records: adverts = undefined } = advertsData ?? {};
+
+  const popUps = useMemo(
+    () => banners?.filter((item) => item.isPopUp) ?? [],
+    [banners]
+  );
+
+  const randomPopUp = Math.floor(Math.random() * (popUps?.length ?? 0));
 
   const renderAds = (size) => {
     if (advertsLoading || !adverts) return <LoadingSpinner />;
@@ -77,7 +88,7 @@ export default function Home() {
             <a href={ad.link} target="_blank" rel="noreferrer noopener">
               <img
                 className="w-full h-full object-cover"
-                src={ad.image.url}
+                src={ad.image?.url ?? ad.image?.Location ?? ""}
                 alt={ad.name}
               />
             </a>
@@ -90,7 +101,6 @@ export default function Home() {
     if (bannersLoading || !banners) return <LoadingSpinner />;
     if (!banners.length) return <NoData />;
 
-    console.log(banners);
     return banners.map((banner) => {
       return (
         <SwiperSlide
@@ -156,6 +166,13 @@ export default function Home() {
       );
     });
   };
+
+  useEffect(() => {
+    const hidePopUp = sessionStorage.getItem("hide-popup") ?? "false";
+    if (popUps?.length && !JSON.parse(hidePopUp)) {
+      setPopUpModalVisible(true);
+    }
+  }, [popUps]);
 
   return (
     <div className={classNames(classes["client-home"], "page-wrapper")}>
@@ -370,6 +387,19 @@ export default function Home() {
           </HomeSwiper>
         </div>
       </SectionContainer>
+      {!!popUps.length && (
+        <Modal
+          visible={popUpModalVisible}
+          onClose={() => {
+            setPopUpModalVisible(false);
+            sessionStorage.setItem("hide-popup", true);
+          }}
+        >
+          <a href={popUps[randomPopUp].link} target="_blank" rel="noreferrer">
+            <img src={popUps[randomPopUp].image.Location} alt="" />
+          </a>
+        </Modal>
+      )}
     </div>
   );
 }
