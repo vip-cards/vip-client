@@ -193,6 +193,9 @@ export default function Navbar() {
               ))
           }
         >
+          {!!notificationList.list.filter((item) => !item.seen).length && (
+            <div className="h-2 w-2 bg-green-500 absolute right-0 top-0 animate-fade-pulse rounded-full"></div>
+          )}
           <Notification className="notification-icon" />
         </Dropdown>
       </div>
