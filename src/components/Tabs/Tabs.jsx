@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useState } from "react";
+import { useLocation, useNavigate } from "react-router";
 import classes from "./Tabs.module.scss";
 
 /**
@@ -7,7 +7,9 @@ import classes from "./Tabs.module.scss";
  * @returns The return value of the function is the JSX that is rendered.
  */
 export default function Tabs({ tabs, defaultTab }) {
-  const [tab, setTab] = useState(defaultTab || Object.keys(tabs)[0]);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const tab = location?.state?.openedTap ?? defaultTab ?? Object.keys(tabs)[0];
 
   return (
     <div className={classes["tabs-container"]}>
@@ -19,7 +21,13 @@ export default function Tabs({ tabs, defaultTab }) {
             className={classNames(classes["btn"], {
               [classes["active"]]: tab === key,
             })}
-            onClick={() => setTab(key)}
+            onClick={() => {
+              navigate(location.pathname, {
+                state: {
+                  openedTap: key,
+                },
+              });
+            }}
           >
             {label}
           </button>

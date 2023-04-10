@@ -1,6 +1,8 @@
 import { MainButton } from "components/Buttons";
 import { MainInput } from "components/Inputs";
+import { getLocalizedWord } from "helpers/lang";
 import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import clientServices from "services/clientServices";
 import useSWR from "swr";
@@ -8,10 +10,11 @@ import useSWR from "swr";
 export default function CreateServiceForm() {
   const ref = useRef(null);
   const userId = localStorage.getItem("userId");
-
+  const location = useLocation()
+  const navigate = useNavigate()
   const [formError, setFormError] = useState(false);
   const [disabled, setDisabled] = useState(true);
-  const [jobForm, setJobForm] = useState({ client: userId, category: "" });
+  const [jobForm, setJobForm] = useState({ client: userId, category: [] });
   const {
     data: { records = [] } = {},
     error,
@@ -73,10 +76,13 @@ export default function CreateServiceForm() {
     },
     {
       name: "category",
-      type: "list",
+      type: "checkbox",
       required: false,
       className: "category-input",
-      list: [...records],
+      list: [...records]?.map((item) => ({
+        value: item._id,
+        name: getLocalizedWord(item.name),
+      })),
       identifier: "name",
     },
     { name: "phone", type: "phone", required: true, className: "phone-input" },
@@ -107,10 +113,7 @@ export default function CreateServiceForm() {
         en: jobForm["providerName.en"],
         ar: jobForm["providerName.ar"],
       },
-      name: {
-        en: jobForm["providerName.en"],
-        ar: jobForm["providerName.ar"],
-      },
+     
       description: {
         en: jobForm["description.en"],
         ar: jobForm["description.ar"],
@@ -124,7 +127,7 @@ export default function CreateServiceForm() {
         whatsapp: jobForm.whatsapp,
         telegram: jobForm.telegram,
       },
-      category: records.find((item) => item._id === jobForm.category),
+      category: jobForm.category.map((item) => ({ _id: item })),
     };
 
     // const { value, error } = createJobSchema.validate(newJobForm);
@@ -134,8 +137,8 @@ export default function CreateServiceForm() {
     } else {
       setFormError(false);
       clientServices
-        .createJob(newJobForm)
-        .then((res) => toast.success("Created Successfully"));
+        .createService(newJobForm)
+        .then((res) => {toast.success("Created Successfully");navigate(location.pathname,{state:{openedTap:'viewCreatedJob'}})});
     }
   };
 

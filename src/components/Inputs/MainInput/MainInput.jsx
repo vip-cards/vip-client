@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { t } from "i18next";
 import { useEffect, useId, useRef, useState } from "react";
-import { ReactComponent as EyeClose } from "../../../assets/VIP-ICON-SVG/eye_close.svg";
-import { ReactComponent as EyeOPen } from "../../../assets/VIP-ICON-SVG/eye_open.svg";
+import { ReactComponent as EyeClose } from "assets/VIP-ICON-SVG/eye_close.svg";
+import { ReactComponent as EyeOPen } from "assets/VIP-ICON-SVG/eye_open.svg";
 import { ListInput } from "./ListInput";
 import { InputSelect } from "./SelectInput";
 
@@ -54,10 +54,10 @@ export default function MainInput(props) {
       required,
       ...(type === "list"
         ? { selected: state[name] }
+        : type === "checkbox"
+        ? { checked: state[name] }
         : {
-            type:
-              (type === "password" && (!showPassword ? "password" : "text")) ||
-              type,
+            type: type === "password" && !showPassword ? "password" : "text",
           }),
       id: name,
       ref: inputRef,
@@ -70,6 +70,9 @@ export default function MainInput(props) {
 
       onBlur: () => toEdit && setDisabledState(true),
       onChange: (e) => setState({ ...state, [name]: e.target.value }),
+      ...(type === "checkbox" && {
+        onChange: (e) => setState({ ...state, [name]: e.target.checked }),
+      }),
 
       ...restProps,
     };
@@ -86,8 +89,48 @@ export default function MainInput(props) {
           />
         );
 
+      case "checkbox":
+        return (
+          <div className="check-group">
+            {!!list.length &&
+              list.map((item) => (
+                <div
+                  key={inputId + item[identifier]}
+                  className="flex items-center mb-4"
+                >
+                  <input
+                    id={inputId + item[identifier]}
+                    type="checkbox"
+                    value={item[identifier]}
+                    className="check-input w-4 h-4 rounded-xl overflow-hidden"
+                    onChange={(e) => {
+                      const currentSelectionArr = state?.[name] ?? [item.value];
+
+                      const idx = currentSelectionArr.findIndex(
+                        (q) => q === item.value
+                      );
+                      // check if in array of selections in the state
+                      if (!e.target.checked) {
+                        currentSelectionArr.splice(idx, 1);
+                      } else {
+                        currentSelectionArr.push(item.value);
+                      }
+                      setState((state) => ({
+                        ...state,
+                        [name]: [...currentSelectionArr],
+                      }));
+                    }}
+                  />
+                  <label htmlFor={inputId + item[identifier]} className="ml-2">
+                    {item.name}
+                  </label>
+                </div>
+              ))}
+          </div>
+        );
+
       case "textarea":
-        return <textarea {...inputProps}  />;
+        return <textarea {...inputProps} />;
 
       case "password":
         return (

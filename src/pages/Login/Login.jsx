@@ -12,9 +12,13 @@ import { useSocialLogin } from "../../services/firebaseServices";
 
 import { ReactComponent as VendorLogoOrange } from "../../assets/VIP-ICON-SVG/VendorLogoOrange.svg";
 import { ReactComponent as VendorLogo } from "../../assets/VIP-ICON-SVG/VendorLogo.svg";
+import { ReactComponent as FacebookLogo } from "assets/icons/facebook.svg";
+import { ReactComponent as GoogleLogo } from "assets/icons/google.svg";
+import { ReactComponent as TwitterLogo } from "assets/icons/twitter.svg";
 import "./Login.scss";
 import { MainInput } from "components/Inputs";
 import { MainButton } from "components/Buttons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Login() {
   const socialLogin = useSocialLogin();
@@ -44,7 +48,6 @@ export default function Login() {
   }
 
   const loginHandler = async (e) => {
-
     e.preventDefault();
     setErrorList([]);
     let validationResult = loginValidation(user);
@@ -65,7 +68,6 @@ export default function Login() {
           toastPopup.success(t("Success"));
           const tokenDecoded = jwt_decode(data.token);
 
-
           dispatch(
             authActions.login({
               token: data.token,
@@ -77,7 +79,6 @@ export default function Login() {
           navigate("/");
         }
       } catch (e) {
-
         setLoading(false);
         setErrorMessage(e.response.data.error);
       }
@@ -148,27 +149,32 @@ export default function Login() {
             );
           })}
           <MainButton text={t("login")} loading={loading} type="submit" />
-          <MainButton
-            type="button"
-            text={t("google")}
-            loading={loading}
-            className="google-button"
-            onClick={() => socialLogin("google")}
-          />
-          <MainButton
-            type="button"
-            text={t("facebook")}
-            loading={loading}
-            className="facebook-button"
-            onClick={() => socialLogin("facebook")}
-          />
-          <MainButton
-            type="button"
-            text={t("twitter")}
-            loading={loading}
-            className="twitter-button"
-            onClick={() => socialLogin("twitter")}
-          />
+          <div className="flex flex-row max-w-full gap-4 justify-around">
+            <MainButton
+              type="button"
+              className="!p-0 !m-0 !h-fit !w-fit !bg-transparent !rounded-full active:scale-95 transition-transform hover:drop-shadow-lg"
+              loading={loading}
+              onClick={() => socialLogin("google")}
+            >
+              <GoogleLogo className="w-8 h-8 lg:w-16 lg:h-16" />
+            </MainButton>
+            <MainButton
+              type="button"
+              className="!p-0 !m-0 !h-fit !w-fit !bg-transparent !rounded-full active:scale-95 transition-transform hover:drop-shadow-lg"
+              loading={loading}
+              onClick={() => socialLogin("facebook")}
+            >
+              <FacebookLogo className="w-8 h-8 lg:w-16 lg:h-16" />
+            </MainButton>
+            <MainButton
+              type="button"
+              className="!p-0 !m-0 !h-fit !w-fit !bg-transparent !rounded-full active:scale-95 transition-transform hover:drop-shadow-lg"
+              loading={loading}
+              onClick={() => socialLogin("twitter")}
+            >
+              <TwitterLogo className="w-8 h-8 lg:w-16 lg:h-16" />
+            </MainButton>
+          </div>
           <p className="login-footer">
             <span>{t("notRegistered")}</span>
             &nbsp;

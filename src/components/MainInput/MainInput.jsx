@@ -49,6 +49,8 @@ export default function MainInput({
 
       ...(type === "list"
         ? { selected: state[name] }
+        : type === "checkbox"
+        ? { checked: state[name] }
         : {
             type: type === "password" && !showPassword ? "password" : "text",
           }),
@@ -62,6 +64,9 @@ export default function MainInput({
 
       onBlur: () => toEdit && setDisabledState(true),
       onChange: (e) => setState({ ...state, [name]: e.target.value }),
+      ...(type === "checkbox" && {
+        onChange: (e) => setState({ ...state, [name]: e.target.checked }),
+      }),
 
       ...props,
     };
@@ -69,7 +74,7 @@ export default function MainInput({
     switch (type) {
       case "list":
         return (
-          <select {...inputProps}>
+          <select {...inputProps} multiple>
             {list.length &&
               list.map((li) => (
                 <option key={li._id} value={li._id}>
@@ -77,6 +82,19 @@ export default function MainInput({
                 </option>
               ))}
           </select>
+        );
+
+      case "checkbox":
+        return (
+          <div className="checkbox-container">
+            {list.length &&
+              list.map((li) => (
+                <div className="checkbox-item" key={li.value} value={li.value}>
+                  <input {...inputProps} type={type} />
+                  <label htmlFor={name}>{t(name)}</label>
+                </div>
+              ))}
+          </div>
         );
 
       case "textarea":
@@ -111,7 +129,7 @@ export default function MainInput({
   useEffect(() => {
     if (toEdit && !disableState) inputRef.current && inputRef.current.focus();
   }, [toEdit, disableState]);
-  
+
   return (
     <div className={classNames(className, "main-input-label")}>
       {renderInput()}

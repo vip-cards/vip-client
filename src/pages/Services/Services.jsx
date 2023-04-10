@@ -16,7 +16,9 @@ function ServiceHome({ id = undefined }) {
   const initialQueryParams = { page: 1, limit: LIMIT };
   const [queryParams, setQueryParams] = useState(initialQueryParams);
   const { data: servicesData, isLoading } = useSWR(
-    [`view-${id ?? "all"}-services`, queryParams],
+    id
+      ? [`view-${id}-services`, { ...queryParams, client: id }]
+      : [`view-all-services`, queryParams],
     ([, queryParams]) => clientServices.listAllServices(queryParams)
   );
   const { records: services = undefined, counts = 0 } = servicesData ?? {};
@@ -44,11 +46,6 @@ function ServiceHome({ id = undefined }) {
     },
   };
 
-  useLayoutEffect(() => {
-    if (id) setQueryParams((q) => ({ ...q, client: id }));
-    else setQueryParams(initialQueryParams);
-  }, [id]);
-
   return (
     <div className="flex flex-col h-full flex-grow my-8">
       <div className="flex flex-row gap-4 flex-wrap my-8">
@@ -71,7 +68,7 @@ export default function Services() {
     },
 
     createJob: {
-      label: "Create Job",
+      label: "Create Service",
       panel: <CreateServiceForm />,
     },
 
