@@ -51,7 +51,15 @@ export default function PageQueryContainer({
 
   useEffect(() => {
     if (!searchQuery) {
-      setQueryParams({ page: 1, limit: LIMIT });
+      setQueryParams((prev) => ({
+        ...prev,
+        page: 1,
+        limit: LIMIT,
+        "name.en": undefined,
+        "name.ar": undefined,
+      }));
+    } else {
+      handleListSearch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);

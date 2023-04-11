@@ -14,8 +14,8 @@ const HomeSwiper = ({ children, ...props }) => {
     <Swiper
       loop
       autoplay={process.env.NODE_ENV !== "production" ? false : { delay: 5000 }}
-      onSlideChange={() => console.log("slide change")}
-      onSwiper={(swiper) => console.log(swiper)}
+      onSlideChange={() => {}}
+      onSwiper={(swiper) => {}}
       mousewheel={false}
       modules={[
         A11y,

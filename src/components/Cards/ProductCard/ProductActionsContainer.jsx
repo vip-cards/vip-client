@@ -24,8 +24,6 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
   const wishlistIds = useSelector((state) => state.wishlist.ids);
 
   async function cofirmAddToCartStateHandler(branchId) {
-    console.log(branchId);
-    console.log(!!cartBranch?.length > 0);
     if (!!cartBranch && branchId !== cartBranch._id) {
       setError(true);
       return;
@@ -140,8 +138,7 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
                   <div
                     key={branch._id}
                     className={classNames("branch-item", {
-                      disabled:
-                        !!cartBranch && branch?._id !== cartBranch?._id,
+                      disabled: !!cartBranch && branch?._id !== cartBranch?._id,
                     })}
                     onClick={() => cofirmAddToCartStateHandler(branch?._id)}
                   >

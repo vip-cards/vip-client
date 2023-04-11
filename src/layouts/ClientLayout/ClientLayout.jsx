@@ -38,8 +38,8 @@ import AccountOrders from "../../views/AccountOrders/AccountOrders";
 import AccountWishlist from "../../views/AccountWishlist/AccountWishlist";
 import AccountLayout from "../AccountLayout/AccountLayout";
 
-import "./ClientLayout.scss";
 import { ServiceDetails } from "pages/Services/ServiceDetails";
+import "./ClientLayout.scss";
 
 const PageLoader = () => (
   <div className="h-[80vh] w-[80vw] m-auto flex justify-center items-center">
@@ -61,14 +61,14 @@ export default function ClientLayout() {
       <div className="page-content">
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            {/* <Route
+            <Route
               path="/"
               element={<Navigate replace to={`/${ROUTES.HOME}`} />}
             />
             <Route
               path="/*"
               element={<Navigate replace to={`/${ROUTES.HOME}`} />}
-            /> */}
+            />
             <Route path={`/${ROUTES.HOME}`} element={<Home />} />
             <Route path={`/${ROUTES.VENDORS}`} element={<Vendors />} />
             <Route path={`/${ROUTES.OFFERS}`} element={<Offers />} />

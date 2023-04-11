@@ -53,9 +53,9 @@ function App() {
 
   useEffect(() => {
     connectSocket();
-    listenToNotification((first) => console.log(first));
+    listenToNotification((first) => {});
     socket.on(EVENTS.CONNECTION.OPEN, () => {});
-    listenToNotification((res) => console.log(res));
+    listenToNotification((res) => {});
     listNotification();
 
     socket.on(EVENTS.NOTIFICATION.LIST, (response) =>

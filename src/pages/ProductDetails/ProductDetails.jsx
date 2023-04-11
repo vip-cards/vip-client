@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from "react";
-import "./ProductDetails.scss";
-import clientServices from "../../services/clientServices";
-import { useParams } from "react-router";
-import i18n from "../../locales/i18n";
-import RatingStars from "../../components/RatingStars/RatingStars";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCartThunk } from "../../store/cart-slice";
-import { toast } from "react-toastify";
+import { useParams } from "react-router";
+import RatingStars from "../../components/RatingStars/RatingStars";
 import toastPopup from "../../helpers/toastPopup";
+import i18n from "../../locales/i18n";
+import clientServices from "../../services/clientServices";
+import { addToCartThunk } from "../../store/cart-slice";
 import { addWishProduct } from "../../store/wishlist-slice";
+import "./ProductDetails.scss";
 
 function ProductDetails(props) {
-  console.log("IM HERE IN THE PRODUCT PAGE");
   const lang = i18n.language;
   const { productId } = useParams();
   const dispatch = useDispatch();
