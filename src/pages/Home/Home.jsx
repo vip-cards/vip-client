@@ -68,7 +68,7 @@ export default function Home() {
           return (
             <SwiperSlide
               key={ad._id}
-              className="w-full h-full rounded-xl shadow"
+              className="w-full h-full rounded-xl shadow overflow-hidden"
             >
               <a href={ad.link} target="_blank" rel="noreferrer noopener">
                 <img
@@ -84,7 +84,7 @@ export default function Home() {
       .filter((ad) => ad.bannerSize === size)
       .map((ad) => {
         return (
-          <SwiperSlide key={ad._id} className="w-full h-full rounded-xl shadow">
+          <SwiperSlide key={ad._id} className="w-full h-full rounded-xl shadow overflow-hidden">
             <a href={ad.link} target="_blank" rel="noreferrer noopener">
               <img
                 className="w-full h-full object-cover"
@@ -105,7 +105,7 @@ export default function Home() {
       return (
         <SwiperSlide
           key={banner._id}
-          className="w-full h-full rounded-xl shadow"
+          className="w-full h-full rounded-xl shadow overflow-hidden"
         >
           <BannerCard banner={banner} />
         </SwiperSlide>

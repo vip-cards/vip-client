@@ -13,6 +13,7 @@ import toastPopup from "../../helpers/toastPopup";
 import { addWishProduct } from "../../store/wishlist-slice";
 
 function ProductDetails(props) {
+  console.log("IM HERE IN THE PRODUCT PAGE");
   const lang = i18n.language;
   const { productId } = useParams();
   const dispatch = useDispatch();
@@ -26,12 +27,10 @@ function ProductDetails(props) {
     try {
       const { data } = await clientServices.getProductDetails(productId);
       setProduct(data.record[0]);
-
     } catch (e) {}
   }
 
   async function addToCartHandler() {
-
     if (!cart.branchId || cart.branchId < 0) return;
     if (cart.branchId !== cartBranch._id) {
       toastPopup.error("You can only choose the branch in your cart");

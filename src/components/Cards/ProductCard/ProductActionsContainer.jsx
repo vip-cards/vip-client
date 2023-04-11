@@ -5,14 +5,14 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import i18n from "locales/i18n";
+import classNames from "classnames";
+import { getLocalizedWord } from "helpers/lang";
 import { forwardRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCartThunk } from "store/cart-slice";
 import { addWishProduct } from "store/wishlist-slice";
 
 export const ProductActionsContainer = forwardRef(({ product }, ref) => {
-  const lang = i18n.language;
   const dispatch = useDispatch();
   const [popupLoading, setPopupLoading] = useState(false);
   const [addToCartState, setAddToCartState] = useState({
@@ -24,20 +24,25 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
   const wishlistIds = useSelector((state) => state.wishlist.ids);
 
   async function cofirmAddToCartStateHandler(branchId) {
-    if (branchId !== cartBranch._id) {
+    console.log(branchId);
+    console.log(!!cartBranch?.length > 0);
+    if (!!cartBranch && branchId !== cartBranch._id) {
       setError(true);
       return;
     }
     setPopupLoading(true);
-    const result = await dispatch(
-      addToCartThunk({
-        _id: product._id,
-        branchId,
-        quantity: addToCartState.count,
-      })
-    ).unwrap();
-    setPopupLoading(false);
-    setActive(false);
+    try {
+      const result = await dispatch(
+        addToCartThunk({
+          _id: product._id,
+          branchId,
+          quantity: addToCartState.count,
+        })
+      ).unwrap();
+    } finally {
+      setPopupLoading(false);
+      setActive(false);
+    }
   }
 
   const setError = (check) => {
@@ -60,6 +65,7 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
       };
     });
   };
+
   const BranchSelectPopup = () => {
     return (
       <div className="branch-select-error">
@@ -93,6 +99,7 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
       </div>
     );
   };
+
   return (
     <>
       <div className="product-actions">
@@ -132,12 +139,13 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
                 return (
                   <div
                     key={branch._id}
-                    className={`branch-item ${
-                      branch?._id !== cartBranch?._id ? "disabled" : null
-                    }`}
+                    className={classNames("branch-item", {
+                      disabled:
+                        !!cartBranch && branch?._id !== cartBranch?._id,
+                    })}
                     onClick={() => cofirmAddToCartStateHandler(branch?._id)}
                   >
-                    {branch.name[lang]}
+                    {getLocalizedWord(branch.name)}
                   </div>
                 );
               })}

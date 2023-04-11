@@ -18,6 +18,7 @@ import Dropdown from "../DropDown/DropDown";
 import SideNav from "./SideNav/SideNav";
 
 import "./Navbar.scss";
+import { selectCartProducts } from "store/cart-slice";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ export default function Navbar() {
   const [viweAccountMenu, setViweAccountMenu] = useState(false);
   const [showSideMenu, setShowSideMenu] = useState(false);
   const notificationList = useSelector(selectNotification);
+  const cartProducts = useSelector(selectCartProducts);
 
   const dispatch = useDispatch();
 
@@ -43,7 +45,20 @@ export default function Navbar() {
     { link: `/${ROUTES.OFFERS}`, title: "offers" },
     { link: `/${ROUTES.JOBS.MAIN}`, title: "jobs" },
     { link: `/${ROUTES.WISHLIST}`, title: "wishlist" },
-    { link: `/${ROUTES.CART}`, title: "cart" },
+    {
+      link: `/${ROUTES.CART}`,
+      title: "cart",
+      render: (children) => (
+        <div className="relative">
+          {!!cartProducts.length && (
+            <div className="h-5 p-1 w-5 bg-secondary text-white absolute -right-1 ring-primary ring-2 -top-3 flex justify-center items-center rounded-full text-xs">
+              {cartProducts.length}
+            </div>
+          )}
+          {children}
+        </div>
+      ),
+    },
     { link: `/${ROUTES.ADS.MAIN}`, title: "ads" },
     { link: "/services", title: "service" },
     { link: `/${ROUTES.CHAT}`, title: "chat" },
@@ -86,27 +101,24 @@ export default function Navbar() {
       menu={notificationList.list}
       left
       listRender={(menu) =>
-        menu
-          .filter((item) => !item.seen)
-          .slice(0, 10)
-          .map((item, idx) => (
-            <li
-              key={item._id}
-              className={classNames("relative cursor-pointer px-3 py-5", {
-                "bg-slate-100/40 border-0 border-b-2 border-b-slate-300/40":
-                  !item.seen,
-              })}
-              onClick={() => handleNotificationClick(item._id, item.link)}
-            >
-              {!item.seen && (
-                <span className="ml-auto absolute w-2 h-2 bg-primary rounded-full right-2 top-2 animate-pulse"></span>
-              )}
-              <a href={item.link} target="_blank" rel="noopener noreferrer">
-                {item.text.slice(0, 30) +
-                  (item.text.length > 30 ? "..." : "") ?? "No text"}
-              </a>
-            </li>
-          ))
+        menu.slice(0, 10).map((item, idx) => (
+          <li
+            key={item._id}
+            className={classNames("relative cursor-pointer px-3 py-5", {
+              "bg-slate-100/40 border-0 border-b-2 border-b-slate-300/40":
+                !item.seen,
+            })}
+            onClick={() => handleNotificationClick(item._id, item.link)}
+          >
+            {!item.seen && (
+              <span className="ml-auto absolute w-2 h-2 bg-primary rounded-full right-2 top-2 animate-pulse"></span>
+            )}
+            <a href={item.link} target="_blank" rel="noopener noreferrer">
+              {item.text.slice(0, 30) + (item.text.length > 30 ? "..." : "") ??
+                "No text"}
+            </a>
+          </li>
+        ))
       }
     >
       {!!notificationList.list.filter((item) => !item.seen).length && (
@@ -151,8 +163,8 @@ export default function Navbar() {
         }}
       />
       <ul className="nav-menu">
-        {navItems.map((item, idx) => (
-          <li key={idx} className="nav-item">
+        {navItems.map((item, idx) => {
+          const content = (
             <Dropdown
               menu={lists[item.title] || undefined}
               listRender={(menu) => (
@@ -183,8 +195,18 @@ export default function Navbar() {
                 {t(item.title)}
               </NavLink>
             </Dropdown>
-          </li>
-        ))}
+          );
+
+          return item.render ? (
+            <li key={idx} className="nav-item">
+              {item.render(content)}
+            </li>
+          ) : (
+            <li key={idx} className="nav-item">
+              {content}
+            </li>
+          );
+        })}
       </ul>
 
       <div className="notifictation-language">

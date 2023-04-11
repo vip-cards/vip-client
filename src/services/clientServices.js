@@ -2,6 +2,7 @@ import store from "../store";
 import Axios from "./Axios";
 import { adsServices } from "./modules/adsServices";
 import { authServices } from "./modules/authServices";
+import { cartServices } from "./modules/cartServices";
 import { jobsServices } from "./modules/jobsServices";
 import { servicesServices } from "./modules/servicesServices";
 
@@ -128,23 +129,7 @@ const clientServices = {
     return response;
   },
 
-  /*--- CART ---*/
-  getCart: async () => {
-    const response = await Axios.get(`/cart/get?client=${userId}`);
-    return response;
-  },
-  addCartItem: async ({ branchId, productId, quantity = 1 }) => {
-    const response = await Axios.post(
-      `/cart/item?client=${userId}&product=${productId}&branch=${branchId}&quantity=${quantity}`
-    );
-    return response;
-  },
-  removeCartItem: async ({ productId, quantity }) => {
-    const response = await Axios.delete(
-      `/cart/item?client=${userId}&product=${productId}&quantity=${quantity}`
-    );
-    return response;
-  },
+  ...cartServices,
   ...authServices,
   ...jobsServices,
   ...adsServices,

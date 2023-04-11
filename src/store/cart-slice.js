@@ -18,7 +18,7 @@ const initialState = { loading: false, products: [] };
 export const getCurrentCartThunk = createAsyncThunk(
   "cart/get",
   async (payload, thunkAPI) => {
-    const { data } = await clientServices.getCart();
+    const data = await clientServices.getCart();
     return data.record;
   }
 );
@@ -31,7 +31,7 @@ export const addToCartThunk = createAsyncThunk(
       quantity: payload.quantity,
     };
     try {
-      const { data } = await clientServices.addCartItem(product);
+      const data = await clientServices.addCartItem(product);
       return data.record;
     } catch (err) {
       return thunkAPI.rejectWithValue({ ...err.response.data });
@@ -45,7 +45,12 @@ export const removeFromCartThunk = createAsyncThunk(
       productId: payload._id,
       quantity: payload.quantity,
     };
-    const { data } = await clientServices.removeCartItem(product);
+    const data = await clientServices.removeCartItem(product);
+
+    if (!data.record.items.length) {
+      thunkAPI.dispatch(getCurrentCartThunk());
+    }
+
     return data.record;
   }
 );
@@ -87,7 +92,10 @@ const cartSlice = createSlice({
       state._id = payload._id;
       state.vendor = payload.vendor;
       state.products = payload.items;
-      state.branch._id = payload.branch;
+      state.branch = {
+        ...state.branch,
+        _id: payload.branch,
+      };
       state.price = { original: payload.originalTotal, current: payload.total };
       state.points = payload.points;
       toastPopup.success("Product added to cart!");
@@ -101,7 +109,10 @@ const cartSlice = createSlice({
       state._id = payload._id;
       state.vendor = payload.vendor;
       state.products = payload.items;
-      state.branch._id = payload.branch;
+      state.branch = {
+        ...state.branch,
+        _id: payload.branch,
+      };
       state.price = { original: payload.originalTotal, current: payload.total };
       state.points = payload.points;
 
@@ -118,11 +129,12 @@ const cartSlice = createSlice({
       isRejected(addToCartThunk, removeFromCartThunk),
       (state, { payload }) => {
         state.loading = false;
-        toastPopup.error("something went wrong, please try again later!");
+        return state;
       }
     );
   },
 });
 
 export const { addToCart } = cartSlice.actions;
+export const selectCartProducts = (state) => state.cart.products;
 export const cartReducer = cartSlice.reducer;
