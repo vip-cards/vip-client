@@ -20,6 +20,7 @@ export default function PageQueryContainer({
   withSideFilter = true,
   listRenderFn,
   itemsCount,
+  children,
 }) {
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
@@ -83,14 +84,7 @@ export default function PageQueryContainer({
         onClick={handleListSearch}
       />
       <section className="flex flex-col p-8 min-h-[80vh]">
-        <header className="flex flex-row">
-          <button>
-            sort by rating <FontAwesomeIcon icon={faRankingStar} />
-          </button>
-          <button>
-            sort by rating <FontAwesomeIcon icon={faStreetView} />
-          </button>
-        </header>
+        {children}
         <div className="flex flex-row gap-2 h-full max-h-screen">
           {withSideFilter && (
             <aside className="w-full max-w-[13rem] overflow-hidden overflow-y-auto">

@@ -24,6 +24,8 @@ const clientServices = {
   },
   listAllVendors: async (params) =>
     (await Axios.get(`/vendor/list`, { params })).data,
+  listAllVendorsByRating: async (params) =>
+    (await Axios.get(`/vendor/rating`, { params })).data,
 
   listAllVendorsInCategory: async (id) =>
     (await Axios.get(`/vendor/list?category=${id}`)).data?.records,
