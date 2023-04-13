@@ -1,24 +1,25 @@
-import React, { useState } from "react";
+import { switchLang } from "helpers/lang";
+import { loginSchema } from "helpers/schemas";
+import toastPopup from "helpers/toastPopup";
+import jwt_decode from "jwt-decode";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import jwt_decode from "jwt-decode";
-import { useTranslation } from "react-i18next";
-import { switchLang } from "../../helpers/lang";
-import { loginSchema } from "../../helpers/schemas";
-import toastPopup from "../../helpers/toastPopup";
-import { authActions } from "../../store/auth-slice";
-import clientServices from "../../services/clientServices";
-import { useSocialLogin } from "../../services/firebaseServices";
+import clientServices from "services/clientServices";
+import { useSocialLogin } from "services/firebaseServices";
+import { authActions } from "store/auth-slice";
 
-import { ReactComponent as VendorLogoOrange } from "../../assets/VIP-ICON-SVG/VendorLogoOrange.svg";
-import { ReactComponent as VendorLogo } from "../../assets/VIP-ICON-SVG/VendorLogo.svg";
+import { ReactComponent as VendorLogo } from "assets/VIP-ICON-SVG/VendorLogo.svg";
+import { ReactComponent as VendorLogoOrange } from "assets/VIP-ICON-SVG/VendorLogoOrange.svg";
 import { ReactComponent as FacebookLogo } from "assets/icons/facebook.svg";
 import { ReactComponent as GoogleLogo } from "assets/icons/google.svg";
 import { ReactComponent as TwitterLogo } from "assets/icons/twitter.svg";
-import "./Login.scss";
-import { MainInput } from "components/Inputs";
 import { MainButton } from "components/Buttons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { MainInput } from "components/Inputs";
+
+import "./Login.scss";
+import { ROUTES } from "constants";
 
 export default function Login() {
   const socialLogin = useSocialLogin();
@@ -148,6 +149,9 @@ export default function Login() {
               />
             );
           })}
+          <div className="text-primary hover:opacity-80">
+            <Link to={`/${ROUTES.FORGOT_PASSWORD}`}>Forgot Password?</Link>
+          </div>
           <MainButton text={t("login")} loading={loading} type="submit" />
           <div className="flex flex-row max-w-full gap-4 justify-around">
             <MainButton

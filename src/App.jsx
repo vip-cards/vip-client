@@ -29,6 +29,8 @@ import { setNotifications } from "store/actions";
 import { fetchWishlist } from "store/wishlist-slice";
 import RegisterForm from "views/RegisterForm/RegisterForm";
 import RegisterHome from "views/RegisterHome/RegisterHome";
+import ForgetPassword from "pages/Login/ForgotPassword";
+import { ROUTES } from "constants";
 
 function App() {
   const lang = i18n.language;
@@ -87,6 +89,10 @@ function App() {
         <Route
           path="/login"
           element={auth.token ? <Navigate to="/" /> : <Login />}
+        />
+        <Route
+          path={ROUTES.FORGOT_PASSWORD}
+          element={auth.token ? <Navigate to="/" /> : <ForgetPassword />}
         />
         <Route
           path="/register"
