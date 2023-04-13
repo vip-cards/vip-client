@@ -128,9 +128,15 @@ function NewPasswordView({ input, setInput }) {
 
       const res = await clientServices
         .resetPassword(
-          { email: input.email, newPassword: input.password }
-          // input.token
+          { email: input.email, newPassword: input.password },
+          input.token
         )
+        .then(() => {
+          toastPopup.success("Password reset successfully!");
+          setTimeout(() => {
+            navigate("/login");
+          }, 1000);
+        })
         .catch((e) => {
           toastPopup.error(e.response?.data ?? "Something went wrong!");
         })
@@ -140,10 +146,6 @@ function NewPasswordView({ input, setInput }) {
           }, 300);
         });
       console.log(res);
-      toastPopup.success("Password reset successfully!");
-      setTimeout(() => {
-        navigate("/login");
-      }, 1000);
     } else {
       toastPopup.error("The passwords didn't match");
     }
@@ -170,8 +172,8 @@ function NewPasswordView({ input, setInput }) {
 
       <MainButton
         text="Send"
-        loading={false}
         type="submit"
+        loading={loading}
         className="w-4/5 mt-8"
         onClick={handleConfirmPassword}
       />
