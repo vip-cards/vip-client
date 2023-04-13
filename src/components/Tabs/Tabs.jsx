@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { useLocation, useNavigate } from "react-router";
 import classes from "./Tabs.module.scss";
+import { ProtectedComponent } from "components/auth-components/ProtectedComponent";
 
 /**
  * It takes an object of tabs `{label, panel}`, and a default tab.
@@ -14,23 +15,24 @@ export default function Tabs({ tabs, defaultTab }) {
   return (
     <div className={classes["tabs-container"]}>
       <div className={classNames(classes["tab-btns"], "flex-col")}>
-        {Object.entries(tabs).map(([key, { label }]) => (
-          <button
-            key={key}
-            active={tab === key}
-            className={classNames(classes["btn"], {
-              [classes["active"]]: tab === key,
-            })}
-            onClick={() => {
-              navigate(location.pathname, {
-                state: {
-                  openedTap: key,
-                },
-              });
-            }}
-          >
-            {label}
-          </button>
+        {Object.entries(tabs).map(([key, { label, role }]) => (
+          <ProtectedComponent key={key} role={role}>
+            <button
+              active={tab === key}
+              className={classNames(classes["btn"], {
+                [classes["active"]]: tab === key,
+              })}
+              onClick={() => {
+                navigate(location.pathname, {
+                  state: {
+                    openedTap: key,
+                  },
+                });
+              }}
+            >
+              {label}
+            </button>
+          </ProtectedComponent>
         ))}
       </div>
       <div className="tab-container">{tabs[tab].panel}</div>

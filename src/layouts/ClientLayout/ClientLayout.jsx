@@ -1,4 +1,8 @@
+import BranchProducts from "components/BranchProducts/BranchProducts";
+import Footer from "components/Footer/Footer";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
+import Navbar from "components/Navbar/Navbar";
+import { ProtectedModule } from "components/auth-components/ProtectedModule";
 import { ROUTES } from "constants/routes";
 import {
   ApplyJobTab,
@@ -25,20 +29,16 @@ import {
   Vendors,
   Wishlist,
 } from "pages";
+import { ServiceDetails } from "pages/Services/ServiceDetails";
 import { Suspense, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
-import BranchProducts from "../../components/BranchProducts/BranchProducts";
-import Footer from "../../components/Footer/Footer";
-import Navbar from "../../components/Navbar/Navbar";
-import { getCurrentCartThunk } from "../../store/cart-slice";
-import AccountBarcode from "../../views/AccountBarcode/AccountBarcode";
-import AccountDetails from "../../views/AccountDetails/AccountDetails";
-import AccountOrders from "../../views/AccountOrders/AccountOrders";
-import AccountWishlist from "../../views/AccountWishlist/AccountWishlist";
+import { getCurrentCartThunk } from "store/cart-slice";
+import AccountBarcode from "views/AccountBarcode/AccountBarcode";
+import AccountDetails from "views/AccountDetails/AccountDetails";
+import AccountOrders from "views/AccountOrders/AccountOrders";
+import AccountWishlist from "views/AccountWishlist/AccountWishlist";
 import AccountLayout from "../AccountLayout/AccountLayout";
-
-import { ServiceDetails } from "pages/Services/ServiceDetails";
 import "./ClientLayout.scss";
 
 const PageLoader = () => (
@@ -76,10 +76,24 @@ export default function ClientLayout() {
               path={`/${ROUTES.HOT_DEALS}`}
               element={<Offers isHotDeal />}
             />
-            <Route path={`/${ROUTES.ADS.MAIN}`} element={<SponsorAds />} />
+            <Route
+              path={`/${ROUTES.ADS.MAIN}`}
+              element={
+                <ProtectedModule role="subscribed">
+                  <SponsorAds />
+                </ProtectedModule>
+              }
+            />
             <Route path={`/${ROUTES.ADS.CREATE}`} element={<CreateAd />} />
             <Route path={`/${ROUTES.ADS.LIST}`} element={<PreviousAds />} />
-            <Route path={`/${ROUTES.CHAT}`} element={<Chat />} />
+            <Route
+              path={`/${ROUTES.CHAT}`}
+              element={
+                <ProtectedModule role="subscribed">
+                  <Chat />
+                </ProtectedModule>
+              }
+            />
 
             <Route path={`services`} element={<Services />} />
             <Route path={`services/:id`} element={<ServiceDetails />} />
@@ -91,7 +105,14 @@ export default function ClientLayout() {
               ></Route>
               <Route path={`hire`} element={<HiringEmployeeTab />}>
                 <Route path="home" element={<HiringTabHome />} />
-                <Route path="create" element={<HiringTabCreateJob />} />
+                <Route
+                  path="create"
+                  element={
+                    <ProtectedModule role="subscribed">
+                      <HiringTabCreateJob />
+                    </ProtectedModule>
+                  }
+                />
                 <Route
                   path="view-created"
                   element={<HiringTabViewCreatedJobs />}
@@ -135,16 +156,37 @@ export default function ClientLayout() {
               element={<ProductDetails />}
             />
 
-            <Route path={`/${ROUTES.WISHLIST}`} element={<Wishlist />} />
+            <Route
+              path={`/${ROUTES.WISHLIST}`}
+              element={
+                <ProtectedModule role="subscribed">
+                  <Wishlist />
+                </ProtectedModule>
+              }
+            />
 
-            <Route path={`/${ROUTES.ACCOUNT}`} element={<AccountLayout />}>
+            <Route
+              path={`/${ROUTES.ACCOUNT}`}
+              element={
+                <ProtectedModule role="subscribed">
+                  <AccountLayout />
+                </ProtectedModule>
+              }
+            >
               <Route index path="details" element={<AccountDetails />} />
               <Route path="orders" element={<AccountOrders />} />
               <Route path="wishlist" element={<AccountWishlist />} />
               <Route path="barcode" element={<AccountBarcode />} />
               <Route path="" element={<Navigate to="details" />} />
             </Route>
-            <Route path={`/${ROUTES.CART}`} element={<CartPage />} />
+            <Route
+              path={`/${ROUTES.CART}`}
+              element={
+                <ProtectedModule role="subscribed">
+                  <CartPage />
+                </ProtectedModule>
+              }
+            />
           </Routes>
         </Suspense>
       </div>

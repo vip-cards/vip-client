@@ -86,6 +86,43 @@ export default function Login() {
     }
   };
 
+  const guestLoginHandler = async (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+
+    setLoading(true);
+    try {
+      const result = await clientServices.loginAsGuest();
+      const data = result.data;
+
+      if (data.success && data.code === 200) {
+        setLoading(false);
+
+        toastPopup.success(t("Success"));
+        const tokenDecoded = jwt_decode(data.token);
+        console.log({
+          token: data.token,
+          userId: tokenDecoded._id,
+          userRole: tokenDecoded.role,
+          userData: data.record ?? {},
+        });
+        dispatch(
+          authActions.login({
+            token: data.token,
+            userId: tokenDecoded._id,
+            userRole: tokenDecoded.role,
+            userData: { role: tokenDecoded.role, type: "guest" },
+          })
+        );
+        navigate("/");
+      }
+    } catch (e) {
+      setLoading(false);
+      setErrorMessage(e.response.data.error);
+    }
+  };
+
   return (
     <div className="login">
       <div className="login-logo">
@@ -186,6 +223,9 @@ export default function Login() {
               {t("CreateAccount")}
             </Link>
           </p>
+          <div>
+            <button onClick={guestLoginHandler}>login as a guest</button>
+          </div>
         </form>
       </div>
     </div>

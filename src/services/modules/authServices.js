@@ -6,12 +6,16 @@ export const authServices = {
     const response = await Axios.post("/register", obj);
     return response;
   },
+  loginBy: async (obj) => {
+    const response = await Axios.post("/loginBy", obj);
+    return response;
+  },
   login: async (obj) => {
     const response = await Axios.post("/login", obj);
     return response;
   },
-  loginBy: async (obj) => {
-    const response = await Axios.post("/loginBy", obj);
+  loginAsGuest: async (obj) => {
+    const response = await Axios.get("/guest", obj);
     return response;
   },
 

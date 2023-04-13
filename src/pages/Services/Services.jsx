@@ -65,16 +65,19 @@ export default function Services() {
     home: {
       label: "Home",
       panel: <ServiceHome />,
+      role: "auth",
     },
 
     createJob: {
       label: "Create Service",
       panel: <CreateServiceForm />,
+      role: "subscribed",
     },
 
     viewCreatedJob: {
       label: "View Created Job",
       panel: <ServiceHome id={localStorage.getItem("userId") ?? ""} />,
+      role: "subscribed",
     },
   };
 

@@ -4,6 +4,7 @@ import jwt_decode from "jwt-decode";
 import store from "../store";
 import { authActions } from "../store/auth-slice";
 import endPoint from "./endPoint";
+import toastPopup from "helpers/toastPopup";
 
 const baseURL = endPoint;
 
@@ -13,6 +14,7 @@ const guestEndpoints = [
   "/register",
   "/recovery",
   "/resetPassword",
+  "/guest",
 ];
 
 const Axios = axios.create({ baseURL });
@@ -32,6 +34,10 @@ Axios.interceptors.request.use(async (req) => {
     req.headers.Authorization = `Bearer ${auth.token}`;
     if (req.method === "get") {
       req.params = { ...req.params, isActive: true };
+    }
+    if (req.method !== "get" && token._id === "guest") {
+      toastPopup.error("You are not allowed untill you subscribe!");
+      return Promise.reject("Method not allowed");
     }
     return req;
   } else {
