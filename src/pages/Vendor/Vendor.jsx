@@ -1,7 +1,9 @@
 import { faCommentDots, faTruckFast } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
+import { MainButton } from "components/Buttons";
 import { BranchCard, CategoryCard, ProductCard } from "components/Cards";
+import NoData from "components/NoData/NoData";
 import RatingStars from "components/RatingStars/RatingStars";
 import { getLocalizedWord } from "helpers/lang";
 import { listRenderFn } from "helpers/rednerFn";
@@ -16,23 +18,21 @@ import useSWR from "swr";
 import Carousel from "../../components/Carousel/Carousel";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import clientServices from "../../services/clientServices";
+
 import "./Vendor.scss";
-import NoData from "components/NoData/NoData";
-import { MainButton } from "components/Buttons";
+import Pagination from "components/Pagination/Pagination";
 
 const LIMIT = 9;
 
 export default function Vendor() {
   const params = useParams();
   const vendorId = params.vendorId;
-  const lang = i18n.language;
 
   const [loading, setLoading] = useState(false);
   const [vendor, setVendor] = useState({});
   const [branches, setBranches] = useState([]);
   const [offers, setOffers] = useState([]);
   const [categories, setCategories] = useState([]);
-  const auth = useSelector(selectAuth);
   const navigate = useNavigate();
   const [queryParams, setQueryParams] = useState({ page: 1, limit: LIMIT });
 
@@ -100,7 +100,7 @@ export default function Vendor() {
   return (
     <div className="client-vendor-home my-8 app-card-shadow page-wrapper pb-8">
       <header className="rounded-3xl border-b-2 p-4 gap-4 pb-4 flex flex-col justify-between relative border-0">
-        <div className="h-48 w-full bg-primary/20 overflow-hidden rounded-lg">
+        <div className="h-48 w-full bg-primary/20 overflow-hidden rounded-lg shadow-lg">
           <img
             src={vendor?.cover?.Location}
             alt={getLocalizedWord(vendor?.name) + " cover"}
@@ -108,7 +108,7 @@ export default function Vendor() {
           />
         </div>
         <div className="relative pl-36 pt-2 pr-2">
-          <div className="w-28 h-28 overflow-hidden rounded-full absolute -top-14 left-7 border-white border-4 shadow">
+          <div className="w-28 h-28 overflow-hidden rounded-full absolute -top-16 left-7 border-white border-4 shadow">
             <img
               src={vendor?.image?.Location}
               alt={getLocalizedWord(vendor?.name) + " img"}
@@ -217,53 +217,11 @@ export default function Vendor() {
       <div className="flex flex-row w-full h-full gap-8 flex-wrap p-8 min-h-[12rem] justify-around flex-grow">
         {productListRender()}
       </div>
-      <div className="flex flex-row gap-3 justify-center items-center">
-        <MainButton
-          disabled={1 === queryParams.page}
-          onClick={() =>
-            setQueryParams((params) => ({
-              ...params,
-              page: params.page > 1 ? params.page - 1 : 1,
-            }))
-          }
-          className="p-2 !rounded-full justify-center items-center flex aspect-square disabled:bg-primary/50"
-          size="small"
-        >
-          {"<"}
-        </MainButton>
-        {[...Array.from({ length: totalPages }, (v, i) => i + 1)]?.map(
-          (item) => (
-            <MainButton
-              disabled={item === queryParams.page}
-              onClick={() =>
-                setQueryParams((params) => ({ ...params, page: item }))
-              }
-              className={classNames(
-                {
-                  "!bg-primary/50": item !== queryParams.page,
-                },
-                "p-2 !rounded-full justify-center items-center flex aspect-square"
-              )}
-              size="small"
-            >
-              {item}
-            </MainButton>
-          )
-        )}
-        <MainButton
-          disabled={totalPages === queryParams.page}
-          onClick={() =>
-            setQueryParams((params) => ({
-              ...params,
-              page: params.page < totalPages ? params.page + 1 : totalPages,
-            }))
-          }
-          className="p-2 !rounded-full justify-center items-center flex aspect-square disabled:bg-primary/50"
-          size="small"
-        >
-          {">"}
-        </MainButton>
-      </div>
+      <Pagination
+        count={totalPages}
+        queryParams={queryParams}
+        setQueryParams={setQueryParams}
+      />
     </div>
   );
 }

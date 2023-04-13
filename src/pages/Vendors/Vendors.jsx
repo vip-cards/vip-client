@@ -1,3 +1,6 @@
+import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
 import { VendorCard } from "components/Cards";
 import PageQueryContainer from "components/PageQueryContainer/PageQueryContainer";
 import { useState } from "react";
@@ -6,10 +9,8 @@ import useSWR from "swr";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import NoData from "../../components/NoData/NoData";
 import clientServices from "../../services/clientServices";
+
 import "./Vendors.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRankingStar, faStreetView } from "@fortawesome/free-solid-svg-icons";
-import classNames from "classnames";
 
 const LIMIT = 9;
 
