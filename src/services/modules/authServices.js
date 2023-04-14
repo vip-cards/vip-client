@@ -1,3 +1,4 @@
+import toastPopup from "helpers/toastPopup";
 import Axios from "../Axios";
 
 export const authServices = {
@@ -7,8 +8,13 @@ export const authServices = {
     return response;
   },
   loginBy: async (obj) => {
-    const response = await Axios.post("/loginBy", obj);
-    return response;
+    try {
+      const response = await Axios.post("/loginBy", obj);
+      return response;
+    } catch (e) {
+      console.log(e);
+      toastPopup.error(e?.response?.data?.error ?? "something went wrong");
+    }
   },
   login: async (obj) => {
     const response = await Axios.post("/login", obj);

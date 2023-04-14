@@ -24,6 +24,11 @@ export default function RegisterHome() {
         className="facebook-button"
         onClick={() => socialLogin("facebook")}
       />
+      <MainButton
+        text={t("twitter")}
+        className="twitter-button"
+        onClick={() => socialLogin("twitter")}
+      />
     </>
   );
 }
