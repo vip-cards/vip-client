@@ -1,4 +1,8 @@
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMinus,
+  faPlus,
+  faStopwatch,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +14,10 @@ import clientServices from "../../services/clientServices";
 import { addToCartThunk } from "../../store/cart-slice";
 import { addWishProduct } from "../../store/wishlist-slice";
 import "./ProductDetails.scss";
+import { Swiper, SwiperSlide } from "swiper/react";
+import HomeSwiper from "pages/Home/HomeSwiper";
+import { selectAuth } from "store/auth-slice";
+import classNames from "classnames";
 
 function ProductDetails(props) {
   const lang = i18n.language;
@@ -20,7 +28,7 @@ function ProductDetails(props) {
   const [loading, setLoading] = useState(false);
   const [cart, setCart] = useState({ quantity: 0, branchId: -1 });
   const cartBranch = useSelector((state) => state.cart.branch);
-
+  const auth = useSelector(selectAuth);
   async function fetchProductData() {
     try {
       const { data } = await clientServices.getProductDetails(productId);
@@ -29,8 +37,13 @@ function ProductDetails(props) {
   }
 
   async function addToCartHandler() {
+    if (auth.userId === "guest") {
+      toastPopup.error(
+        "You are not allowed to add to cart untill you are subscribe!"
+      );
+    }
     if (!cart.branchId || cart.branchId < 0) return;
-    if (cart.branchId !== cartBranch._id) {
+    if (cart.branchId !== cartBranch?._id) {
       toastPopup.error("You can only choose the branch in your cart");
       return;
     }
@@ -58,19 +71,36 @@ function ProductDetails(props) {
   return (
     <div className="app-card-shadow product-details-page">
       {/* image */}
-      <div className="product-image-container">
-        <img src={product?.image?.Location} alt="f" className="product-image" />
-      </div>
+      <HomeSwiper
+        // ref={swiperRef}
+        loop={true}
+        autoplay={{ delay: 5000 }}
+        spaceBetween={10}
+        className="product-img-container max-h-60 pointer rounded-lg overflow-hidden max-w-full"
+      >
+        {product?.image?.map((image, index) => (
+          <SwiperSlide key={image?.Location ?? index}>
+            <img
+              src={image?.Location ?? ""}
+              alt="product-img"
+              className="product-img"
+            />
+          </SwiperSlide>
+        ))}
+      </HomeSwiper>
       {/* details */}
       <div className="product-details-container">
         <div className="product-details">
           <h2 className="product-title">{product?.name?.[lang]}</h2>
-          <h4 className="vendor-title">{product?.vendor?.name?.[lang]}</h4>
-          <span>
+          <h5 className="product-title">
             <RatingStars rate={product?.rate} />
-          </span>
+          </h5>
+          <h4 className="vendor-title">{product?.vendor?.name?.[lang]}</h4>
+
           <p>
-            <span>{product?.originalPrice} EGP</span>
+            <span className="line-through text-slate-800">
+              {product?.originalPrice} EGP
+            </span>
             &nbsp;
             <span>{product?.price} EGP</span>
           </p>
@@ -117,16 +147,30 @@ function ProductDetails(props) {
           </span>
         </div>
         <div className="cart-actions">
-          <button className="add-to-cart-btn" onClick={addToCartHandler}>
+          <button
+            disabled={auth.userId === "guest"}
+            className="add-to-cart-btn disabled:opacity-75 disabled:pointer-events-none"
+            onClick={addToCartHandler}
+          >
             Add to cart
           </button>
-          <span className="add-to-wishlist-btn" onClick={addToWishlisthandler}>
+          <span
+            disabled={auth.userId === "guest"}
+            className={classNames(
+              {
+                "opacity-75": auth.userId === "guest",
+                "pointer-events-none": auth.userId === "guest",
+              },
+              "add-to-wishlist-btn"
+            )}
+            onClick={addToWishlisthandler}
+          >
             add to wishlist
           </span>
         </div>
       </div>
       {/* reviews */}
-      <div className="product-reviews-container">reviews</div>
+      {/* <div className="product-reviews-container">reviews</div> */}
     </div>
   );
 }
