@@ -102,6 +102,7 @@ export default function MainInput(props) {
                     id={inputId + item[identifier]}
                     type="checkbox"
                     value={item[identifier]}
+                    defaultChecked={item.isChecked}
                     className="check-input w-4 h-4 rounded-xl overflow-hidden"
                     onChange={(e) => {
                       const currentSelectionArr = state?.[name] ?? [item.value];

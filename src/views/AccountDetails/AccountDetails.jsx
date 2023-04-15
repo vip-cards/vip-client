@@ -1,9 +1,9 @@
 import { t } from "i18next";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import i18n from "locales/i18n";
 import clientServices from "services/clientServices";
 import { authActions } from "store/auth-slice";
+import useSWR from "swr";
 
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,7 +13,9 @@ import toastPopup from "helpers/toastPopup";
 
 import { MainButton } from "components/Buttons";
 import { MainInput } from "components/Inputs";
+
 import "./AccountDetails.scss";
+import { getLocalizedWord } from "helpers/lang";
 /**
  * {obj1} new object
  * {obj2} old object
@@ -28,12 +30,17 @@ const getUpdatedOnly = (obj1, obj2) => {
   return editData;
 };
 export default function AccountDetails() {
-  const lang = i18n.language;
   const ref = useRef();
   const dispatch = useDispatch();
+  const { data: accountData } = useSWR("account-details", () =>
+    clientServices.updateInfo()
+  );
+  const { record: account = undefined } = accountData ?? {};
 
   const auth = useSelector((state) => state.auth);
-  const userData = auth.userData;
+
+  const userData = account ?? auth.userData;
+  console.log(userData);
 
   const [loading, setLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
@@ -46,9 +53,9 @@ export default function AccountDetails() {
     email: userData.email,
     phone: userData.phone,
     image: userData.image,
+    age: userData.age,
     gender: userData.gender,
-    profession_en: userData.profession.en,
-    profession_ar: userData.profession.ar,
+    profession: userData.profession,
   });
   const [userInfo, setUserInfo] = useState(oldUserInfo);
 
@@ -56,6 +63,20 @@ export default function AccountDetails() {
     { name: "name_en", type: "text", required: true },
     { name: "name_ar", type: "text", required: true },
     { name: "email", type: "email", required: true, toEdit: true },
+    { name: "age", type: "number", toEdit: true },
+    { name: "phone", type: "tel", toEdit: true },
+    {
+      name: "profession",
+      type: "checkbox",
+      identifier: "_id",
+      list: account?.profession?.map((item) => ({
+        _id: item._id,
+        value: item.name.en,
+        name: getLocalizedWord(item.name),
+        isChecked: true,
+      })),
+      toEdit: true,
+    },
     {
       name: "gender",
       type: "list",
@@ -87,12 +108,14 @@ export default function AccountDetails() {
       },
       email: newDataObj.email,
       phone: newDataObj.phone,
-
+      age: newDataObj.age,
       gender: newDataObj.gender,
-      profession: (newDataObj.profession_en || newDataObj.profession_ar) && {
-        en: newDataObj.profession_en,
-        ar: newDataObj.profession_ar,
-      },
+      profession: newDataObj.profession.map((item) => ({
+        _id: item._id,
+        value: item.name.en,
+        name: getLocalizedWord(item.name),
+        isChecked: true,
+      })),
 
       // description: {
       //   en: newDataObj.description_en,
@@ -102,7 +125,7 @@ export default function AccountDetails() {
 
     clientServices
       .updateInfo(mappedData)
-      .then(({ data }) => {
+      .then((data) => {
         dispatch(authActions.update({ userData: data.record }));
         toastPopup.success("Account Info Updated Successfully");
       })
@@ -212,8 +235,6 @@ export default function AccountDetails() {
           <MainButton className="full-width" text={t("confirm")} />
         </div>
       </div>
-      <hr />
-      <div>fgoaerg</div>
     </form>
   );
 }

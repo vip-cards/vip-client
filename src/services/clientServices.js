@@ -1,5 +1,6 @@
 import store from "../store";
 import Axios from "./Axios";
+import { accountServices } from "./modules/accountServices";
 import { adsServices } from "./modules/adsServices";
 import { authServices } from "./modules/authServices";
 import { cartServices } from "./modules/cartServices";
@@ -8,40 +9,10 @@ import { postsServices } from "./modules/postsServices";
 import { servicesServices } from "./modules/servicesServices";
 import { wishServices } from "./modules/wishServices";
 
-let userId = store.getState().auth.userId;
-
-// A function that returns a promise that resolves when the `userId` value is set
-const getUserIdPromise = () => {
-  return new Promise((resolve, reject) => {
-    const unsubscribe = store.subscribe(() => {
-      const newUserId = store.getState().auth.userId;
-      if (newUserId) {
-        userId = newUserId;
-        unsubscribe();
-        resolve();
-      }
-    });
-  });
-};
-
-// Wrap the Axios library and delay requests until the `userId` value is set
-const axiosWrapper = async (url, options) => {
-  // Wait for the `userId` value to be set before making the request
-  await getUserIdPromise();
-
-  return Axios;
-};
+const userId =
+  store.getState()?.auth?.userId ?? localStorage.getItem("userId") ?? "";
 
 const clientServices = {
-  updateInfo: async (obj) => {
-    const response = await Axios.put("/update", obj);
-    return response;
-  },
-  uploadImg: async (obj) => {
-    const response = await Axios.post("/image", obj);
-    return response;
-  },
-
   getVendor: async (vendorId) => {
     const response = await Axios.get(`/vendor/get?_id=${vendorId}`);
     return response;
@@ -111,8 +82,6 @@ const clientServices = {
   listAllCategories: async (params) =>
     (await Axios.get(`/category/list`, { params })).data,
 
-  /*--- WISHLIST ---*/
-
   /*--- SEARCH ---*/
   vendorQuery: async (params) => {
     const response = await Axios.get(`/vendor/list`, {
@@ -139,6 +108,7 @@ const clientServices = {
     return response;
   },
 
+  ...accountServices,
   ...cartServices,
   ...wishServices,
   ...authServices,

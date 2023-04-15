@@ -2,8 +2,8 @@ import { ProductCard } from "components/Cards";
 import { listRenderFn } from "helpers/rednerFn";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+
 import "./AccountWishlist.scss";
-import CardContainer from "components/CardContainer/CardContainer";
 
 export default function AccountWishlist() {
   const { products: wishlist, loading } = useSelector(
