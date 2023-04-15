@@ -22,7 +22,7 @@ export default function Wishlist() {
     setList(cleanedList);
   }, [wishlist]);
 
-  if (loading) {
+  if (loading && !list?.length) {
     return (
       <CardContainer title="whishlist">
         <div className="flex flex-row flex-wrap gap-3 justify-around items-center p-8">
@@ -38,7 +38,7 @@ export default function Wishlist() {
   }
   const renderWishlist = () =>
     listRenderFn({
-      isLoading: loading,
+      isLoading: loading && !list?.length,
       list,
       render: ({ product }, idx) => (
         <ProductCard product={product} key={product._id} />
