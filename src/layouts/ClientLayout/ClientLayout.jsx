@@ -62,14 +62,14 @@ export default function ClientLayout() {
       <div className="page-content">
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            <Route
+            {/* <Route
               path="/"
               element={<Navigate replace to={`/${ROUTES.HOME}`} />}
             />
             <Route
               path="/*"
               element={<Navigate replace to={`/${ROUTES.HOME}`} />}
-            />
+            /> */}
             <Route path={`/${ROUTES.HOME}`} element={<Home />} />
             <Route path={`/${ROUTES.VENDORS}`} element={<Vendors />} />
             <Route path={`/${ROUTES.OFFERS}`} element={<Offers />} />
@@ -78,15 +78,22 @@ export default function ClientLayout() {
               element={<Offers isHotDeal />}
             />
             <Route
-              path={`/${ROUTES.ADS.MAIN}`}
+              path={`${ROUTES.ADS.MAIN}`}
               element={
                 <ProtectedModule role="subscribed">
                   <SponsorAds />
                 </ProtectedModule>
               }
             />
-            <Route path={`/${ROUTES.ADS.CREATE}`} element={<CreateAd />} />
-            <Route path={`/${ROUTES.ADS.LIST}`} element={<PreviousAds />} />
+            <Route
+              path={`/${ROUTES.ADS.MAIN}/${ROUTES.ADS.CREATE}`}
+              element={<CreateAd />}
+            />
+            <Route
+              path={`${ROUTES.ADS.MAIN}/${ROUTES.ADS.LIST}`}
+              element={<PreviousAds />}
+            />
+
             <Route
               path={`/${ROUTES.CHAT}`}
               element={

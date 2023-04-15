@@ -1,19 +1,19 @@
+import { t } from "i18next";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { t } from "i18next";
-import i18n from "../../locales/i18n";
-import { authActions } from "../../store/auth-slice";
-import clientServices from "../../services/clientServices";
+import i18n from "locales/i18n";
+import clientServices from "services/clientServices";
+import { authActions } from "store/auth-slice";
 
-import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import toastPopup from "../../helpers/toastPopup";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
-import branchBlaceHolder from "../../assets/images/branchPlaceHolder.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import branchBlaceHolder from "assets/images/branchPlaceHolder.png";
+import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
+import toastPopup from "helpers/toastPopup";
 
-import "./AccountDetails.scss";
-import { MainInput } from "components/Inputs";
 import { MainButton } from "components/Buttons";
+import { MainInput } from "components/Inputs";
+import "./AccountDetails.scss";
 /**
  * {obj1} new object
  * {obj2} old object
