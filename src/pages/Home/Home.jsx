@@ -57,7 +57,10 @@ export default function Home() {
     [banners]
   );
 
-  const randomPopUp = Math.floor(Math.random() * (popUps?.length ?? 0));
+  const randomPopUp = useMemo(
+    () => Math.floor(Math.random() * (popUps?.length ?? 0)),
+    [popUps?.length]
+  );
 
   const renderAds = (size) => {
     if (advertsLoading || !adverts) return <LoadingSpinner />;
@@ -84,7 +87,10 @@ export default function Home() {
       .filter((ad) => ad.bannerSize === size)
       .map((ad) => {
         return (
-          <SwiperSlide key={ad._id} className="w-full h-full rounded-xl shadow overflow-hidden">
+          <SwiperSlide
+            key={ad._id}
+            className="w-full h-full rounded-xl shadow overflow-hidden"
+          >
             <a href={ad.link} target="_blank" rel="noreferrer noopener">
               <img
                 className="w-full h-full object-cover"
