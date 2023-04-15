@@ -60,9 +60,10 @@ function App() {
     listenToNotification((res) => {});
     listNotification();
 
-    socket.on(EVENTS.NOTIFICATION.LIST, (response) =>
-      setNotifications(response)
-    );
+    socket.on(EVENTS.NOTIFICATION.LIST, (response) => {
+      console.log(response);
+      setNotifications(response);
+    });
 
     socket.on(EVENTS.CHAT.CREATE, (res) => {
       if (!res.success) {

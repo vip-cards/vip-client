@@ -6,7 +6,13 @@ import { selectAuth } from "store/auth-slice";
 export const ProtectedModule = ({ children, role = "auth" }) => {
   const auth = useSelector(selectAuth);
   const userType = auth.userData?.type;
-  if (role === "auth" || userType !== "guest") {
+  const isAuthUser = role === "auth";
+  const isUserSubscribed = role === "subscribed" && auth.userData?.isSubscribed;
+  const isGeneralClient = role === "client";
+  const canView =
+    isAuthUser || (userType !== "guest" && isUserSubscribed) || isGeneralClient;
+
+  if (canView) {
     return children;
   } else {
     return (

@@ -170,7 +170,7 @@ export default function ClientLayout() {
             <Route
               path={`/${ROUTES.ACCOUNT}`}
               element={
-                <ProtectedModule role="subscribed">
+                <ProtectedModule role="client">
                   <AccountLayout />
                 </ProtectedModule>
               }

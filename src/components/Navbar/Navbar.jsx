@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import classNames from "classnames";
 import { ROUTES } from "constants/routes";
@@ -7,13 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { markAsSeen } from "services/socket/notification";
 import { selectNotification } from "store/notification-slice";
-import { ReactComponent as NavbarLogo } from "../../assets/VIP-ICON-SVG/NavbarLogo.svg";
-import { ReactComponent as BurgerMenuIcon } from "../../assets/VIP-ICON-SVG/burgerMenu.svg";
-import { ReactComponent as Notification } from "../../assets/VIP-ICON-SVG/notification.svg";
-import { switchLang } from "../../helpers/lang";
-import i18n from "../../locales/i18n";
-import clientServices from "../../services/clientServices";
-import { authActions } from "../../store/auth-slice";
+import { ReactComponent as NavbarLogo } from "assets/VIP-ICON-SVG/NavbarLogo.svg";
+import { ReactComponent as BurgerMenuIcon } from "assets/VIP-ICON-SVG/burgerMenu.svg";
+import { ReactComponent as Notification } from "assets/VIP-ICON-SVG/notification.svg";
+import { switchLang } from "helpers/lang";
+import i18n from "locales/i18n";
+import clientServices from "services/clientServices";
+import { authActions } from "store/auth-slice";
 import Dropdown from "../DropDown/DropDown";
 import SideNav from "./SideNav/SideNav";
 
@@ -94,38 +94,40 @@ export default function Navbar() {
   function handleNotificationClick(notificationId, link) {
     markAsSeen(notificationId);
   }
-
-  const NofificationRing = () => (
-    <Dropdown
-      className="ml-auto lg:ml-0"
-      menu={notificationList.list}
-      left
-      listRender={(menu) =>
-        menu.slice(0, 10).map((item, idx) => (
-          <li
-            key={item._id}
-            className={classNames("relative cursor-pointer px-3 py-5", {
-              "bg-slate-100/40 border-0 border-b-2 border-b-slate-300/40":
-                !item.seen,
-            })}
-            onClick={() => handleNotificationClick(item._id, item.link)}
-          >
-            {!item.seen && (
-              <span className="ml-auto absolute w-2 h-2 bg-primary rounded-full right-2 top-2 animate-pulse"></span>
-            )}
-            <a href={item.link} target="_blank" rel="noopener noreferrer">
-              {item.text.slice(0, 30) + (item.text.length > 30 ? "..." : "") ??
-                "No text"}
-            </a>
-          </li>
-        ))
-      }
-    >
-      {!!notificationList.list.filter((item) => !item.seen).length && (
-        <div className="h-2 w-2 bg-green-500 absolute right-0 top-0 animate-fade-pulse rounded-full"></div>
-      )}
-      <Notification className="notification-icon" />
-    </Dropdown>
+  const NofificationRing = useCallback(
+    () => (
+      <Dropdown
+        className="ml-auto lg:ml-0"
+        menu={notificationList.list}
+        left
+        listRender={(menu) =>
+          menu.slice(0, 10).map((item, idx) => (
+            <li
+              key={item._id}
+              className={classNames("relative cursor-pointer px-3 py-5", {
+                "bg-slate-100/40 border-0 border-b-2 border-b-slate-300/40":
+                  !item.seen,
+              })}
+              onClick={() => handleNotificationClick(item._id, item.link)}
+            >
+              {!item.seen && (
+                <span className="ml-auto absolute w-2 h-2 bg-primary rounded-full right-2 top-2 animate-pulse"></span>
+              )}
+              <a href={item.link} target="_blank" rel="noopener noreferrer">
+                {item.text.slice(0, 30) +
+                  (item.text.length > 30 ? "..." : "") ?? "No text"}
+              </a>
+            </li>
+          ))
+        }
+      >
+        {!!notificationList.list.filter((item) => !item.seen).length && (
+          <div className="h-2 w-2 bg-green-500 absolute right-0 top-0 animate-fade-pulse rounded-full"></div>
+        )}
+        <Notification className="notification-icon" />
+      </Dropdown>
+    ),
+    [notificationList]
   );
 
   useEffect(() => {

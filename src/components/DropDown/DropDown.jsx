@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./DropDown.scss";
 import classNames from "classnames";
+import { useOutsideClick } from "helpers/useOuterClick";
 
 const Dropdown = ({
   menu,
@@ -12,14 +13,26 @@ const Dropdown = ({
   className,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
-
+  const wrapperRef = useRef(null);
+  useOutsideClick(wrapperRef, () => setShowMenu(false));
   const toggleMenu = (event) => {
-    // toggling it only, make sum uncontrolled behave
-    if (event.type === "mouseenter") setShowMenu(true);
-    else if (event.type === "mouseleave") setShowMenu(false);
+    switch (event.type) {
+      // case "mouseenter":
+      //   setShowMenu(true);
+      //   break;
+      // case "mouseleave":
+      //   setShowMenu(false);
+      //   break;
+      case "click":
+        setShowMenu((state) => !state);
+        break;
+      default:
+        return;
+    }
   };
 
   const TriggerComponent = () => children;
+
   if (!menu?.length) return <TriggerComponent />;
   const transormX = left ? "-90%" : right ? "-10%" : "-50%";
 
@@ -28,6 +41,8 @@ const Dropdown = ({
       className={classNames(className, "dropdown-menu")}
       onMouseEnter={toggleMenu}
       onMouseLeave={toggleMenu}
+      onClick={toggleMenu}
+      ref={wrapperRef}
     >
       {children && <TriggerComponent />}
       {showMenu && (
