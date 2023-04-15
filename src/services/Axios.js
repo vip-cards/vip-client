@@ -57,7 +57,8 @@ export function axiosAuthMiddleware() {
   const getUserIdPromise = () => {
     return new Promise((resolve, reject) => {
       const unsubscribe = store.subscribe(() => {
-        const newUserId = store.getState().auth.userId;
+        const newUserId =
+          store.getState().auth.userId ?? localStorage.getItem("userId"); // localStorage as turn-around
         if (newUserId) {
           userId = newUserId;
           unsubscribe();
@@ -70,7 +71,6 @@ export function axiosAuthMiddleware() {
   const axiosWrapper = async () => {
     // Wait for the `userId` value to be set before making the request
     await getUserIdPromise();
-
     return Axios;
   };
 

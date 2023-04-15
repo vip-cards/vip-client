@@ -4,18 +4,22 @@ var { axiosWrapper, userId } = axiosAuthMiddleware();
 
 export const cartServices = {
   /*--- CART ---*/
-  getCart: async () =>
-    (
-      await axiosWrapper().get("/cart/get", {
+  getCart: async () => {
+    const api = await axiosWrapper();
+    return (
+      await api.get("/cart/get", {
         params: {
           client: userId,
         },
       })
-    ).data,
+    ).data;
+  },
 
-  addCartItem: async ({ branchId, productId, quantity = 1 }) =>
-    (
-      await axiosWrapper().post("/cart/item", null, {
+  addCartItem: async ({ branchId, productId, quantity = 1 }) => {
+    const api = await axiosWrapper();
+
+    return (
+      await api.post("/cart/item", null, {
         params: {
           client: userId,
           product: productId,
@@ -23,25 +27,32 @@ export const cartServices = {
           quantity,
         },
       })
-    ).data,
+    ).data;
+  },
 
-  removeCartItem: async ({ productId, quantity }) =>
-    (
-      await axiosWrapper().delete("/cart/item", {
+  removeCartItem: async ({ productId, quantity }) => {
+    const api = await axiosWrapper();
+
+    return (
+      await api.delete("/cart/item", {
         params: {
           client: userId,
           product: productId,
           quantity,
         },
       })
-    ).data,
+    ).data;
+  },
 
-  flushCart: async (cartId) =>
-    (
-      await axiosWrapper().delete("/cart/flush", {
+  flushCart: async (cartId) => {
+    const api = await axiosWrapper();
+
+    return (
+      await api.delete("/cart/flush", {
         params: {
           cart: cartId,
         },
       })
-    ).data,
+    ).data;
+  },
 };

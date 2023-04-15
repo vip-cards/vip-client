@@ -12,7 +12,6 @@ export const authServices = {
       const response = await Axios.post("/loginBy", obj);
       return response;
     } catch (e) {
-      console.log(e);
       toastPopup.error(e?.response?.data?.error ?? "something went wrong");
     }
   },
@@ -26,9 +25,7 @@ export const authServices = {
   },
 
   recoveryCode: async (obj) => {
-    console.log(obj);
     const { data } = await Axios.post("/recovery", obj);
-    console.log(data);
     return data;
   },
 

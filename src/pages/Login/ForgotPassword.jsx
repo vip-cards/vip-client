@@ -39,7 +39,6 @@ function SendRecoveryMailView({ input, setInput }) {
     setLoading(true);
 
     try {
-      console.log(input);
       const res = await clientServices
         .recoveryCode({ email: input.email })
         .finally(() => {
@@ -47,7 +46,7 @@ function SendRecoveryMailView({ input, setInput }) {
             setLoading(false);
           }, 300);
         });
-      console.log(res);
+
       setInput((obj) => ({
         ...obj,
         step: 1,
@@ -55,7 +54,6 @@ function SendRecoveryMailView({ input, setInput }) {
         token: res.token,
       }));
     } catch (e) {
-      console.log(e);
       toastPopup.error(e.response?.data ?? "Something went wrong!");
     }
   }
@@ -145,8 +143,8 @@ function NewPasswordView({ input, setInput }) {
             setLoading(false);
           }, 300);
         });
-      console.log(res);
-    } else {
+
+      } else {
       toastPopup.error("The passwords didn't match");
     }
   }

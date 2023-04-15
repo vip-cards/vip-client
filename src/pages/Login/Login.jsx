@@ -101,12 +101,7 @@ export default function Login() {
 
         toastPopup.success(t("Success"));
         const tokenDecoded = jwt_decode(data.token);
-        console.log({
-          token: data.token,
-          userId: tokenDecoded._id,
-          userRole: tokenDecoded.role,
-          userData: data.record ?? {},
-        });
+       
         dispatch(
           authActions.login({
             token: data.token,

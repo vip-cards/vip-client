@@ -6,6 +6,7 @@ import { cartServices } from "./modules/cartServices";
 import { jobsServices } from "./modules/jobsServices";
 import { postsServices } from "./modules/postsServices";
 import { servicesServices } from "./modules/servicesServices";
+import { wishServices } from "./modules/wishServices";
 
 let userId = store.getState().auth.userId;
 
@@ -111,22 +112,6 @@ const clientServices = {
     (await Axios.get(`/category/list`, { params })).data,
 
   /*--- WISHLIST ---*/
-  listAllWishProducts: async () => {
-    const response = await Axios.get(`/wishlist/get?client=${userId}`);
-    return response;
-  },
-  addWishProduct: async (productId) => {
-    const response = await Axios.post(
-      `/wishlist/addItem?client=${userId}&product=${productId}`
-    );
-    return response;
-  },
-  removeWishProduct: async (productId) => {
-    const response = await Axios.delete(
-      `/wishlist/removeItem?client=${userId}&product=${productId}`
-    );
-    return response;
-  },
 
   /*--- SEARCH ---*/
   vendorQuery: async (params) => {
@@ -155,6 +140,7 @@ const clientServices = {
   },
 
   ...cartServices,
+  ...wishServices,
   ...authServices,
   ...jobsServices,
   ...postsServices,

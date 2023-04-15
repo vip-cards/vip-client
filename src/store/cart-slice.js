@@ -19,6 +19,7 @@ export const getCurrentCartThunk = createAsyncThunk(
   "cart/get",
   async (payload, thunkAPI) => {
     const data = await clientServices.getCart();
+
     return data.record;
   }
 );

@@ -61,7 +61,6 @@ function App() {
     listNotification();
 
     socket.on(EVENTS.NOTIFICATION.LIST, (response) => {
-      console.log(response);
       setNotifications(response);
     });
 

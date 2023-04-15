@@ -10,6 +10,7 @@ if (
     }
   );
 }
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -59,6 +60,10 @@ const authSlice = createSlice({
     },
   },
 });
+
+
+
+
 
 export const authActions = authSlice.actions;
 export const selectAuth = (state) => state.auth;

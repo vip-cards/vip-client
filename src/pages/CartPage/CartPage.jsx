@@ -1,15 +1,14 @@
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CartProduct from "components/CartProduct/CartProduct";
+import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
+import i18n from "locales/i18n";
 import { Helmet } from "react-helmet-async";
 import { useSelector } from "react-redux";
-import CartProduct from "../../components/CartProduct/CartProduct";
-import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
-import i18n from "../../locales/i18n";
-import store from "../../store";
+
 import "./CartPage.scss";
 
 export default function CartPage() {
-  const userId = store.getState().auth.userId;
   const lang = i18n.language;
 
   const cart = useSelector((state) => state.cart);
@@ -18,6 +17,7 @@ export default function CartPage() {
   if (!cart._id) {
     return <LoadingSpinner />;
   }
+  
   return (
     <main className="app-card-shadow cart-page">
       <Helmet>

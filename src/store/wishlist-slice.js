@@ -7,7 +7,7 @@ import clientServices from "../services/clientServices";
 export const fetchWishlist = createAsyncThunk(
   "wishlist/all",
   async (_, thunkAPI) => {
-    const { data } = await clientServices.listAllWishProducts();
+    const data = await clientServices.listAllWishProducts();
     return data.record.items;
   }
 );
@@ -16,11 +16,17 @@ export const fetchWishlist = createAsyncThunk(
 export const addWishProduct = createAsyncThunk(
   "wishlist/add",
   async (productId, thunkAPI) => {
-    const { data } = await clientServices.addWishProduct(productId);
-    if (data.record) {
-      toastPopup.success(t("addedToWishlist"));
+    try {
+      const data = await clientServices.addWishProduct(productId);
+
+      if (data.record) {
+        toastPopup.success(t("addedToWishlist"));
+      }
+      return data.record.items;
+    } catch (err) {
+      toastPopup.error(err.response.data);
+      return thunkAPI.rejectWithValue({ ...err.response.data });
     }
-    return data.record.record.items;
   }
 );
 
@@ -28,7 +34,7 @@ export const addWishProduct = createAsyncThunk(
 export const removeWishProduct = createAsyncThunk(
   "wishlist/remove",
   async (productId, thunkAPI) => {
-    const { data } = await clientServices.removeWishProduct(productId);
+    const data = await clientServices.removeWishProduct(productId);
     toastPopup.success(t("removedFromWishlist"));
     thunkAPI.dispatch(fetchWishlist());
     return data.record.items;
@@ -44,6 +50,7 @@ const wishlistSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchWishlist.fulfilled, (state, { payload }) => {
       if (!payload) return state;
+      
       state.products = payload;
       state.ids = payload.map((product) => product && product?.product._id);
     });
