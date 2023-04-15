@@ -39,7 +39,7 @@ export default function CartProduct({ item }) {
       <div className="cart-product-img-container">
         <img
           className="cart-product-img"
-          src={product?.image?.Location}
+          src={product?.image?.[0]?.Location}
           alt={product.name?.[lang]}
           loading="lazy"
         />
