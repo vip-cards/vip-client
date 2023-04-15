@@ -32,8 +32,8 @@ export default function AccountDetails() {
   const ref = useRef();
   const dispatch = useDispatch();
 
-  let auth = useSelector((state) => state.auth);
-  let userData = auth.userData;
+  const auth = useSelector((state) => state.auth);
+  const userData = auth.userData;
 
   const [loading, setLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
@@ -212,6 +212,8 @@ export default function AccountDetails() {
           <MainButton className="full-width" text={t("confirm")} />
         </div>
       </div>
+      <hr />
+      <div>fgoaerg</div>
     </form>
   );
 }
