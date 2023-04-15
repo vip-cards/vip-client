@@ -6,7 +6,29 @@ import { cartServices } from "./modules/cartServices";
 import { jobsServices } from "./modules/jobsServices";
 import { servicesServices } from "./modules/servicesServices";
 
-const userId = store.getState().auth.userId;
+let userId = store.getState().auth.userId;
+
+// A function that returns a promise that resolves when the `userId` value is set
+const getUserIdPromise = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = store.subscribe(() => {
+      const newUserId = store.getState().auth.userId;
+      if (newUserId) {
+        userId = newUserId;
+        unsubscribe();
+        resolve();
+      }
+    });
+  });
+};
+
+// Wrap the Axios library and delay requests until the `userId` value is set
+const axiosWrapper = async (url, options) => {
+  // Wait for the `userId` value to be set before making the request
+  await getUserIdPromise();
+
+  return Axios;
+};
 
 const clientServices = {
   updateInfo: async (obj) => {

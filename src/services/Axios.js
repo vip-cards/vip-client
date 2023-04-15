@@ -48,4 +48,30 @@ Axios.interceptors.request.use(async (req) => {
   }
 });
 
+export function axiosAuthMiddleware() {
+  let userId = store.getState().auth.userId;
+
+  const getUserIdPromise = () => {
+    return new Promise((resolve, reject) => {
+      const unsubscribe = store.subscribe(() => {
+        const newUserId = store.getState().auth.userId;
+        if (newUserId) {
+          userId = newUserId;
+          unsubscribe();
+          resolve();
+        }
+      });
+    });
+  };
+
+  const axiosWrapper = async () => {
+    // Wait for the `userId` value to be set before making the request
+    await getUserIdPromise();
+
+    return Axios;
+  };
+  
+  return { axiosWrapper, userId };
+}
+
 export default Axios;
