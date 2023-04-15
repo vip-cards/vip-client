@@ -1,4 +1,11 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import {
+  createAsyncThunk,
+  createSlice,
+  isAnyOf,
+  isFulfilled,
+  isPending,
+  isRejected,
+} from "@reduxjs/toolkit";
 import { t } from "i18next";
 import toastPopup from "../helpers/toastPopup";
 import clientServices from "../services/clientServices";
@@ -41,7 +48,7 @@ export const removeWishProduct = createAsyncThunk(
   }
 );
 
-const initialState = { products: [], ids: [] };
+const initialState = { loading: false, products: [], ids: [] };
 
 const wishlistSlice = createSlice({
   name: "wishlist",
@@ -50,7 +57,7 @@ const wishlistSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchWishlist.fulfilled, (state, { payload }) => {
       if (!payload) return state;
-      
+
       state.products = payload;
       state.ids = payload.map((product) => product && product?.product._id);
     });
@@ -64,6 +71,26 @@ const wishlistSlice = createSlice({
       state.products = payload;
       state.ids = payload.map((product) => product && product?.product._id);
     });
+    builder.addMatcher(
+      isPending(fetchWishlist, addWishProduct, removeWishProduct),
+      (state, { payload }) => {
+        state.loading = true;
+      }
+    );
+    builder.addMatcher(
+      isRejected(fetchWishlist, addWishProduct, removeWishProduct),
+      (state, { payload }) => {
+        state.loading = false;
+        return state;
+      }
+    );
+    builder.addMatcher(
+      isFulfilled(fetchWishlist, addWishProduct, removeWishProduct),
+      (state, { payload }) => {
+        state.loading = false;
+        return state;
+      }
+    );
   },
 });
 
