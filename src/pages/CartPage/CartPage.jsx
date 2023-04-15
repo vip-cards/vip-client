@@ -1,23 +1,33 @@
-import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import { faCircleNotch, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CartProduct from "components/CartProduct/CartProduct";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import i18n from "locales/i18n";
 import { Helmet } from "react-helmet-async";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import "./CartPage.scss";
+import { IconButton, MainButton } from "components/Buttons";
+import { flushCart } from "store/cart-slice";
 
 export default function CartPage() {
   const lang = i18n.language;
-
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const cartLoading = cart.loading;
+
+  if (cartLoading) {
+    return <LoadingSpinner />;
+  }
 
   if (!cart._id) {
     return <LoadingSpinner />;
   }
-  
+
+  function flushCartHandler() {
+    dispatch(flushCart(cart._id));
+  }
+
   return (
     <main className="app-card-shadow cart-page">
       <Helmet>
@@ -27,6 +37,16 @@ export default function CartPage() {
       <h2 className="cart-branch">{cart?.branch?.name?.[lang]}</h2>
       <div className="cart-container">
         <div className="cart-details">
+          <div className="w-full flex flex-row">
+            <MainButton
+              size="small"
+              className="ml-auto !rounded-full w-fit !h-8 flex flex-row justify-center items-center gap-2 px-2"
+              onClick={flushCartHandler}
+            >
+              <span>Clear the cart</span>
+              <IconButton icon={faTrashCan} />
+            </MainButton>
+          </div>
           {cart.products.map((item) => (
             <CartProduct
               key={item._id}

@@ -1,13 +1,12 @@
-import { axiosAuthMiddleware } from "services/Axios";
+import Axios from "services/Axios";
 
-var { axiosWrapper, userId } = axiosAuthMiddleware();
+const userId = localStorage.getItem("userId") ?? "";
 
 export const cartServices = {
   /*--- CART ---*/
   getCart: async () => {
-    const api = await axiosWrapper();
     return (
-      await api.get("/cart/get", {
+      await Axios.get("/cart/get", {
         params: {
           client: userId,
         },
@@ -16,10 +15,8 @@ export const cartServices = {
   },
 
   addCartItem: async ({ branchId, productId, quantity = 1 }) => {
-    const api = await axiosWrapper();
-
     return (
-      await api.post("/cart/item", null, {
+      await Axios.post("/cart/item", null, {
         params: {
           client: userId,
           product: productId,
@@ -31,10 +28,8 @@ export const cartServices = {
   },
 
   removeCartItem: async ({ productId, quantity }) => {
-    const api = await axiosWrapper();
-
     return (
-      await api.delete("/cart/item", {
+      await Axios.delete("/cart/item", {
         params: {
           client: userId,
           product: productId,
@@ -45,10 +40,8 @@ export const cartServices = {
   },
 
   flushCart: async (cartId) => {
-    const api = await axiosWrapper();
-
     return (
-      await api.delete("/cart/flush", {
+      await Axios.delete("/cart/flush", {
         params: {
           cart: cartId,
         },

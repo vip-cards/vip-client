@@ -56,6 +56,18 @@ export const removeFromCartThunk = createAsyncThunk(
   }
 );
 
+export const flushCart = createAsyncThunk(
+  "cart/remove",
+  async (cartId, thunkAPI) => {
+    const data = await clientServices.flushCart(cartId);
+    toastPopup.success("Cart cleared successfully");
+
+    thunkAPI.dispatch(getCurrentCartThunk());
+
+    return data.record;
+  }
+);
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
