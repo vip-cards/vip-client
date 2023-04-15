@@ -40,6 +40,7 @@ import AccountOrders from "views/AccountOrders/AccountOrders";
 import AccountWishlist from "views/AccountWishlist/AccountWishlist";
 import AccountLayout from "../AccountLayout/AccountLayout";
 import "./ClientLayout.scss";
+import PostPage from "pages/Jobs/views/PostPage";
 
 const PageLoader = () => (
   <div className="h-[80vh] w-[80vw] m-auto flex justify-center items-center">
@@ -98,6 +99,7 @@ export default function ClientLayout() {
             <Route path={`services`} element={<Services />} />
             <Route path={`services/:id`} element={<ServiceDetails />} />
             <Route path={`${ROUTES.JOBS.MAIN}`} element={<Jobs />}>
+              <Route path={`posts/:id`} element={<PostPage />} />
               <Route path={`/${ROUTES.JOBS.MAIN}/:id`} element={<JobPage />} />
               <Route
                 path={`${ROUTES.JOBS.APPLY}`}

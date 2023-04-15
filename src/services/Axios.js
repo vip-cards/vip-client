@@ -1,10 +1,10 @@
 import axios from "axios";
 import dayjs from "dayjs";
+import toastPopup from "helpers/toastPopup";
 import jwt_decode from "jwt-decode";
 import store from "../store";
 import { authActions } from "../store/auth-slice";
 import endPoint from "./endPoint";
-import toastPopup from "helpers/toastPopup";
 
 const baseURL = endPoint;
 
@@ -70,7 +70,7 @@ export function axiosAuthMiddleware() {
 
     return Axios;
   };
-  
+
   return { axiosWrapper, userId };
 }
 

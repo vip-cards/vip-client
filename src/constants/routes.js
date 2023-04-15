@@ -7,9 +7,10 @@ export const ROUTES = Object.freeze({
   CATEGORIES: "categories",
   VENDORS: "vendors",
   HOT_DEALS: "hot-deals",
-  PRODUCT:"product",
+  PRODUCT: "product",
   OFFERS: "offers",
   JOBS: { MAIN: "jobs", APPLY: "apply", CREATE: "create" },
+  POSTS: { MAIN: "posts" },
   WISHLIST: "wishlist",
   CART: "cart",
 

@@ -1,26 +1,29 @@
-import classNames from "classnames";
-import { NavLink, Outlet } from "react-router-dom";
+import Tabs from "components/Tabs/Tabs";
+import { HiringTabCreateJob, HiringTabHome } from "pages";
 
-const HiringEmployeeTab = () => {
-  const btnClass = ({ isActive }) =>
-    classNames("subroute-btn", { active: isActive });
+const ApplyJobTab = () => {
+  const tabs = {
+    home: {
+      label: "Home",
+      panel: <HiringTabHome />,
+    },
+
+    createJob: {
+      label: "Create Post",
+      panel: <HiringTabCreateJob />,
+    },
+
+    viewCreatedJob: {
+      label: "View Created Posts",
+      panel: <HiringTabHome id={localStorage.getItem("userId") ?? ""} />,
+    },
+  };
+
   return (
     <div className="page-wrapper app-card-shadow px-0 md:px-5 lg:px-8 py-8 m-8">
-      <div>HiringEmployeeTab</div>
-      <div className="subroute-container">
-        <NavLink to="home" className={btnClass}>
-          Home
-        </NavLink>
-        <NavLink to="create" className={btnClass}>
-          create job
-        </NavLink>
-        <NavLink to="view-created" className={btnClass}>
-          view created job
-        </NavLink>
-      </div>
-      <Outlet />
+      <Tabs tabs={tabs} />
     </div>
   );
 };
 
-export default HiringEmployeeTab;
+export default ApplyJobTab;

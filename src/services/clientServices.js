@@ -4,6 +4,7 @@ import { adsServices } from "./modules/adsServices";
 import { authServices } from "./modules/authServices";
 import { cartServices } from "./modules/cartServices";
 import { jobsServices } from "./modules/jobsServices";
+import { postsServices } from "./modules/postsServices";
 import { servicesServices } from "./modules/servicesServices";
 
 let userId = store.getState().auth.userId;
@@ -156,6 +157,7 @@ const clientServices = {
   ...cartServices,
   ...authServices,
   ...jobsServices,
+  ...postsServices,
   ...adsServices,
   ...servicesServices,
 };
