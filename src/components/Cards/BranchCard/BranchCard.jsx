@@ -1,17 +1,18 @@
 import { ReactComponent as Rate } from "assets/VIP-ICON-SVG/rate.svg";
 import { getLocalizedWord } from "helpers/lang";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import "./BranchCard.scss";
+import { ROUTES } from "constants";
 
 export default function BranchCard({ branch }) {
   const navigate = useNavigate();
-
+  const { vendorId } = useParams();
   return (
     <div className="branch-card">
       <div
         className="branch-card-container"
         onClick={() => {
-          navigate(`${branch._id}`);
+          navigate(`/${ROUTES.VENDORS}/${vendorId}/${branch._id}`);
         }}
       >
         <div className="branch-img-container">

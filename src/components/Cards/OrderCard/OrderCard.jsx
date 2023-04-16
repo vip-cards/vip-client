@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import "./OrderCard.scss";
 import clientServices from "services/clientServices";
 import RatingStars from "components/RatingStars/RatingStars";
+import { getLocalizedWord } from "helpers/lang";
 
 export default function OrderCard({ order }) {
   const [vendor, setVendor] = useState({
@@ -13,7 +14,7 @@ export default function OrderCard({ order }) {
 
   useEffect(() => {
     clientServices
-      .getVendor(order.vendor)
+      .getVendor(order.vendor?._id)
       .then((res) => res.data.record[0])
       .then((vendor) => setVendor(vendor));
   }, [order.vendor]);
@@ -22,16 +23,16 @@ export default function OrderCard({ order }) {
     <article className="order-card">
       <div className="order-image-container">
         <img
-          className="order-image"
-          src={vendor.image.Location}
-          alt={vendor.name.en}
+          className="order-image bg-primary/60 min-h-full object-cover"
+          src={vendor?.image?.Location}
+          alt={getLocalizedWord(vendor?.name)}
           loading="lazy"
         />
       </div>
 
       <div className="order-vendor-name">
-        <span>{vendor.name.en}</span>
-        <RatingStars rate={vendor.rate} />
+        <span>{getLocalizedWord(vendor?.name) || "Vendor name"}</span>
+        <RatingStars rate={vendor?.rate ?? 0} />
       </div>
 
       <div className="order-status">

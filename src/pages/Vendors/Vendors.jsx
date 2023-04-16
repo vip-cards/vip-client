@@ -18,7 +18,7 @@ export default function Vendors() {
   const { categoryId } = useParams();
   const initialFilters = { category: [categoryId] };
   const [filter, setFilter] = useState(initialFilters);
-  const [sort, setSort] = useState(false);
+  const [sort, setSort] = useState("");
 
   const [queryParams, setQueryParams] = useState({
     page: 1,
@@ -28,12 +28,25 @@ export default function Vendors() {
   const { data: vendorsData, isLoading: vendorsLoading } = useSWR(
     [sort ? "sorted-vendors" : "all-vendors", queryParams, sort],
     ([key, params, sort]) =>
-      sort
+      !!sort
         ? clientServices.listAllVendorsByRating(params)
         : clientServices.listAllVendors(params)
   );
   const { records: vendors = undefined, counts: vendorsCount } =
     vendorsData ?? {};
+
+  const handleSortSelection = (event) => {
+    const selection = event.target.value;
+    switch (selection) {
+      case "nearest":
+      case "rating":
+        setSort(selection);
+        break;
+      default:
+        setSort("");
+        break;
+    }
+  };
 
   const vendorListRender = () => {
     if (vendorsLoading) return <LoadingSpinner />;
@@ -57,15 +70,13 @@ export default function Vendors() {
       setQueryParams={setQueryParams}
     >
       <header className="flex flex-row justify-end w-full gap-4">
-        <button
-          onClick={() => setSort((prev) => !prev)}
-          className={classNames("shadow px-2 py-1 rounded-md", {
-            "bg-primary": sort,
-            "bg-primary/50": !sort,
-          })}
-        >
-          sort by rating <FontAwesomeIcon icon={faRankingStar} />
-        </button>
+        <select name="arrange" id="sort-arrange" onChange={handleSortSelection}>
+          <option value="" disabled>
+            arrange by
+          </option>
+          <option value="nearest">nearest</option>
+          <option value="rating">rating</option>
+        </select>
       </header>
     </PageQueryContainer>
   );

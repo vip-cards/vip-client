@@ -1,5 +1,3 @@
-import { faRankingStar, faStreetView } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import Search from "components/Inputs/Search/Search";
 import Pagination from "components/Pagination/Pagination";
@@ -44,9 +42,10 @@ export default function PageQueryContainer({
         filter?.[title]?.findIndex((item) => id === item),
         1
       );
-      setFilter((f) => ({ ...f, [title]: [...newArr] }));
+      setFilter && setFilter((f) => ({ ...f, [title]: [...newArr] }));
     } else {
-      setFilter((f) => ({ ...f, [title]: [...(f[title] ?? []), id] }));
+      setFilter &&
+        setFilter((f) => ({ ...f, [title]: [...(f[title] ?? []), id] }));
     }
   };
 
@@ -71,7 +70,7 @@ export default function PageQueryContainer({
 
   useEffect(() => {
     setSearchQuery("");
-    setFilter(initialFilters);
+    setFilter && setFilter(initialFilters);
     setQueryParams({ page: 1, limit: LIMIT, ...initialFilters });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);

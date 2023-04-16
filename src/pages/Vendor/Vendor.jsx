@@ -65,9 +65,9 @@ export default function Vendor() {
         await clientServices.listAllVendorCategories(vendorId);
       setCategories(allCategories?.records);
 
-      const { data: allBranches } = await clientServices.listAllVendorBranches(
-        vendorId
-      );
+      const allBranches = await clientServices.listAllVendorBranches({
+        vendor: vendorId,
+      });
 
       setBranches(allBranches?.records);
       setLoading(false);

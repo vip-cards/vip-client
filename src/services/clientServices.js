@@ -35,10 +35,20 @@ const clientServices = {
     return response;
   },
 
-  listAllVendorBranches: async (vendorId) => {
-    const response = await Axios.get(`/branch/list/?vendor=${vendorId}`);
-    return response;
-  },
+  listAllVendorBranches: async (params) =>
+    (
+      await Axios.get("/branch/list/", {
+        params,
+      })
+    )?.data,
+
+  listNearestVendorBranches: async (params) =>
+    (
+      await Axios.get("/branch/nearest/", {
+        params,
+      })
+    )?.data,
+
   listAllVendorCategories: async (vendorId) => {
     const response = vendorId
       ? await Axios.get(`/category/list/?vendor=${vendorId}`)

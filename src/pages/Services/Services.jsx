@@ -17,7 +17,7 @@ function ServiceHome({ id = undefined }) {
   const [queryParams, setQueryParams] = useState(initialQueryParams);
   const { data: servicesData, isLoading } = useSWR(
     id
-      ? [`view-${id}-services`, { ...queryParams, client: id }]
+      ? [`view-${id}-services`, { ...queryParams, provider: id }]
       : [`view-all-services`, queryParams],
     ([, queryParams]) => clientServices.listAllServices(queryParams)
   );
@@ -75,7 +75,7 @@ export default function Services() {
     },
 
     viewCreatedJob: {
-      label: "View Created Job",
+      label: "View Created Services",
       panel: <ServiceHome id={localStorage.getItem("userId") ?? ""} />,
       role: "subscribed",
     },

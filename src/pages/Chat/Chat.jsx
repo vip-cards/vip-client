@@ -133,7 +133,7 @@ function Chat() {
   }, []);
 
   return (
-    <div className="chat-page-container app-card-shadow">
+    <div className="chat-page-container app-card-shadow max-w-[80vw] max-h-[80vh] min-w-[300px] mx-auto my-8">
       <div className="chat-sidebar">
         {!!roomList.length &&
           roomList?.map(({ members, _id: RoomId }) => {
