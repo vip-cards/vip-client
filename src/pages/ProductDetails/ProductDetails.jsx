@@ -18,6 +18,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import HomeSwiper from "pages/Home/HomeSwiper";
 import { selectAuth } from "store/auth-slice";
 import classNames from "classnames";
+import { t } from "i18next";
 
 function ProductDetails(props) {
   const lang = i18n.language;
@@ -152,7 +153,7 @@ function ProductDetails(props) {
             className="add-to-cart-btn disabled:opacity-75 disabled:pointer-events-none"
             onClick={addToCartHandler}
           >
-            Add to cart
+            {t("addToCart")}{" "}
           </button>
           <span
             disabled={auth.userId === "guest"}
