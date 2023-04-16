@@ -10,6 +10,7 @@ export const Offers = lazy(() => import("./Offers/Offers"));
 export const Wishlist = lazy(() => import("./Wishlist/Wishlist"));
 
 export const Services = lazy(() => import("./Services/Services"));
+export const Subscribe = lazy(() => import("./Subscribe/Subscribe"));
 
 export { default as CartPage } from "./CartPage/CartPage";
 export { default as Categories } from "./Categories/Categories";
