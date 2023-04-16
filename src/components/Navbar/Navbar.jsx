@@ -63,6 +63,7 @@ export default function Navbar() {
     { link: "/services", title: "service" },
     { link: `/${ROUTES.CHAT}`, title: "chat" },
     { link: `/${ROUTES.ACCOUNT}`, title: "myAccount" },
+    { link: `/${ROUTES.SUBSCRIBE}`, title: "VIP premium" },
     {
       link: `/${ROUTES.LOGOUT}`,
       title: "logout",

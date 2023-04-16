@@ -13,8 +13,8 @@ function Subscribe(props) {
     isValidating,
     error,
     mutate,
-  } = useSWR("setting-wallet", () => clientServices.updateInfo());
-  const { data: walletnumberData } = useSWR("account-details", () =>
+  } = useSWR("account-details", () => clientServices.updateInfo());
+  const { data: walletnumberData } = useSWR("account-wallet", () =>
     clientServices.getSetting("walletNumber")
   );
 
@@ -62,7 +62,7 @@ function Subscribe(props) {
           </div>
           <p className="italic font-semibold text-slate-700">
             Subscription fess will be sent to the wallet number :{" "}
-            {walletnumberData?.record ?? "not valid wallet number"}
+            {/* {walletnumberData?.record ?? "not valid wallet number"} */}
           </p>
         </section>
       );
