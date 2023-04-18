@@ -73,31 +73,7 @@ export default function AccountDetails() {
       name: "profession",
       type: "multi-select",
       identifier: "name",
-      // list:
-      //   professions?.map((item) => ({
-      //     _id: item._id,
-      //     // value: item.name.en,
-      //     name: getLocalizedWord(item.name),
-      //     isChecked: true,
-      //   })) ?? [],
-      // defaultList:
-      //   account?.profession?.map((item) => ({
-      //     _id: item._id,
-      //     // value: item.name.en,
-      //     name: getLocalizedWord(item.name),
-      //     isChecked: true,
-      //   })) ?? [],
-      list:
-        professions?.map((item) => ({
-          _id: item._id,
-          // value: item.name.en,
-          name: getLocalizedWord(item.name),
-          isChecked: true,
-        })) ?? [],
-      defaultList:
-        account?.profession?.map((item) => {
-          return professions.findIndex((prf) => prf._id === item._id) ?? [];
-        }) ?? [],
+      list: professions ?? [],
       toEdit: true,
     },
     {
@@ -248,7 +224,6 @@ export default function AccountDetails() {
                   identifier={formInput.identifier}
                   state={userInfo}
                   setState={setUserInfo}
-                  defaultList={formInput.defaultList}
                   disabled
                   toEdit={true}
                 />

@@ -10,6 +10,7 @@ import { ListInput } from "./ListInput";
 import { InputSelect } from "./SelectInput";
 
 import "./MainInput.scss";
+import { getLocalizedWord } from "helpers/lang";
 
 export default function MainInput(props) {
   const {
@@ -24,7 +25,6 @@ export default function MainInput(props) {
     toEdit = false,
     invalid = false,
     className,
-    defaultList,
     ...restProps
   } = props;
 
@@ -81,7 +81,6 @@ export default function MainInput(props) {
 
     switch (type) {
       case "multi-select":
-        console.log([...defaultList.map((id) => list[id])]);
         return (
           <Select
             closeMenuOnSelect={false}
@@ -89,11 +88,16 @@ export default function MainInput(props) {
             classNamePrefix="multi-select"
             isMulti
             isDisabled={disableState}
-            defaultValue={[...defaultList.map((id) => list[id])]}
-            options={list.map((li) => ({
-              label: li[identifier],
-              value: li._id,
-            }))}
+            options={list}
+            getOptionLabel={(option) => {
+              console.log(option);
+              return getLocalizedWord(option[identifier]);
+            }}
+            getOptionValue={(option) => {
+              console.log(option);
+              return getLocalizedWord(option._id);
+            }}
+            value={state[name]}
             onChange={(selectedOptions) =>
               setState((state) => ({
                 ...state,
