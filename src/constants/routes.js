@@ -13,6 +13,7 @@ export const ROUTES = Object.freeze({
   POSTS: { MAIN: "posts" },
   WISHLIST: "wishlist",
   CART: "cart",
+  SUBSCRIBE: "subscribe",
 
   CHAT: "chat",
   LOCATION: "location",

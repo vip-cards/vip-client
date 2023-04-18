@@ -33,11 +33,15 @@ Axios.interceptors.request.use(async (req) => {
   if (!isTokenExpired) {
     req.headers.Authorization = `Bearer ${auth.token}`;
     if (req.method === "get") {
-      req.params = { ...req.params, isActive: true };
+      req.params = {
+        ...req.params,
+        isActive: req.url.includes("subs") ? false : true,
+      };
     }
     if (
       req.method !== "get" &&
-      (token._id === "guest" || !auth.userData.isSubscribed)
+      (token._id === "guest" || !auth.userData.isSubscribed) &&
+      !req.url.includes("update")
     ) {
       toastPopup.error("You are not allowed untill you subscribe!");
       return Promise.reject("Method not allowed");

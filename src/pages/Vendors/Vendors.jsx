@@ -1,4 +1,4 @@
-import { faRankingStar } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDownWideShort } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { VendorCard } from "components/Cards";
@@ -36,16 +36,7 @@ export default function Vendors() {
     vendorsData ?? {};
 
   const handleSortSelection = (event) => {
-    const selection = event.target.value;
-    switch (selection) {
-      case "nearest":
-      case "rating":
-        setSort(selection);
-        break;
-      default:
-        setSort("");
-        break;
-    }
+    setSort((state) => (state ? "" : "rating"));
   };
 
   const vendorListRender = () => {
@@ -70,13 +61,15 @@ export default function Vendors() {
       setQueryParams={setQueryParams}
     >
       <header className="flex flex-row justify-end w-full gap-4">
-        <select name="arrange" id="sort-arrange" onChange={handleSortSelection}>
-          <option value="" disabled>
-            arrange by
-          </option>
-          <option value="nearest">nearest</option>
-          <option value="rating">rating</option>
-        </select>
+        <button
+          className={classNames("px-2 py-1 rounded-lg my-4 font-bold", {
+            "bg-primary/50 shadow-lg text-slate-800": !sort,
+            "bg-primary shadow text-black": sort,
+          })}
+          onClick={handleSortSelection}
+        >
+          Sort by rating <FontAwesomeIcon icon={faArrowDownWideShort} />
+        </button>
       </header>
     </PageQueryContainer>
   );

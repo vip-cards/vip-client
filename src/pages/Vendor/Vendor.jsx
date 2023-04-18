@@ -1,26 +1,22 @@
 import { faCommentDots, faTruckFast } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import { MainButton } from "components/Buttons";
 import { BranchCard, CategoryCard, ProductCard } from "components/Cards";
 import NoData from "components/NoData/NoData";
 import RatingStars from "components/RatingStars/RatingStars";
 import { getLocalizedWord } from "helpers/lang";
 import { listRenderFn } from "helpers/rednerFn";
 import { t } from "i18next";
-import i18n from "locales/i18n";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { createRoom } from "services/socket/chat";
-import { selectAuth } from "store/auth-slice";
 import useSWR from "swr";
 import Carousel from "../../components/Carousel/Carousel";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import clientServices from "../../services/clientServices";
 
-import "./Vendor.scss";
 import Pagination from "components/Pagination/Pagination";
+import "./Vendor.scss";
 
 const LIMIT = 9;
 

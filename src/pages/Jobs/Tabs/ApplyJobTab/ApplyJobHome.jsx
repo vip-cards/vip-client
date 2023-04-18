@@ -12,9 +12,12 @@ const initialQuery = {
 };
 export default function ApplyJobHome({ id = undefined }) {
   const [queryParams, setQueryParams] = useState(initialQuery);
-  const { data: jobsData, isLoading } = useSWR(
-    [`view-${id}-jobs`, queryParams],
-    ([, queryParams]) => clientServices.listAllJobs(queryParams)
+  const {
+    data: jobsData,
+    isLoading,
+    mutate,
+  } = useSWR([`view-${id}-jobs`, queryParams], ([, queryParams]) =>
+    clientServices.listAllJobs(queryParams)
   );
 
   const { records: jobs = undefined, counts = 0 } = jobsData ?? {};
@@ -32,7 +35,7 @@ export default function ApplyJobHome({ id = undefined }) {
           isLoading,
           list: jobs,
           render: (job) => {
-            return <JobCard key={job._id} job={job} />;
+            return <JobCard key={job._id} job={job} mutate={mutate} />;
           },
         })}
       </div>

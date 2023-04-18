@@ -36,7 +36,7 @@ export default function ApplyJobCreateJob() {
     },
     { name: "phone", type: "phone", required: true, className: "phone-input" },
     {
-      name: "link",
+      name: "cvLink",
       type: "text",
       required: true,
       className: "address-input",
@@ -58,7 +58,7 @@ export default function ApplyJobCreateJob() {
         en: jobForm.description,
       },
       phone: jobForm.phone,
-      link: jobForm.link,
+      link: jobForm.cvLink,
     };
 
     // const { value, error } = createJobSchema.validate(newJobForm);

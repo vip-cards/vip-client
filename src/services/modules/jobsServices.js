@@ -15,4 +15,11 @@ export const jobsServices = {
 
   applyToJob: async (_id, obj) =>
     (await Axios.post("/job/apply", obj, { params: { _id } }))?.data,
+    
+  removeJob: async (_id) =>
+    (
+      await Axios.delete("/job/remove", {
+        params: { _id, client: localStorage.getItem("userId") ?? "" },
+      })
+    )?.data,
 };

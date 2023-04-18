@@ -35,12 +35,15 @@ export default function AccountDetails() {
   const { data: accountData } = useSWR("account-details", () =>
     clientServices.updateInfo()
   );
+  const { data: professionsData } = useSWR("list-professions", () =>
+    clientServices.listAllProfessions()
+  );
   const { record: account = undefined } = accountData ?? {};
+  const { records: professions = undefined } = professionsData ?? {};
 
   const auth = useSelector((state) => state.auth);
 
   const userData = account ?? auth.userData;
-  console.log(userData);
 
   const [loading, setLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
@@ -67,14 +70,9 @@ export default function AccountDetails() {
     { name: "phone", type: "tel", toEdit: true },
     {
       name: "profession",
-      type: "checkbox",
-      identifier: "_id",
-      list: account?.profession?.map((item) => ({
-        _id: item._id,
-        value: item.name.en,
-        name: getLocalizedWord(item.name),
-        isChecked: true,
-      })),
+      type: "multi-select",
+      identifier: "name",
+      list: professions ?? [],
       toEdit: true,
     },
     {

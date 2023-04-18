@@ -24,6 +24,7 @@ import {
   ProductDetails,
   Services,
   SponsorAds,
+  Subscribe,
   Vendor,
   VendorCategory,
   Vendors,
@@ -73,6 +74,7 @@ export default function ClientLayout() {
             <Route path={`/${ROUTES.HOME}`} element={<Home />} />
             <Route path={`/${ROUTES.VENDORS}`} element={<Vendors />} />
             <Route path={`/${ROUTES.OFFERS}`} element={<Offers />} />
+            <Route path={`/${ROUTES.SUBSCRIBE}`} element={<Subscribe />} />
             <Route
               path={`/${ROUTES.HOT_DEALS}`}
               element={<Offers isHotDeal />}

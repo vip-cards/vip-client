@@ -1,18 +1,24 @@
 import { MainButton } from "components/Buttons";
 import { MainInput } from "components/Inputs";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-
-import { createJobSchema } from "../../../../helpers/schemas";
-import clientServices from "../../../../services/clientServices";
+import clientServices from "services/clientServices";
+import useSWR from "swr";
 
 export default function ApplyJobCreateJob() {
   const ref = useRef(null);
   const userId = localStorage.getItem("userId");
-
+  const navigate = useNavigate();
   const [formError, setFormError] = useState(false);
   const [disabled, setDisabled] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [jobForm, setJobForm] = useState({ client: userId, category: "" });
+  const { data, error, isLoading, mutate, isValidating } = useSWR(
+    "jobs-categories",
+    () => clientServices.listAllCategories({ type: "job" })
+  );
+  console.log(data?.records);
 
   const formData = [
     {
@@ -37,10 +43,11 @@ export default function ApplyJobCreateJob() {
     },
     {
       name: "category",
-      type: "list",
+      type: "multi-select",
       required: false,
       className: "category-input",
-      list: [],
+      identifier: "name",
+      list: data?.records ?? [],
     },
     { name: "phone", type: "phone", required: true, className: "phone-input" },
     {
@@ -52,7 +59,7 @@ export default function ApplyJobCreateJob() {
     {
       name: "telegram",
       type: "phone",
-      required: true,
+      required: false,
       className: "telegram-input",
     },
   ];
@@ -87,9 +94,14 @@ export default function ApplyJobCreateJob() {
       setFormError(true);
     } else {
       setFormError(false);
+      setLoading(true);
       clientServices
         .createJob(newJobForm)
-        .then((res) => toast.success("Created Successfully"));
+        .then((res) => {
+          toast.success("Created Successfully");
+          navigate("/jobs/apply",);
+        })
+        .finally(() => setLoading(false));
     }
   };
 
@@ -116,6 +128,7 @@ export default function ApplyJobCreateJob() {
               withLang={formInput.withlang}
               state={jobForm}
               setState={setJobForm}
+              {...formInput}
             />
           );
         })}
@@ -126,6 +139,7 @@ export default function ApplyJobCreateJob() {
           text="confirm"
           type="submit"
           className="confirm"
+          loading={loading}
         />
       </div>
     </form>

@@ -25,6 +25,7 @@
     outline-color: #fc7300;
   }
   &:focus ~ .main-label,
+  .multi-select ~ .main-label,
   &:not(:placeholder-shown).main-input:not(:focus) ~ .main-label {
     top: 0;
     background-color: var(--mainColor);
@@ -63,7 +64,6 @@ textarea.main-input {
     cursor: pointer;
     user-select: none;
     accent-color: $primary;
-   
 
     & ~ label {
       cursor: pointer;
@@ -101,7 +101,29 @@ textarea.main-input {
     cursor: text;
     transition: all 0.4s;
   }
-
+  .multi-select {
+    position: relative;
+    .multi-select__control {
+      min-height: 50px;
+      width: 100%;
+      padding-right: 5px;
+      padding-left: 5px;
+      border: none;
+      border-radius: 15px;
+      background-color: #f1f1f1;
+      font-size: 16px;
+      font-family: "Open Sans", sans-serif;
+    }
+    & ~ .main-label {
+      top: 0;
+      background-color: var(--mainColor);
+      color: var(--secondaryColor);
+      font-size: 13px;
+      padding: 2px 10px 3px;
+      border-radius: 10px;
+      font-weight: 100;
+    }
+  }
   .show-password-icon {
     position: absolute;
     top: 50%;
@@ -124,6 +146,13 @@ textarea.main-input {
     border: none;
     transition: transform cubic-bezier(1, -0.03, 0.23, 1.19) 100ms;
     margin-left: 1rem;
+    aspect-ratio: 1;
+    height: 2.5rem;
+    width: 2.5rem;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+
     [dir="rtl"] & {
       margin-left: unset;
       margin-right: 1rem;

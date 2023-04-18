@@ -1,13 +1,15 @@
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ReactComponent as EyeClose } from "assets/VIP-ICON-SVG/eye_close.svg";
+import { ReactComponent as EyeOPen } from "assets/VIP-ICON-SVG/eye_open.svg";
 import classNames from "classnames";
 import { t } from "i18next";
 import { useEffect, useId, useRef, useState } from "react";
-import { ReactComponent as EyeClose } from "assets/VIP-ICON-SVG/eye_close.svg";
-import { ReactComponent as EyeOPen } from "assets/VIP-ICON-SVG/eye_open.svg";
+import Select from "react-select";
 import { ListInput } from "./ListInput";
 import { InputSelect } from "./SelectInput";
 
+import { getLocalizedWord } from "helpers/lang";
 import "./MainInput.scss";
 
 export default function MainInput(props) {
@@ -78,6 +80,26 @@ export default function MainInput(props) {
     };
 
     switch (type) {
+      case "multi-select":
+        return (
+          <Select
+            closeMenuOnSelect={false}
+            className="multi-select w-full"
+            classNamePrefix="multi-select"
+            isMulti
+            isDisabled={disableState}
+            options={list}
+            getOptionLabel={(option) => getLocalizedWord(option[identifier])}
+            getOptionValue={(option) => getLocalizedWord(option._id)}
+            value={state[name]}
+            onChange={(selectedOptions) =>
+              setState((state) => ({
+                ...state,
+                [name]: selectedOptions,
+              }))
+            }
+          />
+        );
       case "list":
         return (
           <ListInput
