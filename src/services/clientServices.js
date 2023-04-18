@@ -6,6 +6,7 @@ import { authServices } from "./modules/authServices";
 import { cartServices } from "./modules/cartServices";
 import { jobsServices } from "./modules/jobsServices";
 import { postsServices } from "./modules/postsServices";
+import { professionsServices } from "./modules/professionsServices";
 import { servicesServices } from "./modules/servicesServices";
 import { wishServices } from "./modules/wishServices";
 
@@ -125,6 +126,7 @@ const clientServices = {
   ...jobsServices,
   ...postsServices,
   ...adsServices,
+  ...professionsServices,
   ...servicesServices,
 };
 

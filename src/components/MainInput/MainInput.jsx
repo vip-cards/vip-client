@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { t } from "i18next";
 import { useEffect, useRef, useState } from "react";
+import Select from "react-select";
 import { ReactComponent as EyeClose } from "../../assets/VIP-ICON-SVG/eye_close.svg";
 import { ReactComponent as EyeOPen } from "../../assets/VIP-ICON-SVG/eye_open.svg";
 import i18n from "../../locales/i18n";
@@ -72,6 +73,26 @@ export default function MainInput({
     };
 
     switch (type) {
+      case "multi-select":
+        console.log("MUlti SELEct");
+        return (
+          <Select
+            className="multi-select"
+            // {...inputProps}
+            isMulti
+            options={list.map((li) => ({
+              label: li[identifier][lang],
+              value: li._id,
+            }))}
+            onChange={(selectedOptions) =>
+              setState((state) => ({
+                ...state,
+                [name]: selectedOptions.map((option) => option.value),
+              }))
+            }
+          />
+        );
+
       case "list":
         return (
           <select {...inputProps} multiple>
