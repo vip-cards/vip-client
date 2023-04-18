@@ -43,7 +43,6 @@ Axios.interceptors.request.use(async (req) => {
       (token._id === "guest" || !auth.userData.isSubscribed) &&
       !req.url.includes("update")
     ) {
-      console.log(req.url);
       toastPopup.error("You are not allowed untill you subscribe!");
       return Promise.reject("Method not allowed");
     }

@@ -89,14 +89,8 @@ export default function MainInput(props) {
             isMulti
             isDisabled={disableState}
             options={list}
-            getOptionLabel={(option) => {
-              console.log(option);
-              return getLocalizedWord(option[identifier]);
-            }}
-            getOptionValue={(option) => {
-              console.log(option);
-              return getLocalizedWord(option._id);
-            }}
+            getOptionLabel={(option) => getLocalizedWord(option[identifier])}
+            getOptionValue={(option) => getLocalizedWord(option._id)}
             value={state[name]}
             onChange={(selectedOptions) =>
               setState((state) => ({

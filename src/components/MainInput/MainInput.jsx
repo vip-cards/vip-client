@@ -74,7 +74,6 @@ export default function MainInput({
 
     switch (type) {
       case "multi-select":
-        console.log("MUlti SELEct");
         return (
           <Select
             className="multi-select"

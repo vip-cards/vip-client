@@ -44,7 +44,6 @@ export default function AccountDetails() {
   const auth = useSelector((state) => state.auth);
 
   const userData = account ?? auth.userData;
-  console.log(professions);
 
   const [loading, setLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
