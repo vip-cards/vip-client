@@ -84,7 +84,7 @@ export default function JobPage() {
         </footer>
       </main>
     );
-    
+
   return (
     <main className="job-details-page app-card-shadow">
       <header className="job-details-header">
@@ -115,7 +115,7 @@ export default function JobPage() {
           {job?.applicants?.map((item) => (
             <div key={item._id} className="applicant-card">
               <div>{getLocalizedWord(item.name)}</div>
-              <a href={item.link} target="_blank" rel="noreferrer">
+              <a href={"//" + item.link} target="_blank" rel="noreferrer">
                 <MainButton className="cv-btn" text="Show CV" />
               </a>
             </div>

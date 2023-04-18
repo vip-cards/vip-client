@@ -63,14 +63,14 @@ export default function ClientLayout() {
       <div className="page-content">
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            <Route
+            {/* <Route
               path="/"
               element={<Navigate replace to={`/${ROUTES.HOME}`} />}
             />
             <Route
               path="/*"
               element={<Navigate replace to={`/${ROUTES.HOME}`} />}
-            />
+            /> */}
             <Route path={`/${ROUTES.HOME}`} element={<Home />} />
             <Route path={`/${ROUTES.VENDORS}`} element={<Vendors />} />
             <Route path={`/${ROUTES.OFFERS}`} element={<Offers />} />

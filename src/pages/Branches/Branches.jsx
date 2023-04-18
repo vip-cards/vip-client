@@ -9,13 +9,15 @@ import { BranchCard } from "components/Cards";
 import PageQueryContainer from "components/PageQueryContainer/PageQueryContainer";
 import useSWR from "swr";
 import "./Branchs.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classNames from "classnames";
+import { faArrowDownWideShort } from "@fortawesome/free-solid-svg-icons";
+import toastPopup from "helpers/toastPopup";
 const LIMIT = 9;
 
 export default function Branches() {
   const params = useParams();
   let vendorId = params.vendorId;
-  let [loading, setLoading] = useState(false);
-  let navigate = useNavigate();
   const [queryParams, setQueryParams] = useState({
     page: 1,
     limit: LIMIT,
@@ -29,6 +31,7 @@ export default function Branches() {
         ? clientServices.listNearestVendorBranches(params)
         : clientServices.listAllVendorBranches(params)
   );
+
   const { records: branches = undefined, counts: branchesCount } =
     branchesData ?? {};
 
@@ -41,17 +44,28 @@ export default function Branches() {
       return <BranchCard key={branchData._id} branch={branchData} />;
     });
   };
+
   const handleSortSelection = (event) => {
-    const selection = event.target.value;
-    switch (selection) {
-      case "nearest":
-      case "rating":
-        setSort(selection);
-        setQueryParams((q) => ({ ...q, long: 40, lat: 43 }));
-        break;
-      default:
-        setSort("");
-        break;
+    if (!sort) {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            setSort("nearest");
+            setQueryParams((q) => ({
+              ...q,
+              long: position.coords.longitude,
+              lat: position.coords.latitude,
+            }));
+          },
+          function (error) {
+            toastPopup.error(error.message);
+          }
+        );
+      } else {
+        toastPopup.error("couldn't detect your location");
+      }
+    } else {
+      setSort("");
     }
   };
 
@@ -69,13 +83,15 @@ export default function Branches() {
       setQueryParams={setQueryParams}
     >
       <header className="flex flex-row justify-end w-full gap-4">
-        <select name="arrange" id="sort-arrange" onChange={handleSortSelection}>
-          <option value="" disabled>
-            arrange by
-          </option>
-          <option value="nearest">nearest</option>
-          <option value="rating">rating</option>
-        </select>
+        <button
+          className={classNames("px-2 py-1 rounded-lg my-4 font-bold", {
+            "bg-primary/50 shadow-lg text-slate-800": !sort,
+            "bg-primary shadow text-black": sort,
+          })}
+          onClick={handleSortSelection}
+        >
+          Sort by nearest <FontAwesomeIcon icon={faArrowDownWideShort} />
+        </button>
       </header>
       {/* <div className="flex flex-row gap-5 flex-wrap">{branchListRender()}</div> */}
     </PageQueryContainer>

@@ -9,8 +9,8 @@ import Select from "react-select";
 import { ListInput } from "./ListInput";
 import { InputSelect } from "./SelectInput";
 
-import "./MainInput.scss";
 import { getLocalizedWord } from "helpers/lang";
+import "./MainInput.scss";
 
 export default function MainInput(props) {
   const {

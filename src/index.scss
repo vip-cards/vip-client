@@ -272,3 +272,79 @@ img {
 
   // }
 }
+.tooltip-actions {
+  position: absolute;
+  z-index: 5;
+
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: flex-end;
+
+  font-size: 12px;
+
+  [dir="rtl"] & {
+    right: unset;
+    left: 0.7rem;
+  }
+
+  .remove,
+  .edit {
+    background-color: unset;
+    border: unset;
+    position: relative;
+    color: rgb(90, 90, 90);
+    cursor: pointer;
+    z-index: 6;
+    transition: color ease-out 120ms;
+    padding: 0.4rem;
+    background: rgba(128, 128, 128, 0.1);
+    border-radius: 30px;
+    aspect-ratio: 1;
+    svg {
+      width: $icon-size-sm;
+      height: $icon-size-sm;
+      margin-inline: 3px;
+    }
+
+    .tooltip {
+      position: absolute;
+      top: -2.5rem;
+      transform-origin: center;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      padding: 5px 6px;
+      border-radius: 7px;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s, opacity 150ms linear;
+    }
+  }
+
+  .remove {
+    &:hover {
+      color: rgb(150, 0, 0);
+      background: rgba(150, 0, 0, 0.1);
+      .tooltip {
+        visibility: visible;
+        opacity: 1;
+        background-color: rgb(150, 0, 0);
+      }
+    }
+  }
+
+  .edit {
+    &:hover {
+      color: darken($color: $mainColor, $amount: 15);
+      background: rgba($mainColor, 0.1);
+      .tooltip {
+        visibility: visible;
+        opacity: 1;
+        background-color: darken($color: $mainColor, $amount: 15);
+      }
+    }
+  }
+}

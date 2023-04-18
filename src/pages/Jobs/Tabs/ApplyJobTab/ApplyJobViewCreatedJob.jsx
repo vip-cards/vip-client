@@ -32,7 +32,7 @@ export default function ApplyJobViewCreatedJob() {
           isLoading,
           list: jobs,
           render: (job) => {
-            return <JobCard key={job._id} job={job} />;
+            return <JobCard key={job._id} job={job} mutate={mutate} />;
           },
         })}
       </div>
