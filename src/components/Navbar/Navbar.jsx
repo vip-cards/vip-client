@@ -59,8 +59,8 @@ export default function Navbar() {
         </div>
       ),
     },
-    { link: `/${ROUTES.ADS.MAIN}`, title: "ads" },
-    { link: "/services", title: "service" },
+    { link: `/${ROUTES.ADS.MAIN}`, title: "Ads" },
+    { link: "/services", title: "services" },
     { link: `/${ROUTES.CHAT}`, title: "chat" },
     { link: `/${ROUTES.ACCOUNT}`, title: "myAccount" },
     { link: `/${ROUTES.SUBSCRIBE}`, title: "VIP premium" },

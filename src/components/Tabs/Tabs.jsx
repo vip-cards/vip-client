@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { useLocation, useNavigate } from "react-router";
 import classes from "./Tabs.module.scss";
 import { ProtectedComponent } from "components/auth-components/ProtectedComponent";
+import { t } from "i18next";
 
 /**
  * It takes an object of tabs `{label, panel}`, and a default tab.
@@ -30,7 +31,7 @@ export default function Tabs({ tabs, defaultTab }) {
                 });
               }}
             >
-              {label}
+              {t(label)}
             </button>
           </ProtectedComponent>
         ))}

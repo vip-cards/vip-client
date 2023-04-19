@@ -5,6 +5,7 @@ import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import NoData from "components/NoData/NoData";
 import PageQueryContainer from "components/PageQueryContainer/PageQueryContainer";
 import { getLocalizedWord } from "helpers/lang";
+import { t } from "i18next";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import clientServices from "services/clientServices";
@@ -122,7 +123,7 @@ export default function Offers({ isHotDeal = false }) {
             "bg-primary shadow text-black": filter.categories.length,
           })}
         >
-          Reset
+          {t("reset")}
         </button>
         {categories?.map((category) => (
           <button
@@ -150,7 +151,7 @@ export default function Offers({ isHotDeal = false }) {
             "bg-primary shadow text-black": filter.vendors.length,
           })}
         >
-          Reset
+          {t("reset")}
         </button>
         {vendors?.map((vendor) => (
           <button

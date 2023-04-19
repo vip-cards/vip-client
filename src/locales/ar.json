@@ -1,7 +1,8 @@
 {
-  "Ads": "اعلان",
+  "Ads": "إعلان",
   "CreateAccount": "تسجيل حساب جديد",
   "Search": "البحث",
+  "search": "البحث",
   "What Are You Looking For": "عن ماذا تبحث",
   "accountDetails": "تفاصيل الحساب",
   "addBranch": "اضافة فرع",
@@ -57,6 +58,14 @@
   "vendor": "معرض",
   "vendors": "المعارض",
   "wishlist": "الرغبات",
-
-  "addToCart": "إضافة إلى السلة"
+  "services": "الخدمات",
+  "chat": "تواصل",
+  "addToCart": "إضافة إلى السلة",
+  "VIP premium": "الاشتراك المميز",
+  "sortByRating": "ترتيب حسب التقييم",
+  "reset": "إعادة التعيين",
+  "Apply for a job": "التقدم للوظائف",
+  "Hiring Employees": "تعيين موظفين",
+  "Create Job": "كتابة إعلان وظيفة",
+  "View Created Job": "عرض إعلانات الوظائف الخاصة بي"
 }

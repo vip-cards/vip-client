@@ -145,7 +145,7 @@ export default function MainInput(props) {
                     }}
                   />
                   <label htmlFor={inputId + item[identifier]} className="ml-2">
-                    {item.name}
+                    {t(item.name)}
                   </label>
                 </div>
               ))}

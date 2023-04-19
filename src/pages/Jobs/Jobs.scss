@@ -85,19 +85,28 @@
       gap: 1rem;
       padding: 1rem 0;
       grid-template-areas:
-        "company job"
-        "address description"
-        "whatsapp description"
+        "company_en company_ar"
+        "job_en job_ar"
+        "address_en address_ar"
+        "description_en description_ar"
+        "description_en description_ar"
         "telegram category"
+        "whatsapp ."
         "phone ."
         "error error"
         "confirm confirm";
       @media screen and (max-width: 500px) {
         grid-template-areas:
-          "company"
-          "job"
-          "address"
-          "description"
+          "company_en"
+          "company_ar"
+          "job_en"
+          "job_ar"
+          "address_en"
+          "address_ar"
+          "description_en"
+          "description_en"
+          "description_ar"
+          "description_ar"
           "category"
           "whatsapp"
           "telegram "
@@ -105,18 +114,31 @@
           "error"
           "confirm";
       }
-      .company-input {
-        grid-area: company;
+      .company-en-input {
+        grid-area: company_en;
       }
-      .job-input {
-        grid-area: job;
+      .company-ar-input {
+        grid-area: company_ar;
       }
-      .address-input {
-        grid-area: address;
+      .job-en-input {
+        grid-area: job_en;
       }
-      .description-input {
-        grid-area: description;
+      .job-ar-input {
+        grid-area: job_ar;
       }
+      .address-en-input {
+        grid-area: address_en;
+      }
+      .address-ar-input {
+        grid-area: address_ar;
+      }
+      .description-en-input {
+        grid-area: description_en;
+      }
+      .description-ar-input {
+        grid-area: description_ar;
+      }
+
       .whatsapp-input {
         grid-area: whatsapp;
       }
