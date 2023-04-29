@@ -18,7 +18,7 @@ i18n
     },
     lng: localStorage.getItem("lang") || "en",
     fallbackLng: "en", //currentLang(), // "ar",
-    debug: true,
+    // debug: true,
     ns: ["translations"],
     defaultNS: "translations",
     interpolation: {

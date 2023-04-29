@@ -10,7 +10,7 @@ export default function NavItem({ to, icon, title }) {
             <FontAwesomeIcon icon={icon} />
           </span>
         )}
-        <span className="nav-title">{title}</span>
+        <span className="nav-title capitalize">{title}</span>
       </NavLink>
     </li>
   );

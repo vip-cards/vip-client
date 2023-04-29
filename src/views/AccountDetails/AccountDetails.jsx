@@ -38,8 +38,13 @@ export default function AccountDetails() {
   const { data: professionsData } = useSWR("list-professions", () =>
     clientServices.listAllProfessions()
   );
+  const { data: interestsData } = useSWR("list-interests", () =>
+    clientServices.listAllInterests()
+  );
+
   const { record: account = undefined } = accountData ?? {};
   const { records: professions = undefined } = professionsData ?? {};
+  const { records: interests = undefined } = interestsData ?? {};
 
   const auth = useSelector((state) => state.auth);
 
@@ -59,6 +64,7 @@ export default function AccountDetails() {
     age: userData.age,
     gender: userData.gender,
     profession: userData.profession,
+    interests: userData.interests,
   });
   const [userInfo, setUserInfo] = useState(oldUserInfo);
 
@@ -73,6 +79,13 @@ export default function AccountDetails() {
       type: "multi-select",
       identifier: "name",
       list: professions ?? [],
+      toEdit: true,
+    },
+    {
+      name: "interests",
+      type: "multi-select",
+      identifier: "name",
+      list: interests ?? [],
       toEdit: true,
     },
     {
@@ -108,7 +121,15 @@ export default function AccountDetails() {
       phone: newDataObj.phone,
       age: newDataObj.age,
       gender: newDataObj.gender,
-      profession: newDataObj.profession.map((item) => ({
+
+      profession: newDataObj.profession?.map((item) => ({
+        _id: item._id,
+        value: item.name.en,
+        name: getLocalizedWord(item.name),
+        isChecked: true,
+      })),
+
+      interests: newDataObj.interests?.map((item) => ({
         _id: item._id,
         value: item.name.en,
         name: getLocalizedWord(item.name),
@@ -120,6 +141,7 @@ export default function AccountDetails() {
       //   ar: newDataObj.description_ar,
       // },
     };
+    console.log("%cNew Data", "color:red", mappedData);
 
     clientServices
       .updateInfo(mappedData)

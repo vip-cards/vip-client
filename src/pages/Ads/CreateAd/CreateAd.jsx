@@ -38,8 +38,8 @@ function CreateAd() {
 
   const formDataList = [
     { name: "name", type: "text", required: true },
-    { name: "startDate", type: "date", required: true },
-    { name: "endDate", type: "date", required: true },
+    { name: "startDate", type: "date", required: true, dateRange: "start" },
+    { name: "endDate", type: "date", required: true, dateRange: "end" },
     {
       name: "country",
       type: "list",
@@ -153,6 +153,7 @@ function CreateAd() {
               identifier={formInput.identifier}
               state={ad}
               setState={setAd}
+              dateRange={formInput.dateRange}
             />
           );
         })}

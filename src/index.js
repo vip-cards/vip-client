@@ -13,7 +13,9 @@ import "swiper/scss"; // core Swiperimport "swiper/css/navigation";
 import "./index.scss";
 
 const helmetContext = {};
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const container = document.getElementById("root");
+const root = ReactDOM.createRoot(container);
+
 document.getElementById("loader-container")?.remove();
 
 root.render(
