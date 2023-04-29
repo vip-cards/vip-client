@@ -27,7 +27,9 @@ const Adcard = ({ ad }) => {
   return (
     <div className="axd-card-container">
       <div className="flex flex-row flex-nowrap justify-between w-full">
-        <h5>{name}</h5>
+        <h5 className="max-w-[80%] overflow-hidden whitespace-nowrap text-ellipsis">
+          {name}
+        </h5>
         <p className={classNames("ad-type-badge", type)}>
           <FontAwesomeIcon icon={typeIcon[type] || faRectangleAd} />
           {type}

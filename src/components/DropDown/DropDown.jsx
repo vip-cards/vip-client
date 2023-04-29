@@ -11,18 +11,19 @@ const Dropdown = ({
   itemRender,
   listRender,
   className,
+  withHover = false,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const wrapperRef = useRef(null);
   useOutsideClick(wrapperRef, () => setShowMenu(false));
   const toggleMenu = (event) => {
     switch (event.type) {
-      // case "mouseenter":
-      //   setShowMenu(true);
-      //   break;
-      // case "mouseleave":
-      //   setShowMenu(false);
-      //   break;
+      case "mouseenter":
+        withHover && setShowMenu(true);
+        break;
+      case "mouseleave":
+        withHover && setShowMenu(false);
+        break;
       case "click":
         setShowMenu((state) => !state);
         break;

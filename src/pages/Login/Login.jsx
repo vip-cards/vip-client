@@ -20,6 +20,8 @@ import { MainInput } from "components/Inputs";
 
 import "./Login.scss";
 import { ROUTES } from "constants";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 
 export default function Login() {
   const socialLogin = useSocialLogin();
@@ -101,7 +103,7 @@ export default function Login() {
 
         toastPopup.success(t("Success"));
         const tokenDecoded = jwt_decode(data.token);
-       
+
         dispatch(
           authActions.login({
             token: data.token,
@@ -219,7 +221,13 @@ export default function Login() {
             </Link>
           </p>
           <div>
-            <button onClick={guestLoginHandler}>login as a guest</button>
+            <button
+              className="text-primary hover:text-primary/70 transition-colors flex flex-row justify-center items-center gap-2"
+              onClick={guestLoginHandler}
+            >
+              <FontAwesomeIcon icon={faCircleRight} />
+              <span>{t("loginAsGuest")}</span>
+            </button>
           </div>
         </form>
       </div>

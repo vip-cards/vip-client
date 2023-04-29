@@ -62,7 +62,9 @@ function Subscribe(props) {
           </div>
           <p className="italic font-semibold text-slate-700">
             Subscription fess will be sent to the wallet number :{" "}
-            {/* {walletnumberData?.record ?? "not valid wallet number"} */}
+            <span className="text-slate-900">
+              {walletnumberData?.record ?? "not valid wallet number"}
+            </span>
           </p>
         </section>
       );

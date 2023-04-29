@@ -8,10 +8,12 @@ import "./PreviousAds.scss";
 
 const PreviousAds = () => {
   const {
-    data: adsList,
+    data: adsData,
     error,
     isLoading,
-  } = useSWR("list-ads", clientServices.listAllAds);
+  } = useSWR("list-ads", () => clientServices.listAllAds());
+
+  const { records: adsList = undefined } = adsData ?? {};
 
   const render = () => {
     if (isLoading) return <LoadingSpinner />;

@@ -1,12 +1,12 @@
 import Axios from "services/Axios";
 
-const userId = localStorage.getItem("userId") ?? "";
+const userId = () => localStorage.getItem("userId") ?? "";
 
 export const wishServices = {
   listAllWishProducts: async () => {
     return (
       await Axios.get(`/wishlist/get`, {
-        params: { client: userId },
+        params: { client: userId() },
       })
     ).data;
   },
@@ -14,7 +14,7 @@ export const wishServices = {
   addWishProduct: async (productId) => {
     return (
       await Axios.post(`/wishlist/addItem`, null, {
-        params: { client: userId, product: productId },
+        params: { client: userId(), product: productId },
       })
     ).data;
   },
@@ -22,7 +22,7 @@ export const wishServices = {
   removeWishProduct: async (productId) => {
     return (
       await Axios.delete(
-        `/wishlist/removeItem?client=${userId}&product=${productId}`
+        `/wishlist/removeItem?client=${userId()}&product=${productId}`
       )
     ).data;
   },

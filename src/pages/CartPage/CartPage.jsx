@@ -64,7 +64,7 @@ export default function CartPage() {
               {cartLoading ? (
                 <FontAwesomeIcon icon={faCircleNotch} className="fa-spin" />
               ) : (
-                <>checkout</>
+                <>order from branch</>
               )}
             </button>
           </div>
