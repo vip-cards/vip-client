@@ -5,11 +5,13 @@ import { ReactComponent as EyeOPen } from "assets/VIP-ICON-SVG/eye_open.svg";
 import classNames from "classnames";
 import { t } from "i18next";
 import { useEffect, useId, useRef, useState } from "react";
+import ReactDatePicker from "react-datepicker";
 import Select from "react-select";
 import { ListInput } from "./ListInput";
 import { InputSelect } from "./SelectInput";
 
 import { getLocalizedWord } from "helpers/lang";
+import "react-datepicker/dist/react-datepicker.css";
 import "./MainInput.scss";
 
 export default function MainInput(props) {
@@ -80,6 +82,37 @@ export default function MainInput(props) {
     };
 
     switch (type) {
+      case "date":
+        return (
+          <ReactDatePicker
+            showIcon
+            minDate={new Date()}
+            calendarStartDay={6}
+            {...inputProps}
+            {...(inputProps.dateRange === "start"
+              ? {
+                  selectsStart: true,
+                  startDate: state[name],
+                  endDate: state["endDate"],
+                  selected: state[name] ?? new Date(),
+                }
+              : inputProps.dateRange === "end"
+              ? {
+                  selectsEnd: true,
+                  startDate: state["startDate"],
+                  endDate: state[name],
+                  minDate: state["startDate"],
+                  selected: state[name] ?? state["startDate"] ?? new Date(),
+                }
+              : { selected: state[name] })}
+            onChange={(date) =>
+              setState((state) => ({
+                ...state,
+                [name]: date,
+              }))
+            }
+          />
+        );
       case "multi-select":
         return (
           <Select
