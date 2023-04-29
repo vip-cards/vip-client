@@ -7,6 +7,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { getLocalizedWord } from "helpers/lang";
+import { t } from "i18next";
 import { forwardRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCartThunk } from "store/cart-slice";
@@ -116,7 +117,7 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
           </span>
         </div>
         <div className="add-buttons" onClick={() => setActive(true)}>
-          <span>Add to cart</span>
+          <span>{t("addToCart")}</span>
         </div>
       </div>
       {addToCartState.active ? (

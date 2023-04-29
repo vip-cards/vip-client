@@ -14,6 +14,7 @@ export const ROUTES = Object.freeze({
   WISHLIST: "wishlist",
   CART: "cart",
   SUBSCRIBE: "subscribe",
+  SERVICES: "services",
 
   CHAT: "chat",
   LOCATION: "location",

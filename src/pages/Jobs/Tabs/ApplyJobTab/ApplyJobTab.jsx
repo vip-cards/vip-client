@@ -5,7 +5,7 @@ import ApplyJobHome from "./ApplyJobHome";
 const ApplyJobTab = () => {
   const tabs = {
     home: {
-      label: "Home",
+      label: "home",
       panel: <ApplyJobHome />,
     },
 

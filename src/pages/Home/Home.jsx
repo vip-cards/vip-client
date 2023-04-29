@@ -277,12 +277,12 @@ export default function Home() {
       {/* Vendors */}
       <SectionContainer direction="col">
         <div className="flex w-full flex-row justify-between px-3">
-          <h4 className="text-primary">Categories</h4>
+          <h4 className="text-primary">{t("categories")}</h4>
           <button
             className="shadow text-primary px-3 font-semibold rounded-lg"
             onClick={() => navigate("/categories")}
           >
-            {t("categories")}
+            {t("showAllCategories")}
           </button>
         </div>
         <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full">
@@ -307,12 +307,12 @@ export default function Home() {
       {/* Vendors */}
       <SectionContainer direction="col">
         <div className="flex w-full flex-row justify-between px-3">
-          <h4 className="text-primary">Vendors</h4>
+          <h4 className="text-primary"> {t("vendors")}</h4>
           <button
             className="shadow text-primary px-3 font-semibold rounded-lg"
             onClick={() => navigate("/vendors")}
           >
-            {t("vendors")}
+            {t("showAllVendors")}
           </button>
         </div>
         <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full">
@@ -337,12 +337,12 @@ export default function Home() {
       {/* Offers */}
       <SectionContainer direction="col">
         <div className="flex w-full flex-row justify-between px-3">
-          <h4 className="text-primary">Offers</h4>
+          <h4 className="text-primary"> {t("offers")}</h4>
           <button
             className="shadow text-primary px-3 font-semibold rounded-lg"
             onClick={() => navigate("/offers")}
           >
-            {t("offers")}
+            {t("showAllOffers")}
           </button>
         </div>
         <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full">
@@ -367,12 +367,12 @@ export default function Home() {
       {/* Hot Deals */}
       <SectionContainer direction="col">
         <div className="flex w-full flex-row justify-between px-3">
-          <h4 className="text-primary">Hot Deals</h4>
+          <h4 className="text-primary"> {t("hotDeals")}</h4>
           <button
             className="shadow text-primary px-3 font-semibold rounded-lg"
             onClick={() => navigate("/hot-deals")}
           >
-            {t("hotDeals")}
+            {t("showAllHotDeals")}
           </button>
         </div>
         <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full">

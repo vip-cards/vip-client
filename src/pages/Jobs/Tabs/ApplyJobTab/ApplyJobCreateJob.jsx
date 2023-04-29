@@ -18,28 +18,55 @@ export default function ApplyJobCreateJob() {
     "jobs-categories",
     () => clientServices.listAllCategories({ type: "job" })
   );
-  console.log(data?.records);
 
   const formData = [
     {
-      name: "companyName",
+      name: "companyName_en",
       type: "text",
       required: true,
-      className: "company-input",
-      withlang: "en",
+      className: "company-en-input",
     },
-    { name: "jobTitle", type: "text", required: true, className: "job-input" },
     {
-      name: "description",
+      name: "companyName_ar",
+      type: "text",
+      required: true,
+      className: "company-ar-input",
+    },
+    {
+      name: "jobTitle_en",
+      type: "text",
+      required: true,
+      className: "job-en-input",
+    },
+    {
+      name: "jobTitle_ar",
+      type: "text",
+      required: true,
+      className: "job-ar-input",
+    },
+    {
+      name: "description_en",
       type: "textarea",
       required: true,
-      className: "description-input",
+      className: "description-en-input",
     },
     {
-      name: "address",
+      name: "description_ar",
+      type: "textarea",
+      required: true,
+      className: "description-ar-input",
+    },
+    {
+      name: "address_en",
       type: "text",
       required: true,
-      className: "address-input",
+      className: "address-en-input",
+    },
+    {
+      name: "address_ar",
+      type: "text",
+      required: true,
+      className: "address-ar-input",
     },
     {
       name: "category",
@@ -70,16 +97,20 @@ export default function ApplyJobCreateJob() {
     const newJobForm = {
       client: jobForm.client,
       companyName: {
-        en: jobForm.companyName,
+        en: jobForm.companyName_en,
+        ar: jobForm.companyName_ar,
       },
       jobTitle: {
-        en: jobForm.jobTitle,
+        en: jobForm.jobTitle_en,
+        ar: jobForm.jobTitle_ar,
       },
       description: {
-        en: jobForm.description,
+        en: jobForm.description_en,
+        ar: jobForm.description_ar,
       },
       address: {
-        en: jobForm.address,
+        en: jobForm.address_en,
+        ar: jobForm.address_ar,
       },
       contacts: {
         phone: jobForm.phone,
@@ -99,7 +130,7 @@ export default function ApplyJobCreateJob() {
         .createJob(newJobForm)
         .then((res) => {
           toast.success("Created Successfully");
-          navigate("/jobs/apply",);
+          navigate("/jobs/apply");
         })
         .finally(() => setLoading(false));
     }

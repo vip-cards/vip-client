@@ -11,6 +11,7 @@ import NoData from "../../components/NoData/NoData";
 import clientServices from "../../services/clientServices";
 
 import "./Vendors.scss";
+import { t } from "i18next";
 
 const LIMIT = 9;
 
@@ -68,7 +69,7 @@ export default function Vendors() {
           })}
           onClick={handleSortSelection}
         >
-          Sort by rating <FontAwesomeIcon icon={faArrowDownWideShort} />
+          {t("sortByRating")} <FontAwesomeIcon icon={faArrowDownWideShort} />
         </button>
       </header>
     </PageQueryContainer>

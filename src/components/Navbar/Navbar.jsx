@@ -19,6 +19,7 @@ import SideNav from "./SideNav/SideNav";
 
 import "./Navbar.scss";
 import { selectCartProducts } from "store/cart-slice";
+import { logout } from "store/actions";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ export default function Navbar() {
     { link: ROUTES.HOT_DEALS, title: "hotDeals" },
     { link: `/${ROUTES.OFFERS}`, title: "offers" },
     { link: `/${ROUTES.JOBS.MAIN}`, title: "jobs" },
+    { link: `/${ROUTES.SERVICES}`, title: "services" },
     { link: `/${ROUTES.WISHLIST}`, title: "wishlist" },
     {
       link: `/${ROUTES.CART}`,
@@ -59,8 +61,8 @@ export default function Navbar() {
         </div>
       ),
     },
-    { link: `/${ROUTES.ADS.MAIN}`, title: "ads" },
-    { link: "/services", title: "service" },
+    { link: `/${ROUTES.ADS.MAIN}`, title: "Ads" },
+
     { link: `/${ROUTES.CHAT}`, title: "chat" },
     { link: `/${ROUTES.ACCOUNT}`, title: "myAccount" },
     { link: `/${ROUTES.SUBSCRIBE}`, title: "VIP premium" },
@@ -84,11 +86,7 @@ export default function Navbar() {
 
   function logoutHandler(e) {
     e.preventDefault();
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userRole");
-    localStorage.removeItem("userData");
-    dispatch(authActions.logout());
+    logout();
     setViweAccountMenu((prevState) => !prevState);
   }
 
@@ -133,6 +131,7 @@ export default function Navbar() {
 
   useEffect(() => {
     clientServices.categoryQuery().then((response) => {
+      console.log(response);
       const categoryList = response.data.records.map((item) => ({
         key: item._id,
         _id: item._id,
@@ -169,6 +168,7 @@ export default function Navbar() {
         {navItems.map((item, idx) => {
           const content = (
             <Dropdown
+              withHover
               menu={lists[item.title] || undefined}
               listRender={(menu) => (
                 <>

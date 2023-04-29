@@ -30,7 +30,11 @@ export default function Vendor() {
   const [offers, setOffers] = useState([]);
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
-  const [queryParams, setQueryParams] = useState({ page: 1, limit: LIMIT });
+  const [queryParams, setQueryParams] = useState({
+    page: 1,
+    limit: LIMIT,
+    vendor: vendorId,
+  });
 
   const { data: productsData, isLoading: productsLoading } = useSWR(
     ["all-products", queryParams],

@@ -75,6 +75,7 @@
         text-decoration: none;
         white-space: nowrap;
         color: var(--secondaryColor);
+        text-transform: capitalize;
         &:hover {
           background-color: var(--secondaryColor);
           color: var(--mainColor);
