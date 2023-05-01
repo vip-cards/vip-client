@@ -13,7 +13,10 @@ export const accountServices = {
   getSetting: async (key) =>
     (await Axios.get("/setting/get", { params: { key } }))?.data,
 
-  subscribeUser: async () =>
-    (await Axios.get("/subscription/subscribe", { params: { client: userId } }))
-      ?.data,
+  subscribeUser: async (body) =>
+    (
+      await Axios.post("/subscription/subscribe?client=" + userId, body, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+    )?.data,
 };

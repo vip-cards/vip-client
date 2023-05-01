@@ -72,7 +72,7 @@ const clientServices = {
   },
   listAllBranchProductsOfType: async (branchId, isHotDeal = false) => {
     const response = await Axios.get(
-      `/product/list?branch=${branchId}&isHotDeal=${isHotDeal}`
+      `/product/list?branches=${branchId}&isHotDeal=${isHotDeal}`
     );
     return response;
   },
