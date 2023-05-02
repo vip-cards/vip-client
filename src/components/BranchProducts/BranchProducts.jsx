@@ -16,11 +16,7 @@ export default function BranchProducts() {
   const [branchProducts, setBranchProducts] = useState([]);
 
   function isHotDeal() {
-    if (location.pathname.includes("hot-deals")) {
-      return true;
-    } else {
-      return false;
-    }
+    return !!(location.pathname.includes("hot-deals"));
   }
 
   async function getBranchProductsHandler() {

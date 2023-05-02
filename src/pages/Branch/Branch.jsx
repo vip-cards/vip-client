@@ -16,9 +16,9 @@ import RatingStars from "components/RatingStars/RatingStars";
 
 export default function Branch() {
   const params = useParams();
-  let branchId = params.branchId;
-  let vendorId = params.vendorId;
-  let lang = i18n.language;
+  const branchId = params.branchId;
+  const vendorId = params.vendorId;
+
   const [loading, setLoading] = useState(false);
   let routes;
   const [branchhInfo, setBranchInfo] = useState({

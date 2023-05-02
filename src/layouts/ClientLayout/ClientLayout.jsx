@@ -42,6 +42,8 @@ import AccountWishlist from "views/AccountWishlist/AccountWishlist";
 import AccountLayout from "../AccountLayout/AccountLayout";
 import "./ClientLayout.scss";
 import PostPage from "pages/Jobs/views/PostPage";
+import AccountCoupons from "views/AccountCoupons/AccountCoupons";
+import AccountLocation from "views/AccountLocation/AccountLocation";
 
 const PageLoader = () => (
   <div className="h-[80vh] w-[80vw] m-auto flex justify-center items-center">
@@ -195,6 +197,8 @@ export default function ClientLayout() {
               <Route path="orders" element={<AccountOrders />} />
               <Route path="wishlist" element={<AccountWishlist />} />
               <Route path="barcode" element={<AccountBarcode />} />
+              <Route path="coupons" element={<AccountCoupons />} />
+              <Route path="location" element={<AccountLocation />} />
               <Route path="" element={<Navigate to="details" />} />
             </Route>
             <Route

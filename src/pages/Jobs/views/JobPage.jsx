@@ -109,7 +109,7 @@ export default function JobPage() {
         </div>
       </section>
       <hr />
-      <section className="job-details-applicants">
+      {/* <section className="job-details-applicants">
         <h4>Applicants</h4>
         <div className="applicants-container">
           {job?.applicants?.map((item) => (
@@ -121,7 +121,7 @@ export default function JobPage() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
       <footer className="flex flex-row w-full gap-4 justify-around items-center">
         <MainInput
           name="CV link"

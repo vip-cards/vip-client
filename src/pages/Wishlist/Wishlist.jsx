@@ -44,7 +44,7 @@ export default function Wishlist() {
         <ProductCard product={product} key={product._id} />
       ),
     });
-    
+
   return (
     <CardContainer title="whishlist">
       <div className="flex flex-row flex-wrap gap-4 justify-around items-center p-8">

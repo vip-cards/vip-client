@@ -123,25 +123,13 @@ export default function AccountDetails() {
       gender: newDataObj.gender,
 
       profession: newDataObj.profession?.map((item) => ({
-        _id: item._id,
-        value: item.name.en,
-        name: getLocalizedWord(item.name),
-        isChecked: true,
+        ...professions?.find((profession) => profession._id === item._id),
       })),
 
       interests: newDataObj.interests?.map((item) => ({
-        _id: item._id,
-        value: item.name.en,
-        name: getLocalizedWord(item.name),
-        isChecked: true,
+        ...interests?.find((profession) => profession._id === item._id),
       })),
-
-      // description: {
-      //   en: newDataObj.description_en,
-      //   ar: newDataObj.description_ar,
-      // },
     };
-    console.log("%cNew Data", "color:red", mappedData);
 
     clientServices
       .updateInfo(mappedData)

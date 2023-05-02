@@ -22,7 +22,7 @@ export default function AccountOrders() {
     <>
       <header className="orders-header">
         <h1 className="orders-title">{t("orders")}</h1>
-        <div className="orders-details">
+        <div className="shadow-lg w-full p-4 rounded-xl">
           <p>
             <span> Total Points</span>
             &nbsp;

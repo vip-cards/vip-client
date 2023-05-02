@@ -131,7 +131,6 @@ export default function Navbar() {
 
   useEffect(() => {
     clientServices.categoryQuery().then((response) => {
-      console.log(response);
       const categoryList = response.data.records.map((item) => ({
         key: item._id,
         _id: item._id,

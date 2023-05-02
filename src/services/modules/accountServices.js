@@ -19,4 +19,6 @@ export const accountServices = {
         headers: { "Content-Type": "multipart/form-data" },
       })
     )?.data,
+
+  listAllCoupons: async () => (await Axios.get("/coupon/list"))?.data,
 };

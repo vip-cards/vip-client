@@ -1,6 +1,7 @@
 import { MainButton } from "components/Buttons";
 import CardContainer from "components/CardContainer/CardContainer";
 import { ImageEdit, MainInput } from "components/Inputs";
+import { getCities, getCountries } from "country-city-multilanguage";
 import { useAddressList } from "helpers/countries";
 import toastPopup from "helpers/toastPopup";
 import i18n from "locales/i18n";
@@ -33,11 +34,12 @@ function CreateAd() {
   const [ad, setAd] = useState({ vendor });
 
   const lang = i18n.language;
-  const withSize = ad.type === "banner" || ad.type === "pop-up";
+  const withSize =
+    ad.type === "banner" || ad.type === "pop-up" || ad.type === "notification";
   const withProduct = ad.type === "promotion";
 
   const formDataList = [
-    { name: "name", type: "text", required: true },
+    { name: "name", type: "text", required: false },
     { name: "startDate", type: "date", required: true, dateRange: "start" },
     { name: "endDate", type: "date", required: true, dateRange: "end" },
     {
@@ -58,11 +60,11 @@ function CreateAd() {
       name: "type",
       type: "list",
       list: [
-        { name: { en: "banner" } },
-        { name: { en: "pop-up" } },
-        { name: { en: "promotion" } },
-        { name: { en: "appear-first" } },
-        { name: { en: "notification" } },
+        { name: { en: "banner", ar: "banner" } },
+        { name: { en: "pop-up", ar: "pop-up" } },
+        { name: { en: "promotion", ar: "promotion" } },
+        { name: { en: "appear-first", ar: "appear-first" } },
+        { name: { en: "notification", ar: "notification" } },
       ],
       identifier: "name",
       required: true,
@@ -105,14 +107,33 @@ function CreateAd() {
     const formData = new FormData();
 
     formData.append("image", uploadImage);
+
+    const countryIdx = getCountries(lang)?.find(
+      (country) =>
+        country.label === ad.country || country.label_ar === ad.country
+    )?.index;
+    const cityIdx = getCities(countryIdx, lang).find(
+      (cty) => cty.label === ad.city || cty.label_ar === ad.city
+    )?.value;
+
+    const country = {
+      index: countryIdx,
+      en: getCountries("en")?.find((ctry) => ctry.index === countryIdx).label,
+      ar: getCountries("ar")?.find((ctry) => ctry.index === countryIdx).label,
+    };
+
+    const city = {
+      index: cityIdx,
+      en: getCities(countryIdx, "en").find((cty) => cty.value === cityIdx)
+        .label,
+      ar: getCities(countryIdx, "ar").find((cty) => cty.value === cityIdx)
+        .label,
+    };
+
     const mappedData = {
       ...ad,
-      country: {
-        [lang]: ad.country,
-      },
-      city: {
-        [lang]: ad.city,
-      },
+      country: country,
+      city: city,
     };
     try {
       const adData = await clientServices.createAd(mappedData);

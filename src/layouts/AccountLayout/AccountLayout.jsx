@@ -4,6 +4,8 @@ import {
   faBarcode,
   faHeart,
   faList,
+  faLocationDot,
+  faRug,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import "./AccountLayout.scss";
@@ -22,6 +24,8 @@ export default function AccountLayout() {
             <NavItem to="orders" icon={faList} title={t("previousOrders")} />
             <NavItem to="wishlist" icon={faHeart} title={t("wishlist")} />
             <NavItem to="barcode" icon={faBarcode} title={t("barcode")} />
+            <NavItem to="coupons" icon={faRug} title={t("coupons")} />
+            <NavItem to="location" icon={faLocationDot} title={t("location")} />
           </ul>
         </nav>
         {/* CONTENT */}

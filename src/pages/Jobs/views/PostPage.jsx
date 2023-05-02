@@ -27,6 +27,7 @@ export default function PostPage() {
       link: cv,
     });
   };
+  
   if (isLoading)
     return (
       <main className="job-details-page app-card-shadow">

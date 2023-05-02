@@ -13,10 +13,9 @@ export const ProtectedModule = ({ children, role = "auth" }) => {
   const canView =
     isAuthUser ||
     (userType !== "guest" && (isUserSubscribed || isGeneralClient));
-  console.log(canView);
-  if (canView) {
-    return children;
-  }
+
+  if (canView) return children;
+
   if (userType === "guest") {
     return (
       <div className="w-full h-full flex justify-center items-center flex-col gap-5">
