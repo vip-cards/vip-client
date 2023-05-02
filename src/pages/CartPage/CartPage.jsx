@@ -8,25 +8,25 @@ import { useDispatch, useSelector } from "react-redux";
 
 import "./CartPage.scss";
 import { IconButton, MainButton } from "components/Buttons";
-import { flushCart } from "store/cart-slice";
+import { flushCart, getCurrentCartThunk } from "store/cart-slice";
+import { useEffect } from "react";
 
 export default function CartPage() {
   const lang = i18n.language;
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const cartLoading = cart.loading;
-
-  if (cartLoading) {
-    return <LoadingSpinner />;
-  }
-
-  if (!cart._id) {
-    return <LoadingSpinner />;
-  }
-
   function flushCartHandler() {
     dispatch(flushCart(cart._id));
   }
+
+  useEffect(() => {
+    dispatch(getCurrentCartThunk());
+  }, []);
+
+  if (cartLoading) return <LoadingSpinner />;
+
+  if (!cart._id) return <LoadingSpinner />;
 
   return (
     <main className="app-card-shadow cart-page">
@@ -40,7 +40,7 @@ export default function CartPage() {
           <div className="w-full flex flex-row">
             <MainButton
               size="small"
-              className="ml-auto !rounded-full w-fit !h-8 flex flex-row justify-center items-center gap-2 px-2"
+              className="ml-auto !rounded-lg w-fit !h-8 flex flex-row justify-center items-center gap-2 !px-4 !py-2 !bg-red-700 !text-white"
               onClick={flushCartHandler}
             >
               <span>Clear the cart</span>
