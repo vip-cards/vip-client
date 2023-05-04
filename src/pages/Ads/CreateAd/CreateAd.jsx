@@ -1,7 +1,6 @@
 import { MainButton } from "components/Buttons";
 import CardContainer from "components/CardContainer/CardContainer";
 import { ImageEdit, MainInput } from "components/Inputs";
-import { getCities, getCountries } from "country-city-multilanguage";
 import { useAddressList } from "helpers/countries";
 import toastPopup from "helpers/toastPopup";
 import i18n from "locales/i18n";
@@ -10,6 +9,8 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import clientServices from "services/clientServices";
+
+import { getCities, getCountries } from "country-city-multilanguage";
 import "./CreateAd.scss";
 
 /***
@@ -40,6 +41,7 @@ function CreateAd() {
 
   const formDataList = [
     { name: "name", type: "text", required: false },
+
     { name: "startDate", type: "date", required: true, dateRange: "start" },
     { name: "endDate", type: "date", required: true, dateRange: "end" },
     {
@@ -94,6 +96,8 @@ function CreateAd() {
       identifier: "name",
       required: true,
     },
+    { name: "age_from", type: "number", required: false },
+    { name: "age_to", type: "number", required: false },
   ];
 
   const submitCreateAdHandler = async (e) => {
@@ -138,6 +142,10 @@ function CreateAd() {
       country: country,
       city: city,
       client: user._id,
+      age: {
+        from: ad.age_from ?? 15,
+        to: ad.age_to ?? 70,
+      },
     };
     try {
       const adData = await clientServices.createAd(mappedData);

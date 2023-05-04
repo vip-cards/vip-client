@@ -21,6 +21,7 @@ function Pagination({ queryParams, setQueryParams, count }) {
       </MainButton>
       {[...Array.from({ length: count }, (v, i) => i + 1)]?.map((item) => (
         <MainButton
+          key={item + "Pagination"}
           disabled={item === queryParams.page}
           onClick={() =>
             setQueryParams((params) => ({ ...params, page: item }))

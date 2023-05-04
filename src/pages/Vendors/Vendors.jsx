@@ -1,60 +1,85 @@
-import { faArrowDownWideShort } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import classNames from "classnames";
 import { VendorCard } from "components/Cards";
 import PageQueryContainer from "components/PageQueryContainer/PageQueryContainer";
 import { useState } from "react";
 import { useParams } from "react-router";
+import Select from "react-select";
 import useSWR from "swr";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import NoData from "../../components/NoData/NoData";
 import clientServices from "../../services/clientServices";
 
-import "./Vendors.scss";
+import {
+  faArrowDownWideShort,
+  faLocation,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { t } from "i18next";
+import "./Vendors.scss";
 
-const LIMIT = 9;
+const LIMIT = 8;
+const sortOptions = [
+  {
+    value: "rating",
+    label: (
+      <span className="flex justify-between items-center gap-2">
+        {t("sortByRating")} <FontAwesomeIcon icon={faArrowDownWideShort} />
+      </span>
+    ),
+  },
+  {
+    value: "nearest",
+    label: (
+      <span className="flex justify-between items-center gap-2">
+        {t("sortByNearest")} <FontAwesomeIcon icon={faLocation} />
+      </span>
+    ),
+  },
+];
 
 export default function Vendors() {
   const { categoryId } = useParams();
   const initialFilters = { category: [categoryId] };
   const [filter, setFilter] = useState(initialFilters);
-  const [sort, setSort] = useState("");
-
+  const [sort, setSort] = useState(null);
+  console.log(sort);
   const [queryParams, setQueryParams] = useState({
     page: 1,
     limit: LIMIT,
     ...filter,
   });
-  const { data: vendorsData, isLoading: vendorsLoading } = useSWR(
-    [sort ? "sorted-vendors" : "all-vendors", queryParams, sort],
-    ([key, params, sort]) =>
-      !!sort
-        ? clientServices.listAllVendorsByRating(params)
-        : clientServices.listAllVendors(params)
-  );
-  const { records: vendors = undefined, counts: vendorsCount } =
-    vendorsData ?? {};
 
-  const handleSortSelection = (event) => {
-    setSort((state) => (state ? "" : "rating"));
+  const fetcherSwitch = (key, params) => {
+    switch (key) {
+      case "rating":
+        return clientServices.listAllVendors(params);
+      case "nearest":
+        return clientServices.listNearestVendorBranches(params);
+      default:
+        return clientServices.listAllVendors(params);
+    }
   };
 
+  const { data, isLoading: vendorsLoading } = useSWR(
+    [sort?.value, queryParams, sort],
+    ([key, params, sort]) => fetcherSwitch(key, params)
+  );
+
+  console.log(data);
   const vendorListRender = () => {
     if (vendorsLoading) return <LoadingSpinner />;
 
-    if (!vendors?.length) return <NoData />;
+    if (!data.records?.length) return <NoData />;
 
-    return vendors.map((vendor) => {
+    return data.records.map((vendor) => {
       return <VendorCard key={vendor._id} vendor={vendor} />;
     });
   };
 
   return (
     <PageQueryContainer
-      withSideFilter={!categoryId}
+      withSideFilter={!categoryId && sort?.value !== "nearest"}
       filter={filter}
-      itemsCount={vendorsCount}
+      itemsCount={data?.counts ?? 0}
       listRenderFn={vendorListRender}
       queryParams={queryParams}
       setFilter={setFilter}
@@ -62,15 +87,17 @@ export default function Vendors() {
       setQueryParams={setQueryParams}
     >
       <header className="flex flex-row justify-end w-full gap-4">
-        <button
-          className={classNames("px-2 py-1 rounded-lg my-4 font-bold", {
-            "bg-primary/50 shadow-lg text-slate-800": !sort,
-            "bg-primary shadow text-black": sort,
-          })}
-          onClick={handleSortSelection}
-        >
-          {t("sortByRating")} <FontAwesomeIcon icon={faArrowDownWideShort} />
-        </button>
+        <div className="z-10 p-5">
+          <Select
+            defaultValue={sort?.value}
+            className="w-60"
+            isClearable
+            name="sort"
+            getOptionValue={(option) => option.value}
+            options={sortOptions}
+            onChange={(val) => setSort(val)}
+          />
+        </div>
       </header>
     </PageQueryContainer>
   );

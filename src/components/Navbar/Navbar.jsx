@@ -155,7 +155,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="top-nav">
+    <nav className="top-nav z-20">
       <BurgerMenuIcon className="burger-menu-icon" onClick={toggleSideMenu} />
       <NavbarLogo
         className="app-logo"

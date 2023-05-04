@@ -64,20 +64,17 @@
   "chat": "Chat",
   "VIP premium": "VIP premium",
   "sortByRating": "Sort by rating",
+  "sortByNearest": "Sort by nearest",
   "Apply for a job": "Apply for a job",
   "Hiring Employees": "Hiring Employees",
   "Create Job": "Create Job",
   "View Created Job": "View Created Job",
-  "loginAsGuest":"Login as a guest",
+  "loginAsGuest": "Login as a guest",
 
   "companyName_en": "Company Name",
   "companyName_ar": "اسم الشركة",
   "address_en": "Address",
   "address_ar": "Address",
-  "description_en": "Description",
-  "description_ar": "Description",
-  "description_en": "Description",
-  "description_ar": "Description",
   "description_en": "Description",
   "description_ar": "Description"
 }

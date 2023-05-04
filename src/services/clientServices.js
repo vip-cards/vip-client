@@ -43,12 +43,29 @@ const clientServices = {
       })
     )?.data,
 
-  listNearestVendorBranches: async (params) =>
-    (
-      await Axios.get("/branch/nearest/", {
-        params,
-      })
-    )?.data,
+  listNearestVendorBranches: (params) => {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        async ({ coords }) => {
+          try {
+            const response = await Axios.get("/branch/nearest/", {
+              params: {
+                ...params,
+                long: coords.longitude,
+                lat: coords.latitude,
+              },
+            });
+            resolve(response.data);
+          } catch (error) {
+            reject(error);
+          }
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+  },
 
   listAllVendorCategories: async (vendorId) => {
     const response = vendorId

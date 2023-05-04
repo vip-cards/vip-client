@@ -53,16 +53,22 @@ export default function MainInput(props) {
     );
 
   const renderInput = () => {
+    const typeSwitch = () => {
+      switch (type) {
+        case "list":
+          return { selected: state[name] };
+        case "checkbox":
+          return { checked: state[name] };
+        case "password":
+          return { type: !showPassword ? "password" : "text" };
+        default:
+          return { type };
+      }
+    };
     const inputProps = {
       name,
       required,
-      ...(type === "list"
-        ? { selected: state[name] }
-        : type === "checkbox"
-        ? { checked: state[name] }
-        : {
-            type: type === "password" && !showPassword ? "password" : "text",
-          }),
+      ...typeSwitch(),
       id: name,
       ref: inputRef,
       value: state[name],
