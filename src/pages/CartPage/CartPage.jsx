@@ -10,6 +10,8 @@ import "./CartPage.scss";
 import { IconButton, MainButton } from "components/Buttons";
 import { flushCart, getCurrentCartThunk } from "store/cart-slice";
 import { useEffect } from "react";
+import clientServices from "services/clientServices";
+import toastPopup from "helpers/toastPopup";
 
 export default function CartPage() {
   const lang = i18n.language;
@@ -18,6 +20,17 @@ export default function CartPage() {
   const cartLoading = cart.loading;
   function flushCartHandler() {
     dispatch(flushCart(cart._id));
+  }
+
+  function handleCheckout() {
+    clientServices
+      .checkoutCart()
+      .then(() => {
+        toastPopup.success("Order checkout done!");
+      })
+      .catch(() => {
+        toastPopup.error("Something went wrong!");
+      });
   }
 
   useEffect(() => {
@@ -60,7 +73,11 @@ export default function CartPage() {
             <h3 className="checkout-title">Checkout</h3>
             <h4 className="checkout-total-title">Total:</h4>
             <h5 className="total-price">{cart.price.current} LE</h5>
-            <button className="checkout-btn" disabled={cartLoading}>
+            <button
+              className="checkout-btn"
+              disabled={cartLoading}
+              onClick={handleCheckout}
+            >
               {cartLoading ? (
                 <FontAwesomeIcon icon={faCircleNotch} className="fa-spin" />
               ) : (

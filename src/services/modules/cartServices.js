@@ -48,4 +48,8 @@ export const cartServices = {
       })
     ).data;
   },
+
+  checkoutCart: async () => {
+    return (await Axios.post("/order/checkout", { client: userId })).data;
+  },
 };
