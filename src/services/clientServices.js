@@ -135,7 +135,15 @@ const clientServices = {
     });
     return response;
   },
-
+  getProductReview: async (_id) => {
+    const response = await Axios.get(`/review/get`, {
+      params: {
+        _id,
+        // client: userId,
+      },
+    });
+    return response;
+  },
   ...accountServices,
   ...cartServices,
   ...wishServices,
