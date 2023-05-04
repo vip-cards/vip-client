@@ -29,7 +29,7 @@ export const addToCartThunk = createAsyncThunk(
     const product = {
       branchId: payload.branchId,
       productId: payload._id,
-      quantity: payload.quantity,
+      quantity: payload.quantity ?? ++payload.quantity,
     };
     try {
       const data = await clientServices.addCartItem(product);

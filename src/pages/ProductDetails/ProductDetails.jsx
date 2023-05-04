@@ -40,11 +40,10 @@ function ProductDetails(props) {
   async function addToCartHandler() {
     if (auth.userId === "guest") {
       toastPopup.error(
-        "You are not allowed to add to cart untill you are subscribe!"
+        "You are not allowed to add to cart untill you are subscribed!"
       );
     }
-    if (!cart.branchId || cart.branchId < 0) return;
-    if (cart.branchId !== cartBranch?._id) {
+    if (cartBranch?._id && cart.branchId !== cartBranch?._id) {
       toastPopup.error("You can only choose the branch in your cart");
       return;
     }
@@ -52,18 +51,15 @@ function ProductDetails(props) {
     const result = await dispatch(
       addToCartThunk({
         _id: product._id,
-        ...cart,
+        quantity,
+        branchId: cart.branchId,
       })
     ).unwrap();
 
     setLoading(true);
   }
   async function addToWishlisthandler() {
-    dispatch(addWishProduct(product._id)).then(() => {
-      setTimeout(() => {
-        // setDisabled(false);
-      }, 900);
-    });
+    const result = await dispatch(addWishProduct(product._id)).unwrap();
   }
   useEffect(() => {
     fetchProductData();
@@ -92,7 +88,7 @@ function ProductDetails(props) {
       {/* details */}
       <div className="product-details-container">
         <div className="product-details">
-          <h2 className="product-title">{product?.name?.[lang]}</h2>
+          <h2 className="product-title text-2xl">{product?.name?.[lang]}</h2>
           <h5 className="product-title">
             <RatingStars rate={product?.rate} />
           </h5>

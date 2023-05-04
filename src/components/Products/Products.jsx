@@ -41,18 +41,21 @@ export default function Products() {
     getProductsHandler();
   }, []);
 
+  const productRender = () => (
+    <div className="products-container">
+      {renderedList?.length > 0 &&
+        renderedList.map((offer) => {
+          return <ProductCard key={offer._id} product={offer} />;
+        })}
+    </div>
+  );
   return (
     <>
       <SearchArea onChange={(e) => setQuery(e.target.value)} />
       {Loading ? (
         <LoadingSpinner />
       ) : renderedList.length > 0 ? (
-        <div className="products-container">
-          {renderedList?.length > 0 &&
-            renderedList.map((offer) => {
-              return <ProductCard key={offer._id} product={offer} />;
-            })}
-        </div>
+        productRender()
       ) : (
         <NoData />
       )}

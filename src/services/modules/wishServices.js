@@ -16,7 +16,7 @@ export const wishServices = {
       await Axios.post(`/wishlist/addItem`, null, {
         params: { client: userId(), product: productId },
       })
-    ).data;
+    )?.data;
   },
 
   removeWishProduct: async (productId) => {

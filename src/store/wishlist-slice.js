@@ -24,13 +24,12 @@ export const addWishProduct = createAsyncThunk(
   async (productId, thunkAPI) => {
     try {
       const data = await clientServices.addWishProduct(productId);
-
       if (data.record) {
         toastPopup.success(t("addedToWishlist"));
       }
       return data.record.items;
     } catch (err) {
-      toastPopup.error(err.response.data);
+      toastPopup.error(err.response.data.error);
       return thunkAPI.rejectWithValue({ ...err.response.data });
     }
   }
