@@ -23,6 +23,7 @@ import {
 import { EVENTS, socket } from "services/socket/config";
 import { selectAuth } from "store/auth-slice";
 import "./Chat.scss";
+import dayjs from "dayjs";
 
 const { CHAT, CONNECTION } = EVENTS;
 
@@ -51,10 +52,6 @@ function Chat() {
     // });
   };
 
-  const handleCreateRoom = (_id) => {
-    createRoom({ client: user.userData._id, child: _id });
-    setIsModalVisible(false);
-  };
   const handleCreateAdminRoom = (_id) => {
     createRoom({ admin: _id });
     setIsModalVisible(false);
@@ -65,7 +62,6 @@ function Chat() {
     setMessageList([]);
     getRoom(_id, (data) => {
       setMessageList(data.record?.messages);
-      toastPopup.success("Room Fetched");
     });
   };
 
@@ -74,7 +70,7 @@ function Chat() {
       _id: activeRoom,
       message: {
         text: messageText,
-        timetamp: new Date().toISOString(),
+        timestamp: new Date().toISOString(),
         client: user.userData._id,
       },
     };
@@ -184,15 +180,22 @@ function Chat() {
           Create Room
         </MainButton>
       </div>
-      <div className="w-full h-full flex flex-col">
+      <div
+        className={classNames("w-full h-full flex flex-col", {
+          "bg-slate-200 duration-1000 animate-pulse": !messageList.length,
+        })}
+      >
         <div
           ref={chatRef}
-          className="m-3 scroll-smooth flex gap-3 flex-col h-full max-h-[75vh] overflow-y-auto p-2"
+          className="m-3 scroll-smooth flex gap-3 flex-col h-full max-h-[75vh] overflow-y-auto p-2 "
         >
           {!!messageList.length &&
             messageList?.map((message) => (
               <div
-                key={message.timetamp}
+                key={
+                  message.timetamp ??
+                  new Date().toISOString() + Math.random() * 10
+                }
                 className={classNames("py-3 px-5 rounded", {
                   "bg-slate-600 ml-auto w-fit rounded-l-full rounded-tr-full text-slate-100":
                     message.client === user.userData._id ||
@@ -204,7 +207,14 @@ function Chat() {
                     ),
                 })}
               >
-                {message.text}
+                <div className="flex flex-col">
+                  <span>{message.text}</span>
+                  <span className="text-xs self-end text-slate-400">
+                    {message.timestamp
+                      ? dayjs(message.timestamp).format("DD-MM-YYYY h:m a")
+                      : null}
+                  </span>
+                </div>
               </div>
             ))}
         </div>
