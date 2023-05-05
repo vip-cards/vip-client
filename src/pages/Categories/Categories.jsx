@@ -6,6 +6,8 @@ import NoData from "../../components/NoData/NoData";
 import clientServices from "../../services/clientServices";
 import "./Categories.scss";
 import { CategoryCard } from "components/Cards";
+import { listRenderFn } from "helpers/rednerFn";
+import PageQueryContainer from "components/PageQueryContainer/PageQueryContainer";
 
 const LIMIT = 9;
 
@@ -24,31 +26,15 @@ export default function Categories() {
 
   const { records: categories = undefined, counts: categoriesCount } =
     categoriesData ?? {};
-  const totalPages = Math.ceil(categoriesCount / LIMIT);
 
-  const RenderedList = () => {
-    if (cateogoriesLoading) return <LoadingSpinner />;
-    if (!categories.length) return <NoData />;
-
-    return (
-      <div className="categories-cards-container">
-        {categories.map((category) => {
-          return <CategoryCard key={category._id} category={category} />;
-        })}
-      </div>
-    );
-  };
-
-  const handleCategorySearch = () => {
-    if (!searchQuery) return;
-    const arabicReg = /[\u0621-\u064A]/g;
-    const isArabic = arabicReg.test(searchQuery);
-    const queryObj = {
-      ...(!isArabic && { "name.en": searchQuery }),
-      ...(isArabic && { "name.ar": searchQuery }),
-    };
-    setQueryParams((prev) => ({ ...prev, page: 1, ...queryObj }));
-  };
+  const CategoriesRenderer = () =>
+    listRenderFn({
+      isLoading: cateogoriesLoading,
+      list: categories ?? [],
+      render: (category) => {
+        return <CategoryCard key={category._id} category={category} />;
+      },
+    });
 
   useEffect(() => {
     if (!searchQuery) {
@@ -58,16 +44,12 @@ export default function Categories() {
   }, [searchQuery]);
 
   return (
-    <div className="categories-page relative">
-      {cateogoriesLoading && (
-        <div className="w-full absolute h-3 bg-green-600 animate-pulse"></div>
-      )}
-      <Search
-        setSearchQuery={setSearchQuery}
-        searchQuery={searchQuery}
-        onClick={handleCategorySearch}
-      />
-      <RenderedList />
-    </div>
+    <PageQueryContainer
+      withSideFilter={false}
+      itemsCount={categoriesCount}
+      listRenderFn={CategoriesRenderer}
+      queryParams={queryParams}
+      setQueryParams={setQueryParams}
+    ></PageQueryContainer>
   );
 }
