@@ -10,7 +10,7 @@ import { professionsServices } from "./modules/professionsServices";
 import { servicesServices } from "./modules/servicesServices";
 import { wishServices } from "./modules/wishServices";
 
-const userId =
+const userId = () =>
   store.getState()?.auth?.userId ?? localStorage.getItem("userId") ?? "";
 
 const clientServices = {
@@ -27,12 +27,12 @@ const clientServices = {
     (await Axios.get(`/vendor/list?category=${id}`)).data?.records,
 
   getReview: async (id) => {
-    const response = await Axios.get(`/review/get?_id=${id}&client=${userId}`);
+    const response = await Axios.get(`/review/get?_id=${id}&client=${userId()}`);
     return response;
   },
 
   listClientOrders: async () => {
-    const response = await Axios.get("/order/get?client=" + userId);
+    const response = await Axios.get("/order/get?client=" + userId());
     return response;
   },
 
