@@ -1,4 +1,8 @@
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCaretDown,
+  faMinus,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { t } from "i18next";
@@ -16,6 +20,9 @@ import { addToCartThunk } from "../../store/cart-slice";
 import { addWishProduct } from "../../store/wishlist-slice";
 import useSWR from "swr";
 import "./ProductDetails.scss";
+import { MainButton } from "components/Buttons";
+import { MainInput } from "components/Inputs";
+import { getLocalizedWord } from "helpers/lang";
 
 function ProductDetails(props) {
   const lang = i18n.language;
@@ -26,10 +33,14 @@ function ProductDetails(props) {
   const [loading, setLoading] = useState(false);
   const [cart, setCart] = useState({ quantity: 0, branchId: -1 });
   const cartBranch = useSelector((state) => state.cart.branch);
+  const [review, setReview] = useState({});
+  const [reviewFormExpand, setReviewFormExpand] = useState(false);
+
   const auth = useSelector(selectAuth);
   const { data } = useSWR(`product-${productId}`, () =>
     clientServices.getProductReview(productId)
   );
+  const reviews = data?.records ?? [];
   console.log(data);
   async function fetchProductData() {
     try {
@@ -62,13 +73,56 @@ function ProductDetails(props) {
   function addToWishlisthandler() {
     dispatch(addWishProduct(product._id));
   }
+  const formDataList = [
+    {
+      name: "rating",
+      type: "list",
+      identifier: "name",
+      list: [
+        { name: { en: 1, ar: 1 } },
+        { name: { en: 2, ar: 2 } },
+        { name: { en: 3, ar: 3 } },
+        { name: { en: 4, ar: 4 } },
+        { name: { en: 5, ar: 5 } },
+      ],
+      required: false,
+    },
+    { name: "review", type: "textarea", required: false },
+  ];
+
+  function handleReviewSubmit(e) {
+    e.preventDefault();
+    console.log(product.vendor._id);
+    console.log(product);
+    console.log(review);
+    clientServices
+      .createProductReview({
+        client: auth.userId,
+        // vendor: product.vendor._id,
+        product: product._id,
+        rating: +review.rating,
+        review: review.review,
+        type: "product",
+      })
+      .then(() => {
+        toastPopup.success("Review Added!");
+      })
+      .catch(() => {
+        toastPopup.error("Something Went Wrong!");
+      })
+      .finally(() => {
+        setReview({});
+        setReviewFormExpand(false);
+      });
+  }
+
   useEffect(() => {
     fetchProductData();
   }, []);
 
   return (
-    <div className="app-card-shadow flex flex-col product-details-page">
-      <div className=" product-details-page">
+    <div className="app-card-shadow !flex !flex-col product-details-page">
+      <div className="product-details-page">
         {/* image */}
         <HomeSwiper
           // ref={swiperRef}
@@ -171,9 +225,69 @@ function ProductDetails(props) {
         {/* reviews */}
         {/* <div className="product-reviews-container">reviews</div> */}
       </div>
-      <section className="px-8">
-        <h1>Reviews</h1>
-        <div>ads</div>
+      <aside
+        className="ring-1 ring-primary/30 rounded-lg bg-primary/90 text-white font-semibold py-2 cursor-pointer min-w-[80%] mx-auto px-3"
+        onClick={() => setReviewFormExpand((p) => !p)}
+      >
+        <div className="flex flex-row flwx-nowrap w-full justify-between items-center">
+          <span>Write a review ?</span>
+          <FontAwesomeIcon
+            icon={faCaretDown}
+            className={classNames("transition-transform", {
+              "rotate-180": reviewFormExpand,
+            })}
+          />
+        </div>
+      </aside>
+      <section
+        className={classNames("px-8 overflow-hidden transition-all", {
+          "h-0": !reviewFormExpand,
+          "h-full": reviewFormExpand,
+        })}
+      >
+        <div className="bg-white p-6 rounded-lg shadow-md max-w-[50rem] mx-auto px-12 py-8">
+          <h2 className="text-xl font-bold mb-4">Write a review</h2>
+          <form onClick={handleReviewSubmit} className="flex flex-col gap-4">
+            {formDataList.map((formInput) => {
+              return (
+                <div className="mb-4" key={formInput.name}>
+                  <MainInput
+                    name={formInput.name}
+                    type={formInput.type}
+                    required={formInput.required}
+                    list={formInput.list}
+                    identifier={formInput.identifier}
+                    state={review}
+                    setState={setReview}
+                    dateRange={formInput.dateRange}
+                  />
+                </div>
+              );
+            })}
+
+            <MainButton type="submit">Submit</MainButton>
+          </form>
+        </div>
+      </section>
+
+      <section className="shadow shadow-primary/50 rounded-md p-3 m-3 lg:mx-16">
+        <h1>reviews</h1>
+        {reviews.map((review) => (
+          <div
+            key={review._id}
+            className="flex flex-col px-3 gap-3 border-b-[1px] border-b-slate-300 mb-3 pb-3"
+          >
+            <div className="flex flex-row justify-between gap-3">
+              <h3 className="capitalize">
+                {getLocalizedWord(review.client.name)}
+              </h3>
+              <div>
+                <RatingStars rate={review.rating ?? 0} />
+              </div>
+            </div>
+            <div className="px-1">{review.review}</div>
+          </div>
+        ))}
       </section>
     </div>
   );

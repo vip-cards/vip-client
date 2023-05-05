@@ -1,19 +1,19 @@
+import {
+  faArrowDownWideShort,
+  faLocation,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { VendorCard } from "components/Cards";
 import PageQueryContainer from "components/PageQueryContainer/PageQueryContainer";
 import { useState } from "react";
 import { useParams } from "react-router";
 import Select from "react-select";
 import useSWR from "swr";
-import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
-import NoData from "../../components/NoData/NoData";
 import clientServices from "../../services/clientServices";
 
-import {
-  faArrowDownWideShort,
-  faLocation,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { t } from "i18next";
+
+import { listRenderFn } from "helpers/rednerFn";
 import "./Vendors.scss";
 
 const LIMIT = 8;
@@ -41,7 +41,7 @@ export default function Vendors() {
   const initialFilters = { category: [categoryId] };
   const [filter, setFilter] = useState(initialFilters);
   const [sort, setSort] = useState(null);
-  console.log(sort);
+
   const [queryParams, setQueryParams] = useState({
     page: 1,
     limit: LIMIT,
@@ -64,16 +64,14 @@ export default function Vendors() {
     ([key, params, sort]) => fetcherSwitch(key, params)
   );
 
-  console.log(data);
-  const vendorListRender = () => {
-    if (vendorsLoading) return <LoadingSpinner />;
-
-    if (!data.records?.length) return <NoData />;
-
-    return data.records.map((vendor) => {
-      return <VendorCard key={vendor._id} vendor={vendor} />;
+  const vendorListRender = () =>
+    listRenderFn({
+      isLoading: vendorsLoading,
+      list: data?.records ?? [],
+      render: (vendor) => {
+        return <VendorCard key={vendor._id} vendor={vendor} />;
+      },
     });
-  };
 
   return (
     <PageQueryContainer

@@ -136,12 +136,20 @@ const clientServices = {
     return response;
   },
   getProductReview: async (_id) => {
-    const response = await Axios.get(`/review/get`, {
-      params: {
-        _id,
-        // client: userId,
-      },
+    const { data } = await Axios.get(`/review/list`, {
+      params: { product: _id },
     });
+    return data;
+  },
+  getVendorReview: async (_id) => {
+    const { data } = await Axios.get(`/review/list`, {
+      params: { vendor: _id },
+    });
+    return data;
+  },
+
+  createProductReview: async (body) => {
+    const response = await Axios.post(`/review/create`, body);
     return response;
   },
   ...accountServices,

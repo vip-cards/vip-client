@@ -144,8 +144,8 @@ export default function Login() {
 
           {errorMessage ? (
             <div className="err">
-              {errorMessage.includes("Admin")
-                ? t("Admin is not found!")
+              {errorMessage.includes("Client")
+                ? t("Client is not found!")
                 : t("Incorrect Password")}
             </div>
           ) : (

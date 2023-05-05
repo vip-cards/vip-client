@@ -1,4 +1,8 @@
-import { faCommentDots, faTruckFast } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCaretDown,
+  faCommentDots,
+  faTruckFast,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { BranchCard, CategoryCard, ProductCard } from "components/Cards";
@@ -15,27 +19,37 @@ import Carousel from "../../components/Carousel/Carousel";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import clientServices from "../../services/clientServices";
 
+import { MainButton } from "components/Buttons";
+import { MainInput } from "components/Inputs";
+import Modal from "components/Modal/Modal";
 import Pagination from "components/Pagination/Pagination";
+import { useSelector } from "react-redux";
+import { selectAuth } from "store/auth-slice";
 import "./Vendor.scss";
+import ReviewModal from "./ReviewModal";
 
 const LIMIT = 9;
 
 export default function Vendor() {
   const params = useParams();
+  const navigate = useNavigate();
   const vendorId = params.vendorId;
 
-  const [loading, setLoading] = useState(false);
-  const [vendor, setVendor] = useState({});
-  const [branches, setBranches] = useState([]);
-  const [offers, setOffers] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const navigate = useNavigate();
-  const [queryParams, setQueryParams] = useState({
-    page: 1,
-    limit: LIMIT,
-    vendor: vendorId,
-  });
+  const initialQuerParams = { page: 1, limit: LIMIT, vendor: vendorId };
 
+  const [vendor, setVendor] = useState({});
+  const [offers, setOffers] = useState([]);
+  const [branches, setBranches] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [queryParams, setQueryParams] = useState(initialQuerParams);
+
+  const [loading, setLoading] = useState(false);
+  const [isReviewModalVisible, setReviewModelVisible] = useState(false);
+
+  const { data } = useSWR(`vendor-rev-${vendorId}`, () =>
+    clientServices.getVendorReview(vendorId)
+  );
+  const reviews = data?.records ?? [];
   const { data: productsData, isLoading: productsLoading } = useSWR(
     ["all-products", queryParams],
     () => clientServices.listAllProducts({ ...queryParams })
@@ -52,6 +66,7 @@ export default function Vendor() {
       return <ProductCard key={offer._id} product={offer} />;
     });
   };
+
   async function getVendorDataHandler() {
     setVendor({});
     setBranches([]);
@@ -85,18 +100,12 @@ export default function Vendor() {
     createRoom({ vendor: vendorId });
   }
 
-  const renderOffers = () =>
-    listRenderFn({
-      isLoading: loading,
-      list: offers,
-      render: (offer) => <ProductCard key={offer._id} product={offer} />,
-    });
-
   useEffect(() => {
     getVendorDataHandler();
   }, [vendorId]);
 
   if (loading) return <LoadingSpinner />;
+
   return (
     <div className="client-vendor-home my-8 app-card-shadow page-wrapper pb-8">
       <header className="rounded-3xl border-b-2 p-4 gap-4 pb-4 flex flex-col justify-between relative border-0">
@@ -118,14 +127,18 @@ export default function Vendor() {
             <h4 className="text-primary font-semibold">
               {getLocalizedWord(vendor?.name)}
             </h4>
-            <div>
-              <RatingStars rate={vendor?.rate ?? 0} />
-            </div>
+            <button
+              onClick={() => setReviewModelVisible(true)}
+              className="flex flex-row text-primary gap-3 items-center hover:underline"
+            >
+              <RatingStars rate={vendor?.rate ?? 0} /> ({reviews?.length ?? 0}{" "}
+              reviews)
+            </button>
             <div className="ml-auto">
               <span className="text-sm mr-2">
                 {vendor?.hasDelivery
-                  ? "Delivery Availeble"
-                  : "Delivery Not Availeble"}
+                  ? "Delivery Available"
+                  : "Delivery Not Available"}
               </span>
               <FontAwesomeIcon
                 icon={faTruckFast}
@@ -221,6 +234,11 @@ export default function Vendor() {
         count={totalPages}
         queryParams={queryParams}
         setQueryParams={setQueryParams}
+      />
+      <ReviewModal
+        isVisible={isReviewModalVisible}
+        onClose={() => setReviewModelVisible(false)}
+        reviews={reviews}
       />
     </div>
   );

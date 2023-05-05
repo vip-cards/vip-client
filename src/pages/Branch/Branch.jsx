@@ -87,8 +87,8 @@ export default function Branch() {
             <div className="ml-auto">
               <span className="text-sm mr-2">
                 {branchhInfo?.hasDelivery
-                  ? "Delivery Availeble"
-                  : "Delivery Not Availeble"}
+                  ? "Delivery Available"
+                  : "Delivery Not Available"}
               </span>
               <FontAwesomeIcon
                 icon={faTruckFast}
