@@ -182,7 +182,8 @@ function Chat() {
       </div>
       <div
         className={classNames("w-full h-full flex flex-col", {
-          "bg-slate-200 duration-1000 animate-pulse": !messageList.length,
+          "bg-slate-200 duration-1000 animate-pulse":
+            !messageList.length && activeRoom,
         })}
       >
         <div
