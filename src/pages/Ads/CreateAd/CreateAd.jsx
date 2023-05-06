@@ -102,8 +102,8 @@ function CreateAd() {
 
   const submitCreateAdHandler = async (e) => {
     e.preventDefault();
-    console.log(vendor);
-    console.log(user._id);
+
+    
     if (!uploadImage && withSize) {
       toastPopup.error("Please provide a valid image!");
       return;

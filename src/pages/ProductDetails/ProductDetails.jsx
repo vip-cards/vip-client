@@ -41,7 +41,7 @@ function ProductDetails(props) {
     clientServices.getProductReview(productId)
   );
   const reviews = data?.records ?? [];
-  console.log(data);
+
   async function fetchProductData() {
     try {
       const { data } = await clientServices.getProductDetails(productId);
