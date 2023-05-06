@@ -59,7 +59,7 @@ const AccountCoupons = () => {
                 size="xl"
                 className="text-primary group-active:scale-90 transition-transform"
               />
-              <span class="w-fit whitespace-nowrap group-hover:opacity-100 -translate-x-1/2 transition-opacity duration-300 bg-primary/70 py-1 px-2 text-sm text-white rounded-md absolute left-1/2 top-1 translate-y-full opacity-0 m-4 mx-auto">
+              <span className="w-fit whitespace-nowrap group-hover:opacity-100 -translate-x-1/2 transition-opacity duration-300 bg-primary/70 py-1 px-2 text-sm text-white rounded-md absolute left-1/2 top-1 translate-y-full opacity-0 m-4 mx-auto">
                 copy coupon code
               </span>
             </button>

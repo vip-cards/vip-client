@@ -41,7 +41,8 @@ Axios.interceptors.request.use(async (req) => {
     if (
       req.method !== "get" &&
       (token._id === "guest" || !auth.userData.isSubscribed) &&
-      !req.url.includes("update")
+      !req.url.includes("update") &&
+      !req.url.includes("subscribe")
     ) {
       toastPopup.error("You are not allowed untill you subscribe!");
       return Promise.reject("Method not allowed");

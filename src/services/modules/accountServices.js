@@ -1,6 +1,6 @@
 import Axios from "../Axios";
 
-const userId = localStorage.getItem("userId") ?? "";
+const userId = () => localStorage.getItem("userId") ?? "";
 
 export const accountServices = {
   updateInfo: async (obj) => (await Axios.put("/update", obj)).data,
@@ -15,7 +15,7 @@ export const accountServices = {
 
   subscribeUser: async (body) =>
     (
-      await Axios.post("/subscription/subscribe?client=" + userId, body, {
+      await Axios.post("/subscription/subscribe?client=" + userId(), body, {
         headers: { "Content-Type": "multipart/form-data" },
       })
     )?.data,

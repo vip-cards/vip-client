@@ -27,7 +27,9 @@ const clientServices = {
     (await Axios.get(`/vendor/list?category=${id}`)).data?.records,
 
   getReview: async (id) => {
-    const response = await Axios.get(`/review/get?_id=${id}&client=${userId()}`);
+    const response = await Axios.get(
+      `/review/get?_id=${id}&client=${userId()}`
+    );
     return response;
   },
 

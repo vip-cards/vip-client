@@ -92,8 +92,8 @@ export default function AccountDetails() {
       name: "gender",
       type: "list",
       list: [
-        { _id: 0, gender: { en: "male", ar: "ذكر" } },
-        { _id: 1, gender: { en: "female", ar: "أنثى" } },
+        { _id: "male", gender: { en: "male", ar: "ذكر" } },
+        { _id: "female", gender: { en: "female", ar: "أنثى" } },
       ],
       identifier: "gender",
       required: true,
@@ -137,7 +137,7 @@ export default function AccountDetails() {
         dispatch(authActions.update({ userData: data.record }));
         toastPopup.success("Account Info Updated Successfully");
       })
-      .catch((e) => toastPopup.error("Something went wrong"));
+      .catch((e) => toastPopup.error(e.response.data.error));
   };
 
   const imageUpload = useCallback(async () => {

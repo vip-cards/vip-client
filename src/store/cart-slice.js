@@ -13,7 +13,7 @@ import clientServices from "../services/clientServices";
  * quantity
  */
 
-const initialState = { loading: false, products: [] };
+const initialState = { loading: false, products: [], coupon: 0 };
 
 export const getCurrentCartThunk = createAsyncThunk(
   "cart/get",
@@ -23,6 +23,7 @@ export const getCurrentCartThunk = createAsyncThunk(
     return data.record;
   }
 );
+
 export const addToCartThunk = createAsyncThunk(
   "cart/add",
   async (payload, thunkAPI) => {
@@ -39,6 +40,7 @@ export const addToCartThunk = createAsyncThunk(
     }
   }
 );
+
 export const removeFromCartThunk = createAsyncThunk(
   "cart/remove",
   async (payload, thunkAPI) => {
@@ -65,6 +67,22 @@ export const flushCart = createAsyncThunk(
     thunkAPI.dispatch(getCurrentCartThunk());
 
     return data.record;
+  }
+);
+
+export const applyCartCouponThunk = createAsyncThunk(
+  "cart/coupon",
+  async ({ cartId, coupon }, thunkAPI) => {
+    try {
+      const data = await clientServices.applyCoupon({ cartId, coupon });
+      toastPopup.success("Coupon Applied successfully");
+
+      thunkAPI.dispatch(getCurrentCartThunk());
+
+      return data.record;
+    } catch (err) {
+      return thunkAPI.rejectWithValue({ ...err.response.data });
+    }
   }
 );
 
@@ -96,6 +114,8 @@ const cartSlice = createSlice({
       state.products = payload.items;
       state.branch = payload.branch;
       state.price = { original: payload.originalTotal, current: payload.total };
+      state.coupon = payload.coupon;
+      
       state.points = payload.points;
 
       state.loading = false;
@@ -117,6 +137,9 @@ const cartSlice = createSlice({
     builder.addCase(addToCartThunk.rejected, (state, { payload }) => {
       toastPopup.error(payload.error);
     });
+    builder.addCase(applyCartCouponThunk.rejected, (state, { payload }) => {
+      toastPopup.error(payload.error);
+    });
 
     builder.addCase(removeFromCartThunk.fulfilled, (state, { payload }) => {
       state._id = payload._id;
@@ -133,13 +156,13 @@ const cartSlice = createSlice({
     });
 
     builder.addMatcher(
-      isPending(addToCartThunk, removeFromCartThunk),
+      isPending(addToCartThunk, removeFromCartThunk, applyCartCouponThunk),
       (state, { payload }) => {
         state.loading = true;
       }
     );
     builder.addMatcher(
-      isRejected(addToCartThunk, removeFromCartThunk),
+      isRejected(addToCartThunk, removeFromCartThunk, applyCartCouponThunk),
       (state, { payload }) => {
         state.loading = false;
         return state;

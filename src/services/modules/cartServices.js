@@ -1,6 +1,6 @@
 import Axios from "services/Axios";
 
-const userId = localStorage.getItem("userId") ?? "";
+const userId = () => localStorage.getItem("userId") ?? "";
 
 export const cartServices = {
   /*--- CART ---*/
@@ -8,7 +8,7 @@ export const cartServices = {
     return (
       await Axios.get("/cart/get", {
         params: {
-          client: userId,
+          client: userId(),
         },
       })
     ).data;
@@ -18,7 +18,7 @@ export const cartServices = {
     return (
       await Axios.post("/cart/item", null, {
         params: {
-          client: userId,
+          client: userId(),
           product: productId,
           branch: branchId,
           quantity,
@@ -31,7 +31,7 @@ export const cartServices = {
     return (
       await Axios.delete("/cart/item", {
         params: {
-          client: userId,
+          client: userId(),
           product: productId,
           quantity,
         },
@@ -51,5 +51,11 @@ export const cartServices = {
 
   checkoutCart: async () => {
     return (await Axios.post("/order/checkout", { client: userId })).data;
+  },
+
+  applyCoupon: async ({ cartId, coupon }) => {
+    return (
+      await Axios.post("/coupon/add", {}, { params: { cart: cartId, coupon } })
+    ).data;
   },
 };

@@ -6,18 +6,26 @@ import i18n from "locales/i18n";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 
-import "./CartPage.scss";
 import { IconButton, MainButton } from "components/Buttons";
-import { flushCart, getCurrentCartThunk } from "store/cart-slice";
-import { useEffect } from "react";
-import clientServices from "services/clientServices";
 import toastPopup from "helpers/toastPopup";
+import { useEffect, useState } from "react";
+import clientServices from "services/clientServices";
+import {
+  applyCartCouponThunk,
+  flushCart,
+  getCurrentCartThunk,
+} from "store/cart-slice";
+import "./CartPage.scss";
+import NoData from "components/NoData/NoData";
+import { useNavigate } from "react-router";
 
 export default function CartPage() {
   const lang = i18n.language;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
   const cartLoading = cart.loading;
+  const [coupon, setCoupon] = useState("");
   function flushCartHandler() {
     dispatch(flushCart(cart._id));
   }
@@ -27,10 +35,15 @@ export default function CartPage() {
       .checkoutCart()
       .then(() => {
         toastPopup.success("Order checkout done!");
+        navigate("/");
+        dispatch(getCurrentCartThunk());
       })
       .catch(() => {
         toastPopup.error("Something went wrong!");
       });
+  }
+  function handleCouponApply() {
+    dispatch(applyCartCouponThunk({ cartId: cart._id, coupon }));
   }
 
   useEffect(() => {
@@ -39,7 +52,7 @@ export default function CartPage() {
 
   if (cartLoading) return <LoadingSpinner />;
 
-  if (!cart._id) return <LoadingSpinner />;
+  if (!cart._id) return <NoData />;
 
   return (
     <main className="app-card-shadow cart-page">
@@ -73,6 +86,20 @@ export default function CartPage() {
             <h3 className="checkout-title">Checkout</h3>
             <h4 className="checkout-total-title">Total:</h4>
             <h5 className="total-price">{cart.price.current} LE</h5>
+            <div className="w-full p-2 border rounded-lg flex focus-within:border-blue-500 flex-row justify-between mb-3">
+              <input
+                className="outline-none ring-0 border-0 "
+                type="text"
+                value={coupon}
+                onChange={(e) => setCoupon(e.currentTarget.value)}
+              />
+              <MainButton
+                className="!text-xs !h-7 px-2 whitespace-nowrap"
+                onClick={handleCouponApply}
+              >
+                Apply Coupon
+              </MainButton>
+            </div>
             <button
               className="checkout-btn"
               disabled={cartLoading}
@@ -99,6 +126,19 @@ export default function CartPage() {
             <b>Points</b>
             <p>{cart.points}</p>
           </div>
+          {cart?.coupon && (
+            <div>
+              <h5>Coupon</h5>
+              <div className="flex flex-row justify-between">
+                <h6 className="font-semibold">Code</h6>
+                <p>{cart.coupon.code}</p>
+              </div>
+              <div className="flex flex-row justify-between">
+                <h6 className="capitalize font-semibold">total after coupon</h6>
+                <p>{cart.coupon.value}</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

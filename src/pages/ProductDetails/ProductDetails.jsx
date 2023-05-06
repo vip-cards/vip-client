@@ -92,9 +92,7 @@ function ProductDetails(props) {
 
   function handleReviewSubmit(e) {
     e.preventDefault();
-    console.log(product.vendor._id);
-    console.log(product);
-    console.log(review);
+
     clientServices
       .createProductReview({
         client: auth.userId,
