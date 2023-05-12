@@ -42,12 +42,14 @@ export function ProductImageContainer({ product }) {
     >
       {product.image.map((image, index) => (
         <SwiperSlide key={image?.Location ?? index}>
-          <img
-            src={image?.Location ?? ""}
-            alt="product-img"
-            className="product-img"
-            onClick={() => navigate("/product/" + product._id)}
-          />
+          <div className="product-img">
+            <img
+              src={image?.Location ?? ""}
+              alt="product-img"
+              // className="product-img"
+              onClick={() => navigate("/product/" + product._id)}
+            />
+          </div>
           {!!(product.originalPrice - product.price) && (
             <span className="offer-icon">
               <span>

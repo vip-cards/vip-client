@@ -1,10 +1,19 @@
 import { useEffect, useRef } from "react";
+import useSWR from "swr";
 import { ProductActionsContainer } from "./ProductActionsContainer";
+import "./ProductCard.scss";
 import { ProductDetailsContainer } from "./ProductDetailsContainer";
 import { ProductImageContainer } from "./ProductImageContainer";
-import "./ProductCard.scss";
+import clientServices from "services/clientServices";
+import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product: { _id: productId } }) {
+  const { data, error, isLoading } = useSWR(
+    `product-details-${productId}`,
+    () => clientServices.getProductDetails(productId)
+  );
+
+  const product = data?.record?.[0];
 
   const popupRef = useRef(null);
   const componentRef = useRef(null);
@@ -34,6 +43,8 @@ export default function ProductCard({ product }) {
       );
     };
   }, []);
+
+  if (isLoading || error) return <LoadingSpinner />;
 
   return (
     <div className="product-card" ref={componentRef}>

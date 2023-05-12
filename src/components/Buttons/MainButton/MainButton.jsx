@@ -19,4 +19,5 @@ const MainButton = ({
     </button>
   );
 };
+
 export default MainButton;

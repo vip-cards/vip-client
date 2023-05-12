@@ -60,32 +60,33 @@ export default function Branch() {
   }, [params]);
 
   if (loading) return <LoadingSpinner />;
+  
   return (
-    <div className="app-card-shadow page-wrapper pb-8 my-8 branch-container">
-      <header className="rounded-3xl border-b-2 p-4 gap-4 pb-4 flex flex-col justify-between relative border-0">
-        <div className="h-48 w-full bg-primary/20 overflow-hidden rounded-lg">
+    <div className="pb-8 my-8 app-card-shadow page-wrapper branch-container">
+      <header className="relative flex flex-col justify-between gap-4 p-4 pb-4 border-0 border-b-2 rounded-3xl">
+        <div className="w-full h-48 overflow-hidden rounded-lg bg-primary/20">
           <img
             src={branchhInfo?.cover?.Location}
             alt={getLocalizedWord(branchhInfo?.name) + " cover"}
-            className="w-full h-full object-cover"
+            className="object-cover w-full h-full"
           />
         </div>
-        <div className="relative pl-36 pt-2 pr-2">
-          <div className="w-28 h-28 overflow-hidden rounded-full absolute -top-14 left-7 border-white border-4 shadow">
+        <div className="relative pt-2 pr-2 pl-36">
+          <div className="absolute overflow-hidden border-4 border-white rounded-full shadow w-28 h-28 -top-14 left-7">
             <img
               src={branchhInfo?.image?.Location}
               alt={getLocalizedWord(branchhInfo?.name) + " img"}
             />
           </div>
-          <div className="flex flex-row gap-3 justify-start items-center mb-3">
-            <h4 className="text-primary font-semibold">
+          <div className="flex flex-row items-center justify-start gap-3 mb-3">
+            <h4 className="font-semibold text-primary">
               {getLocalizedWord(branchhInfo?.name)}
             </h4>
             <div>
               <RatingStars rate={branchhInfo?.rate ?? 0} />
             </div>
             <div className="ml-auto">
-              <span className="text-sm mr-2">
+              <span className="mr-2 text-sm">
                 {branchhInfo?.hasDelivery
                   ? "Delivery Available"
                   : "Delivery Not Available"}
@@ -101,12 +102,12 @@ export default function Branch() {
             </div>
           </div>
         </div>
-        <div className="flex flex-row gap-4 items-center ml-6 pr-2">
-          <p className="max-w-full text-ellipsis overflow-hidden whitespace-nowrap">
+        <div className="flex flex-row items-center gap-4 pr-2 ml-6">
+          <p className="max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
             {getLocalizedWord(branchhInfo?.description)}
           </p>
           <button
-            className="ml-auto flex flex-row gap-3 justify-center items-center cursor-pointer p-0 m-0 min-w-fit"
+            className="flex flex-row items-center justify-center gap-3 p-0 m-0 ml-auto cursor-pointer min-w-fit"
             onClick={startChatHandler}
           >
             <span className="font-semibold text-primary whitespace-nowrap">

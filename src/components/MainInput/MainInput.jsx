@@ -60,7 +60,7 @@ export default function MainInput({
       ref: inputRef,
       value: state[name],
       disabled: disableState,
-      className: "main-input",
+      className: "main-input !w-full",
       placeholder: " ",
 
       onBlur: () => toEdit && setDisabledState(true),
@@ -77,11 +77,11 @@ export default function MainInput({
         return (
           <Select
             className="multi-select"
-            // {...inputProps}
+            {...inputProps}
             isMulti
             options={list.map((li) => ({
               label: li[identifier][lang],
-              value: li._id,
+              value: li._id ?? li[identifier].en,
             }))}
             onChange={(selectedOptions) =>
               setState((state) => ({

@@ -50,7 +50,7 @@ export const cartServices = {
   },
 
   checkoutCart: async () => {
-    return (await Axios.post("/order/checkout", { client: userId })).data;
+    return (await Axios.post("/order/checkout", { client: userId() })).data;
   },
 
   applyCoupon: async ({ cartId, coupon }) => {

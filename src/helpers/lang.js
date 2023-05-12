@@ -31,7 +31,12 @@ export function switchLang(lang) {
   window.location.reload();
 }
 
-export function getLocalizedWord(word) {
+export function getLocalizedWord(word, defaultWord = "") {
   const lang = i18n.language;
-  return word?.[lang] ?? word?.en ?? word?.ar ?? word ?? "";
+  return (
+    word?.[lang] ??
+    word?.en ??
+    word?.ar ??
+    ((typeof word === "string" && word) || defaultWord)
+  );
 }

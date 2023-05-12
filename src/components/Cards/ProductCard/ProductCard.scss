@@ -43,30 +43,36 @@ $card-height: 350px;
     &.pointer {
       cursor: pointer;
     }
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, transparent 70%, black);
-    }
-    .offer-icon {
-      position: absolute;
-      color: white;
-      z-index: 1;
-      right: 1rem;
-      top: 83%;
-      font-weight: 600;
-    }
-    .limited-icon {
-      position: absolute;
-      color: white;
-      z-index: 1;
-      left: 1rem;
-      top: 83%;
-      font-weight: 600;
-      color: $warning;
-    }
     .product-img {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, transparent 70%, black);
+        z-index: 8;
+      }
+      & ~ .offer-icon {
+        position: absolute;
+        color: white;
+        right: 1rem;
+        top: 83%;
+        font-weight: 600;
+        z-index: 20;
+      }
+      & ~ .limited-icon {
+        z-index: 20;
+        position: absolute;
+        color: white;
+        left: 1rem;
+        top: 83%;
+        font-weight: 600;
+        color: $warning;
+      }
+    }
+    .product-img img {
       position: relative;
       width: 100%;
       height: 100%;

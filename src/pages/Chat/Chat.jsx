@@ -131,47 +131,49 @@ function Chat() {
   return (
     <div className="chat-page-container app-card-shadow max-w-[80vw] max-h-[80vh] min-w-[300px] mx-auto my-8">
       <div className="chat-sidebar">
-        {!!roomList.length &&
-          roomList?.map(({ members, _id: RoomId }) => {
-            const otherChatter =
-              members[
-                Object.keys(members).filter(
-                  (item) => members[item]._id !== user.userData._id
-                )[0]
-              ];
+        <div className=" overflow-y-scroll !h-min">
+          {!!roomList.length &&
+            roomList?.map(({ members, _id: RoomId }) => {
+              const otherChatter =
+                members[
+                  Object.keys(members).filter(
+                    (item) => members[item]._id !== user.userData._id
+                  )[0]
+                ];
 
-            return (
-              <div
-                key={otherChatter._id}
-                className={classNames(
-                  "flex flex-row items-center gap-3",
-                  "hover:bg-slate-300/80 cursor-pointer",
-                  "rounded-l-2xl px-3 py-2 max-w-full overflow-hidden",
-                  { "active-room-tab": activeRoom === RoomId }
-                )}
-                onClick={() => handleSelectRoom(RoomId)}
-              >
-                <span className="w-12 flex items-center border bg-slate-200/50 justify-center aspect-square rounded-2xl overflow-hidden">
-                  {otherChatter?.image ? (
-                    <img
-                      src={otherChatter?.image?.Location}
-                      alt=""
-                      className="max-h-full max-w-full object-cover h-full w-full"
-                    />
-                  ) : (
-                    <FontAwesomeIcon
-                      icon={faUserTie}
-                      size="xl"
-                      className="text-slate-800"
-                    />
+              return (
+                <div
+                  key={otherChatter._id}
+                  className={classNames(
+                    "flex flex-row items-center gap-3",
+                    "hover:bg-slate-300/80 cursor-pointer",
+                    "rounded-l-2xl px-3 py-2 max-w-full overflow-hidden",
+                    { "active-room-tab": activeRoom === RoomId }
                   )}
-                </span>
-                <span className="flex-grow text-lg whitespace-nowrap overflow-hidden text-ellipsis">
-                  {getLocalizedWord(otherChatter?.name)}
-                </span>
-              </div>
-            );
-          })}
+                  onClick={() => handleSelectRoom(RoomId)}
+                >
+                  <span className="w-12 flex items-center border bg-slate-200/50 justify-center aspect-square rounded-2xl overflow-hidden">
+                    {otherChatter?.image ? (
+                      <img
+                        src={otherChatter?.image?.Location}
+                        alt=""
+                        className="max-h-full max-w-full object-cover h-full w-full"
+                      />
+                    ) : (
+                      <FontAwesomeIcon
+                        icon={faUserTie}
+                        size="xl"
+                        className="text-slate-800"
+                      />
+                    )}
+                  </span>
+                  <span className="flex-grow text-lg whitespace-nowrap overflow-hidden text-ellipsis">
+                    {getLocalizedWord(otherChatter?.name)}
+                  </span>
+                </div>
+              );
+            })}
+        </div>
         <MainButton
           variant="secondary"
           className="whitespace-nowrap bg-white mt-auto w-fit mx-auto"

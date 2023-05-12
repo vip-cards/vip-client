@@ -44,7 +44,7 @@ function ProductDetails(props) {
 
   async function fetchProductData() {
     try {
-      const { data } = await clientServices.getProductDetails(productId);
+      const data = await clientServices.getProductDetails(productId);
       setProduct(data.record[0]);
     } catch (e) {}
   }

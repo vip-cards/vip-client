@@ -11,19 +11,29 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/scss"; // core Swiperimport "swiper/css/navigation";
 import "./index.scss";
+import { SWRConfig } from "swr";
 
 const helmetContext = {};
 const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container);
 
 document.getElementById("loader-container")?.remove();
-
+const swrOptions = Object.freeze({
+  revalidateIfStale: false,
+  revalidateOnMount: true,
+  revalidateOnFocus: false,
+  dedupingInterval: 5000,
+  loadingTimeout: 5000,
+  errorRetryCount: 5,
+});
 root.render(
   <BrowserRouter>
     <Provider store={store}>
       <HelmetProvider context={helmetContext}>
         <ErrorBoundary>
-          <App />
+          <SWRConfig value={swrOptions}>
+            <App />
+          </SWRConfig>
         </ErrorBoundary>
       </HelmetProvider>
     </Provider>

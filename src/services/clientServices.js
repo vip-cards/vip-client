@@ -6,6 +6,7 @@ import { authServices } from "./modules/authServices";
 import { cartServices } from "./modules/cartServices";
 import { jobsServices } from "./modules/jobsServices";
 import { postsServices } from "./modules/postsServices";
+import { productsServives } from "./modules/productsServices";
 import { professionsServices } from "./modules/professionsServices";
 import { servicesServices } from "./modules/servicesServices";
 import { wishServices } from "./modules/wishServices";
@@ -84,31 +85,6 @@ const clientServices = {
     return response;
   },
 
-  /*--- PRODUCTS ---*/
-  getProductDetails: async (productId) => {
-    const response = await Axios.get(`/product/get?_id=${productId}`);
-    return response;
-  },
-  listAllBranchProductsOfType: async (branchId, isHotDeal = false) => {
-    const response = await Axios.get(
-      `/product/list?branches=${branchId}&isHotDeal=${isHotDeal}`
-    );
-    return response;
-  },
-
-  listAllVendorProducts: async (vendorId) => {
-    const response = await Axios.get(`/product/list?vendor=${vendorId}`);
-    return response;
-  },
-
-  listAllProducts: async (params) =>
-    (await Axios.get(`/product/list`, { params })).data,
-
-  listAllProductsOfType: async (isHotDeal = false) => {
-    const response = await Axios.get(`/product/list?isHotDeal=${isHotDeal}`);
-    return response;
-  },
-
   listAllCategories: async (params) =>
     (await Axios.get(`/category/list`, { params })).data,
 
@@ -154,7 +130,9 @@ const clientServices = {
     const response = await Axios.post(`/review/create`, body);
     return response;
   },
+
   ...accountServices,
+  ...productsServives,
   ...cartServices,
   ...wishServices,
   ...authServices,

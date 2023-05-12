@@ -4,6 +4,7 @@ import clientServices from "../../services/clientServices";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import "./BranchProducts.scss";
 import { ProductCard } from "components/Cards";
+
 export default function BranchProducts() {
   const params = useParams();
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function BranchProducts() {
   const [branchProducts, setBranchProducts] = useState([]);
 
   function isHotDeal() {
-    return !!(location.pathname.includes("hot-deals"));
+    return !!location.pathname.includes("hot-deals");
   }
 
   async function getBranchProductsHandler() {
