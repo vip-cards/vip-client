@@ -10,6 +10,7 @@ import {
   faStopwatch,
 } from "@fortawesome/free-solid-svg-icons";
 import WishIcon from "components/WishIcon/WishIcon";
+import { useTranslation } from "react-i18next";
 
 export function ProductImageContainer({ product }) {
   const wishlistIds = useSelector((state) => state.wishlist.ids);
@@ -17,6 +18,7 @@ export function ProductImageContainer({ product }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const swiperRef = useRef(null);
+  const { t } = useTranslation();
 
   function toggleWishlist() {
     setDisabled(true);
@@ -55,7 +57,10 @@ export function ProductImageContainer({ product }) {
             )}
             %
           </span>
-          <span style={{ fontSize: "0.7rem", fontWeight: 400 }}> OFF</span>
+          <span style={{ fontSize: "0.7rem", fontWeight: 400 }}>
+            {" "}
+            {t("product.off")}
+          </span>
         </span>
       )}
       {product.isLimited && (
@@ -63,7 +68,7 @@ export function ProductImageContainer({ product }) {
           <span>
             <FontAwesomeIcon icon={faStopwatch} />
           </span>
-          <span> limited</span>
+          <span> {t("product.limited")}</span>
         </div>
       )}
       <span

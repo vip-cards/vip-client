@@ -3,6 +3,7 @@ import { MainButton } from "components/Buttons";
 import { MainInput } from "components/Inputs";
 import toastPopup from "helpers/toastPopup";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import clientServices from "services/clientServices";
@@ -12,6 +13,7 @@ export default function ApplyJobCreateJob() {
   const ref = useRef(null);
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [formError, setFormError] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -82,7 +84,7 @@ export default function ApplyJobCreateJob() {
     {
       name: "whatsapp",
       type: "phone",
-      required: true,
+      required: false,
       className: "whatsapp-input",
     },
     {
@@ -136,7 +138,7 @@ export default function ApplyJobCreateJob() {
         navigate("/jobs/apply");
       })
       .catch((e) =>
-        toastPopup.error(e?.response?.data?.error ?? "Something went wrong!")
+        toastPopup.error(t(e?.response?.data?.error ?? "somethingWentWrong"))
       )
       .finally(() => setLoading(false));
     // }
@@ -175,7 +177,7 @@ export default function ApplyJobCreateJob() {
           <p className="error-message">Please check the input values</p>
         )}
         <MainButton
-          text="confirm"
+          text={t("confirm")}
           type="submit"
           className="confirm"
           loading={loading}

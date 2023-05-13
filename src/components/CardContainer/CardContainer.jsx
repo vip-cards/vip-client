@@ -3,19 +3,22 @@ import clsx from "classnames";
 import "./CardContainer.scss";
 import { Helmet } from "react-helmet-async";
 import _ from "lodash";
+import { useTranslation } from "react-i18next";
 
 function CardContainer({ children, title, className }) {
+  const { t } = useTranslation();
+  const smallTitle = title.toLowerCase();
   return (
     <main
       className={clsx(className, "app-card-shadow page-wrapper mt-16 my-8")}
     >
       <Helmet>
-        <title>{title ? _.upperFirst(title) : "VIP"}</title>
+        <title>{title ? _.upperFirst(t(smallTitle)) : "VIP"}</title>
       </Helmet>
 
-      {title && (
+      {!!title && (
         <>
-          <h1 className="page-title">{title}</h1> <hr />
+          <h1 className="page-title">{t(smallTitle)}</h1> <hr />
         </>
       )}
       <div className="p-4">{children}</div>

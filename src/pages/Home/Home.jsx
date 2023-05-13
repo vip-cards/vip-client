@@ -5,19 +5,19 @@ import {
   ProductCard,
   VendorCard,
 } from "components/Cards";
+import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
+import Modal from "components/Modal/Modal";
 import NoData from "components/NoData/NoData";
 import { t } from "i18next";
 import dummyAds from "mock/ad.json";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import clientServices from "services/clientServices";
 import { SwiperSlide } from "swiper/react";
 import useSWR from "swr";
-import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
-import clientServices from "../../services/clientServices";
 import HomeSwiper from "./HomeSwiper";
 import SectionContainer from "./SectionContainer";
 
-import Modal from "components/Modal/Modal";
-import { useEffect, useMemo, useState } from "react";
 import classes from "./Home.module.scss";
 
 export default function Home() {
@@ -89,7 +89,7 @@ export default function Home() {
         return (
           <SwiperSlide
             key={ad._id}
-            className="w-full h-full rounded-xl shadow overflow-hidden"
+            className="w-full max-lg:max-h-52 h-full rounded-xl shadow overflow-hidden"
           >
             <a href={ad.link} target="_blank" rel="noreferrer noopener">
               <img

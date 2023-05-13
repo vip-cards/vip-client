@@ -25,7 +25,7 @@ export default function Wishlist() {
 
   if (loading && !list?.length) {
     return (
-      <CardContainer title="whishlist">
+      <CardContainer title="wishlist">
         <div className="flex flex-row flex-wrap gap-3 justify-around items-center p-8">
           {[...Array.from({ length: 4 }, (v, i) => i + 1)]?.map((item) => (
             <LoadingProductCard key={item} />
@@ -44,7 +44,7 @@ export default function Wishlist() {
     });
 
   return (
-    <CardContainer title="whishlist">
+    <CardContainer title="wishlist">
       <div className="flex flex-row flex-wrap gap-4 justify-around items-center p-8">
         {renderWishlist()}
       </div>

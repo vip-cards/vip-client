@@ -15,10 +15,9 @@ import { markAsSeen } from "services/socket/notification";
 import { selectNotification } from "store/notification-slice";
 import Dropdown from "../DropDown/DropDown";
 import SideNav from "./SideNav/SideNav";
-
-import { logout } from "store/actions";
 import { selectCartProducts } from "store/cart-slice";
 import "./Navbar.scss";
+import { logout } from "store/actions";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -63,14 +62,35 @@ export default function Navbar() {
     { link: `/${ROUTES.ADS.MAIN}`, title: "Ads" },
 
     { link: `/${ROUTES.CHAT}`, title: "chat" },
-    { link: `/${ROUTES.ACCOUNT}`, title: "myAccount" },
-    { link: `/${ROUTES.SUBSCRIBE}`, title: "VIP premium" },
+    // { link: `/${ROUTES.ACCOUNT}`, title: "myAccount" },
+    // { link: `/${ROUTES.SUBSCRIBE}`, title: "VIP premium" },
+    // {
+    //   link: `/${ROUTES.LOGOUT}`,
+    //   title: "logout",
+    //   onClick: (e) => {
+    //     logoutHandler(e);
+    //   },
+    // },
     {
-      link: `/${ROUTES.LOGOUT}`,
-      title: "logout",
-      onClick: (e) => {
-        logoutHandler(e);
-      },
+      title: "account",
+      withHover: false,
+      menu: [
+        { link: `/${ROUTES.ACCOUNT}`, title: "myAccount" },
+        { link: `/${ROUTES.SUBSCRIBE}`, title: "VIP premium" },
+        {
+          link: `/${ROUTES.LOGOUT}`,
+          title: "logout",
+          onClick: (e) => logoutHandler(e),
+        },
+      ],
+      listRender: (menu) =>
+        menu.map((subItem, idx) => (
+          <li key={subItem.title || "menu-item-" + idx}>
+            <Link to={subItem.link} onClick={subItem.onClick}>
+              {t(subItem?.title ?? "Menu Item")}
+            </Link>
+          </li>
+        )),
     },
   ];
 
@@ -84,6 +104,7 @@ export default function Navbar() {
   }
 
   function logoutHandler(e) {
+    console.log(e);
     e.preventDefault();
     logout();
     setViweAccountMenu((prevState) => !prevState);
@@ -95,7 +116,7 @@ export default function Navbar() {
   const NofificationRing = useCallback(
     () => (
       <Dropdown
-        className="ml-auto lg:ml-0"
+        className="ltr:ml-auto ltr:lg:ml-0 rtl:mr-auto rtl:lg:mr-0"
         menu={notificationList.list}
         left={lang === "en"}
         right={lang === "ar"}
@@ -128,7 +149,7 @@ export default function Navbar() {
         {!!notificationList.list.filter((item) => !item.seen).length && (
           <div className="h-2 w-2 bg-green-500 absolute right-0 top-0 animate-fade-pulse rounded-full"></div>
         )}
-        <Notification className="notification-icon" />
+        <Notification className="notification-icon hover:drop-shadow-xl hover:bg-white/10 transition-colors rounded-full" />
       </Dropdown>
     ),
     [notificationList]
@@ -170,27 +191,29 @@ export default function Navbar() {
       />
       <ul className="nav-menu rtl:mr-auto rtl:ml-0">
         {navItems.map((item, idx) => {
+          const defaultListRender = (menu) => (
+            <>
+              {menu.slice(0, 5).map((subItem, idx) => (
+                <li key={subItem.key || "menu-item-" + idx}>
+                  <Link to={subItem.to || ""}>
+                    {subItem.content || "Menu Item"}
+                  </Link>
+                </li>
+              ))}
+
+              {menu.length > 5 && (
+                <li>
+                  <Link to={item.link || ""}>{t("navbar.seeAll")} ...</Link>
+                </li>
+              )}
+            </>
+          );
           const content = (
             <Dropdown
-              withHover
-              menu={lists[item.title] || undefined}
-              listRender={(menu) => (
-                <>
-                  {menu.slice(0, 5).map((subItem, idx) => (
-                    <li key={subItem.key || "menu-item-" + idx}>
-                      <Link to={subItem.to || ""}>
-                        {subItem.content || "Menu Item"}
-                      </Link>
-                    </li>
-                  ))}
-
-                  {menu.length > 5 && (
-                    <li>
-                      <Link to={item.link || ""}>See All ...</Link>
-                    </li>
-                  )}
-                </>
-              )}
+              key={item.title ?? item.link ?? idx}
+              withHover={item.withHover ?? true}
+              menu={lists[item.title] ?? item.menu ?? undefined}
+              listRender={item.listRender ?? defaultListRender}
             >
               <NavLink
                 to={item.link}

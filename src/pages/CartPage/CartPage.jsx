@@ -1,14 +1,17 @@
 import { faCircleNotch, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconButton, MainButton } from "components/Buttons";
 import CartProduct from "components/CartProduct/CartProduct";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
-import i18n from "locales/i18n";
-import { Helmet } from "react-helmet-async";
-import { useDispatch, useSelector } from "react-redux";
-
-import { IconButton, MainButton } from "components/Buttons";
+import NoData from "components/NoData/NoData";
 import toastPopup from "helpers/toastPopup";
+import i18n from "locales/i18n";
 import { useEffect, useState } from "react";
+import Barcode from "react-barcode";
+import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import clientServices from "services/clientServices";
 import {
   applyCartCouponThunk,
@@ -16,12 +19,10 @@ import {
   getCurrentCartThunk,
 } from "store/cart-slice";
 import "./CartPage.scss";
-import NoData from "components/NoData/NoData";
-import { useNavigate } from "react-router";
-import Barcode from "react-barcode";
 
 export default function CartPage() {
   const lang = i18n.language;
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.userData);
   const [showCode, setShowCard] = useState(false);
@@ -42,7 +43,7 @@ export default function CartPage() {
         setShowCard(true);
         dispatch(getCurrentCartThunk());
       })
-      .catch(() => {
+      .catch((e) => {
         toastPopup.error("Something went wrong!");
       });
   }
@@ -61,19 +62,19 @@ export default function CartPage() {
   return (
     <main className="app-card-shadow cart-page">
       <Helmet>
-        <title>Shopping Cart</title>
+        <title>{t("shoppingCart")}</title>
       </Helmet>
-      <h1 className="title">Shopping Cart</h1>
+      <h1 className="title">{t("shoppingCart")}</h1>
       <h2 className="cart-branch">{cart?.branch?.name?.[lang]}</h2>
       <div className="cart-container">
         <div className="cart-details">
           <div className="w-full flex flex-row">
             <MainButton
               size="small"
-              className="ml-auto !rounded-lg w-fit !h-8 flex flex-row justify-center items-center gap-2 !px-4 !py-2 !bg-red-700 !text-white"
+              className="ml-auto !rounded-lg w-fit !h-8 flex ltr:flex-row rtl:flex-row-reverse justify-center items-center gap-2 !px-4 !py-2 !bg-red-700 !text-white"
               onClick={flushCartHandler}
             >
-              <span>Clear the cart</span>
+              <span>{t("clearCart")}</span>
               <IconButton icon={faTrashCan} />
             </MainButton>
           </div>
@@ -85,9 +86,9 @@ export default function CartPage() {
           ))}
         </div>
 
-        <div className="cart-summary">
+        <div className="cart-summary rtl:!border-l-0 rtl:border-r-black rtl:border-r">
           <div className="checkout-summary">
-            <h3 className="checkout-title">Checkout</h3>
+            <h3 className="checkout-title">{t("checkout")}</h3>
             <h4 className="checkout-total-title">Total:</h4>
             <h5 className="total-price">{cart.price.current} LE</h5>
             <div className="w-full p-2 border rounded-lg flex focus-within:border-blue-500 flex-row justify-between mb-3">
@@ -101,7 +102,7 @@ export default function CartPage() {
                 className="!text-xs !h-7 px-2 whitespace-nowrap"
                 onClick={handleCouponApply}
               >
-                Apply Coupon
+                {t("applyCoupon")}{" "}
               </MainButton>
             </div>
             <button
@@ -112,23 +113,23 @@ export default function CartPage() {
               {cartLoading ? (
                 <FontAwesomeIcon icon={faCircleNotch} className="fa-spin" />
               ) : (
-                <>order from branch</>
+                <>{t("orderFromBranch")}</>
               )}
             </button>
             {showCode && <Barcode value={userData.barcode} />}
           </div>
-          <div className="checkout-more">
-            <b className="vendor-title">Vendor</b>
+          <div className="checkout-more capitalize">
+            <b className="vendor-title">{t("vendor")}</b>
             <p className="vendor-name">{cart.vendor?.name?.[lang]}</p>
-            <b className="branch-title">Branch</b>
+            <b className="branch-title">{t("branch")}</b>
             <p className="branch-name">{cart?.branch?.name?.[lang]}</p>
-            <b className="original-price-title">Original price</b>
+            <b className="original-price-title">{t("originalPrice")}</b>
             <p className="original-price-value">{cart.price.original} LE</p>
-            <b className="original-price-title">Discount</b>
+            <b className="original-price-title">{t("discount")}</b>
             <p className="original-price-name">
               {cart.price.original - cart.price.current} LE
             </p>
-            <b>Points</b>
+            <b>{t("points")}</b>
             <p>{cart.points}</p>
           </div>
           {cart?.coupon && (

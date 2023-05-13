@@ -5,38 +5,40 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import { t } from "i18next";
-import HomeSwiper from "pages/Home/HomeSwiper";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
-import { selectAuth } from "store/auth-slice";
-import { SwiperSlide } from "swiper/react";
-import RatingStars from "../../components/RatingStars/RatingStars";
-import toastPopup from "../../helpers/toastPopup";
-import i18n from "../../locales/i18n";
-import clientServices from "../../services/clientServices";
-import { addToCartThunk } from "../../store/cart-slice";
-import { addWishProduct } from "../../store/wishlist-slice";
-import useSWR from "swr";
-import "./ProductDetails.scss";
 import { MainButton } from "components/Buttons";
 import { MainInput } from "components/Inputs";
+import RatingStars from "components/RatingStars/RatingStars";
 import { getLocalizedWord } from "helpers/lang";
+import toastPopup from "helpers/toastPopup";
+import i18n from "locales/i18n";
+import HomeSwiper from "pages/Home/HomeSwiper";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router";
+import clientServices from "services/clientServices";
+import { selectAuth } from "store/auth-slice";
+import { addToCartThunk, selectCartBranch } from "store/cart-slice";
+import { addWishProduct } from "store/wishlist-slice";
+import { SwiperSlide } from "swiper/react";
+import useSWR from "swr";
+
+import "./ProductDetails.scss";
 
 function ProductDetails(props) {
   const lang = i18n.language;
+  const { t } = useTranslation();
   const { productId } = useParams();
   const dispatch = useDispatch();
+  const auth = useSelector(selectAuth);
+  const cartBranch = useSelector(selectCartBranch);
+
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
   const [cart, setCart] = useState({ quantity: 0, branchId: -1 });
-  const cartBranch = useSelector((state) => state.cart.branch);
   const [review, setReview] = useState({});
   const [reviewFormExpand, setReviewFormExpand] = useState(false);
-
-  const auth = useSelector(selectAuth);
   const { data } = useSWR(`product-${productId}`, () =>
     clientServices.getProductReview(productId)
   );
@@ -56,7 +58,7 @@ function ProductDetails(props) {
       );
     }
     if (cartBranch?._id && cart.branchId !== cartBranch?._id) {
-      toastPopup.error("You can only choose the branch in your cart");
+      toastPopup.error(t("product.onlyYourCartBaranch"));
       return;
     }
     setLoading(true);
@@ -216,7 +218,7 @@ function ProductDetails(props) {
               )}
               onClick={addToWishlisthandler}
             >
-              add to wishlist
+              {t("product.addToWishlist")}{" "}
             </span>
           </div>
         </div>

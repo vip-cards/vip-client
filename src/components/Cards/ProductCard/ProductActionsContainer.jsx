@@ -7,13 +7,14 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { getLocalizedWord } from "helpers/lang";
-import { t } from "i18next";
 import { forwardRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCartThunk } from "store/cart-slice";
 import { addWishProduct } from "store/wishlist-slice";
 
 export const ProductActionsContainer = forwardRef(({ product }, ref) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [popupLoading, setPopupLoading] = useState(false);
   const [addToCartState, setAddToCartState] = useState({
@@ -68,7 +69,7 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
   const BranchSelectPopup = () => {
     return (
       <div className="branch-select-error">
-        <p>You can only choose the branch in your cart</p>
+        <p>{t("product.onlyYourCartBaranch")}</p>
         <div className="branch-select-error-actions">
           <button className="action-cancel" onClick={() => setError(false)}>
             <FontAwesomeIcon icon={faXmark} />
@@ -91,7 +92,7 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
                   });
               }}
             >
-              add to wishlist
+              {t("product.addToWishlist")}{" "}
             </button>
           )}
         </div>

@@ -3,6 +3,7 @@ import Search from "components/Inputs/Search/Search";
 import Pagination from "components/Pagination/Pagination";
 import { getLocalizedWord } from "helpers/lang";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router";
 import clientServices from "services/clientServices";
 import useSWRInfinite from "swr/infinite";
@@ -20,6 +21,7 @@ export default function PageQueryContainer({
   itemsCount,
   children,
 }) {
+  const { t } = useTranslation();
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const totalPages = Math.ceil(itemsCount / LIMIT);
@@ -90,7 +92,7 @@ export default function PageQueryContainer({
               <FilterGroup
                 filter={filter}
                 listApi={clientServices.listAllCategories}
-                title="category"
+                title={t("category")}
                 onToggle={handleFilterToggle}
               />
             </aside>
@@ -148,6 +150,8 @@ const FilterGroup = ({ title, filter, onToggle, listApi }) => {
     (index) => [`all-${title}s`, index + 1],
     ([, page]) => listApi({ type: "vendor", page, limit: LIMIT })
   );
+  const { t } = useTranslation();
+
   const list = listData ? listData.flatMap((arr) => arr.records) : [];
   const totalItems = listData ? listData?.[0].counts : 0;
 
@@ -177,7 +181,7 @@ const FilterGroup = ({ title, filter, onToggle, listApi }) => {
             className="border-2 border-gray-400 px-3 py-1 rounded-md mx-1"
             onClick={handleLoadMore}
           >
-            Load More
+            {t("loadMore")}{" "}
           </button>
         </div>
       )}

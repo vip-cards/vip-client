@@ -115,7 +115,7 @@ const cartSlice = createSlice({
       state.branch = payload.branch;
       state.price = { original: payload.originalTotal, current: payload.total };
       state.coupon = payload.coupon;
-      
+
       state.points = payload.points;
 
       state.loading = false;
@@ -173,4 +173,5 @@ const cartSlice = createSlice({
 
 export const { addToCart } = cartSlice.actions;
 export const selectCartProducts = (state) => state.cart.products;
+export const selectCartBranch = (state) => state.cart.branch;
 export const cartReducer = cartSlice.reducer;

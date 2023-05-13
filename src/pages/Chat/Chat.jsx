@@ -127,7 +127,7 @@ function Chat() {
 
   return (
     <div className="chat-page-container app-card-shadow max-w-[80vw] max-h-[80vh] min-w-[300px] mx-auto my-8">
-      <div className="chat-sidebar">
+      <div className="chat-sidebar rtl:!pl-0 rtl:pr-3">
         <div className=" overflow-y-scroll !h-min">
           {!!roomList.length &&
             roomList?.map(({ members, _id: RoomId }) => {
@@ -144,7 +144,7 @@ function Chat() {
                   className={classNames(
                     "flex flex-row items-center gap-3",
                     "hover:bg-slate-300/80 cursor-pointer",
-                    "rounded-l-2xl px-3 py-2 max-w-full overflow-hidden",
+                    "ltr:rounded-l-2xl rtl:rounded-r-2xl px-3 py-2 max-w-full overflow-hidden",
                     { "active-room-tab": activeRoom === RoomId }
                   )}
                   onClick={() => handleSelectRoom(RoomId)}

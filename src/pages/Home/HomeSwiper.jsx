@@ -1,3 +1,4 @@
+import i18n from "locales/i18n";
 import {
   A11y,
   Autoplay,
@@ -10,8 +11,10 @@ import {
 import { Swiper } from "swiper/react";
 
 const HomeSwiper = ({ children, ...props }) => {
+  const lang = i18n.language;
   return (
     <Swiper
+      dir={lang === "en" ? "ltr" : "rtl"}
       loop
       autoplay={process.env.NODE_ENV !== "production" ? false : { delay: 5000 }}
       onSlideChange={() => {}}
