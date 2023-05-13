@@ -1,13 +1,10 @@
-import {
-  faPaperPlane,
-  faUser,
-  faUserTie,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane, faUserTie } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { MainButton } from "components/Buttons";
 import Modal from "components/Modal/Modal";
 import { API_STATUS } from "constants";
+import dayjs from "dayjs";
 import { getLocalizedWord } from "helpers/lang";
 import toastPopup from "helpers/toastPopup";
 import { useEffect, useRef, useState } from "react";
@@ -23,8 +20,8 @@ import {
 import { EVENTS, socket } from "services/socket/config";
 import { selectAuth } from "store/auth-slice";
 import "./Chat.scss";
-import dayjs from "dayjs";
-
+import { ReactComponent as VendorLogo } from "assets/VIP-ICON-SVG/VendorLogo.svg";
+import { ReactComponent as VendorLogoOrange } from "assets/VIP-ICON-SVG/VendorLogoOrange.svg";
 const { CHAT, CONNECTION } = EVENTS;
 
 function Chat() {
@@ -140,7 +137,7 @@ function Chat() {
                     (item) => members[item]._id !== user.userData._id
                   )[0]
                 ];
-
+              console.log(otherChatter);
               return (
                 <div
                   key={otherChatter._id}
@@ -159,6 +156,8 @@ function Chat() {
                         alt=""
                         className="max-h-full max-w-full object-cover h-full w-full"
                       />
+                    ) : otherChatter.name.en.toLowerCase().includes("vip") ? (
+                      <VendorLogoOrange className="bg-white/90 p-1.5" />
                     ) : (
                       <FontAwesomeIcon
                         icon={faUserTie}
@@ -259,11 +258,7 @@ function Chat() {
                 className="flex-row w-full flex-nowrap flex items-center gap-3 hover:ring border-2 px-3 py-1 rounded-xl"
               >
                 <span className="w-12 flex  items-center border bg-slate-200/50 justify-center aspect-square rounded-3xl overflow-hidden">
-                  <FontAwesomeIcon
-                    icon={faUserTie}
-                    size="xl"
-                    className="text-slate-800"
-                  />
+                  <VendorLogoOrange className="text-slate-800 p-1.5" />
                 </span>
                 <span className="flex-grow text-lg whitespace-nowrap overflow-hidden text-ellipsis">
                   {getLocalizedWord(admin?.name)}

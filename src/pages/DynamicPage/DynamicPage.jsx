@@ -9,7 +9,6 @@ function DynamicPage() {
     clientServices.getPage(pageId)
   );
 
-  console.log(page);
   if (!page) return null;
   return (
     <div className="app-card-shadow m-8 max-w-4xl mx-auto p-8 min-h-[50vh]">

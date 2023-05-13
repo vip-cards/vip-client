@@ -1,10 +1,7 @@
 import { getLocalizedWord } from "helpers/lang";
-import i18n from "locales/i18n";
 import { Link } from "react-router-dom";
 
 export function ProductDetailsContainer({ product }) {
-  const lang = i18n.language;
-  console.log(product);
   return (
     <>
       <Link to={`/product/${product._id}`} className="product-title">
