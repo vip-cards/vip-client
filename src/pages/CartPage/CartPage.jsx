@@ -18,10 +18,13 @@ import {
 import "./CartPage.scss";
 import NoData from "components/NoData/NoData";
 import { useNavigate } from "react-router";
+import Barcode from "react-barcode";
 
 export default function CartPage() {
   const lang = i18n.language;
   const dispatch = useDispatch();
+  const userData = useSelector((state) => state.auth.userData);
+  const [showCode, setShowCard] = useState(false);
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
   const cartLoading = cart.loading;
@@ -35,7 +38,8 @@ export default function CartPage() {
       .checkoutCart()
       .then(() => {
         toastPopup.success("Order checkout done!");
-        navigate("/");
+        // navigate("/");
+        setShowCard(true);
         dispatch(getCurrentCartThunk());
       })
       .catch(() => {
@@ -111,6 +115,7 @@ export default function CartPage() {
                 <>order from branch</>
               )}
             </button>
+            {showCode && <Barcode value={userData.barcode} />}
           </div>
           <div className="checkout-more">
             <b className="vendor-title">Vendor</b>
