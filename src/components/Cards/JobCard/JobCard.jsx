@@ -29,11 +29,11 @@ const JobCard = ({ job, mutate }) => {
   return (
     <div
       key={job._id}
-      className="job-card cursor-pointer relative"
+      className="job-card cursor-pointer relative h-[150px]"
       onClick={() => navigate("/jobs/" + job._id)}
     >
       {createdByMe && (
-        <div className="absolute right-3 top-3 flex flex-col gap-3">
+        <div className="absolute ltr:right-3 top-3 flex flex-col gap-3 rtl:left-3">
           {/* <button
             className="text-amber-800 hover:text-amber-600 active:scale-90 transition-all duration-75
             "

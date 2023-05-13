@@ -1,5 +1,7 @@
+import classNames from "classnames";
 import { MainButton } from "components/Buttons";
 import { MainInput } from "components/Inputs";
+import toastPopup from "helpers/toastPopup";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
@@ -48,13 +50,13 @@ export default function ApplyJobCreateJob() {
       name: "description_en",
       type: "textarea",
       required: true,
-      className: "description-en-input",
+      className: "description-en-input row-span-2",
     },
     {
       name: "description_ar",
       type: "textarea",
       required: true,
-      className: "description-ar-input",
+      className: "description-ar-input row-span-2",
     },
     {
       name: "address_en",
@@ -117,23 +119,27 @@ export default function ApplyJobCreateJob() {
         whatsapp: jobForm.whatsapp,
         telegram: jobForm.telegram,
       },
+      category: jobForm.category,
     };
 
     // const { value, error } = createJobSchema.validate(newJobForm);
 
-    if (false) {
-      setFormError(true);
-    } else {
-      setFormError(false);
-      setLoading(true);
-      clientServices
-        .createJob(newJobForm)
-        .then((res) => {
-          toast.success("Created Successfully");
-          navigate("/jobs/apply");
-        })
-        .finally(() => setLoading(false));
-    }
+    // if (false) {
+    //   setFormError(true);
+    // } else {
+    setFormError(false);
+    setLoading(true);
+    clientServices
+      .createJob(newJobForm)
+      .then((res) => {
+        toast.success("Created Successfully");
+        navigate("/jobs/apply");
+      })
+      .catch((e) =>
+        toastPopup.error(e?.response?.data?.error ?? "Something went wrong!")
+      )
+      .finally(() => setLoading(false));
+    // }
   };
 
   useEffect(() => {
@@ -147,15 +153,17 @@ export default function ApplyJobCreateJob() {
 
   return (
     <form ref={ref} className="create-job-panel" onSubmit={onSubmitHandler}>
-      <div className="create-job-container">
-        {formData.map((formInput, index) => {
+      <div className="w-full grid mt-8  gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
+        {formData.map(({ className, ...formInput }, index) => {
+          const cls = classNames({ "col-span-1": true }, className);
+
           return (
             <MainInput
               key={index}
               name={formInput.name}
               type={formInput.type}
               required={formInput.required}
-              className={formInput.className}
+              className={cls}
               withLang={formInput.withlang}
               state={jobForm}
               setState={setJobForm}
