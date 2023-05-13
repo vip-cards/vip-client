@@ -35,9 +35,10 @@ function CreateAd() {
   const [ad, setAd] = useState({ vendor });
 
   const lang = i18n.language;
-  const withSize =
-    ad.type === "banner" || ad.type === "pop-up" || ad.type === "notification";
+  const withSize = ad.type === "banner";
+  //  || ad.type === "pop-up" || ad.type === "notification";
   const withProduct = ad.type === "promotion";
+  const withNotification = ad.type === "notification";
 
   const formDataList = [
     { name: "name", type: "text", required: false },
@@ -64,13 +65,12 @@ function CreateAd() {
       list: [
         { name: { en: "banner", ar: "banner" } },
         { name: { en: "pop-up", ar: "pop-up" } },
-        { name: { en: "promotion", ar: "promotion" } },
-        { name: { en: "appear-first", ar: "appear-first" } },
         { name: { en: "notification", ar: "notification" } },
       ],
       identifier: "name",
       required: true,
     },
+    { name: "notification", type: "textarea", required: false },
     {
       name: "product",
       type: "list",
@@ -103,7 +103,6 @@ function CreateAd() {
   const submitCreateAdHandler = async (e) => {
     e.preventDefault();
 
-    
     if (!uploadImage && withSize) {
       toastPopup.error("Please provide a valid image!");
       return;
@@ -146,6 +145,9 @@ function CreateAd() {
         from: ad.age_from ?? 15,
         to: ad.age_to ?? 70,
       },
+      notification: {
+        en: ad.notification,
+      },
     };
     try {
       const adData = await clientServices.createAd(mappedData);
@@ -156,7 +158,7 @@ function CreateAd() {
       toastPopup.success("Ad Created Successfully");
       navigate("/ads");
     } catch (e) {
-      toastPopup.error("Something went wrong");
+      toastPopup.error(e?.response?.data?.error ?? "something went wrong!");
     } finally {
       setLoading(false);
     }
@@ -175,6 +177,8 @@ function CreateAd() {
         {formDataList.map((formInput) => {
           if (formInput.name === "bannerSize" && !withSize) return null;
           if (formInput.name === "product" && !withProduct) return null;
+          if (formInput.name === "notification" && !withNotification)
+            return null;
 
           return (
             <MainInput
