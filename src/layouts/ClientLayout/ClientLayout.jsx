@@ -44,6 +44,7 @@ import "./ClientLayout.scss";
 import PostPage from "pages/Jobs/views/PostPage";
 import AccountCoupons from "views/AccountCoupons/AccountCoupons";
 import AccountLocation from "views/AccountLocation/AccountLocation";
+import DynamicPage from "pages/DynamicPage/DynamicPage";
 
 const PageLoader = () => (
   <div className="h-[80vh] w-[80vw] m-auto flex justify-center items-center">
@@ -76,6 +77,7 @@ export default function ClientLayout() {
             <Route path={`/${ROUTES.HOME}`} element={<Home />} />
             <Route path={`/${ROUTES.VENDORS}`} element={<Vendors />} />
             <Route path={`/${ROUTES.OFFERS}`} element={<Offers />} />
+            <Route path={`/${ROUTES.PAGE}/:pageId`} element={<DynamicPage />} />
             <Route
               path={`/${ROUTES.SUBSCRIBE}`}
               element={

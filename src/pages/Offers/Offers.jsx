@@ -25,7 +25,7 @@ export default function Offers({ isHotDeal = false }) {
   );
 
   const { data: categoriesData } = useSWR("all-categories", () =>
-    clientServices.listAllCategories()
+    clientServices.listAllCategories({ type: "product" })
   );
 
   const { data: vendorsData } = useSWR("all-vendors", () =>

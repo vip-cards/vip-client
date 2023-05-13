@@ -18,14 +18,20 @@ const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container);
 
 document.getElementById("loader-container")?.remove();
-const swrOptions = Object.freeze({
-  revalidateIfStale: false,
-  revalidateOnMount: true,
-  revalidateOnFocus: false,
-  dedupingInterval: 5000,
-  loadingTimeout: 5000,
-  errorRetryCount: 5,
-});
+
+const isDev = () =>
+  !process.env.NODE_ENV || process.env.NODE_ENV === "development";
+
+const swrOptions = isDev()
+  ? {}
+  : Object.freeze({
+      revalidateIfStale: false,
+      revalidateOnMount: true,
+      revalidateOnFocus: false,
+      dedupingInterval: 5000,
+      loadingTimeout: 5000,
+      errorRetryCount: 5,
+    });
 root.render(
   <BrowserRouter>
     <Provider store={store}>

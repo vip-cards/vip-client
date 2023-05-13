@@ -131,6 +131,21 @@ const clientServices = {
     return response;
   },
 
+  listAllPages: async () => {
+    const response = await Axios.get(`/page/list`);
+    return response?.data?.records ?? response?.data?.record;
+  },
+
+  getPage: async (_id) => {
+    const response = await Axios.get(`/page/get`, { params: { _id } });
+    return response?.data?.records?.[0] ?? response?.data?.record[0];
+  },
+
+  listAllSettings: async () => {
+    const response = await Axios.get(`/setting/get`);
+    return response?.data?.records ?? response?.data?.record;
+  },
+
   ...accountServices,
   ...productsServives,
   ...cartServices,
