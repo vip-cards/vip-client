@@ -1,15 +1,17 @@
 import { MainButton } from "components/Buttons";
 import { MainInput } from "components/Inputs";
 import { getLocalizedWord } from "helpers/lang";
+import toastPopup from "helpers/toastPopup";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import clientServices from "services/clientServices";
 import { selectAuth } from "store/auth-slice";
 import useSWR from "swr";
 
 export default function JobPage() {
   const auth = useSelector(selectAuth);
+  const navigate = useNavigate();
   const { id } = useParams();
   const [cv, setCV] = useState("");
   const {
@@ -20,12 +22,20 @@ export default function JobPage() {
   const job = jobData?.record[0] ?? {};
 
   const applyJobHandler = () => {
-    const data = clientServices.applyToJob(id, {
-      _id: id,
-      name: auth.userData.name,
-      profession: auth.userData.profession,
-      link: cv,
-    });
+    const data = clientServices
+      .applyToJob(id, {
+        _id: auth.userId,
+        name: auth.userData.name,
+        profession: auth.userData.profession,
+        link: cv,
+      })
+      .then(() => {
+        toastPopup.success("Applied Succefully!");
+        navigate("/jobs");
+      })
+      .catch((e) =>
+        toastPopup.error(e?.response?.data?.error ?? "something went wrong!")
+      );
   };
   if (isLoading)
     return (
