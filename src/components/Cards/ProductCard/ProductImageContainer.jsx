@@ -4,7 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { addWishProduct, removeWishProduct } from "store/wishlist-slice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleNotch, faStopwatch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleNotch,
+  faShop,
+  faStopwatch,
+} from "@fortawesome/free-solid-svg-icons";
 import WishIcon from "components/WishIcon/WishIcon";
 
 export function ProductImageContainer({ product }) {
@@ -31,6 +35,55 @@ export function ProductImageContainer({ product }) {
       });
     }
   }
+  const renderImages = product.image.map((image, index) => (
+    <SwiperSlide key={image?.Location ?? index}>
+      <div className="product-img">
+        <img
+          src={image?.Location ?? ""}
+          alt="product-img"
+          // className="product-img"
+          onClick={() => navigate("/product/" + product._id)}
+        />
+      </div>
+      {!!(product.originalPrice - product.price) && (
+        <span className="offer-icon">
+          <span>
+            {parseInt(
+              ((product.originalPrice - product.price) /
+                product.originalPrice) *
+                100
+            )}
+            %
+          </span>
+          <span style={{ fontSize: "0.7rem", fontWeight: 400 }}> OFF</span>
+        </span>
+      )}
+      {product.isLimited && (
+        <div className="limited-icon">
+          <span>
+            <FontAwesomeIcon icon={faStopwatch} />
+          </span>
+          <span> limited</span>
+        </div>
+      )}
+      <span
+        className={`add-to-wishlist ${disabled ? "disabled" : ""}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleWishlist();
+        }}
+      >
+        {disabled ? (
+          <FontAwesomeIcon icon={faCircleNotch} className="fa-spin" />
+        ) : (
+          <WishIcon
+            wished={wishlistIds.includes(product._id)}
+            disabled={disabled}
+          />
+        )}
+      </span>
+    </SwiperSlide>
+  ));
 
   return (
     <Swiper
@@ -40,55 +93,15 @@ export function ProductImageContainer({ product }) {
       spaceBetween={10}
       className="product-img-container pointer"
     >
-      {product.image.map((image, index) => (
-        <SwiperSlide key={image?.Location ?? index}>
-          <div className="product-img">
-            <img
-              src={image?.Location ?? ""}
-              alt="product-img"
-              // className="product-img"
-              onClick={() => navigate("/product/" + product._id)}
-            />
+      {product.image.length ? (
+        renderImages
+      ) : (
+        <SwiperSlide>
+          <div className="flex flex-row justify-center items-center text-secondary/80 w-full h-full">
+            <FontAwesomeIcon icon={faShop} size="4x" />
           </div>
-          {!!(product.originalPrice - product.price) && (
-            <span className="offer-icon">
-              <span>
-                {parseInt(
-                  ((product.originalPrice - product.price) /
-                    product.originalPrice) *
-                    100
-                )}
-                %
-              </span>
-              <span style={{ fontSize: "0.7rem", fontWeight: 400 }}> OFF</span>
-            </span>
-          )}
-          {product.isLimited && (
-            <div className="limited-icon">
-              <span>
-                <FontAwesomeIcon icon={faStopwatch} />
-              </span>
-              <span> limited</span>
-            </div>
-          )}
-          <span
-            className={`add-to-wishlist ${disabled ? "disabled" : ""}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleWishlist();
-            }}
-          >
-            {disabled ? (
-              <FontAwesomeIcon icon={faCircleNotch} className="fa-spin" />
-            ) : (
-              <WishIcon
-                wished={wishlistIds.includes(product._id)}
-                disabled={disabled}
-              />
-            )}
-          </span>
         </SwiperSlide>
-      ))}
+      )}
     </Swiper>
   );
 }

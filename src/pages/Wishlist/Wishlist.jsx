@@ -1,5 +1,6 @@
 import CardContainer from "components/CardContainer/CardContainer";
 import { ProductCard } from "components/Cards";
+import LoadingProductCard from "components/Cards/ProductCard/LoadingProductCard";
 import { listRenderFn } from "helpers/rednerFn";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -27,10 +28,7 @@ export default function Wishlist() {
       <CardContainer title="whishlist">
         <div className="flex flex-row flex-wrap gap-3 justify-around items-center p-8">
           {[...Array.from({ length: 4 }, (v, i) => i + 1)]?.map((item) => (
-            <div
-              key={item}
-              className="w-[250px] h-[350px] bg-primary/80 rounded-lg animate-pulse delay-75"
-            ></div>
+            <LoadingProductCard key={item} />
           ))}
         </div>
       </CardContainer>

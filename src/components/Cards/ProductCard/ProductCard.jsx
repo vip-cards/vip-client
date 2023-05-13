@@ -6,6 +6,8 @@ import { ProductDetailsContainer } from "./ProductDetailsContainer";
 import { ProductImageContainer } from "./ProductImageContainer";
 import clientServices from "services/clientServices";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
+import CardContainer from "components/CardContainer/CardContainer";
+import LoadingProductCard from "./LoadingProductCard";
 
 export default function ProductCard({ product: { _id: productId } }) {
   const { data, error, isLoading } = useSWR(
@@ -44,7 +46,7 @@ export default function ProductCard({ product: { _id: productId } }) {
     };
   }, []);
 
-  if (isLoading || error) return <LoadingSpinner />;
+  if (isLoading || error) return <LoadingProductCard />;
 
   return (
     <div className="product-card" ref={componentRef}>
