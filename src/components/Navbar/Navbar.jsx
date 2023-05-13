@@ -1,25 +1,24 @@
 import { useCallback, useEffect, useState } from "react";
 
-import classNames from "classnames";
-import { ROUTES } from "constants/routes";
-import { t } from "i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { markAsSeen } from "services/socket/notification";
-import { selectNotification } from "store/notification-slice";
 import { ReactComponent as NavbarLogo } from "assets/VIP-ICON-SVG/NavbarLogo.svg";
 import { ReactComponent as BurgerMenuIcon } from "assets/VIP-ICON-SVG/burgerMenu.svg";
 import { ReactComponent as Notification } from "assets/VIP-ICON-SVG/notification.svg";
+import classNames from "classnames";
+import { ROUTES } from "constants/routes";
 import { switchLang } from "helpers/lang";
+import { t } from "i18next";
 import i18n from "locales/i18n";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import clientServices from "services/clientServices";
-import { authActions } from "store/auth-slice";
+import { markAsSeen } from "services/socket/notification";
+import { selectNotification } from "store/notification-slice";
 import Dropdown from "../DropDown/DropDown";
 import SideNav from "./SideNav/SideNav";
 
-import "./Navbar.scss";
-import { selectCartProducts } from "store/cart-slice";
 import { logout } from "store/actions";
+import { selectCartProducts } from "store/cart-slice";
+import "./Navbar.scss";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -98,7 +97,8 @@ export default function Navbar() {
       <Dropdown
         className="ml-auto lg:ml-0"
         menu={notificationList.list}
-        left
+        left={lang === "en"}
+        right={lang === "ar"}
         listRender={(menu) =>
           menu.slice(0, 10).map((item, idx) => (
             <li
