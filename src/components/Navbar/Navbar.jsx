@@ -112,7 +112,12 @@ export default function Navbar() {
               {!item.seen && (
                 <span className="ml-auto absolute w-2 h-2 bg-primary rounded-full right-2 top-2 animate-pulse"></span>
               )}
-              <a href={item.link} target="_blank" rel="noopener noreferrer">
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => handleNotificationClick(item._id, item.link)}
+              >
                 {item.text.slice(0, 30) +
                   (item.text.length > 30 ? "..." : "") ?? "No text"}
               </a>
