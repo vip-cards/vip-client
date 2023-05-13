@@ -168,7 +168,7 @@ export default function Navbar() {
           navigate("/");
         }}
       />
-      <ul className="nav-menu">
+      <ul className="nav-menu rtl:mr-auto rtl:ml-0">
         {navItems.map((item, idx) => {
           const content = (
             <Dropdown

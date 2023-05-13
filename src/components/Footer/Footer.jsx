@@ -1,27 +1,33 @@
-import React from "react";
-import "./Footer.scss";
-import { ReactComponent as Facebook } from "../../assets/VIP-ICON-SVG/facebook.svg";
-import { ReactComponent as Twitter } from "../../assets/VIP-ICON-SVG/twitter.svg";
-import { ReactComponent as Instagram } from "../../assets/VIP-ICON-SVG/instagram.svg";
 import dayjs from "dayjs";
+import "./Footer.scss";
 
-import useSWR from "swr";
-import clientServices from "services/clientServices";
-import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebookSquare,
   faInstagramSquare,
   faTwitterSquare,
 } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import clientServices from "services/clientServices";
+import useSWR from "swr";
+import { useEffect, useState } from "react";
+import { chatServices } from "services/modules/chatServices";
+import { createRoom } from "services/socket/chat";
 
 export default function Footer() {
+  const [adminsList, setAdminsList] = useState([]);
+
   const { t } = useTranslation();
   const { data: pages } = useSWR("pages", () => clientServices.listAllPages());
   const { data: settings } = useSWR("footer-links", () =>
     clientServices.listAllSettings()
   );
+
+  useEffect(() => {
+    chatServices.getAdmins().then((data) => setAdminsList(data.record));
+  });
+
   return (
     <footer className="text-gray-600 body-font bg-primary mt-8">
       <div className="container px-5 py-12 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
@@ -42,16 +48,24 @@ export default function Footer() {
                     </Link>
                   </li>
                 ))}
+              <li>
+                <button
+                  onClick={() => createRoom({ admin: adminsList?.[0]?._id })}
+                  className="text-white/70 hover:text-white capitalize"
+                >
+                  Chat with us
+                </button>
+              </li>
             </nav>
           </div>
-          <div className="lg:w-1/4 md:w-1/2 w-full px-4">
+          <div className="lg:w-1/4 md:w-1/2 w-fit px-4">
             <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">
               Follow Us
             </h2>
-            <nav className="list-none mb-10">
+            <nav className="list-none mb-10 w-fit">
               <li>
                 <a
-                  className="text-white/70 hover:text-secondary flex flex-row gap-4"
+                  className="text-white/70 hover:text-secondary flex flex-row gap-4 items-center w-fit"
                   href={settings?.facebook}
                 >
                   <FontAwesomeIcon icon={faFacebookSquare} />
