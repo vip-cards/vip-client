@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import "./DropDown.scss";
 import classNames from "classnames";
 import { useOutsideClick } from "helpers/useOuterClick";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 
 const Dropdown = ({
   menu,
@@ -11,6 +13,7 @@ const Dropdown = ({
   itemRender,
   listRender,
   className,
+  withCaret = false,
   withHover = false,
 }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -45,7 +48,19 @@ const Dropdown = ({
       onClick={toggleMenu}
       ref={wrapperRef}
     >
-      {children && <TriggerComponent />}
+      {children && (
+        <span className="flex items-center flex-row">
+          <TriggerComponent />
+          {withCaret && (
+            <FontAwesomeIcon
+              icon={showMenu ? faCaretUp : faCaretDown}
+              className={`text-white/70 ${
+                showMenu ? "animate-up" : "animate-down"
+              }`}
+            />
+          )}
+        </span>
+      )}
       {showMenu && (
         <ul style={{ transform: `translate(${transormX}, 0)` }}>
           {listRender ? listRender(menu) : menu.map(itemRender)}

@@ -9,7 +9,7 @@ import { MainButton } from "components/Buttons";
 import { MainInput } from "components/Inputs";
 import RatingStars from "components/RatingStars/RatingStars";
 import { getLocalizedWord } from "helpers/lang";
-import toastPopup from "helpers/toastPopup";
+import toastPopup, { responseErrorToast } from "helpers/toastPopup";
 import i18n from "locales/i18n";
 import HomeSwiper from "pages/Home/HomeSwiper";
 import { useEffect, useState } from "react";
@@ -58,7 +58,7 @@ function ProductDetails(props) {
       );
     }
     if (cartBranch?._id && cart.branchId !== cartBranch?._id) {
-      toastPopup.error(t("product.onlyYourCartBaranch"));
+      toastPopup.error(t("onlyYourCartBaranch"));
       return;
     }
     setLoading(true);
@@ -107,9 +107,7 @@ function ProductDetails(props) {
       .then(() => {
         toastPopup.success("Review Added!");
       })
-      .catch(() => {
-        toastPopup.error("Something Went Wrong!");
-      })
+      .catch(responseErrorToast)
       .finally(() => {
         setReview({});
         setReviewFormExpand(false);
@@ -218,7 +216,7 @@ function ProductDetails(props) {
               )}
               onClick={addToWishlisthandler}
             >
-              {t("product.addToWishlist")}{" "}
+              {t("addToWishlist")}{" "}
             </span>
           </div>
         </div>
@@ -247,7 +245,7 @@ function ProductDetails(props) {
       >
         <div className="bg-white p-6 rounded-lg shadow-md max-w-[50rem] mx-auto px-12 py-8">
           <h2 className="text-xl font-bold mb-4">Write a review</h2>
-          <form onClick={handleReviewSubmit} className="flex flex-col gap-4">
+          <form onSubmit={handleReviewSubmit} className="flex flex-col gap-4">
             {formDataList.map((formInput) => {
               return (
                 <div className="mb-4" key={formInput.name}>

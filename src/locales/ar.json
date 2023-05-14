@@ -1,19 +1,36 @@
 {
   "accountDetails": "تفاصيل الحساب",
+  "account": "الحساب",
   "addBranch": "اضافة فرع",
   "addedToWishlist": "تم إضافة المنتج إلى قائمة الرغبات",
   "addHotDeal": "اضافة عرض ساخن",
   "addImage": "اضافة صورة",
+  "addToWishlist": "إضافة إلى قائمة الرغبات",
   "addOffer": "اضافة عرض",
   "addToCart": "إضافة إلى السلة",
-  "Ads": "إعلان",
+  "Ads": "إعلانات",
+  "ads": "إعلانات",
+  "age": "العمر",
   "alreadyHaveAccount": "لديك حساب بالفعل؟",
   "Apply for a job": "التقدم للوظائف",
   "applyCoupon": "استخدام كوبون",
+  "age_from": "من عمر",
+  "age_to": "إلى عمر",
+  "accepted": "مقبول",
+  "availableToChat": "متاح للمحادثة",
+  "address": {
+    "en": "عنوان الخدمة بالإنجليزية",
+    "ar": "عنوان الخدمة بالعربية"
+  },
 
   "birthDate": "تاريخ الميلاد",
   "branch": "فرع",
   "branches": "الفروع",
+  "banner": "بانر",
+  "bannerSize": "حجم الإعلان",
+  "both": "كلاهما",
+  "barcode": "باركود",
+
   "cart": "السلة",
   "casheir": "كاشير",
   "categories": "التصنيفات",
@@ -22,16 +39,35 @@
   "confirm": "تأكيد",
   "Create Job": "كتابة إعلان وظيفة",
   "CreateAccount": "تسجيل حساب جديد",
+  "createAd": "إضافة إعلان جديد",
+  "create_ad": "إضافة إعلان جديد",
   "checkout": "إتمام العملية",
   "clearCart": "إفراغ سلة المشتريات",
+  "country": "البلد",
+  "city": "المدينة",
+  "choose": "اختر",
+  "createRoom": "فتح غرفة محادثة",
+  "chatWithUs": "تواصل معنا",
+  "createService": "إضافة خدمة",
+  "coupons": "كوبونات",
+  "Coupons": "كوبونات",
 
   "discount": "الخصم",
+  "delivaryAvailable": "التوصيل متاح",
+  "delivaryNotAvailable": "التوصيل غير متاح",
+  "description": {
+    "en": "الوصف بالإنجليزية",
+    "ar": "الوصف بالعربية"
+  },
 
   "edit": "تعديل",
   "editBranch": "تعديل الفرع",
   "editHotDeal": "تعديل العرض الساخن",
   "editOffer": "تعديل العرض",
   "email": "البريد الالكتروني",
+  "editOrCreateAd": "قم بتعديل أو إضافة إعلان جديد",
+  "endDate": "تاريخ الانتهاء",
+
   "facebook": "فيسبوك",
   "female": "أنثى",
   "footer": {
@@ -41,15 +77,22 @@
     "followUs": "تابعنا",
     "links": "الروابط"
   },
+
   "gender": "النوع",
   "google": "جوجل",
+
   "Hiring Employees": "تعيين موظفين",
   "home": "الرئيسية",
+  "Home": "الرئيسية",
   "hotDeals": "العروض الحصرية",
-  "jobs": "الوظائف",
 
+  "interests": "الاهتمامات",
+
+  "jobs": "الوظائف",
   "jobTitle_en": "عنوان الوظيفة بالإنجليزية",
   "jobTitle_ar": "عنوان الوظيفة بالعربية",
+  "jobRemovedSuccessfully": "تم حذف إعلان الوظيفة بنجاح",
+
   "companyName_en": "اسم الشركة بالإنجليزية",
   "companyName_ar": "اسم الشركة بالعربية",
   "description_en": "الوصف بالإنجليزية",
@@ -62,18 +105,28 @@
   "login": "تسجيل الدخول",
   "loginAsGuest": "الدخول كـضيف",
   "logout": "تسجيل الخروج",
+  "limited": "لفترة محدودة",
+  "location": "الموقع",
+
   "male": "ذكر",
   "myAccount": "حسابي",
+  "manageYourAds": "تحكم في إعلاناتك",
+  "moveToWishlist": "نقل إلى قائمة الرغبات",
+
+  "name": "الاسم",
   "name_ar": "الاسم باللغة العربية",
   "name_en": "الاسم باللغة الإنجليزية",
+  "notRegistered": "غير مسجل؟",
+  "notification": "إشعار",
   "navbar": {
     "seeAll": "شاهد الجميع"
   },
-  "notRegistered": "غير مسجل؟",
+
   "offers": "الخدمات",
   "orders": "الطلبات",
   "orderFromBranch": "الطلب من الفرع",
-
+  "off": "خصم",
+  "onlyYourCartBaranch": "يمكنك اختيار منتج من الفرع الحالي لسلة مشترياتك",
   "originalPrice": "السعر الأصلي",
 
   "password": "كلمة المرور",
@@ -82,18 +135,27 @@
   "telegram": "رقم التليجرام",
   "previousOrders": "الطلبات السابقة",
   "points": "النقاط",
-  "product": {
-    "addToWishlist": "إضافة إلى قائمة الرغبات",
-    "limited": "لفترة محدودة",
-    "off": "خصم",
-    "onlyYourCartBaranch": "يمكنك اختيار منتج من الفرع الحالي لسلة مشترياتك"
+  "previousAds": "الإعلانات السابقة",
+  "previous_ads": "الإعلانات السابقة",
+  "product": "المنتج",
+  "popup": "إعلان منبثق",
+  "pop-up": "إعلان منبثق",
+  "pending": "بالانتظار",
+  "profession": "المهنة",
+  "providerName": {
+    "en": "اسم مزود الخدمة بالإنجليزية",
+    "ar": "اسم مزود الخدمة بالعربية"
   },
 
   "re-password": "إعادة كلمة المرور",
-  "remove": "ازالة",
+  "rating": "التقييم",
+  "remove": "إزالة",
   "removedFromWishlist": "تم إزالة المنتج من قائمة الرغبات",
   "reset": "إعادة التعيين",
   "resetPassword": " إعادة ضبط كلمة المرور",
+  "review": "تقييم",
+  "reviews": "تقييمات",
+
   "Search": "البحث",
   "search": "البحث",
   "send": "إرسال",
@@ -109,10 +171,22 @@
   "sortByRating": "ترتيب حسب التقييم",
   "somethingWentWrong": "!حدث خطأ ما",
   "shoppingCart": "سلة المشتريات",
+  "startDate": "تاريخ البداية",
+  "serviceName": {
+    "en": "اسم الخدمة بالإنجليزية",
+    "ar": "اسم الخدمة بالعربية"
+  },
+
+  "total": "المجموع",
+  "type": "النوع",
+
   "vendor": "معرض",
   "vendors": "المعارض",
   "View Created Job": "عرض إعلانات الوظائف الخاصة بي",
   "VIP premium": "الاشتراك المميز",
+  "viewCreatedServices": "عرض الخدمات المضافة",
+
   "What Are You Looking For": "عن ماذا تبحث",
-  "wishlist": "الرغبات"
+  "wishlist": "الرغبات",
+  "writeAReview": "ضع تقييمًا"
 }

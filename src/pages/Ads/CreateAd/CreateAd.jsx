@@ -1,3 +1,5 @@
+import { getCities, getCountries } from "country-city-multilanguage";
+
 import { MainButton } from "components/Buttons";
 import CardContainer from "components/CardContainer/CardContainer";
 import { ImageEdit, MainInput } from "components/Inputs";
@@ -10,7 +12,6 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import clientServices from "services/clientServices";
 
-import { getCities, getCountries } from "country-city-multilanguage";
 import "./CreateAd.scss";
 
 /***
@@ -27,7 +28,6 @@ function CreateAd() {
   const navigate = useNavigate();
   const [countries, cities, setCountryId] = useAddressList();
   const user = useSelector((state) => state.auth.userData);
-  const userRole = useSelector((state) => state.auth.userRole);
   const vendor = useSelector((state) => state.auth.vendorId);
   const [loading, setLoading] = useState(false);
   const [productList, setProductList] = useState([]);
@@ -63,9 +63,9 @@ function CreateAd() {
       name: "type",
       type: "list",
       list: [
-        { name: { en: "banner", ar: "banner" } },
-        { name: { en: "pop-up", ar: "pop-up" } },
-        { name: { en: "notification", ar: "notification" } },
+        { _id: "banner", name: { en: "banner", ar: "بانر" } },
+        { _id: "pop-up", name: { en: "pop-up", ar: "إعلان منبثق" } },
+        { _id: "notification", name: { en: "notification", ar: "إشعار" } },
       ],
       identifier: "name",
       required: true,
@@ -82,9 +82,9 @@ function CreateAd() {
       name: "bannerSize",
       type: "list",
       list: [
-        { name: { en: "small" } },
-        { name: { en: "medium" } },
-        { name: { en: "large" } },
+        { _id: "small", name: { en: "small", ar: "صغير" } },
+        { _id: "medium", name: { en: "medium", ar: "وسط" } },
+        { _id: "large", name: { en: "large", ar: "كبير" } },
       ],
       identifier: "name",
       required: true,
@@ -133,9 +133,9 @@ function CreateAd() {
       ar: getCities(countryIdx, "ar").find((cty) => cty.value === cityIdx)
         .label,
     };
-
+    const { age_from, age_to, ...restAd } = ad;
     const mappedData = {
-      ...ad,
+      ...restAd,
       startDate: ad.startDate ?? new Date(),
       endDate: ad.endDate ?? new Date(),
       country: country,
@@ -145,9 +145,12 @@ function CreateAd() {
         from: ad.age_from ?? 15,
         to: ad.age_to ?? 70,
       },
-      notification: {
-        en: ad.notification,
-      },
+
+      ...(ad.notification && {
+        notification: {
+          en: ad.notification,
+        },
+      }),
     };
     try {
       const adData = await clientServices.createAd(mappedData);
@@ -172,7 +175,7 @@ function CreateAd() {
   }, [ad.country, countries, lang, setCountryId]);
 
   return (
-    <CardContainer className="create-ad-page" title={"create new ad"}>
+    <CardContainer className="create-ad-page" title={"create_ad"}>
       <form className="create-ad-form" onSubmit={submitCreateAdHandler}>
         {formDataList.map((formInput) => {
           if (formInput.name === "bannerSize" && !withSize) return null;
@@ -215,7 +218,7 @@ function CreateAd() {
         <div className="main-input-label">
           <MainButton
             className="w-full"
-            text={t("confirmAd")}
+            text={t("confirm")}
             loading={loading}
             type="submit"
           />

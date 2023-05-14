@@ -1,32 +1,22 @@
-import {
-  faCaretDown,
-  faCommentDots,
-  faTruckFast,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCommentDots, faTruckFast } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { BranchCard, CategoryCard, ProductCard } from "components/Cards";
+import Carousel from "components/Carousel/Carousel";
+import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import NoData from "components/NoData/NoData";
+import Pagination from "components/Pagination/Pagination";
 import RatingStars from "components/RatingStars/RatingStars";
-import { getLocalizedWord } from "helpers/lang";
-import { listRenderFn } from "helpers/rednerFn";
-import { t } from "i18next";
+import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router";
+import clientServices from "services/clientServices";
 import { createRoom } from "services/socket/chat";
 import useSWR from "swr";
-import Carousel from "../../components/Carousel/Carousel";
-import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
-import clientServices from "../../services/clientServices";
-
-import { MainButton } from "components/Buttons";
-import { MainInput } from "components/Inputs";
-import Modal from "components/Modal/Modal";
-import Pagination from "components/Pagination/Pagination";
-import { useSelector } from "react-redux";
-import { selectAuth } from "store/auth-slice";
-import "./Vendor.scss";
 import ReviewModal from "./ReviewModal";
+
+import "./Vendor.scss";
 
 const LIMIT = 9;
 
@@ -34,6 +24,7 @@ export default function Vendor() {
   const params = useParams();
   const navigate = useNavigate();
   const vendorId = params.vendorId;
+  const { t } = useTranslation();
 
   const initialQuerParams = { page: 1, limit: LIMIT, vendor: vendorId };
 
@@ -116,8 +107,8 @@ export default function Vendor() {
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="relative pl-36 pt-2 pr-2">
-          <div className="w-28 h-28 overflow-hidden rounded-full absolute -top-16 left-7 border-white border-4 shadow">
+        <div className="relative ltr:pl-36 pt-2 ltr:pr-2 rtl:pl-2 rtl:pr-36">
+          <div className="w-28 h-28 overflow-hidden rounded-full absolute -top-16 ltr:left-7 rtl:right-7 border-white border-4 shadow">
             <img
               src={vendor?.image?.Location}
               alt={getLocalizedWord(vendor?.name) + " img"}
@@ -131,14 +122,14 @@ export default function Vendor() {
               onClick={() => setReviewModelVisible(true)}
               className="flex flex-row text-primary gap-3 items-center hover:underline"
             >
-              <RatingStars rate={vendor?.rate ?? 0} /> ({reviews?.length ?? 0}{" "}
-              reviews)
+              <RatingStars rate={vendor?.rate ?? 0} /> (
+              {getLocalizedNumber(reviews?.length)} {t("reviews")})
             </button>
             <div className="ml-auto">
-              <span className="text-sm mr-2">
+              <span className="text-sm ltr:mr-2 rtl:ml-2">
                 {vendor?.hasDelivery
-                  ? "Delivery Available"
-                  : "Delivery Not Available"}
+                  ? t("delivaryAvailable")
+                  : t("delivaryNotAvailable")}
               </span>
               <FontAwesomeIcon
                 icon={faTruckFast}
@@ -151,16 +142,16 @@ export default function Vendor() {
             </div>
           </div>
         </div>
-        <div className="flex flex-row gap-4 items-center ml-6 pr-2">
+        <div className="flex flex-row gap-4 items-center ltr:ml-6 rtl:mr-6 ltr:pr-2 rtl:pl-2">
           <p className="max-w-full text-ellipsis overflow-hidden whitespace-nowrap">
             {getLocalizedWord(vendor?.description)}
           </p>
           <button
-            className="ml-auto flex flex-row gap-3 justify-center items-center cursor-pointer p-0 m-0 min-w-fit"
+            className="flex flex-row items-center justify-center gap-3 p-0 m-0 ltr:ml-auto rtl:mr-auto cursor-pointer min-w-fit"
             onClick={startChatHandler}
           >
             <span className="font-semibold text-primary whitespace-nowrap">
-              Chat with us
+              {t("chatWithUs")}
             </span>
             <FontAwesomeIcon
               icon={faCommentDots}

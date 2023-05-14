@@ -40,3 +40,12 @@ export function getLocalizedWord(word, defaultWord = "") {
     ((typeof word === "string" && word) || defaultWord)
   );
 }
+
+export function getLocalizedNumber(price = 0, isPrice = false) {
+  const lang = i18n.language;
+
+  return new Intl.NumberFormat(`${lang}-EG`, {
+    ...(isPrice && { style: "currency", currency: "EGP" }),
+    maximumFractionDigits: 2,
+  }).format(price);
+}

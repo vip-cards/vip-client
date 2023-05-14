@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import i18n from "../locales/i18n";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -34,5 +35,8 @@ const toastPopup = {
     });
   },
 };
+
+export const responseErrorToast = (e) =>
+  toastPopup.error(t(e?.response?.data?.error ?? "somethingWentWrong"));
 
 export default toastPopup;

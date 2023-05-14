@@ -2,6 +2,8 @@
   "a ___": "A",
   "accountDetails": "Account Details",
   "addBranch": "Add Branch",
+  "account": "Account",
+  "age": "Age",
   "addedToWishlist": "Product added to wishlist",
   "addHotDeal": "Add Hot Deal",
   "addImage": "Add Image",
@@ -10,14 +12,27 @@
   "address_en": "Address",
   "addToCart": "Add to cart",
   "Ads": "Ads",
+  "ads": "Ads",
+  "addToWishlist": "Add to wishlist",
   "alreadyHaveAccount": "Already have an account?",
   "Apply for a job": "Apply for a job",
   "applyCoupon": "Apply Coupon",
+  "age_from": "From Age",
+  "age_to": "To Age",
+  "accepted": "Accepted",
+  "availableToChat": "Available to chat",
+  "address": {
+    "en": "Address in english",
+    "ar": "Address in arabic"
+  },
 
   "b ___": "B",
   "birthDate": "Birth Date",
   "branch": "Branch",
   "branches": "Branches",
+  "bannerSize": "Banner Size",
+  "both": "both",
+  "banner": "banner",
 
   "c ___": "C",
   "cart": "Cart",
@@ -29,13 +44,27 @@
   "confirm": "Confirm",
   "Create Job": "Create Job",
   "CreateAccount": "Create An Account",
+  "createAd": "Create Ad",
   "checkout": "Checkout",
   "clearCart": "clear the cart",
+  "country": "Country",
+  "city": "City",
+  "choose": "Choose",
+  "createRoom": "Create chat room",
+  "chatWithUs": "Chat with us",
+  "createService": "Create a service",
+  "coupons": "coupons",
 
   "d ___": "D",
-  "description_ar": "الوصف",
+  "description_ar": "Description in arabic",
   "description_en": "Description",
   "discount": "Discount",
+  "delivaryAvailable": "Delivery Available",
+  "delivaryNotAvailable": "Delivery Not Available",
+  "description": {
+    "en": "Description in english",
+    "ar": "Description in arabic"
+  },
 
   "e ___": "E",
   "edit": "Edit",
@@ -43,6 +72,8 @@
   "editHotDeal": "Edit Hot Deal",
   "editOffer": "Edit Offer",
   "email": "Email",
+  "editOrCreateAd": "Edit or create a new Ad",
+  "endDate": "End Date",
 
   "f ___": "F",
   "facebook": "Facebook",
@@ -66,6 +97,9 @@
 
   "j ___": "J",
   "jobs": "Jobs",
+  "jobRemovedSuccessfully": "job Removed Successfully!",
+  "jobTitle_en": "Job title in english",
+  "jobTitle_ar": "Job title in arabic",
 
   "l ___": "L",
   "lang": "العربية",
@@ -73,43 +107,58 @@
   "login": "Login",
   "loginAsGuest": "Login as a guest",
   "logout": "Logout",
+  "limited": "limited",
+  "location": "location",
 
   "m ___": "M",
   "male": "Male",
   "myAccount": "Account",
+  "manageYourAds": "Manage your Ads",
+  "moveToWishlist": "Move to wishlist",
 
   "n ___": "N",
+  "name": "Name",
   "name_ar": "Name in arabic",
   "name_en": "Name in english",
+  "notRegistered": "Not Registered?",
+  "notification": "Notification",
   "navbar": {
     "seeAll": "See All"
   },
-  "notRegistered": "Not Registered?",
 
   "o ___": "O",
   "offers": "Offers",
   "orders": "Orders",
   "orderFromBranch": "Order from branch",
   "originalPrice": "Original price",
+  "off": "OFF",
+  "onlyYourCartBaranch": "You can only choose the branch in your cart",
 
   "p ___": "P",
   "password": "Password",
   "phone": "Phone Number",
   "previousOrders": "Previous Orders",
   "points": "points",
-  "product": {
-    "addToWishlist": "Add to wish list",
-    "limited": "limited",
-    "off": "OFF",
-    "onlyYourCartBaranch": "You can only choose the branch in your cart"
+  "previousAds": "Previous Ads",
+  "previous_ads": "Previous Ads",
+  "product": "Product",
+  "popup": "Popup",
+  "pop-up": "Popup",
+  "pending": "Pending",
+  "providerName": {
+    "en": "Provider name in english",
+    "ar": "Provide name in arabic"
   },
 
   "r ___": "R",
   "re-password": "Re-enter Password",
+  "rating": "Rating",
   "remove": "Remove",
   "removedFromWishlist": "Product removed from wishlist",
   "reset": "Reset",
   "resetPassword": "Reset Password",
+  "review": "Review",
+  "reviews": "Reviews",
 
   "s ___": "S",
   "Search": "Search",
@@ -127,14 +176,25 @@
   "sortByRating": "Sort by rating",
   "somethingWentWrong": "Something went wrong!",
   "shoppingCart": "Shopping Cart",
+  "startDate": "Start Date",
+  "serviceName": {
+    "en": "Service name in english",
+    "ar": "Service name in arabic"
+  },
+
+  "t ___": "T",
+  "total": "total",
+  "type": "Type",
 
   "v ___": "V",
   "vendor": "Vendor",
   "vendors": "Vendors",
   "View Created Job": "View Created Job",
   "VIP premium": "VIP premium",
+  "viewCreatedServices": "View Created Services",
 
   "w ___": "W",
   "What Are You Looking For": "What Are You Looking For",
-  "wishlist": "Wishlist"
+  "wishlist": "Wishlist",
+  "writeAReview": "Write a review"
 }

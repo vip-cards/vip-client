@@ -4,6 +4,8 @@ import {
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getLocalizedNumber } from "helpers/lang";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import i18n from "../../locales/i18n";
 import { addToCartThunk, removeFromCartThunk } from "../../store/cart-slice";
@@ -12,6 +14,7 @@ import "./CartProduct.scss";
 export default function CartProduct({ item }) {
   const lang = i18n.language;
   const product = item.product;
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const cartLoading = useSelector((state) => state.cart.loading);
 
@@ -53,11 +56,11 @@ export default function CartProduct({ item }) {
           onClick={() => removeItemHandler(+item.quantity)}
           disabled={cartLoading}
         >
-          remove
+          {t("remove")}
         </span>
         &nbsp;-&nbsp;
         <span onClick={moveToWishlistHandler} disabled={cartLoading}>
-          move to wishlist
+          {t("moveToWishlist")}{" "}
         </span>
       </div>
       <div className="cart-product-qty">
@@ -71,7 +74,7 @@ export default function CartProduct({ item }) {
             <FontAwesomeIcon icon={faMinus} className="fa-xs" />
           )}
         </span>
-        <span className="qty-value">{item.quantity}</span>
+        <span className="qty-value">{getLocalizedNumber(item.quantity)}</span>
         <span
           className={`qty-action ${cartLoading ? "disabled" : ""}`}
           onClick={() => cartLoading || addItemHandler()}
@@ -83,7 +86,9 @@ export default function CartProduct({ item }) {
           )}
         </span>
       </div>
-      <div className="cart-product-total">{item.total} LE</div>
+      <div className="cart-product-total">
+        {getLocalizedNumber(item.total, true)}
+      </div>
     </div>
   );
 }

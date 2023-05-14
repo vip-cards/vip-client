@@ -94,6 +94,8 @@ export default function MainInput(props) {
             showIcon
             minDate={new Date()}
             calendarStartDay={6}
+            showYearDropdown
+            showMonthDropdown
             {...inputProps}
             {...(inputProps.dateRange === "start"
               ? {

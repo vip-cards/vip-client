@@ -8,6 +8,7 @@ import RatingStars from "components/RatingStars/RatingStars";
 import { getLocalizedWord } from "helpers/lang";
 import toastPopup from "helpers/toastPopup";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import clientServices from "services/clientServices";
@@ -16,6 +17,7 @@ import { selectAuth } from "store/auth-slice";
 const ReviewModal = ({ isVisible, onClose, reviews }) => {
   const auth = useSelector(selectAuth);
   const { vendorId } = useParams();
+  const { t } = useTranslation();
 
   const [reviewFormExpand, setReviewFormExpand] = useState(false);
   const [review, setReview] = useState({});
@@ -76,7 +78,7 @@ const ReviewModal = ({ isVisible, onClose, reviews }) => {
         onClick={() => setReviewFormExpand((p) => !p)}
       >
         <div className="flex flex-row flwx-nowrap w-full justify-between items-center">
-          <span>Write a review ?</span>
+          <span>{t("writeAReview")} ?</span>
           <FontAwesomeIcon
             icon={faCaretDown}
             className={classNames("transition-transform", {
@@ -88,12 +90,12 @@ const ReviewModal = ({ isVisible, onClose, reviews }) => {
       <section
         className={classNames("px-8 overflow-hidden transition-all", {
           "h-0": !reviewFormExpand,
-          "h-[35rem]": reviewFormExpand,
+          "h-[40rem] overflow-y-scroll": reviewFormExpand,
         })}
       >
         <div className="bg-white p-6 rounded-lg shadow-md max-w-[50rem] mx-auto px-12 py-8">
           <h2 className="text-xl font-bold mb-4">Write a review</h2>
-          <form onClick={handleReviewSubmit} className="flex flex-col gap-4">
+          <form onSubmit={handleReviewSubmit} className="flex flex-col gap-4">
             {formDataList.map((formInput) => {
               return (
                 <div className="mb-4" key={formInput.name}>
@@ -111,7 +113,7 @@ const ReviewModal = ({ isVisible, onClose, reviews }) => {
               );
             })}
 
-            <MainButton type="submit">Submit</MainButton>
+            <MainButton type="submit">{t("confirm")}</MainButton>
           </form>
         </div>
       </section>

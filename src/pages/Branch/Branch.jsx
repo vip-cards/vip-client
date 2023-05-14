@@ -13,11 +13,13 @@ import "./Branch.scss";
 import { getLocalizedWord } from "helpers/lang";
 import classNames from "classnames";
 import RatingStars from "components/RatingStars/RatingStars";
+import { useTranslation } from "react-i18next";
 
 export default function Branch() {
   const params = useParams();
   const branchId = params.branchId;
   const vendorId = params.vendorId;
+  const { t } = useTranslation();
 
   const [loading, setLoading] = useState(false);
   let routes;
@@ -60,7 +62,7 @@ export default function Branch() {
   }, [params]);
 
   if (loading) return <LoadingSpinner />;
-  
+
   return (
     <div className="pb-8 my-8 app-card-shadow page-wrapper branch-container">
       <header className="relative flex flex-col justify-between gap-4 p-4 pb-4 border-0 border-b-2 rounded-3xl">
@@ -107,11 +109,11 @@ export default function Branch() {
             {getLocalizedWord(branchhInfo?.description)}
           </p>
           <button
-            className="flex flex-row items-center justify-center gap-3 p-0 m-0 ml-auto cursor-pointer min-w-fit"
+            className="flex flex-row items-center justify-center gap-3 p-0 m-0 ltr:ml-auto rtl:mr-auto cursor-pointer min-w-fit"
             onClick={startChatHandler}
           >
             <span className="font-semibold text-primary whitespace-nowrap">
-              Chat with us
+              {t("chatWithUs")}
             </span>
             <FontAwesomeIcon
               icon={faCommentDots}

@@ -1,4 +1,4 @@
-import { getLocalizedWord } from "helpers/lang";
+import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
 import { Link } from "react-router-dom";
 
 export function ProductDetailsContainer({ product }) {
@@ -12,12 +12,14 @@ export function ProductDetailsContainer({ product }) {
       </p>
       <div className="product-price">
         <div className="current-price">
-          <span className="number">{product.price}</span>&nbsp;
-          <span className="text">EGP</span>
+          <span className="number px-1">
+            {getLocalizedNumber(product.price, true)}
+          </span>
         </div>
-        <div className="origional-price">
-          <span className="number">{product.originalPrice}</span>&nbsp;
-          <span className="text">EGP</span>
+        <div className="origional-price px-1">
+          <span className="number">
+            {getLocalizedNumber(product.originalPrice, true)}
+          </span>
         </div>
       </div>
     </>

@@ -59,7 +59,7 @@ export function ProductImageContainer({ product }) {
           </span>
           <span style={{ fontSize: "0.7rem", fontWeight: 400 }}>
             {" "}
-            {t("product.off")}
+            {t("off")}
           </span>
         </span>
       )}
@@ -68,7 +68,7 @@ export function ProductImageContainer({ product }) {
           <span>
             <FontAwesomeIcon icon={faStopwatch} />
           </span>
-          <span> {t("product.limited")}</span>
+          <span> {t("limited")}</span>
         </div>
       )}
       <span

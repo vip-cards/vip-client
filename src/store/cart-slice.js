@@ -172,6 +172,7 @@ const cartSlice = createSlice({
 });
 
 export const { addToCart } = cartSlice.actions;
+export const selectCart = (state) => state.cart;
 export const selectCartProducts = (state) => state.cart.products;
 export const selectCartBranch = (state) => state.cart.branch;
 export const cartReducer = cartSlice.reducer;

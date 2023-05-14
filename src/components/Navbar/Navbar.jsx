@@ -8,16 +8,17 @@ import { ROUTES } from "constants/routes";
 import { switchLang } from "helpers/lang";
 import { t } from "i18next";
 import i18n from "locales/i18n";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import clientServices from "services/clientServices";
 import { markAsSeen } from "services/socket/notification";
+import { logout } from "store/actions";
+import { selectCartProducts } from "store/cart-slice";
 import { selectNotification } from "store/notification-slice";
 import Dropdown from "../DropDown/DropDown";
 import SideNav from "./SideNav/SideNav";
-import { selectCartProducts } from "store/cart-slice";
+
 import "./Navbar.scss";
-import { logout } from "store/actions";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -27,8 +28,6 @@ export default function Navbar() {
   const [showSideMenu, setShowSideMenu] = useState(false);
   const notificationList = useSelector(selectNotification);
   const cartProducts = useSelector(selectCartProducts);
-
-  const dispatch = useDispatch();
 
   const lang = i18n.language;
 
@@ -60,20 +59,12 @@ export default function Navbar() {
       ),
     },
     { link: `/${ROUTES.ADS.MAIN}`, title: "Ads" },
-
     { link: `/${ROUTES.CHAT}`, title: "chat" },
-    // { link: `/${ROUTES.ACCOUNT}`, title: "myAccount" },
-    // { link: `/${ROUTES.SUBSCRIBE}`, title: "VIP premium" },
-    // {
-    //   link: `/${ROUTES.LOGOUT}`,
-    //   title: "logout",
-    //   onClick: (e) => {
-    //     logoutHandler(e);
-    //   },
-    // },
     {
       title: "account",
+
       withHover: false,
+      withCaret: true,
       menu: [
         { link: `/${ROUTES.ACCOUNT}`, title: "myAccount" },
         { link: `/${ROUTES.SUBSCRIBE}`, title: "VIP premium" },
@@ -104,7 +95,6 @@ export default function Navbar() {
   }
 
   function logoutHandler(e) {
-    console.log(e);
     e.preventDefault();
     logout();
     setViweAccountMenu((prevState) => !prevState);
@@ -189,7 +179,7 @@ export default function Navbar() {
           navigate("/");
         }}
       />
-      <ul className="nav-menu rtl:mr-auto rtl:ml-0">
+      <ul className="nav-menu rtl:mr-auto rtl:!ml-0">
         {navItems.map((item, idx) => {
           const defaultListRender = (menu) => (
             <>
@@ -212,13 +202,14 @@ export default function Navbar() {
             <Dropdown
               key={item.title ?? item.link ?? idx}
               withHover={item.withHover ?? true}
+              withCaret={item.withCaret}
               menu={lists[item.title] ?? item.menu ?? undefined}
               listRender={item.listRender ?? defaultListRender}
             >
               <NavLink
                 to={item.link}
                 className={(navData) =>
-                  navData.isActive ? "active nav-link" : "nav-link"
+                  item.link && navData.isActive ? "active nav-link" : "nav-link"
                 }
                 onClick={item.onClick}
               >

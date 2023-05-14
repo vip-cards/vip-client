@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { MainButton } from "components/Buttons";
 import { MainInput } from "components/Inputs";
-import toastPopup from "helpers/toastPopup";
+import toastPopup, { responseErrorToast } from "helpers/toastPopup";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
@@ -137,9 +137,7 @@ export default function ApplyJobCreateJob() {
         toast.success("Created Successfully");
         navigate("/jobs/apply");
       })
-      .catch((e) =>
-        toastPopup.error(t(e?.response?.data?.error ?? "somethingWentWrong"))
-      )
+      .catch(responseErrorToast)
       .finally(() => setLoading(false));
     // }
   };

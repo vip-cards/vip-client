@@ -2,12 +2,14 @@ import { MainButton } from "components/Buttons";
 import { MainInput } from "components/Inputs";
 import { getLocalizedWord } from "helpers/lang";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import clientServices from "services/clientServices";
 import useSWR from "swr";
 
 export default function CreateServiceForm() {
+  const { t } = useTranslation();
   const ref = useRef(null);
   const userId = localStorage.getItem("userId");
   const location = useLocation();
@@ -15,12 +17,7 @@ export default function CreateServiceForm() {
   const [formError, setFormError] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [jobForm, setJobForm] = useState({ client: userId, category: [] });
-  const {
-    data: { records = [] } = {},
-    error,
-    isLoading,
-    isValidating,
-  } = useSWR("service-category", () =>
+  const { data: { records = [] } = {} } = useSWR("service-category", () =>
     clientServices.listAllCategories({ type: "service" })
   );
 
@@ -70,7 +67,7 @@ export default function CreateServiceForm() {
     {
       name: "address.ar",
       type: "text",
-      required: true,
+      required: false,
       className: "address-input-ar",
     },
     {
@@ -169,7 +166,7 @@ export default function CreateServiceForm() {
           <p className="error-message">Please check the input values</p>
         )}
       </div>
-      <MainButton text="confirm" type="submit" className="confirm" />
+      <MainButton text={t("confirm")} type="submit" className="confirm" />
     </form>
   );
 }

@@ -6,7 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import { getLocalizedWord } from "helpers/lang";
+import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
 import { forwardRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,7 +69,7 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
   const BranchSelectPopup = () => {
     return (
       <div className="branch-select-error">
-        <p>{t("product.onlyYourCartBaranch")}</p>
+        <p>{t("onlyYourCartBaranch")}</p>
         <div className="branch-select-error-actions">
           <button className="action-cancel" onClick={() => setError(false)}>
             <FontAwesomeIcon icon={faXmark} />
@@ -92,7 +92,7 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
                   });
               }}
             >
-              {t("product.addToWishlist")}{" "}
+              {t("addToWishlist")}{" "}
             </button>
           )}
         </div>
@@ -112,7 +112,9 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
           >
             <FontAwesomeIcon icon={faMinus} className="fa-xs" />
           </span>
-          <span className="add-field-input">{addToCartState.count}</span>
+          <span className="add-field-input">
+            {getLocalizedNumber(addToCartState.count)}
+          </span>
           <span className="add-field-plus" onClick={() => changeCount("plus")}>
             <FontAwesomeIcon icon={faPlus} className="fa-xs" />
           </span>

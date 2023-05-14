@@ -24,7 +24,7 @@ const PreviousAds = () => {
   };
 
   return (
-    <CardContainer className="previous-ads-page" title={"Previous Ads"}>
+    <CardContainer className="previous-ads-page" title={"Previous_Ads"}>
       <div className="flex flex-row gap-6 flex-wrap w-full justify-center items-center p-4">
         {render()}
       </div>

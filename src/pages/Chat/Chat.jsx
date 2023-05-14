@@ -1,5 +1,6 @@
 import { faPaperPlane, faUserTie } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ReactComponent as VendorLogoOrange } from "assets/VIP-ICON-SVG/VendorLogoOrange.svg";
 import classNames from "classnames";
 import { MainButton } from "components/Buttons";
 import Modal from "components/Modal/Modal";
@@ -8,6 +9,7 @@ import dayjs from "dayjs";
 import { getLocalizedWord } from "helpers/lang";
 import toastPopup from "helpers/toastPopup";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { chatServices } from "services/modules/chatServices";
@@ -20,11 +22,11 @@ import {
 import { EVENTS, socket } from "services/socket/config";
 import { selectAuth } from "store/auth-slice";
 import "./Chat.scss";
-import { ReactComponent as VendorLogo } from "assets/VIP-ICON-SVG/VendorLogo.svg";
-import { ReactComponent as VendorLogoOrange } from "assets/VIP-ICON-SVG/VendorLogoOrange.svg";
+
 const { CHAT, CONNECTION } = EVENTS;
 
 function Chat() {
+  const { t } = useTranslation();
   const chatRef = useRef(null);
   const user = useSelector(selectAuth);
   const location = useLocation();
@@ -178,7 +180,7 @@ function Chat() {
           className="whitespace-nowrap bg-white mt-auto w-fit mx-auto"
           onClick={handleCreateRoomModal}
         >
-          Create Room
+          {t("createRoom")}{" "}
         </MainButton>
       </div>
       <div
@@ -245,7 +247,7 @@ function Chat() {
       <Modal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
-        title="Available to chat"
+        title={t("availableToChat")}
         className="max-h-48 overflow-auto p-3"
       >
         <div className="chat-modal">

@@ -4,32 +4,36 @@ import { IconButton, MainButton } from "components/Buttons";
 import CartProduct from "components/CartProduct/CartProduct";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import NoData from "components/NoData/NoData";
-import toastPopup from "helpers/toastPopup";
+import toastPopup, { responseErrorToast } from "helpers/toastPopup";
 import i18n from "locales/i18n";
 import { useEffect, useState } from "react";
 import Barcode from "react-barcode";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
 import clientServices from "services/clientServices";
 import {
   applyCartCouponThunk,
   flushCart,
   getCurrentCartThunk,
+  selectCart,
 } from "store/cart-slice";
 import "./CartPage.scss";
+import { getLocalizedNumber } from "helpers/lang";
 
 export default function CartPage() {
   const lang = i18n.language;
+
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
   const userData = useSelector((state) => state.auth.userData);
-  const [showCode, setShowCard] = useState(false);
-  const navigate = useNavigate();
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector(selectCart);
   const cartLoading = cart.loading;
+
+  const [showCode, setShowCard] = useState(false);
   const [coupon, setCoupon] = useState("");
+
   function flushCartHandler() {
     dispatch(flushCart(cart._id));
   }
@@ -39,13 +43,10 @@ export default function CartPage() {
       .checkoutCart()
       .then(() => {
         toastPopup.success("Order checkout done!");
-        // navigate("/");
         setShowCard(true);
         dispatch(getCurrentCartThunk());
       })
-      .catch((e) => {
-        toastPopup.error("Something went wrong!");
-      });
+      .catch(responseErrorToast);
   }
   function handleCouponApply() {
     dispatch(applyCartCouponThunk({ cartId: cart._id, coupon }));
@@ -55,7 +56,7 @@ export default function CartPage() {
     dispatch(getCurrentCartThunk());
   }, []);
 
-  if (cartLoading) return <LoadingSpinner />;
+  if (cartLoading && !cart) return <LoadingSpinner />;
 
   if (!cart._id) return <NoData />;
 
@@ -89,8 +90,10 @@ export default function CartPage() {
         <div className="cart-summary rtl:!border-l-0 rtl:border-r-black rtl:border-r">
           <div className="checkout-summary">
             <h3 className="checkout-title">{t("checkout")}</h3>
-            <h4 className="checkout-total-title">Total:</h4>
-            <h5 className="total-price">{cart.price.current} LE</h5>
+            <h4 className="checkout-total-title capitalize">{t("total")}:</h4>
+            <h5 className="total-price">
+              {getLocalizedNumber(cart.price.current, true)}
+            </h5>
             <div className="w-full p-2 border rounded-lg flex focus-within:border-blue-500 flex-row justify-between mb-3">
               <input
                 className="outline-none ring-0 border-0 "
@@ -124,13 +127,18 @@ export default function CartPage() {
             <b className="branch-title">{t("branch")}</b>
             <p className="branch-name">{cart?.branch?.name?.[lang]}</p>
             <b className="original-price-title">{t("originalPrice")}</b>
-            <p className="original-price-value">{cart.price.original} LE</p>
+            <p className="original-price-value">
+              {getLocalizedNumber(cart.price.original, true)}
+            </p>
             <b className="original-price-title">{t("discount")}</b>
             <p className="original-price-name">
-              {cart.price.original - cart.price.current} LE
+              {getLocalizedNumber(
+                Math.abs(cart.price.original - cart.price.current),
+                true
+              )}
             </p>
             <b>{t("points")}</b>
-            <p>{cart.points}</p>
+            <p>{getLocalizedNumber(cart.points)}</p>
           </div>
           {cart?.coupon && (
             <div>

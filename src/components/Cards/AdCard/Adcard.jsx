@@ -13,8 +13,10 @@ import dayjs from "dayjs";
 import { getLocalizedWord } from "helpers/lang";
 
 import "./AdCard.scss";
+import { useTranslation } from "react-i18next";
 
 const Adcard = ({ ad }) => {
+  const { t } = useTranslation();
   if (!ad) return <></>;
 
   const { name, status, country, city, from, to, link, type } = ad;
@@ -30,25 +32,32 @@ const Adcard = ({ ad }) => {
         <h5 className="max-w-[80%] overflow-hidden whitespace-nowrap text-ellipsis">
           {name}
         </h5>
-        <p className={classNames("ad-type-badge", type)}>
+        <p
+          className={classNames(
+            "ad-type-badge rtl:right-auto rtl:-left-4",
+            type
+          )}
+        >
           <FontAwesomeIcon icon={typeIcon[type] || faRectangleAd} />
-          {type}
+          {t(type)}
         </p>
       </div>
-      <div className="card-body">
+      <div className="card-body rtl:flex-row-reverse">
         {!!image && (
           <div className="card-image">
             <img alt={name + "-img"} src={image} />
           </div>
         )}
-        <div className="card-details">
+        <div className="card-details ">
           {!!status && (
             <div className="detail-row">
               <div className="icon">
                 <FontAwesomeIcon icon={faRss} transform="flip-h" />
               </div>
 
-              <div className="content">{status}</div>
+              <div className="content font-bold rtl:!text-right">
+                {t(status)}
+              </div>
             </div>
           )}
 
@@ -57,7 +66,7 @@ const Adcard = ({ ad }) => {
               <FontAwesomeIcon icon={faLocationDot} />
             </div>
 
-            <div className="content">
+            <div className="content rtl:!text-right">
               {`${!!city ? getLocalizedWord(city) : ""} ${
                 country ? getLocalizedWord(country) : ""
               }`}
@@ -69,7 +78,7 @@ const Adcard = ({ ad }) => {
                 <FontAwesomeIcon icon={faCalendarDays} />
               </div>
 
-              <div className="content">
+              <div className="content rtl:!text-right">
                 {dayjs(from).format("DD/MM/YYYY")} <i>to</i>{" "}
                 {dayjs(to).format("DD/MM/YYYY")}
               </div>

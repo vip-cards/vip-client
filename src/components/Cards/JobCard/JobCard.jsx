@@ -2,8 +2,9 @@ import { faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { getLocalizedWord } from "helpers/lang";
-import toastPopup from "helpers/toastPopup";
+import toastPopup, { responseErrorToast } from "helpers/toastPopup";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import clientServices from "services/clientServices";
 
@@ -13,6 +14,7 @@ const JobCard = ({ job, mutate }) => {
   const jobClient = job?.client ?? "";
   const createdByMe = currentCLient === jobClient;
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const handleRemoveJob = (e) => {
     e.stopPropagation();
@@ -21,10 +23,16 @@ const JobCard = ({ job, mutate }) => {
     clientServices
       .removeJob(job._id)
       .then(() => {
-        toastPopup.success("Job removed successfully!");
+        toastPopup.success(t("jobRemovedSuccessfully"));
         mutate && mutate();
       })
+      .catch(responseErrorToast)
       .finally(() => setLoading(false));
+  };
+  const handleUpdateJob = (e) => {
+    e.stopPropagation();
+
+    navigate("", { state: { tab: "create" } });
   };
   return (
     <div
@@ -37,7 +45,7 @@ const JobCard = ({ job, mutate }) => {
           {/* <button
             className="text-amber-800 hover:text-amber-600 active:scale-90 transition-all duration-75
             "
-            onClick={handleRemoveJob}
+            onClick={handleUpdateJob}
           >
             <FontAwesomeIcon icon={faPencil} />
           </button> */}

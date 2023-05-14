@@ -24,7 +24,7 @@ const Modal = ({
           <div className={classes.header}>
             <span className={classes.title}>{title}</span>
 
-            <div className={classes.close}>
+            <div className={classNames(classes.close, "rtl:mr-auto rtl:!ml-0")}>
               <IconButton icon={faClose} onClick={onClose} size="lg" />
             </div>
           </div>
