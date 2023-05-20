@@ -22,6 +22,7 @@
   "accepted": "Accepted",
   "availableToChat": "Available to chat",
   "address": {
+    "": "Address",
     "en": "Address in english",
     "ar": "Address in arabic"
   },
@@ -54,10 +55,11 @@
   "chatWithUs": "Chat with us",
   "createService": "Create a service",
   "coupons": "coupons",
+  "contact": "Contact",
 
   "d ___": "D",
   "description_ar": "Description in arabic",
-  "description_en": "Description",
+  "description_en": "Description in english",
   "discount": "Discount",
   "delivaryAvailable": "Delivery Available",
   "delivaryNotAvailable": "Delivery Not Available",

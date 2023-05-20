@@ -3,14 +3,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactComponent as EyeClose } from "assets/VIP-ICON-SVG/eye_close.svg";
 import { ReactComponent as EyeOPen } from "assets/VIP-ICON-SVG/eye_open.svg";
 import classNames from "classnames";
+import { getLocalizedWord } from "helpers/lang";
 import { t } from "i18next";
 import { useEffect, useId, useRef, useState } from "react";
 import ReactDatePicker from "react-datepicker";
 import Select from "react-select";
+import CheckboxInput from "./CheckboxInput";
 import { ListInput } from "./ListInput";
 import { InputSelect } from "./SelectInput";
 
-import { getLocalizedWord } from "helpers/lang";
 import "react-datepicker/dist/react-datepicker.css";
 import "./MainInput.scss";
 
@@ -44,6 +45,7 @@ export default function MainInput(props) {
   if (type === "select")
     return (
       <InputSelect
+        id={inputId}
         list={list}
         name={name}
         identifier={identifier}
@@ -65,11 +67,12 @@ export default function MainInput(props) {
           return { type };
       }
     };
+
     const inputProps = {
       name,
       required,
       ...typeSwitch(),
-      id: name,
+      id: inputId,
       ref: inputRef,
       value: state[name],
       disabled: disableState,
@@ -91,6 +94,7 @@ export default function MainInput(props) {
       case "date":
         return (
           <ReactDatePicker
+            id={inputId}
             showIcon
             minDate={new Date()}
             calendarStartDay={6}
@@ -124,6 +128,7 @@ export default function MainInput(props) {
       case "multi-select":
         return (
           <Select
+            id={inputId}
             closeMenuOnSelect={false}
             className="multi-select w-full"
             classNamePrefix="multi-select"
@@ -154,43 +159,13 @@ export default function MainInput(props) {
 
       case "checkbox":
         return (
-          <div className="check-group">
-            {!!list.length &&
-              list.map((item) => (
-                <div
-                  key={inputId + item[identifier]}
-                  className="flex items-center mb-4"
-                >
-                  <input
-                    id={inputId + item[identifier]}
-                    type="checkbox"
-                    value={item[identifier]}
-                    defaultChecked={item.isChecked}
-                    className="check-input w-4 h-4 rounded-xl overflow-hidden"
-                    onChange={(e) => {
-                      const currentSelectionArr = state?.[name] ?? [item.value];
-
-                      const idx = currentSelectionArr.findIndex(
-                        (q) => q === item.value
-                      );
-                      // check if in array of selections in the state
-                      if (!e.target.checked) {
-                        currentSelectionArr.splice(idx, 1);
-                      } else {
-                        currentSelectionArr.push(item.value);
-                      }
-                      setState((state) => ({
-                        ...state,
-                        [name]: [...currentSelectionArr],
-                      }));
-                    }}
-                  />
-                  <label htmlFor={inputId + item[identifier]} className="ml-2">
-                    {t(item.name)}
-                  </label>
-                </div>
-              ))}
-          </div>
+          <CheckboxInput
+            list={list}
+            identifier={identifier}
+            state={state}
+            setState={setState}
+            {...inputProps}
+          />
         );
 
       case "textarea":
@@ -226,8 +201,11 @@ export default function MainInput(props) {
   return (
     <div className={classNames(className, "main-input-label")}>
       {renderInput()}
-      <label className="main-label" htmlFor={name}>
+      <label className="main-label relative" htmlFor={inputId}>
         {t(name)}
+        <span className="text-red-600/80 pl-1 font-extrabold">
+          {required ? "*" : ""}
+        </span>
       </label>
       <EditButton
         toEdit={toEdit}

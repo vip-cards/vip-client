@@ -19,6 +19,7 @@
   "accepted": "مقبول",
   "availableToChat": "متاح للمحادثة",
   "address": {
+    "": "العنوان",
     "en": "عنوان الخدمة بالإنجليزية",
     "ar": "عنوان الخدمة بالعربية"
   },
@@ -51,6 +52,8 @@
   "createService": "إضافة خدمة",
   "coupons": "كوبونات",
   "Coupons": "كوبونات",
+  "contact": "التواصل",
+
 
   "discount": "الخصم",
   "delivaryAvailable": "التوصيل متاح",

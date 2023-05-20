@@ -10,23 +10,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import clientServices from "services/clientServices";
-import useSWR from "swr";
-import { useEffect, useState } from "react";
 import { chatServices } from "services/modules/chatServices";
 import { createRoom } from "services/socket/chat";
+import useSWR from "swr";
 
 export default function Footer() {
-  const [adminsList, setAdminsList] = useState([]);
+  const { data } = useSWR("admin-list", () => chatServices.getAdmins());
+  const adminsList = data?.record ?? [];
 
   const { t } = useTranslation();
   const { data: pages } = useSWR("pages", () => clientServices.listAllPages());
   const { data: settings } = useSWR("footer-links", () =>
     clientServices.listAllSettings()
   );
-
-  useEffect(() => {
-    chatServices.getAdmins().then((data) => setAdminsList(data.record));
-  });
 
   return (
     <footer className="text-gray-600 body-font bg-primary mt-8">

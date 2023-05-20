@@ -28,7 +28,9 @@ const Modal = ({
               <IconButton icon={faClose} onClick={onClose} size="lg" />
             </div>
           </div>
-          <div className={classNames(classes.body, className)}>{children}</div>
+          <div className={classNames(classes.body, className, "max-w-full")}>
+            {children}
+          </div>
           <div className={classes.footer}>{footer && footer()}</div>
         </div>
       </div>

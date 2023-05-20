@@ -4,16 +4,20 @@ import {
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import placeholder from "assets/images/categoreyPlaceHolder.png";
 import { getLocalizedNumber } from "helpers/lang";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import i18n from "../../locales/i18n";
 import { addToCartThunk, removeFromCartThunk } from "../../store/cart-slice";
 import { addWishProduct } from "../../store/wishlist-slice";
+
 import "./CartProduct.scss";
+
 export default function CartProduct({ item }) {
   const lang = i18n.language;
   const product = item.product;
+
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const cartLoading = useSelector((state) => state.cart.loading);
@@ -22,6 +26,7 @@ export default function CartProduct({ item }) {
     if (!+quantity) quantity = 1;
     dispatch(removeFromCartThunk({ _id: product._id, quantity }));
   }
+
   function addItemHandler() {
     dispatch(
       addToCartThunk({
@@ -31,6 +36,7 @@ export default function CartProduct({ item }) {
       })
     );
   }
+
   function moveToWishlistHandler() {
     dispatch(addWishProduct(product._id)).then(() => {
       removeItemHandler(+item.quantity);
@@ -42,7 +48,7 @@ export default function CartProduct({ item }) {
       <div className="cart-product-img-container">
         <img
           className="cart-product-img"
-          src={product?.image?.[0]?.Location}
+          src={product?.image?.[0]?.Location ?? placeholder}
           alt={product.name?.[lang]}
           loading="lazy"
         />

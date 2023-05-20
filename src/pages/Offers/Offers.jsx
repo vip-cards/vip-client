@@ -52,7 +52,7 @@ export default function Offers({ isHotDeal = false }) {
 
   const productListRender = () => {
     if (productsLoading) return <LoadingSpinner />;
-    if (!products.length) return <NoData />;
+    if (!products?.length) return <NoData />;
 
     return products.map((offer) => {
       return <ProductCard key={offer._id} product={offer} />;
@@ -78,10 +78,10 @@ export default function Offers({ isHotDeal = false }) {
 
   useEffect(() => {
     setQueryParams((q) => {
-      const category = filter.categories.length
+      const category = filter.categories?.length
         ? { category: filter.categories }
         : null;
-      const vendor = filter.vendors.length ? { vendor: filter.vendors } : null;
+      const vendor = filter.vendors?.length ? { vendor: filter.vendors } : null;
       if (!category && "category" in q) delete q.category;
       if (!vendor && "vendor" in q) delete q.vendor;
       return {
@@ -119,8 +119,8 @@ export default function Offers({ isHotDeal = false }) {
         <button
           onClick={() => setFilter((f) => ({ ...f, categories: [] }))}
           className={classNames("px-3 py-1 rounded-lg border text-sm", {
-            "bg-primary/50 shadow-lg text-slate-800": !filter.categories.length,
-            "bg-primary shadow text-black": filter.categories.length,
+            "bg-primary/50 shadow-lg text-slate-800": !filter.categories?.length,
+            "bg-primary shadow text-black": filter.categories?.length,
           })}
         >
           {t("reset")}
@@ -147,8 +147,8 @@ export default function Offers({ isHotDeal = false }) {
         <button
           onClick={() => setFilter((f) => ({ ...f, vendors: [] }))}
           className={classNames("px-3 py-1 rounded-lg border text-sm", {
-            "bg-primary/50 shadow-lg text-slate-800": !filter.vendors.length,
-            "bg-primary shadow text-black": filter.vendors.length,
+            "bg-primary/50 shadow-lg text-slate-800": !filter.vendors?.length,
+            "bg-primary shadow text-black": filter.vendors?.length,
           })}
         >
           {t("reset")}

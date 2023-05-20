@@ -12,15 +12,16 @@ export const ListInput = forwardRef(function ListInput(
     toEdit,
     state,
     setState,
+    ...props
   },
   inputRef
 ) {
-  
   const lang = i18n.language;
 
   return (
     <>
       <select
+        id={props.id}
         required
         disabled={disabled}
         className="main-input"
@@ -30,7 +31,6 @@ export const ListInput = forwardRef(function ListInput(
           setState({ ...state, [name]: e.target.value });
         }}
         name={name}
-        id={name}
         placeholder="a"
         ref={inputRef}
         onBlur={() => toEdit && setDisabledState(true)}
@@ -48,7 +48,7 @@ export const ListInput = forwardRef(function ListInput(
             );
           })}
       </select>
-      <label className="main-label" htmlFor={name}>
+      <label className="main-label" htmlFor={props.id}>
         {t(name)}
       </label>
     </>

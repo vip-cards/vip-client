@@ -51,7 +51,7 @@ export default function Vendor() {
 
   const productListRender = () => {
     if (productsLoading) return <LoadingSpinner />;
-    if (!products.length) return <NoData />;
+    if (!products?.length) return <NoData />;
 
     return products.map((offer) => {
       return <ProductCard key={offer._id} product={offer} />;
@@ -161,7 +161,7 @@ export default function Vendor() {
           </button>
         </div>
       </header>
-      {categories && categories.length > 0 ? (
+      {categories && categories?.length > 0 ? (
         <div className="carousel-container">
           <div className="add-button-container">
             <button
@@ -189,7 +189,7 @@ export default function Vendor() {
           />
         </div>
       ) : null}
-      {branches.length > 0 ? (
+      {branches?.length > 0 ? (
         <div className="carousel-container">
           <div className="add-button-container">
             <button

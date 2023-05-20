@@ -23,7 +23,11 @@ const isDev = () =>
   !process.env.NODE_ENV || process.env.NODE_ENV === "development";
 
 const swrOptions = isDev()
-  ? {}
+  ? {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      // revalidateOnMount: false,
+    }
   : Object.freeze({
       revalidateIfStale: false,
       revalidateOnMount: true,
@@ -32,6 +36,7 @@ const swrOptions = isDev()
       loadingTimeout: 5000,
       errorRetryCount: 5,
     });
+
 root.render(
   <BrowserRouter>
     <Provider store={store}>

@@ -223,20 +223,18 @@ export default function AccountDetails() {
         <div className="account-info-container">
           {formData.map((formInput, index) => {
             return (
-              <>
-                <MainInput
-                  key={formInput.name}
-                  name={formInput.name}
-                  type={formInput.type}
-                  required={formInput.required}
-                  list={formInput.list}
-                  identifier={formInput.identifier}
-                  state={userInfo}
-                  setState={setUserInfo}
-                  disabled
-                  toEdit={true}
-                />
-              </>
+              <MainInput
+                key={formInput.name}
+                name={formInput.name}
+                type={formInput.type}
+                required={formInput.required}
+                list={formInput.list}
+                identifier={formInput.identifier}
+                state={userInfo}
+                setState={setUserInfo}
+                disabled
+                toEdit={true}
+              />
             );
           })}
 

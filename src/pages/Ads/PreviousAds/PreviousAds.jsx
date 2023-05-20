@@ -18,7 +18,7 @@ const PreviousAds = () => {
   const render = () => {
     if (isLoading) return <LoadingSpinner />;
     else if (error) return <div>Something went wrong</div>;
-    else if (adsList.length)
+    else if (adsList?.length)
       return adsList?.map((ad) => <Adcard key={ad._id} ad={ad} />);
     else return <NoData />;
   };

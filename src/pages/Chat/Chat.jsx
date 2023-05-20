@@ -21,6 +21,8 @@ import {
 } from "services/socket/chat";
 import { EVENTS, socket } from "services/socket/config";
 import { selectAuth } from "store/auth-slice";
+import useSWR from "swr";
+
 import "./Chat.scss";
 
 const { CHAT, CONNECTION } = EVENTS;
@@ -31,10 +33,11 @@ function Chat() {
   const user = useSelector(selectAuth);
   const location = useLocation();
   const { state } = location;
+  const { data } = useSWR("admin-list", () => chatServices.getAdmins());
+  const adminsList = data?.record ?? [];
 
-  const [adminsList, setAdminsList] = useState([]);
   const [roomList, setRoomList] = useState([]);
-  const [subAgents, setSubAgents] = useState([]);
+
   const [status, setStatus] = useState(API_STATUS.IDLE);
 
   const [messageList, setMessageList] = useState([]);
@@ -109,7 +112,7 @@ function Chat() {
 
   useEffect(() => {
     listRooms({ client: user.userData._id, page: 1, limit: 20 }, onListRooms);
-    chatServices.getAdmins().then((data) => setAdminsList(data.record));
+
     socket.on(CHAT.CREATE, onCreateRoom);
     socket.on(CHAT.MESSAGE, onSentMessage);
     socket.on(CONNECTION.OPEN, () => {
