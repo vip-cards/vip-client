@@ -1,21 +1,34 @@
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheckCircle,
+  faExclamationCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import clientServices from "services/clientServices";
 
 const TransactionProcess = () => {
   const params = useSearchParams();
-  console.log(params);
+
+  useEffect(() => {
+    if (params.success) {
+      clientServices.checkoutRequest(params.merchant_order_id);
+    }
+  }, [params]);
   return (
     <div className="w-screen h-screen flex flex-col justify-center items-center gap-8">
-      <h1>Transaction Done</h1>
-      {params && <div></div>}
-      <div>
-        <FontAwesomeIcon
-          icon={faCheckCircle}
-          size="10x"
-          className="text-secondary"
-        />
-      </div>
+      {params && (
+        <>
+          <h1>{params.txn_response_code}</h1>
+          <div>
+            <FontAwesomeIcon
+              icon={params.success ? faCheckCircle : faExclamationCircle}
+              size="10x"
+              className="text-secondary"
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };

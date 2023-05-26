@@ -88,7 +88,7 @@ export default function CartPage() {
           currency: "EGP",
           items: [],
           // merchant_order_id: Math.floor(Math.random() * 99999),
-          // merchant_order_id: orderId,
+          merchant_order_id: orderId,
         }
         // {
         //   headers: {
