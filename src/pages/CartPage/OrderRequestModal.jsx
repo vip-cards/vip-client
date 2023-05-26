@@ -29,7 +29,7 @@ export default function OrderRequestModal({ showModal, setShowModal }) {
     const { paymentMethod, contactPhone, pickup, ...rest } = userInfo;
 
     clientServices
-      .checkoutCart({
+      .cartOrderRequest({
         shippingAddress: { ...rest },
         contactPhone,
         paymentMethod,

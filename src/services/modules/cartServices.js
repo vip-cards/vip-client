@@ -49,7 +49,7 @@ export const cartServices = {
     ).data;
   },
 
-  checkoutCart: async (obj) => {
+  cartOrderRequest: async (obj) => {
     return (
       await Axios.post("/orderRequest/create", { client: userId(), ...obj })
     ).data;
@@ -85,4 +85,7 @@ export const cartServices = {
     );
     return response?.data?.records ?? response?.data?.record;
   },
+
+  checkoutRequest: async (request) =>
+    await Axios.post("/order/checkout", { client: userId(), request }),
 };
