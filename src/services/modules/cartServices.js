@@ -60,4 +60,29 @@ export const cartServices = {
       await Axios.post("/coupon/add", {}, { params: { cart: cartId, coupon } })
     ).data;
   },
+
+  getOrdersRequests: async () => {
+    return (
+      await Axios.get("/orderRequest/get", {
+        params: {
+          client: userId(),
+        },
+      })
+    ).data;
+  },
+
+  rejectOrderRequest: async () => {
+    const response = await Axios.put(
+      `/orderRequest/update`,
+      {
+        status: "client rejected",
+      },
+      {
+        params: {
+          client: userId(),
+        },
+      }
+    );
+    return response?.data?.records ?? response?.data?.record;
+  },
 };

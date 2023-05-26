@@ -31,6 +31,8 @@ import RegisterForm from "views/RegisterForm/RegisterForm";
 import RegisterHome from "views/RegisterHome/RegisterHome";
 import ForgetPassword from "pages/Login/ForgotPassword";
 import { ROUTES } from "constants";
+import { openOrderRoom } from "services/socket/order";
+import toastPopup from "helpers/toastPopup";
 
 function App() {
   const lang = i18n.language;
@@ -63,7 +65,7 @@ function App() {
     socket.on(EVENTS.NOTIFICATION.LIST, (response) => {
       setNotifications(response);
     });
-
+    
     socket.on(EVENTS.CHAT.CREATE, (res) => {
       if (!res.success) {
         return;
@@ -71,6 +73,11 @@ function App() {
       const roomId = res.record?._id;
       navigate("/chat", { state: { roomId } });
     });
+    
+    openOrderRoom(() => {
+      toastPopup.success("Room Opened to listen to your order");
+    });
+
     return () => {
       socket.off(EVENTS.CONNECTION.OPEN);
       disconnectSocket();

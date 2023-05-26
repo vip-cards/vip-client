@@ -19,6 +19,12 @@ export const EVENTS = Object.freeze({
     LIST: "listNotifications",
     MARK_SEEN: "markAsSeen",
   },
+  ORDER: {
+    "": "DEFAULT",
+    NEW_REQUEST: "newOrderRequest",
+    OPEN_ORDER_ROOM: "clientOrderRoom",
+    FETCH_ORDER_ROOM: "orderRequestUpdate",
+  },
 });
 
 export const socket = io(URL, {

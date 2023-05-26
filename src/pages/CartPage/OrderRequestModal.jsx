@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import clientServices from "services/clientServices";
+import { newOrderRequest } from "services/socket/order";
 import { getCurrentCartThunk } from "store/cart-slice";
 
 export default function OrderRequestModal({ showModal, setShowModal }) {
@@ -34,9 +35,10 @@ export default function OrderRequestModal({ showModal, setShowModal }) {
         paymentMethod,
         requestDate: new Date().toISOString(),
       })
-      .then(() => {
+      .then(({ record }) => {
         toastPopup.success("Your order is being requested");
         setShowModal(false);
+        newOrderRequest(record._id);
         dispatch(getCurrentCartThunk());
       })
       .catch(responseErrorToast);
@@ -93,7 +95,9 @@ export default function OrderRequestModal({ showModal, setShowModal }) {
             />
           </fieldset>
         </div>
-        <MainButton className="checkout-btn">{t("orderFromBranch")}</MainButton>
+        <MainButton className="checkout-btn w-full mx-auto" type="submit">
+          {t("requestOrder")}
+        </MainButton>
       </form>
     </Modal>
   );

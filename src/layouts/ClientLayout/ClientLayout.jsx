@@ -45,6 +45,7 @@ import PostPage from "pages/Jobs/views/PostPage";
 import AccountCoupons from "views/AccountCoupons/AccountCoupons";
 import AccountLocation from "views/AccountLocation/AccountLocation";
 import DynamicPage from "pages/DynamicPage/DynamicPage";
+import TransactionProcess from "layouts/TransactionProcess";
 
 const PageLoader = () => (
   <div className="h-[80vh] w-[80vw] m-auto flex justify-center items-center">
@@ -211,6 +212,7 @@ export default function ClientLayout() {
                 </ProtectedModule>
               }
             />
+          <Route path="/transaction-process" element={<TransactionProcess />} />
           </Routes>
         </Suspense>
       </div>
