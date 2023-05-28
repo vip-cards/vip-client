@@ -1,12 +1,14 @@
+import { ROUTES } from "constants";
 import { checkFixLang } from "helpers/lang";
+import toastPopup from "helpers/toastPopup";
 import i18n from "locales/i18n";
+import ForgetPassword from "pages/Login/ForgotPassword";
 import Login from "pages/Login/Login";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
 import Register from "pages/Register/Register";
 import ResetPassword from "pages/ResetPassword/ResetPassword";
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Navigate,
   Route,
@@ -25,14 +27,11 @@ import {
   listNotification,
   listenToNotification,
 } from "services/socket/notification";
+import { openOrderRoom } from "services/socket/order";
 import { setNotifications } from "store/actions";
 import { fetchWishlist } from "store/wishlist-slice";
 import RegisterForm from "views/RegisterForm/RegisterForm";
 import RegisterHome from "views/RegisterHome/RegisterHome";
-import ForgetPassword from "pages/Login/ForgotPassword";
-import { ROUTES } from "constants";
-import { openOrderRoom } from "services/socket/order";
-import toastPopup from "helpers/toastPopup";
 
 function App() {
   const lang = i18n.language;
@@ -65,7 +64,7 @@ function App() {
     socket.on(EVENTS.NOTIFICATION.LIST, (response) => {
       setNotifications(response);
     });
-    
+
     socket.on(EVENTS.CHAT.CREATE, (res) => {
       if (!res.success) {
         return;
@@ -73,8 +72,10 @@ function App() {
       const roomId = res.record?._id;
       navigate("/chat", { state: { roomId } });
     });
-    
-    openOrderRoom(() => {
+
+    openOrderRoom((res) => {
+      console.log(res);
+      console.log("This is a room open");
       toastPopup.success("Room Opened to listen to your order");
     });
 
