@@ -19,10 +19,10 @@ const TransactionProcess = () => {
     <div className="w-screen h-screen flex flex-col justify-center items-center gap-8">
       {params && (
         <>
-          <h1>{params.txn_response_code}</h1>
+          <h1>{params.get("txn_response_code")}</h1>
           <div>
             <FontAwesomeIcon
-              icon={params.success ? faCheckCircle : faExclamationCircle}
+              icon={params.get("success") ? faCheckCircle : faExclamationCircle}
               size="10x"
               className="text-secondary"
             />
