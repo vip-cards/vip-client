@@ -9,11 +9,10 @@ import clientServices from "services/clientServices";
 
 const TransactionProcess = () => {
   const params = useSearchParams();
-  console.log(params);
 
   useEffect(() => {
     if (params.success) {
-      clientServices.checkoutRequest(params.merchant_order_id);
+      clientServices.checkoutRequest(params.get("merchant_order_id"));
     }
   }, [params]);
   return (
