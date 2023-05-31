@@ -23,11 +23,10 @@ import OrderRequestModal from "./OrderRequestModal";
 
 import axios from "axios";
 import classNames from "classnames";
+import Modal from "components/Modal/Modal";
 import dayjs from "dayjs";
 import clientServices from "services/clientServices";
 import "./CartPage.scss";
-import { currencyApi } from "helpers";
-import Modal from "components/Modal/Modal";
 
 export default function CartPage() {
   const lang = i18n.language;
@@ -55,51 +54,25 @@ export default function CartPage() {
   }
 
   async function handleOrderRequestProceed(orderId, amount) {
-    const cnvrtRate = await currencyApi
-      .latest({
-        base_currency: "EGP",
-        currencies: "USD",
-      })
-      .then(({ data }) => data.USD.value);
     const auth_token = await axios
-      .post(
-        "https://accept.paymob.com/api/auth/tokens",
-        {
-          api_key:
-            "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2TnpreE1USTNMQ0p1WVcxbElqb2lhVzVwZEdsaGJDSjkuY0JyaXE3SWxpN3F6a2x1eEhnSUUwem9VVzN2UlBCMm13OE5RNDZQUGhfT0N1QzhzZl9ob1pja0tjNVlmSEJ5REE4Uk9IYk54ZWJXaG83ekFWZnZ4QVE=",
-        }
-        // {
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //     Authorization: `Bearer ${3814034}`,
-        //   },
-        // }
-      )
+      .post("https://accept.paymob.com/api/auth/tokens", {
+        api_key:
+          "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2TnpreE1USTNMQ0p1WVcxbElqb2lhVzVwZEdsaGJDSjkuY0JyaXE3SWxpN3F6a2x1eEhnSUUwem9VVzN2UlBCMm13OE5RNDZQUGhfT0N1QzhzZl9ob1pja0tjNVlmSEJ5REE4Uk9IYk54ZWJXaG83ekFWZnZ4QVE=",
+      })
       .then(({ data }) => data.token);
 
     const amount_cents = +(amount.toFixed(2) * 100);
     const paymentOrder = await axios
-      .post(
-        "https://accept.paymob.com/api/ecommerce/orders",
-        {
-          auth_token,
-          delivery_needed: false,
-          amount_cents,
-          currency: "EGP",
-          items: [],
-          // merchant_order_id: Math.floor(Math.random() * 99999),
-          merchant_order_id: orderId,
-        }
-        // {
-        //   headers: {
-        //     Authorization: `Bearer ${auth_token}`,
-        //   },
-        // }
-      )
+      .post("https://accept.paymob.com/api/ecommerce/orders", {
+        auth_token,
+        delivery_needed: false,
+        amount_cents,
+        currency: "EGP",
+        items: [],
+        merchant_order_id: orderId,
+      })
       .then(({ data }) => data);
-    console.log(paymentOrder);
 
-    // window.open(paymentUrl, "_blank");
     const paymentToken = await axios
       .post("https://accept.paymob.com/api/acceptance/payment_keys", {
         auth_token,
@@ -256,11 +229,13 @@ export default function CartPage() {
                     <td colSpan={6} className="pt-3 font-medium space-x-4">
                       <FontAwesomeIcon icon={faMap} className="text-primary" />
                       <span>
-                        {request.shippingAddress?.city ?? "---"},{" "}
-                        {request.shippingAddress?.city ?? "---"},{" "}
-                        {request.shippingAddress?.city ?? "---"},{" "}
-                        {request.shippingAddress?.city ?? "---"},{" "}
-                        {request.shippingAddress?.city ?? "---"}{" "}
+                        {request.shippingAddress?.flatNumber ?? "---"},{" "}
+                        {request.shippingAddress?.buildingNumber ?? "---"},{" "}
+                        {request.shippingAddress?.street ?? "---"},{" "}
+                        {request.shippingAddress?.district ?? "---"},{" "}
+                        {request.shippingAddress?.city ?? "---"} ,
+                        {request.shippingAddress?.country ?? "---"} ...
+                        {request.shippingAddress?.specialMark ?? "---"}
                       </span>
                     </td>
                   </tr>
@@ -316,19 +291,16 @@ export default function CartPage() {
                             +request.total + +(request.shippingFees ?? 0)
                           )
                         }
-                        // onClick={() =>
-                        //   handleStatusUpdate({
-                        //     client: request.client._id,
-                        //     _id: request._id,
-                        //     status: `${authRole} accepted`,
-                        //   })
-                        // }
-                        disabled={request.status.includes("pending")}
+                        disabled={
+                          request.status.includes("pending") ||
+                          request.status.includes("client")
+                        }
                         className="disabled:!opacity-20 bg-primary rounded-lg text-white opacity-80 transition-opacity py-1 hover:opacity-100"
                       >
                         Proceed to checkout
                       </button>
                       <button
+                        disabled={request.status.includes("client")}
                         onClick={() =>
                           clientServices
                             .rejectOrderRequest()

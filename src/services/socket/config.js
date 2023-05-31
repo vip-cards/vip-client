@@ -24,6 +24,7 @@ export const EVENTS = Object.freeze({
     NEW_REQUEST: "newOrderRequest",
     OPEN_ORDER_ROOM: "clientOrderRoom",
     FETCH_ORDER_ROOM: "orderRequestUpdate",
+    // UPDATE: "orderRequestUpdate",
   },
 });
 

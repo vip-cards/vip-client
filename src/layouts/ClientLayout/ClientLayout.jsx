@@ -198,6 +198,8 @@ export default function ClientLayout() {
             >
               <Route index path="details" element={<AccountDetails />} />
               <Route path="orders" element={<AccountOrders />} />
+              {/* <Route path="orders-requests" element={<Account />} /> */}
+
               <Route path="wishlist" element={<AccountWishlist />} />
               <Route path="barcode" element={<AccountBarcode />} />
               <Route path="coupons" element={<AccountCoupons />} />
@@ -212,7 +214,10 @@ export default function ClientLayout() {
                 </ProtectedModule>
               }
             />
-          <Route path="/transaction-process" element={<TransactionProcess />} />
+            <Route
+              path="/transaction-process"
+              element={<TransactionProcess />}
+            />
           </Routes>
         </Suspense>
       </div>

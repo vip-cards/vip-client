@@ -22,6 +22,11 @@ export default function AccountLayout() {
           <ul className="nav-menu">
             <NavItem to="details" icon={faUser} title={t("accountDetails")} />
             <NavItem to="orders" icon={faList} title={t("previousOrders")} />
+            <NavItem
+              to="orders-requests"
+              icon={faList}
+              title={t("orderRequests")}
+            />
             <NavItem to="wishlist" icon={faHeart} title={t("wishlist")} />
             <NavItem to="barcode" icon={faBarcode} title={t("barcode")} />
             <NavItem to="coupons" icon={faRug} title={t("coupons")} />

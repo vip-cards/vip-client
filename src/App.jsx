@@ -33,6 +33,7 @@ import ForgetPassword from "pages/Login/ForgotPassword";
 import { ROUTES } from "constants";
 import { openOrderRoom } from "services/socket/order";
 import toastPopup from "helpers/toastPopup";
+import { toast } from "react-toastify";
 
 function App() {
   const lang = i18n.language;
@@ -65,7 +66,7 @@ function App() {
     socket.on(EVENTS.NOTIFICATION.LIST, (response) => {
       setNotifications(response);
     });
-    
+
     socket.on(EVENTS.CHAT.CREATE, (res) => {
       if (!res.success) {
         return;
@@ -73,9 +74,21 @@ function App() {
       const roomId = res.record?._id;
       navigate("/chat", { state: { roomId } });
     });
-    
-    openOrderRoom(() => {
-      toastPopup.success("Room Opened to listen to your order");
+
+    openOrderRoom((data) => {
+      toast.info("Your latest order has an update!", {
+        onClick: () => navigate("/cart"),
+        pauseOnHover: true,
+        autoClose: 3400,
+        hideProgressBar: true,
+        closeOnClick: true,
+        rtl: i18n.language === "ar",
+        pauseOnFocusLoss: true,
+        theme: "light",
+        type: "info",
+        position: "bottom-right",
+        toastId: data?.records?.[0]?._id,
+      });
     });
 
     return () => {

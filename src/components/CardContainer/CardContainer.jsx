@@ -1,13 +1,13 @@
 import clsx from "classnames";
-
-import "./CardContainer.scss";
-import { Helmet } from "react-helmet-async";
 import _ from "lodash";
+import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
+import "./CardContainer.scss";
 
 function CardContainer({ children, title, className }) {
   const { t } = useTranslation();
   const smallTitle = title.toLowerCase();
+
   return (
     <main
       className={clsx(className, "app-card-shadow page-wrapper mt-16 my-8")}
