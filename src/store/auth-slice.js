@@ -53,10 +53,10 @@ const authSlice = createSlice({
     },
 
     logout(state) {
-      state.token = localStorage.getItem("token");
-      state.userId = localStorage.getItem("userId");
-      state.userRole = localStorage.getItem("userRole");
-      state.userData = localStorage.getItem("userData");
+      state.token = "";
+      state.userId = "";
+      state.userRole = "";
+      state.userData = "";
     },
   },
 });
