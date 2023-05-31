@@ -16,7 +16,7 @@ const TransactionProcess = () => {
   const params = useSearchParams();
 
   useEffect(() => {
-    if (params.success) {
+    if (params.get("success")) {
       const requestId = params.get("merchant_order_id");
       clientServices
         .checkoutRequest(requestId)
@@ -38,7 +38,9 @@ const TransactionProcess = () => {
           <h1>{params.get("txn_response_code")}</h1>
           <div>
             <FontAwesomeIcon
-              icon={params.get("success") ? faCheckCircle : faExclamationCircle}
+              icon={
+                !!params.get("success") ? faCheckCircle : faExclamationCircle
+              }
               size="10x"
               className="text-secondary"
             />
