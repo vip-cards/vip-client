@@ -2,11 +2,9 @@ import store from "store";
 import { EVENTS, socket } from "./config";
 
 export async function newOrderRequest(requestId) {
-  console.log(requestId);
   const response = await socket.emitWithAck(EVENTS.ORDER.NEW_REQUEST, {
     requestId,
   });
-  console.log(response, "ACK FROM SOCK");
 }
 
 export function openOrderRoom(onEvent) {

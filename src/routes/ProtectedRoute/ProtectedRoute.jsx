@@ -1,11 +1,62 @@
-import React from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 
 import ClientLayout from "layouts/ClientLayout/ClientLayout";
+import i18n from "locales/i18n";
+import { toast } from "react-toastify";
+import { EVENTS } from "services/socket/config";
+import {
+  listNotification,
+  listenToNotification,
+} from "services/socket/notification";
+import { openOrderRoom } from "services/socket/order";
+import { SocketProvider, useSocket } from "services/socket/provider";
+import { setNotifications } from "store/actions";
 
 export default function ProtectedRoute({ children }) {
   const auth = useSelector((state) => state.auth);
+  const { socket, isConnected } = useSocket();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!auth.token || !isConnected) return;
+
+    listenToNotification((first) => console.log(first));
+
+    listNotification();
+
+    socket.on(EVENTS.NOTIFICATION.LIST, (response) => {
+      setNotifications(response);
+    });
+
+    socket.on(EVENTS.CHAT.CREATE, (res) => {
+      console.log(res);
+      if (!res.success) {
+        return;
+      }
+      const roomId = res.record?._id;
+      navigate("/chat", { state: { roomId } });
+    });
+
+    openOrderRoom((data) => {
+      toast.info("Your latest order has an update!", {
+        onClick: () => navigate("/account/orders-requests"),
+        pauseOnHover: true,
+        autoClose: 3400,
+        hideProgressBar: true,
+        closeOnClick: true,
+        rtl: i18n.language === "ar",
+        pauseOnFocusLoss: true,
+        theme: "light",
+        type: "info",
+        position: "bottom-right",
+        toastId: data?.records?.[0]?._id,
+      });
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth.token, isConnected, socket]);
 
   if (auth.token) {
     return <ClientLayout />;

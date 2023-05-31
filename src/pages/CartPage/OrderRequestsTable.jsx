@@ -58,11 +58,13 @@ function OrderRequestsTable({ requests, handleOrderRequestProceed, refetch }) {
                     <td colSpan={6} className="pt-3 font-medium space-x-4">
                       <FontAwesomeIcon icon={faMap} className="text-primary" />
                       <span>
-                        {request.shippingAddress?.city ?? "---"},{" "}
-                        {request.shippingAddress?.city ?? "---"},{" "}
-                        {request.shippingAddress?.city ?? "---"},{" "}
-                        {request.shippingAddress?.city ?? "---"},{" "}
-                        {request.shippingAddress?.city ?? "---"}{" "}
+                        {request.shippingAddress?.flatNumber ?? "---"},{" "}
+                        {request.shippingAddress?.buildingNumber ?? "---"},{" "}
+                        {request.shippingAddress?.street ?? "---"},{" "}
+                        {request.shippingAddress?.district ?? "---"},{" "}
+                        {request.shippingAddress?.city ?? "---"} ,
+                        {request.shippingAddress?.country ?? "---"} ...
+                        {request.shippingAddress?.specialMark ?? "---"}
                       </span>
                     </td>
                   </tr>
@@ -120,14 +122,18 @@ function OrderRequestsTable({ requests, handleOrderRequestProceed, refetch }) {
                         }
                         disabled={
                           request.status.includes("pending") ||
-                          request.status.includes("rejected")
+                          request.status.includes("rejected") ||
+                          request.status.includes("client")
                         }
                         className="disabled:!opacity-20 bg-primary rounded-lg text-white opacity-80 transition-opacity py-1 hover:opacity-100"
                       >
                         Proceed to checkout
                       </button>
                       <button
-                        disabled={request.status.includes("rejected")}
+                        disabled={
+                          request.status.includes("rejected") ||
+                          request.status.includes("client")
+                        }
                         onClick={handleClientReject}
                         className="disabled:!opacity-20 bg-red-500 rounded-lg text-white opacity-80 transition-opacity py-1 hover:opacity-100"
                       >
