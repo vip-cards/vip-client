@@ -46,6 +46,8 @@ import AccountCoupons from "views/AccountCoupons/AccountCoupons";
 import AccountLocation from "views/AccountLocation/AccountLocation";
 import DynamicPage from "pages/DynamicPage/DynamicPage";
 import TransactionProcess from "layouts/TransactionProcess";
+import OrderRequestsTable from "pages/CartPage/OrderRequestsTable";
+import AccountOrderRequests from "views/AccountOrderRequests/AccountOrderRequests";
 
 const PageLoader = () => (
   <div className="h-[80vh] w-[80vw] m-auto flex justify-center items-center">
@@ -198,8 +200,10 @@ export default function ClientLayout() {
             >
               <Route index path="details" element={<AccountDetails />} />
               <Route path="orders" element={<AccountOrders />} />
-              {/* <Route path="orders-requests" element={<Account />} /> */}
-
+              <Route
+                path="orders-requests"
+                element={<AccountOrderRequests />}
+              />
               <Route path="wishlist" element={<AccountWishlist />} />
               <Route path="barcode" element={<AccountBarcode />} />
               <Route path="coupons" element={<AccountCoupons />} />

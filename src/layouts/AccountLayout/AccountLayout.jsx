@@ -18,9 +18,10 @@ export default function AccountLayout() {
         {/* TOP BAR */}
         {/* <div className="account-topbar">topbar</div> */}
         {/* SIDE BAR */}
-        <nav className="account-sidebar">
+        <nav className="account-sidebar ">
           <ul className="nav-menu">
             <NavItem to="details" icon={faUser} title={t("accountDetails")} />
+
             <NavItem to="orders" icon={faList} title={t("previousOrders")} />
             <NavItem
               to="orders-requests"
@@ -34,7 +35,7 @@ export default function AccountLayout() {
           </ul>
         </nav>
         {/* CONTENT */}
-        <div className="account-outlet">
+        <div className="account-outlet overflow-x-hidden">
           <Outlet />
         </div>
       </div>

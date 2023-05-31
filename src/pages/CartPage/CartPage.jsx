@@ -1,8 +1,12 @@
 import { faCircleNotch, faMap } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import classNames from "classnames";
 import { MainButton } from "components/Buttons";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
+import Modal from "components/Modal/Modal";
 import NoData from "components/NoData/NoData";
+import dayjs from "dayjs";
 import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
 import i18n from "locales/i18n";
 import { useEffect, useState } from "react";
@@ -10,6 +14,7 @@ import Barcode from "react-barcode";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import clientServices from "services/clientServices";
 import { selectUserData } from "store/auth-slice";
 import {
   applyCartCouponThunk,
@@ -18,15 +23,10 @@ import {
 } from "store/cart-slice";
 import useSWR from "swr";
 import CartMoreDetails from "./CartMoreDetails";
+import "./CartPage.scss";
 import CartProductsList from "./CartProductsList";
 import OrderRequestModal from "./OrderRequestModal";
-
-import axios from "axios";
-import classNames from "classnames";
-import Modal from "components/Modal/Modal";
-import dayjs from "dayjs";
-import clientServices from "services/clientServices";
-import "./CartPage.scss";
+import OrderRequestsTable from "./OrderRequestsTable";
 
 export default function CartPage() {
   const lang = i18n.language;
@@ -46,7 +46,6 @@ export default function CartPage() {
   const { data: requestsData = {}, mutate } = useSWR("all-order-requests", () =>
     clientServices.getOrdersRequests()
   );
-
   const requests = requestsData?.records ?? [];
 
   function handleCouponApply() {
@@ -82,10 +81,10 @@ export default function CartPage() {
         order_id: paymentOrder.id,
         lock_order_when_paid: "false",
         billing_data: {
-          first_name: "Clifford",
-          last_name: "Nicolas",
-          email: "claudette09@exa.com",
-          phone_number: "+86(8)9135210487",
+          first_name: userData.name.en.split(" ")[0],
+          last_name: userData.name.en.split(" ")[1],
+          email: userData.email,
+          phone_number: userData.phone,
           street: "NA",
           building: "NA",
           apartment: "NA",
@@ -99,6 +98,7 @@ export default function CartPage() {
         integration_id: 3814034,
       })
       .then(({ data }) => data.token);
+
     setPaymentModal({
       open: true,
       url: `https://accept.paymob.com/api/acceptance/iframes/760110?payment_token=${paymentToken}`,
@@ -113,7 +113,7 @@ export default function CartPage() {
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [showCode]);
+  }, [dispatch, showCode]);
 
   if (cartLoading && !cart) return <LoadingSpinner />;
 
@@ -201,8 +201,13 @@ export default function CartPage() {
           )}
         </div>
       </div>
-      <h1 className="title">{t("previousOrdersStatus")}</h1>
+      {/* --------------------------------- */}
 
+      <OrderRequestsTable
+        requests={requests}
+        handleOrderRequestProceed={handleOrderRequestProceed}
+        refetch={mutate}
+      />
       <div className="overflow-hidden overflow-x-auto p-8 x-12 shadow-lg">
         <table className="table-fixed w-full min-w-[60rem]">
           <thead>
@@ -330,7 +335,6 @@ export default function CartPage() {
             width="100%"
             height="100%"
             frameBorder="0"
-            // sandbox="allow-same-origin allow-scripts allow-forms allow-top-navigation"
           ></iframe>
         )}
       </Modal>

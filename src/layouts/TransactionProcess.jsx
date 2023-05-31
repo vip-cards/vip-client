@@ -13,24 +13,43 @@ import { selectAuth } from "store/auth-slice";
 
 const TransactionProcess = () => {
   const auth = useSelector(selectAuth);
-  const params = useSearchParams();
+
+  const [params, setParams] = useSearchParams();
+
+  const hasFreeTrial = !auth?.userData?.usedFreeTrial;
+
+  async function proceedFn(params) {
+    if (!params.get("success")) return;
+    const isSuccess = params.get("success") === "true";
+
+    if (isSuccess) {
+      const requestId = params.get("merchant_order_id");
+      try {
+        if (hasFreeTrial) {
+          await clientServices.checkoutFreeTrial(requestId);
+        } else {
+          await clientServices.checkoutRequest(requestId);
+        }
+
+        await clientServices.acceptOrder(requestId);
+
+        socket.emit(EVENTS.ORDER.FETCH_ORDER_ROOM, {
+          client: auth.userId,
+          requestId,
+          status: "client accepted",
+        });
+
+        toastPopup.success("Done!");
+      } catch (error) {
+        toastPopup.error("Something went wrong!");
+      }
+    } else toastPopup.error("Something went wrong!");
+  }
 
   useEffect(() => {
-    if (params.success) {
-      const requestId = params.get("merchant_order_id");
-      clientServices
-        .checkoutRequest(requestId)
-        .then(() => clientServices.acceptOrder(requestId))
-        .then(() => {
-          socket.emit(EVENTS.ORDER.FETCH_ORDER_ROOM, {
-            client: auth.userId,
-            requestId,
-            status: "client accepted",
-          });
-          toastPopup.success("Done!");
-        });
-    }
+    proceedFn(params);
   }, [params]);
+
   return (
     <div className="w-screen h-screen flex flex-col justify-center items-center gap-8">
       {params && (
@@ -38,7 +57,11 @@ const TransactionProcess = () => {
           <h1>{params.get("txn_response_code")}</h1>
           <div>
             <FontAwesomeIcon
-              icon={params.get("success") ? faCheckCircle : faExclamationCircle}
+              icon={
+                params.get("success") === "true"
+                  ? faCheckCircle
+                  : faExclamationCircle
+              }
               size="10x"
               className="text-secondary"
             />
