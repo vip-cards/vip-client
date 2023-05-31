@@ -200,7 +200,10 @@ export default function ClientLayout() {
             >
               <Route index path="details" element={<AccountDetails />} />
               <Route path="orders" element={<AccountOrders />} />
-              <Route path="requests" element={<AccountOrderRequests />} />
+              <Route
+                path="orders-requests"
+                element={<AccountOrderRequests />}
+              />
               <Route path="wishlist" element={<AccountWishlist />} />
               <Route path="barcode" element={<AccountBarcode />} />
               <Route path="coupons" element={<AccountCoupons />} />

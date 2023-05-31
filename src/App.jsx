@@ -1,6 +1,5 @@
 import { ROUTES } from "constants";
 import { checkFixLang } from "helpers/lang";
-import toastPopup from "helpers/toastPopup";
 import i18n from "locales/i18n";
 import ForgetPassword from "pages/Login/ForgotPassword";
 import Login from "pages/Login/Login";
@@ -16,6 +15,7 @@ import {
   useLocation,
   useNavigate,
 } from "react-router";
+import { toast } from "react-toastify";
 import ProtectedRoute from "routes/ProtectedRoute/ProtectedRoute";
 import {
   EVENTS,
@@ -73,10 +73,20 @@ function App() {
       navigate("/chat", { state: { roomId } });
     });
 
-    openOrderRoom((res) => {
-      console.log(res);
-      console.log("This is a room open");
-      toastPopup.success("Room Opened to listen to your order");
+    openOrderRoom((data) => {
+      toast.info("Your latest order has an update!", {
+        onClick: () => navigate("/cart"),
+        pauseOnHover: true,
+        autoClose: 3400,
+        hideProgressBar: true,
+        closeOnClick: true,
+        rtl: i18n.language === "ar",
+        pauseOnFocusLoss: true,
+        theme: "light",
+        type: "info",
+        position: "bottom-right",
+        toastId: data?.records?.[0]?._id,
+      });
     });
 
     return () => {

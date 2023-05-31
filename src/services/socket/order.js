@@ -16,3 +16,7 @@ export function openOrderRoom(onEvent) {
 
   socket.on(EVENTS.ORDER.FETCH_ORDER_ROOM, onEvent);
 }
+
+// export function listenToUpdate(onEvent){
+//   socket.on(EVENTS.ORDER.FETCH_ORDER_ROOM, onEvent);
+// }

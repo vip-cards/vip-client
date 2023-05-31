@@ -106,7 +106,7 @@ export default function Navbar() {
   const NofificationRing = useCallback(
     () => (
       <Dropdown
-        className="ltr:ml-auto ltr:lg:ml-0 rtl:mr-auto rtl:lg:mr-0"
+        className="ltr:ml-auto ltr:xl:ml-0 rtl:mr-auto rtl:xl:mr-0"
         menu={notificationList.list}
         left={lang === "en"}
         right={lang === "ar"}
