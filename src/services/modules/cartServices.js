@@ -88,6 +88,8 @@ export const cartServices = {
 
   checkoutRequest: async (request) =>
     await Axios.post("/order/checkout", { client: userId(), request }),
+  checkoutFreeTrial: async (request) =>
+    await Axios.post("/order/freetrial", { client: userId(), request }),
 
   acceptOrder: async (request) =>
     await Axios.put(

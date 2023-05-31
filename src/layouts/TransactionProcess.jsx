@@ -12,24 +12,42 @@ import { EVENTS, socket } from "services/socket/config";
 import { selectAuth } from "store/auth-slice";
 
 const TransactionProcess = () => {
-  const [params] = useSearchParams();
   const auth = useSelector(selectAuth);
 
-  useEffect(() => {
-    if (params.get("success")) {
+  const [params, setParams] = useSearchParams();
+
+  const hasFreeTrial = !auth?.userData?.usedFreeTrial;
+
+  async function proceedFn(params) {
+    if (!params.get("success")) return;
+    const isSuccess = params.get("success") === "true";
+
+    if (isSuccess) {
       const requestId = params.get("merchant_order_id");
-      clientServices
-        .checkoutRequest(requestId)
-        .then(() => clientServices.acceptOrder(requestId))
-        .then(() => {
-          socket.emit(EVENTS.ORDER.FETCH_ORDER_ROOM, {
-            client: auth.userId,
-            requestId,
-            status: "client accepted",
-          });
-          toastPopup.success("Done!");
+      try {
+        if (hasFreeTrial) {
+          await clientServices.checkoutFreeTrial(requestId);
+        } else {
+          await clientServices.checkoutRequest(requestId);
+        }
+
+        await clientServices.acceptOrder(requestId);
+
+        socket.emit(EVENTS.ORDER.FETCH_ORDER_ROOM, {
+          client: auth.userId,
+          requestId,
+          status: "client accepted",
         });
-    }
+
+        toastPopup.success("Done!");
+      } catch (error) {
+        toastPopup.error("Something went wrong!");
+      }
+    } else toastPopup.error("Something went wrong!");
+  }
+
+  useEffect(() => {
+    proceedFn(params);
   }, [params]);
 
   return (
@@ -40,7 +58,9 @@ const TransactionProcess = () => {
           <div>
             <FontAwesomeIcon
               icon={
-                !!params.get("success") ? faCheckCircle : faExclamationCircle
+                params.get("success") === "true"
+                  ? faCheckCircle
+                  : faExclamationCircle
               }
               size="10x"
               className="text-secondary"
