@@ -21,7 +21,7 @@ export default function AccountLayout() {
         <nav className="account-sidebar ">
           <ul className="nav-menu">
             <NavItem to="details" icon={faUser} title={t("accountDetails")} />
-            <NavItem to="requests" icon={faList} title={t("ordersRequests")} />
+
             <NavItem to="orders" icon={faList} title={t("previousOrders")} />
             <NavItem
               to="orders-requests"

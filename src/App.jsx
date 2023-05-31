@@ -75,7 +75,7 @@ function App() {
 
     openOrderRoom((data) => {
       toast.info("Your latest order has an update!", {
-        onClick: () => navigate("/cart"),
+        onClick: () => navigate("/account/orders-requests"),
         pauseOnHover: true,
         autoClose: 3400,
         hideProgressBar: true,
