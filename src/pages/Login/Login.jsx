@@ -25,6 +25,7 @@ import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 
 export default function Login() {
   const socialLogin = useSocialLogin();
+
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function Login() {
     email: "",
     password: "",
   });
-
+  const [qrCode, setQrCode] = useState({ open: false, code: "" });
   const formData = [
     { name: "email", type: "email", required: true },
     { name: "password", type: "password", required: true },
@@ -120,6 +121,40 @@ export default function Login() {
     }
   };
 
+  const codeLoginHandler = async () => {
+    if (!qrCode.open) {
+      setQrCode((s) => ({ ...s, open: true }));
+    } else {
+      setLoading(true);
+      try {
+        const result = await clientServices.loginByCode(qrCode.code);
+        const data = result?.data;
+        console.log(result);
+
+        if (data.success && data.code === 200) {
+          setLoading(false);
+
+          toastPopup.success(t("Success"));
+          const tokenDecoded = jwt_decode(data.token);
+
+          dispatch(
+            authActions.login({
+              token: data.token,
+              userId: tokenDecoded._id,
+              userRole: tokenDecoded.role,
+              userData: data.record,
+            })
+          );
+          navigate("/");
+        }
+      } catch (e) {
+        console.log(e);
+        setLoading(false);
+        setErrorMessage(e.response.data.error);
+      }
+    }
+  };
+
   return (
     <div className="login">
       <div className="login-logo">
@@ -183,10 +218,27 @@ export default function Login() {
               />
             );
           })}
+          <MainButton text={t("login")} loading={loading} type="submit" />
+          {qrCode.open && (
+            <MainInput
+              type="text"
+              state={qrCode}
+              setState={setQrCode}
+              name="code"
+            />
+          )}
+          <MainButton
+            onClick={codeLoginHandler}
+            className="!bg-secondary/80 hover:!bg-secondary !text-white"
+            text={t("loginByCode")}
+            loading={loading}
+            type="button"
+          />
           <div className="text-primary hover:opacity-80">
             <Link to={`/${ROUTES.FORGOT_PASSWORD}`}>Forgot Password?</Link>
           </div>
-          <MainButton text={t("login")} loading={loading} type="submit" />
+
+          {/*---------SOCIAL MEDIA BUTTONS---------*/}
           <div className="flex flex-row max-w-full gap-4 justify-around">
             <MainButton
               type="button"
@@ -194,7 +246,7 @@ export default function Login() {
               loading={loading}
               onClick={() => socialLogin("google")}
             >
-              <GoogleLogo className="w-8 h-8 lg:w-16 lg:h-16" />
+              <GoogleLogo className="w-12 h-12 lg:w-16 lg:h-16" />
             </MainButton>
             <MainButton
               type="button"
@@ -202,7 +254,7 @@ export default function Login() {
               loading={loading}
               onClick={() => socialLogin("facebook")}
             >
-              <FacebookLogo className="w-8 h-8 lg:w-16 lg:h-16" />
+              <FacebookLogo className="w-12 h-12 lg:w-16 lg:h-16" />
             </MainButton>
             <MainButton
               type="button"
@@ -210,9 +262,11 @@ export default function Login() {
               loading={loading}
               onClick={() => socialLogin("twitter")}
             >
-              <TwitterLogo className="w-8 h-8 lg:w-16 lg:h-16" />
+              <TwitterLogo className="w-12 h-12 lg:w-16 lg:h-16" />
             </MainButton>
           </div>
+
+          {/*---------FOOTER---------*/}
           <p className="login-footer">
             <span>{t("notRegistered")}</span>
             &nbsp;

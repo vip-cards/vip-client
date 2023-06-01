@@ -14,10 +14,10 @@ if (
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    token: localStorage.getItem("token"),
-    userId: localStorage.getItem("userId"),
-    userRole: localStorage.getItem("userRole"),
-    userData: JSON.parse(localStorage.getItem("userData")),
+    token: localStorage.getItem("token") ?? "",
+    userId: localStorage.getItem("userId") ?? "",
+    userRole: localStorage.getItem("userRole") ?? "",
+    userData: JSON.parse(localStorage.getItem("userData")) ?? "",
   },
 
   reducers: {

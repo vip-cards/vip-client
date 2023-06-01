@@ -19,6 +19,12 @@ export const authServices = {
     const response = await Axios.post("/login", obj);
     return response;
   },
+
+  loginByCode: async (barcode) => {
+    const response = await Axios.post("/loginByBarcode", { barcode });
+    return response;
+  },
+
   loginAsGuest: async (obj) => {
     const response = await Axios.get("/guest", obj);
     return response;
