@@ -72,4 +72,7 @@ const TransactionProcess = () => {
   );
 };
 
+function printSuccess() {
+  BroadcastChannel.postMessage("Success!");
+}
 export default TransactionProcess;

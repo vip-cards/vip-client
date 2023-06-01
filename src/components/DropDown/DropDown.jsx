@@ -42,7 +42,7 @@ const Dropdown = ({
 
   return (
     <div
-      className={classNames(className, "dropdown-menu")}
+      className={classNames(className, "dropdown-menu", "z-10")}
       onMouseEnter={toggleMenu}
       onMouseLeave={toggleMenu}
       onClick={toggleMenu}
