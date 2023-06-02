@@ -11,6 +11,14 @@ import clientServices from "services/clientServices";
 import { EVENTS, socket } from "services/socket/config";
 import { selectAuth } from "store/auth-slice";
 
+// those functions related to the existance of Print object which should be existed on flutter env
+function printSuccess() {
+  if (window.Print) window.Print.postMessage("Success!");
+}
+function printError() {
+  if (window.Print) window.Print.postMessage("Error!");
+}
+
 const TransactionProcess = () => {
   const auth = useSelector(selectAuth);
 
@@ -38,10 +46,11 @@ const TransactionProcess = () => {
           requestId,
           status: "client accepted",
         });
-
         toastPopup.success("Done!");
+        printSuccess();
       } catch (error) {
         toastPopup.error("Something went wrong!");
+        printError();
       }
     } else toastPopup.error("Something went wrong!");
   }
@@ -72,7 +81,4 @@ const TransactionProcess = () => {
   );
 };
 
-function printSuccess() {
-  BroadcastChannel.postMessage("Success!");
-}
 export default TransactionProcess;
