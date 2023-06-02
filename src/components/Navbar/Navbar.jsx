@@ -5,6 +5,8 @@ import { ReactComponent as BurgerMenuIcon } from "assets/VIP-ICON-SVG/burgerMenu
 import { ReactComponent as Notification } from "assets/VIP-ICON-SVG/notification.svg";
 import classNames from "classnames";
 import { ROUTES } from "constants/routes";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { switchLang } from "helpers/lang";
 import { t } from "i18next";
 import i18n from "locales/i18n";
@@ -19,6 +21,8 @@ import Dropdown from "../DropDown/DropDown";
 import SideNav from "./SideNav/SideNav";
 
 import "./Navbar.scss";
+
+dayjs.extend(relativeTime);
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -128,9 +132,15 @@ export default function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => handleNotificationClick(item._id, item.link)}
+                className="!flex w-full flex-row justify-between items-baseline"
               >
-                {item.text.slice(0, 30) +
-                  (item.text.length > 30 ? "..." : "") ?? "No text"}
+                <span>
+                  {item.text.slice(0, 30) +
+                    (item.text.length > 30 ? "..." : "") ?? "No text"}
+                </span>
+                <span className="text-xs text-gray-600/50 lowercase">
+                  {dayjs(item.timestamp).fromNow()}
+                </span>
               </a>
             </li>
           ))

@@ -11,6 +11,7 @@ const baseURL = endPoint;
 const guestEndpoints = [
   "/login",
   "/loginBy",
+  "/loginByBarcode",
   "/register",
   "/recovery",
   "/resetPassword",

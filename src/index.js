@@ -26,12 +26,12 @@ const swrOptions = isDev()
   ? {
       revalidateIfStale: false,
       revalidateOnFocus: false,
-      // revalidateOnMount: false,
+      revalidateOnMount: true,
     }
   : Object.freeze({
-      revalidateIfStale: false,
+      revalidateIfStale: true,
       revalidateOnMount: true,
-      revalidateOnFocus: false,
+      revalidateOnFocus: true,
       dedupingInterval: 5000,
       loadingTimeout: 5000,
       errorRetryCount: 5,
