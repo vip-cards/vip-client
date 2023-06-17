@@ -187,7 +187,9 @@ function Chat() {
             })}
         </div>
       </ChatSidebar>
-      <ChatBodyContainer {...{ activeRoom, messageList }}>
+      <ChatBodyContainer
+        {...{ activeRoom, messageList, onCreateModal: handleCreateRoomModal }}
+      >
         <div
           ref={chatRef}
           className="m-3 scroll-smooth flex gap-3 flex-col h-full max-h-[75vh] overflow-y-auto p-2 "
