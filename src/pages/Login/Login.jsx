@@ -230,12 +230,12 @@ export default function Login() {
           <MainButton
             onClick={codeLoginHandler}
             className="!bg-secondary/80 hover:!bg-secondary !text-white"
-            text={t("loginByCode")}
+            text={"loginByCode"}
             loading={loading}
             type="button"
           />
           <div className="text-primary hover:opacity-80">
-            <Link to={`/${ROUTES.FORGOT_PASSWORD}`}>Forgot Password?</Link>
+            <Link to={`/${ROUTES.FORGOT_PASSWORD}`}>{t("forgotPassword")}</Link>
           </div>
 
           {/*---------SOCIAL MEDIA BUTTONS---------*/}

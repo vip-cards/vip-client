@@ -59,9 +59,8 @@ const AccountLocation = () => {
           <MainButton
             className="mt-3 text-center mx-auto"
             onClick={handleUpdateLoaction}
-          >
-            Set to current location
-          </MainButton>
+            text="Set to current location"
+          />
         </div>
       </main>
     </section>
