@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import toastPopup, { responseErrorToast } from "helpers/toastPopup";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
+import { redirect, useNavigate, useSearchParams } from "react-router-dom";
 import clientServices from "services/clientServices";
 import { EVENTS, socket } from "services/socket/config";
 import { selectAuth } from "store/auth-slice";
@@ -22,6 +22,7 @@ function printError() {
 
 const TransactionProcess = () => {
   const auth = useSelector(selectAuth);
+  const navigate = useNavigate();
 
   const [params, setParams] = useSearchParams();
 
@@ -57,6 +58,8 @@ const TransactionProcess = () => {
         }
         toastPopup.success("Done!");
         printSuccess();
+
+        navigate("/", { replace: true });
       } catch (error) {
         responseErrorToast(error);
         printError();

@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { MainButton } from "components/Buttons";
 import CardContainer from "components/CardContainer/CardContainer";
 import { ImageEdit } from "components/Inputs";
@@ -84,7 +85,14 @@ function Subscribe(props) {
             </div>
           </div>
 
-          <div className="ring p-4 rounded-lg ring-primary/30 flex flex-col w-full gap-3">
+          <div
+            className={classNames(
+              {
+                "!hidden": account?.isSubscribed,
+              },
+              "ring p-4 rounded-lg ring-primary/30 flex flex-col w-full gap-3"
+            )}
+          >
             <h5 className="max-sm:!text-lg font-black uppercase rounded-lg bg-primary text-white mx-auto w-fit p-2">
               {t("1 Year subscription")}
             </h5>
@@ -112,7 +120,7 @@ function Subscribe(props) {
                 {walletnumberData?.record ?? "not valid wallet number"}
               </pre>
             </p>
-            <div className="flex flex-row gap-3 justify-between">
+            <div className={classNames("flex flex-row gap-3 justify-between")}>
               <MainButton
                 loading={loading}
                 size="medium"

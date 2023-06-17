@@ -3,24 +3,47 @@ import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import NoData from "components/NoData/NoData";
 import { useTranslation } from "react-i18next";
 import useSWR from "swr";
+import Select from "react-select";
 import clientServices from "../../services/clientServices";
 import "./AccountOrders.scss";
 import { getLocalizedNumber } from "helpers/lang";
+import { useState } from "react";
+
+const statusFilter = [
+  { value: "pending", label: "pending" },
+  { value: "in progress", label: "In Progress" },
+  { value: "delivered", label: "Delivered" },
+];
+const paymentFilter = [
+  { value: "cash on delivery", label: "Cash on Delivery" },
+  { value: "visa", label: "Visa" },
+  { value: "branch", label: "branch" },
+];
+
+const fetchOrders = ([key, status, paymentMethod]) =>
+  clientServices
+    .listClientOrders({ status, paymentMethod })
+    .then((res) => res.data.records);
 
 export default function AccountOrders() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
+  const [status, setStatus] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState(null);
   const {
     data: orderList,
     isLoading,
     error,
-  } = useSWR(["orders"], () =>
-    clientServices.listClientOrders().then((res) => res.data.records)
-  );
+  } = useSWR(["orders", status, paymentMethod], fetchOrders);
 
-  if (isLoading) return <LoadingSpinner />;
-  if (error || (!isLoading && !orderList.length))
-    return <NoData text="noItems" />;
-
+  function renderOrders() {
+    if (isLoading) return <LoadingSpinner />;
+    if (error || (!isLoading && !orderList.length))
+      return <NoData text="noItems" />;
+    return orderList.map((order, idx) => {
+      return <OrderCard key={order._id} order={order} />;
+    });
+  }
   return (
     <>
       <header className="orders-header">
@@ -31,27 +54,41 @@ export default function AccountOrders() {
             &nbsp;
             <b>
               {getLocalizedNumber(
-                orderList.reduce((accumulator, item) => {
+                orderList?.reduce((accumulator, item) => {
                   return accumulator + item.points;
                 }, 0)
               )}
             </b>
           </p>
         </div>
+        <div className="z-10 p-5 flex justify-between flex-row flex-wrap gap-4">
+          <Select
+            isClearable
+            name="status"
+            className="w-52"
+            isRtl={lang === "ar"}
+            options={statusFilter}
+            placeholder={t("Status")}
+            getOptionValue={(option) => option.value}
+            getOptionLabel={(option) => t(option.label)}
+            onChange={(val) => setStatus(val?.value)}
+          />
+          <Select
+            isClearable
+            name="payment"
+            className="w-52"
+            isRtl={lang === "ar"}
+            options={paymentFilter}
+            placeholder={t("Payment method")}
+            getOptionValue={(option) => option.value}
+            getOptionLabel={(option) => t(option.label)}
+            onChange={(val) => setPaymentMethod(val?.value)}
+          />
+        </div>
       </header>
 
-      <aside>
-        
-      </aside>
-      <div className="orders-container">
-        {orderList.length > 0 ? (
-          <>
-            {orderList.map((order, idx) => {
-              return <OrderCard key={order._id} order={order} />;
-            })}
-          </>
-        ) : null}
-      </div>
+      <aside></aside>
+      <div className="orders-container px-2">{renderOrders()}</div>
     </>
   );
 }

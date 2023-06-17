@@ -61,17 +61,18 @@ export const cartServices = {
     ).data;
   },
 
-  getOrdersRequests: async () => {
+  getOrdersRequests: async (params) => {
     return (
       await Axios.get("/orderRequest/get", {
         params: {
+          ...params,
           client: userId(),
         },
       })
     ).data;
   },
 
-  rejectOrderRequest: async () => {
+  rejectOrderRequest: async (params) => {
     const response = await Axios.put(
       `/orderRequest/update`,
       {
@@ -80,6 +81,7 @@ export const cartServices = {
       {
         params: {
           client: userId(),
+          ...params,
         },
       }
     );

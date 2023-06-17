@@ -3,55 +3,57 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import dayjs from "dayjs";
 import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
-import toastPopup from "helpers/toastPopup";
+import toastPopup, { responseErrorToast } from "helpers/toastPopup";
 import { useTranslation } from "react-i18next";
 import clientServices from "services/clientServices";
 
 function OrderRequestsTable({ requests, handleOrderRequestProceed, refetch }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
 
-  const handleClientReject = () => {
+  const handleClientReject = (request) => {
     clientServices
-      .rejectOrderRequest()
+      .rejectOrderRequest({ _id: request._id })
       .then(() => {
         toastPopup.success("Order cancelled");
         refetch();
       })
-      .catch((error) => {
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          toastPopup.error(error.response.data.error);
-        } else {
-          toastPopup.error(error.message);
-        }
-      });
+      .catch(responseErrorToast);
   };
 
   return (
     <div className="flex flex-col shadow-lg rounded-lg">
-      <h1 className="title">{t("previousOrdersStatus")}</h1>
 
       <div className="overflow-hidden overflow-x-auto p-8 x-12 ">
         <table className="table-fixed w-full min-w-[60rem]">
           <thead>
             <tr className="divide-slate-900/30 divide-x">
-              <th className="text-start pb-2 px-2">Branch</th>
-              <th className="text-start w-60 pb-2 px-2">Items</th>
-              <th className="text-start w-30 pb-2 px-2">Shipping Fees</th>
-              <th className="text-start w-30 pb-2 px-2">Total</th>
-              <th className="text-start w-36 pb-2 px-2">Status</th>
-              <th className="text-end pb-2 px-2">Actions</th>
+              <th className="text-start capitalize pb-2 px-2">{t("branch")}</th>
+              <th className="text-start capitalize w-60 pb-2 px-2">
+                {t("Products")}
+              </th>
+              <th className="text-start capitalize w-30 pb-2 px-2">
+                {t("Shipping fees")}
+              </th>
+              <th className="text-start capitalize w-30 pb-2 px-2">
+                {t("total")}
+              </th>
+              <th className="text-start capitalize w-36 pb-2 px-2">
+                {t("Status")}
+              </th>
+              <th className="text-end pb-2 px-2">{t("Actions")}</th>
             </tr>
           </thead>
-          <tbody className="border-t border-t-black">
+          <tbody className="border-t border-t-black [&_*]:capitalize">
             {requests
               ?.sort((a, b) => (a.status === "pending" ? 0 : -1))
               .map((request) => (
                 <>
                   <tr>
                     <td colSpan={6} className="pt-3 font-semibold">
-                      {dayjs(request.requestDate).format("DD/MM/YYYY hh:mm A")}
+                      {dayjs(request.requestDate)
+                        .locale(lang)
+                        .format("DD/MM/YYYY hh:mm A")}
                     </td>
                   </tr>
                   <tr>
@@ -108,7 +110,7 @@ function OrderRequestsTable({ requests, handleOrderRequestProceed, refetch }) {
                             request.status.includes("pending"),
                         })}
                       >
-                        {request.status}
+                        {t(request.status)}
                       </span>
                     </td>
 
@@ -127,17 +129,17 @@ function OrderRequestsTable({ requests, handleOrderRequestProceed, refetch }) {
                         }
                         className="disabled:!opacity-20 bg-primary rounded-lg text-white opacity-80 transition-opacity py-1 hover:opacity-100"
                       >
-                        Proceed to checkout
+                        {t("checkout")}
                       </button>
                       <button
                         disabled={
                           request.status.includes("rejected") ||
                           request.status.includes("client")
                         }
-                        onClick={handleClientReject}
+                        onClick={() => handleClientReject(request)}
                         className="disabled:!opacity-20 bg-red-500 rounded-lg text-white opacity-80 transition-opacity py-1 hover:opacity-100"
                       >
-                        Remove the order
+                        {t("Decline")}
                       </button>
                     </td>
                   </tr>
