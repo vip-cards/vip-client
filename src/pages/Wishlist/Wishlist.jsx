@@ -38,9 +38,10 @@ export default function Wishlist() {
     listRenderFn({
       isLoading: loading && !list?.length,
       list,
-      render: ({ product }, idx) => (
-        <ProductCard product={product} key={product._id} />
-      ),
+      render: ({ product }, idx) =>
+        product?._id ? (
+          <ProductCard product={product} key={product._id} />
+        ) : null,
     });
 
   return (

@@ -48,6 +48,8 @@ export default function ProductCard({ product: { _id: productId } }) {
 
   if (isLoading || error) return <LoadingProductCard />;
 
+  if (!product?._id) return null;
+
   return (
     <div className="product-card" ref={componentRef}>
       <ProductImageContainer product={product} />

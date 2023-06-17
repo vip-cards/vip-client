@@ -37,7 +37,7 @@ export function ProductImageContainer({ product }) {
       });
     }
   }
-  const renderImages = product.image.map((image, index) => (
+  const renderImages = product?.image?.map((image, index) => (
     <SwiperSlide key={image?.Location ?? index}>
       <div className="product-img">
         <img
@@ -89,7 +89,7 @@ export function ProductImageContainer({ product }) {
       </span>
     </SwiperSlide>
   ));
-
+  if (!product?._id) return null;
   return (
     <Swiper
       ref={swiperRef}

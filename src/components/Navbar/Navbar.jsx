@@ -21,6 +21,7 @@ import Dropdown from "../DropDown/DropDown";
 import SideNav from "./SideNav/SideNav";
 
 import "./Navbar.scss";
+import { selectAuth } from "store/auth-slice";
 
 dayjs.extend(relativeTime);
 
@@ -32,6 +33,7 @@ export default function Navbar() {
   const [showSideMenu, setShowSideMenu] = useState(false);
   const notificationList = useSelector(selectNotification);
   const cartProducts = useSelector(selectCartProducts);
+  const auth = useSelector(selectAuth);
 
   const lang = i18n.language;
 
@@ -110,7 +112,10 @@ export default function Navbar() {
   const NofificationRing = useCallback(
     () => (
       <Dropdown
-        className="ltr:ml-auto ltr:xl:ml-0 rtl:mr-auto rtl:xl:mr-0"
+        className={classNames(
+          { "!hidden": auth.userId === "guest" },
+          "ltr:ml-auto ltr:xl:ml-0 rtl:mr-auto rtl:xl:mr-0"
+        )}
         menu={notificationList.list}
         left={lang === "en"}
         right={lang === "ar"}

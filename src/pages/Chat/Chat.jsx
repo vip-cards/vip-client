@@ -24,6 +24,12 @@ import { selectAuth } from "store/auth-slice";
 import useSWR from "swr";
 
 import "./Chat.scss";
+import {
+  ChatBodyContainer,
+  ChatContainer,
+  ChatSidebar,
+  ChatTextInput,
+} from "./_common";
 
 const { CHAT, CONNECTION } = EVENTS;
 
@@ -130,9 +136,11 @@ function Chat() {
     };
   }, []);
 
+  const userRole = user?.profile?.role;
+  const userId = user.userData._id;
   return (
-    <div className="chat-page-container app-card-shadow max-w-[80vw] max-h-[80vh] min-w-[300px] mx-auto my-8">
-      <div className="chat-sidebar rtl:!pl-0 rtl:pr-3">
+    <ChatContainer>
+      <ChatSidebar onCreateModal={handleCreateRoomModal}>
         <div className=" overflow-y-scroll !h-min">
           {!!roomList.length &&
             roomList?.map(({ members, _id: RoomId }) => {
@@ -142,7 +150,7 @@ function Chat() {
                     (item) => members[item]._id !== user.userData._id
                   )[0]
                 ];
-              console.log(otherChatter);
+
               return (
                 <div
                   key={otherChatter._id}
@@ -178,20 +186,8 @@ function Chat() {
               );
             })}
         </div>
-        <MainButton
-          variant="secondary"
-          className="whitespace-nowrap bg-white mt-auto w-fit mx-auto"
-          onClick={handleCreateRoomModal}
-        >
-          {t("createRoom")}{" "}
-        </MainButton>
-      </div>
-      <div
-        className={classNames("w-full h-full flex flex-col", {
-          "bg-slate-200 duration-1000 animate-pulse":
-            !messageList.length && activeRoom,
-        })}
-      >
+      </ChatSidebar>
+      <ChatBodyContainer {...{ activeRoom, messageList }}>
         <div
           ref={chatRef}
           className="m-3 scroll-smooth flex gap-3 flex-col h-full max-h-[75vh] overflow-y-auto p-2 "
@@ -225,28 +221,10 @@ function Chat() {
               </div>
             ))}
         </div>
-        <div className="mt-auto w-full border-t-2">
-          <div
-            className={classNames(
-              { "pointer-events-none opacity-50": !activeRoom },
-              "flex flex-row justify-center items-center w-full gap-5 p-4"
-            )}
-          >
-            <input
-              className="w-full ring-1 rounded-lg ring-primary py-2 px-4"
-              value={messageText}
-              onChange={(e) => setMessageText(e.target.value)}
-              onKeyUp={(e) => e.code === "Enter" && handleSendMessage()}
-            />
-            <FontAwesomeIcon
-              size="xl"
-              icon={faPaperPlane}
-              className="text-primary cursor-pointer hover:text-amber-600 active:scale-90"
-              onClick={handleSendMessage}
-            />
-          </div>
-        </div>
-      </div>
+        <ChatTextInput
+          {...{ activeRoom, messageText, setMessageText, handleSendMessage }}
+        />
+      </ChatBodyContainer>
       <Modal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
@@ -273,7 +251,7 @@ function Chat() {
           {/* Parent Agent */}
         </div>
       </Modal>
-    </div>
+    </ChatContainer>
   );
 }
 

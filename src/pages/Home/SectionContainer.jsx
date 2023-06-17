@@ -24,7 +24,7 @@ function SectionContainer({ items, className, direction, children }) {
           "flex-col": direction === "col",
           "flex-row": direction === "row",
         },
-        "w-full flex p-3 border rounded-lg gap-4 my-4 shadow-md"
+        "w-full flex p-3 border rounded-lg gap-4 my-4 shadow-md max-sm:border-x-0 max-sm:rounded-none"
       )}
     >
       {children}
