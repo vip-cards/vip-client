@@ -6,6 +6,8 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import store from "./store";
+import "dayjs/locale/en";
+import "dayjs/locale/ar";
 
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
