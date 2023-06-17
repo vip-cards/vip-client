@@ -34,7 +34,7 @@ const TransactionProcess = () => {
     if (isSuccess) {
       const requestId = params.get("merchant_order_id");
       try {
-        if (auth?.userData?.isSubscribed) {
+        if (!auth?.userData?.isSubscribed) {
           await clientServices.updateInfo({
             isSubscribed: "true",
             subStartDate: dayjs().toISOString(),
