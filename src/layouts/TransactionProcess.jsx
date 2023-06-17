@@ -3,7 +3,8 @@ import {
   faExclamationCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import toastPopup from "helpers/toastPopup";
+import dayjs from "dayjs";
+import toastPopup, { responseErrorToast } from "helpers/toastPopup";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
@@ -33,23 +34,31 @@ const TransactionProcess = () => {
     if (isSuccess) {
       const requestId = params.get("merchant_order_id");
       try {
-        if (hasFreeTrial) {
-          await clientServices.checkoutFreeTrial(requestId);
+        if (auth?.userData?.isSubscribed) {
+          await clientServices.updateInfo({
+            isSubscribed: "true",
+            subStartDate: dayjs().toISOString(),
+            subEndDate: dayjs().add(1, "year").toISOString(),
+          });
         } else {
-          await clientServices.checkoutRequest(requestId);
+          if (hasFreeTrial) {
+            await clientServices.checkoutFreeTrial(requestId);
+          } else {
+            await clientServices.checkoutRequest(requestId);
+          }
+
+          await clientServices.acceptOrder(requestId);
+
+          socket.emit(EVENTS.ORDER.FETCH_ORDER_ROOM, {
+            client: auth.userId,
+            requestId,
+            status: "client accepted",
+          });
         }
-
-        await clientServices.acceptOrder(requestId);
-
-        socket.emit(EVENTS.ORDER.FETCH_ORDER_ROOM, {
-          client: auth.userId,
-          requestId,
-          status: "client accepted",
-        });
         toastPopup.success("Done!");
         printSuccess();
       } catch (error) {
-        toastPopup.error("Something went wrong!");
+        responseErrorToast(error);
         printError();
       }
     } else toastPopup.error("Something went wrong!");

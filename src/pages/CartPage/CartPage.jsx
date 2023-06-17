@@ -1,20 +1,17 @@
-import { faCircleNotch, faMap } from "@fortawesome/free-solid-svg-icons";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
-import classNames from "classnames";
 import { MainButton } from "components/Buttons";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import Modal from "components/Modal/Modal";
 import NoData from "components/NoData/NoData";
-import dayjs from "dayjs";
-import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
-import i18n from "locales/i18n";
+import { getLocalizedNumber } from "helpers/lang";
 import { useEffect, useState } from "react";
 import Barcode from "react-barcode";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import clientServices from "services/clientServices";
+import paymobServices from "services/paymob.services";
 import { selectUserData } from "store/auth-slice";
 import {
   applyCartCouponThunk,
@@ -23,86 +20,43 @@ import {
 } from "store/cart-slice";
 import useSWR from "swr";
 import CartMoreDetails from "./CartMoreDetails";
-import "./CartPage.scss";
 import CartProductsList from "./CartProductsList";
 import OrderRequestModal from "./OrderRequestModal";
 import OrderRequestsTable from "./OrderRequestsTable";
 
+import "./CartPage.scss";
+
+const initialPaymentModal = { open: false, url: "" };
+
+const fetchOrderRequests = () =>
+  clientServices.getOrdersRequests().then((res) => res.records);
+
 export default function CartPage() {
+  const dispatch = useDispatch();
+  const { t, i18n } = useTranslation();
   const lang = i18n.language;
 
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const userData = useSelector(selectUserData);
   const cart = useSelector(selectCart);
+  const userData = useSelector(selectUserData);
   const cartLoading = cart.loading;
 
-  const [showCode, setShowCard] = useState(false);
   const [coupon, setCoupon] = useState("");
+  const [showCode, setShowCard] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [paymentModal, setPaymentModal] = useState({ open: false, url: "" });
+  const [paymentModal, setPaymentModal] = useState(initialPaymentModal);
 
-  const { data: requestsData = {}, mutate } = useSWR("all-order-requests", () =>
-    clientServices.getOrdersRequests()
+  const { data: requests = [], mutate } = useSWR(
+    "all-order-requests",
+    fetchOrderRequests
   );
-  const requests = requestsData?.records ?? [];
 
   function handleCouponApply() {
     dispatch(applyCartCouponThunk({ cartId: cart._id, coupon }));
   }
 
   async function handleOrderRequestProceed(orderId, amount) {
-    const auth_token = await axios
-      .post("https://accept.paymob.com/api/auth/tokens", {
-        api_key:
-          "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2TnpreE1USTNMQ0p1WVcxbElqb2lhVzVwZEdsaGJDSjkuY0JyaXE3SWxpN3F6a2x1eEhnSUUwem9VVzN2UlBCMm13OE5RNDZQUGhfT0N1QzhzZl9ob1pja0tjNVlmSEJ5REE4Uk9IYk54ZWJXaG83ekFWZnZ4QVE=",
-      })
-      .then(({ data }) => data.token);
-
-    const amount_cents = +(amount.toFixed(2) * 100);
-    const paymentOrder = await axios
-      .post("https://accept.paymob.com/api/ecommerce/orders", {
-        auth_token,
-        delivery_needed: false,
-        amount_cents,
-        currency: "EGP",
-        items: [],
-        merchant_order_id: orderId,
-      })
-      .then(({ data }) => data);
-
-    const paymentToken = await axios
-      .post("https://accept.paymob.com/api/acceptance/payment_keys", {
-        auth_token,
-        expiration: 3600,
-        amount_cents,
-        currency: "EGP",
-        order_id: paymentOrder.id,
-        lock_order_when_paid: "false",
-        billing_data: {
-          first_name: userData.name.en.split(" ")[0],
-          last_name: userData.name.en.split(" ")[1],
-          email: userData.email,
-          phone_number: userData.phone,
-          street: "NA",
-          building: "NA",
-          apartment: "NA",
-          floor: "NA",
-          shipping_method: "NA",
-          postal_code: "NA",
-          city: "NA",
-          country: "NA",
-          state: "NA",
-        },
-        integration_id: 3814034,
-      })
-      .then(({ data }) => data.token);
-
-    setPaymentModal({
-      open: true,
-      url: `https://accept.paymob.com/api/acceptance/iframes/760110?payment_token=${paymentToken}`,
-    });
+    const url = await paymobServices.paymobProcessURL(amount, orderId);
+    setPaymentModal({ open: true, url });
   }
 
   useEffect(() => {
