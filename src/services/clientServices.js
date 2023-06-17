@@ -34,8 +34,13 @@ const clientServices = {
     return response;
   },
 
-  listClientOrders: async () => {
-    const response = await Axios.get("/order/get?client=" + userId());
+  listClientOrders: async (params) => {
+    const response = await Axios.get("/order/get", {
+      params: {
+        ...params,
+        client: userId(),
+      },
+    });
     return response;
   },
 

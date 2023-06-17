@@ -78,6 +78,7 @@ export const ProductActionsContainer = forwardRef(({ product }, ref) => {
             <div className="already-whishlisted">already in whishlist</div>
           ) : (
             <button
+              className="whitespace-nowrap text-sm"
               onClick={() => {
                 setPopupLoading(true);
                 dispatch(addWishProduct(product._id))
