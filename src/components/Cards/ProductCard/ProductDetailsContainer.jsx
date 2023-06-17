@@ -2,6 +2,7 @@ import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
 import { Link } from "react-router-dom";
 
 export function ProductDetailsContainer({ product }) {
+  if (!product?._id) return null;
   return (
     <>
       <Link to={`/product/${product._id}`} className="product-title">

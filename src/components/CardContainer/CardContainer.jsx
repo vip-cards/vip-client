@@ -10,7 +10,10 @@ function CardContainer({ children, title, className }) {
 
   return (
     <main
-      className={clsx(className, "app-card-shadow page-wrapper mt-16 my-8")}
+      className={clsx(
+        className,
+        "app-card-shadow page-wrapper mt-16 my-8 max-sm:!m-0 max-sm:!w-full max-sm:!rounded-none"
+      )}
     >
       <Helmet>
         <title>{title ? _.upperFirst(t(smallTitle)) : "VIP"}</title>

@@ -11,12 +11,16 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import clientServices from "services/clientServices";
 import { chatServices } from "services/modules/chatServices";
-import { createRoom } from "services/socket/chat";
+
 import useSWR from "swr";
+import { createRoom } from "services/socket/chat";
+import { useSelector } from "react-redux";
+import { selectAuth } from "store/auth-slice";
 
 export default function Footer() {
   const { data } = useSWR("admin-list", () => chatServices.getAdmins());
   const adminsList = data?.record ?? [];
+  const agent = useSelector(selectAuth);
 
   const { t } = useTranslation();
   const { data: pages } = useSWR("pages", () => clientServices.listAllPages());
@@ -46,7 +50,12 @@ export default function Footer() {
                 ))}
               <li>
                 <button
-                  onClick={() => createRoom({ admin: adminsList?.[0]?._id })}
+                  onClick={() =>
+                    createRoom({
+                      agent: agent._id,
+                      admin: adminsList?.[0]?._id,
+                    })
+                  }
                   className="text-white/70 hover:text-white capitalize"
                 >
                   {t("footer.chatWithUs")}

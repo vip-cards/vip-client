@@ -84,7 +84,7 @@ export default function PageQueryContainer({
         searchQuery={searchQuery}
         onClick={handleListSearch}
       />
-      <section className="flex flex-col p-8 min-h-[80vh]">
+      <section className="flex flex-col p-2 sm:p-8 min-h-[80vh]">
         {children}
         <div className="flex flex-row gap-2 h-full max-h-screen">
           {withSideFilter && (
