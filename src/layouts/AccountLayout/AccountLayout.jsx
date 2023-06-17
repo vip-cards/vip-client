@@ -13,14 +13,15 @@ import { t } from "i18next";
 
 export default function AccountLayout() {
   return (
-    <div className="app-card-shadow edit-account-container">
+    <div className="app-card-shadow edit-account-container max-sm:!m-0 max-sm:!p-3 max-sm:!rounded-none">
       <div className="account-layout-container">
         {/* TOP BAR */}
         {/* <div className="account-topbar">topbar</div> */}
         {/* SIDE BAR */}
-        <nav className="account-sidebar ">
+        <nav className="account-sidebar max-sm:!border-none">
           <ul className="nav-menu">
             <NavItem to="details" icon={faUser} title={t("accountDetails")} />
+            <NavItem to="barcode" icon={faBarcode} title={t("barcode")} />
 
             <NavItem to="orders" icon={faList} title={t("previousOrders")} />
             <NavItem
@@ -29,7 +30,6 @@ export default function AccountLayout() {
               title={t("orderRequests")}
             />
             <NavItem to="wishlist" icon={faHeart} title={t("wishlist")} />
-            <NavItem to="barcode" icon={faBarcode} title={t("barcode")} />
             <NavItem to="coupons" icon={faRug} title={t("coupons")} />
             <NavItem to="location" icon={faLocationDot} title={t("location")} />
           </ul>
