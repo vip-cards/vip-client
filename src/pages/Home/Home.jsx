@@ -181,7 +181,12 @@ export default function Home() {
   }, [popUps]);
 
   return (
-    <div className={classNames(classes["client-home"], "page-wrapper")}>
+    <div
+      className={classNames(
+        classes["client-home"],
+        "page-wrapper max-sm:!w-full"
+      )}
+    >
       <header className="flex flex-col gap-8 my-8">
         <SectionContainer direction="col" className="lg:flex-row lg:h-96">
           <div className="flex-grow max-lg:h-72 min-w-[200px] rounded-xl overflow-hidden flex justify-center items-center lg:max-w-[70%] max-w-full">
@@ -215,8 +220,8 @@ export default function Home() {
               {renderAds("medium")}
             </HomeSwiper>
           </div>
-          {/* small screens */}
-          <div className="w-full flex lg:hidden flex-grow justify-center items-center rounded-xl overflow-hidden max-w-full">
+          {/* small screens --> hidden for now */}
+          <div className="w-full hidden flex-grow justify-center items-center rounded-xl overflow-hidden max-w-full">
             <HomeSwiper
               direction="horizontal"
               breakpoints={{
@@ -233,8 +238,8 @@ export default function Home() {
           </div>
         </SectionContainer>
 
-        <SectionContainer direction="row">
-          <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full h-40">
+        <SectionContainer direction="row" className="max-sm:hidden">
+          <div className="flex-grow  min-w-[200px] rounded-xl flex justify-center items-center max-w-full h-40">
             <HomeSwiper
               direction="horizontal"
               spaceBetween={20}
@@ -274,7 +279,7 @@ export default function Home() {
         </div>
       </SectionContainer>
 
-      {/* Vendors */}
+      {/* Categories */}
       <SectionContainer direction="col">
         <div className="flex w-full flex-row justify-between px-3">
           <h4 className="text-primary">{t("categories")}</h4>
@@ -290,7 +295,8 @@ export default function Home() {
             direction="horizontal"
             spaceBetween={20}
             breakpoints={{
-              300: { slidesPerView: 1 },
+              300: { slidesPerView: 1.7 },
+              400: { slidesPerView: 1.2 },
               480: { slidesPerView: 1.25 },
               540: { slidesPerView: 1.45 },
               768: { slidesPerView: 2.1 },
