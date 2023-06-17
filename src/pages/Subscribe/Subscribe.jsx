@@ -2,27 +2,30 @@ import { MainButton } from "components/Buttons";
 import CardContainer from "components/CardContainer/CardContainer";
 import { ImageEdit } from "components/Inputs";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
+import Modal from "components/Modal/Modal";
 import dayjs from "dayjs";
-import { getLocalizedWord } from "helpers/lang";
+import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
 import toastPopup from "helpers/toastPopup";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import clientServices from "services/clientServices";
+import paymobServices from "services/paymob.services";
 import useSWR from "swr";
 
-function Subscribe(props) {
-  const [uploadImage, setUploadImage] = useState(null);
-  const {
-    data: accountData,
-    isLoading,
-    isValidating,
-    error,
-    mutate,
-  } = useSWR("account-details", () => clientServices.updateInfo());
-  const { data: walletnumberData } = useSWR("account-wallet", () =>
-    clientServices.getSetting("walletNumber")
-  );
+const initialPaymentModal = { open: false, url: "" };
 
-  const account = accountData?.record;
+const fetchWallet = () => clientServices.getSetting("walletNumber");
+const fetchInfo = () => clientServices.updateInfo().then((res) => res.record);
+function Subscribe(props) {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
+
+  const [uploadImage, setUploadImage] = useState(null);
+  const [paymentModal, setPaymentModal] = useState(initialPaymentModal);
+  const [loading, setLoading] = useState(false);
+
+  const { data: account, isLoading } = useSWR("account-details", fetchInfo);
+  const { data: walletnumberData } = useSWR("account-wallet", fetchWallet);
 
   const subscriptionHandler = () => {
     const formData = new FormData();
@@ -35,43 +38,58 @@ function Subscribe(props) {
       .catch(({ response }) => toastPopup.error(response.data.error));
   };
 
+  async function handleOrderRequestProceed() {
+    setLoading(true);
+    const url = await paymobServices.paymobProcessURL(50);
+    setPaymentModal({ open: true, url });
+    setLoading(false);
+  }
+
   const renderData = () => {
     if (isLoading) return <LoadingSpinner />;
     else
       return (
-        <section className="flex flex-col gap-6 justify-center items-center min-w-fit max-w-[60%] mx-auto">
+        <section className="flex flex-col gap-6 justify-center items-center min-w-fit sm:max-w-[60%] mx-auto">
           <header className="w-full text-center">
             <h3>{getLocalizedWord(account?.name)}</h3>
           </header>
           <div className="flex flex-col gap-6 p-8 text-xl w-full ring ring-primary/20 rounded-lg">
             <div className="flex flex-row gap-4 justify-between">
-              <p className="font-semibold">Subscribe</p>
-              <p>{account?.isSubscribed ? "Subscribed" : "Not subscribed"}</p>
+              <p className="font-semibold">{t("subscription")}</p>
+              <p>
+                {t(account?.isSubscribed ? "Subscribed" : "Not subscribed")}
+              </p>
             </div>
             {!!account.subStartDate && (
               <div className="flex flex-row gap-4 justify-between">
-                <p className="font-semibold">Start Date</p>
-                <p>{dayjs(account?.subStartDate).format("DD-MM-YYYY")}</p>
+                <p className="font-semibold">{t("startDate")}</p>
+                <p>
+                  {dayjs(account?.subStartDate)
+                    .locale(lang)
+                    .format("DD/MM/YYYY")}
+                </p>
               </div>
             )}
             {!!account.subEndDate && (
               <div className="flex flex-row gap-4 justify-between">
-                <p className="font-semibold">End Date</p>
-                <p>{dayjs(account?.subEndDate).format("DD-MM-YYYY")}</p>{" "}
+                <p className="font-semibold">{t("endDate")}</p>
+                <p>
+                  {dayjs(account?.subEndDate).locale(lang).format("DD/MM/YYYY")}
+                </p>{" "}
               </div>
             )}
             <div className="flex flex-row gap-4 justify-between">
-              <p className="font-semibold">Free trial usage</p>
-              <p>{account?.usedFreeTrial ? "Used" : "Not used"}</p>
+              <p className="font-semibold capitalize">{t("free trial")}</p>
+              <p>{t(account?.usedFreeTrial ? "Used" : "didnotUseFreeTrial")}</p>
             </div>
           </div>
 
           <div className="ring p-4 rounded-lg ring-primary/30 flex flex-col w-full gap-3">
-            <h5 className="font-black uppercase rounded-lg bg-primary text-white mx-auto w-fit p-2">
-              1 Year subscription
+            <h5 className="max-sm:!text-lg font-black uppercase rounded-lg bg-primary text-white mx-auto w-fit p-2">
+              {t("1 Year subscription")}
             </h5>
             <h6 className="font-black uppercase rounded-lg text-primary mx-auto w-fit p-2 text-2xl">
-              50 EGP
+              {getLocalizedNumber(50, true)}
             </h6>
             <figure className="w-full mb-3 flex flex-col">
               <ImageEdit
@@ -85,25 +103,49 @@ function Subscribe(props) {
                 }}
               />
               <caption className="italic text-black/50">
-                upload the screenshot
+                {t("upload the receipt")}
               </caption>
             </figure>
             <p className="italic font-semibold text-slate-700 mx-auto max-w-[80%] text-center">
-              Subscription fess will be sent to the wallet number :{" "}
-              <span className="text-slate-900">
+              {t("Subscription fess will be sent to the wallet number")} :{" "}
+              <pre className="text-slate-900 inline">
                 {walletnumberData?.record ?? "not valid wallet number"}
-              </span>
+              </pre>
             </p>
-
-            <MainButton
-              size="medium"
-              onClick={subscriptionHandler}
-              disabled={account?.isSubscribed}
-              className="w-60 mx-auto whitespace-nowrap !text-lg"
-            >
-              {account?.isSubscribed ? "Already subscribed!" : "Subsribe"}
-            </MainButton>
+            <div className="flex flex-row gap-3 justify-between">
+              <MainButton
+                loading={loading}
+                size="medium"
+                onClick={subscriptionHandler}
+                disabled={account?.isSubscribed}
+                className="w-60 mx-auto whitespace-nowrap !text-lg"
+                text={account?.isSubscribed ? "Subscribed" : "with wallet"}
+              />
+              <MainButton
+                loading={loading}
+                size="medium"
+                onClick={handleOrderRequestProceed}
+                disabled={account?.isSubscribed}
+                className="w-60 mx-auto whitespace-nowrap !text-lg"
+                text={account?.isSubscribed ? "Subscribed" : "online"}
+              />
+            </div>
           </div>
+          <Modal
+            className="w-screen h-screen"
+            visible={paymentModal.open}
+            onClose={() => setPaymentModal({ open: false, url: "" })}
+          >
+            {paymentModal.url && (
+              <iframe
+                title="payment"
+                src={paymentModal.url}
+                width="100%"
+                height="100%"
+                frameBorder="0"
+              ></iframe>
+            )}
+          </Modal>
         </section>
       );
   };
