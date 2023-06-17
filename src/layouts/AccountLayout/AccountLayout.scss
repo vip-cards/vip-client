@@ -1,7 +1,7 @@
 @import "src/styles/_colors.scss";
 
 $break-md: 660px;
-$break-sm: 500px;
+$break-sm: 640px;
 .account-layout-container {
   display: grid;
   grid-template-areas:
@@ -25,7 +25,7 @@ $break-sm: 500px;
     border-right: 1px solid darken($color: $mainColor, $amount: 25);
 
     @media (max-width: $break-md) {
-      width: 4rem;
+      width: 3.1rem;
     }
     @media screen and (max-width: $break-sm) {
       width: 100%;

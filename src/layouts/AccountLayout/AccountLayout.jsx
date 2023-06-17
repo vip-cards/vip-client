@@ -18,8 +18,8 @@ export default function AccountLayout() {
         {/* TOP BAR */}
         {/* <div className="account-topbar">topbar</div> */}
         {/* SIDE BAR */}
-        <nav className="account-sidebar max-sm:!border-none">
-          <ul className="nav-menu">
+        <nav className="account-sidebar  max-w-full overflow-hidden  overflow-x-scroll max-sm:!border-none">
+          <ul className="nav-menu gap-x-1">
             <NavItem to="details" icon={faUser} title={t("accountDetails")} />
             <NavItem to="barcode" icon={faBarcode} title={t("barcode")} />
 
