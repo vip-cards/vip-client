@@ -61,10 +61,11 @@ export const cartServices = {
     ).data;
   },
 
-  getOrdersRequests: async () => {
+  getOrdersRequests: async (params) => {
     return (
       await Axios.get("/orderRequest/get", {
         params: {
+          ...params,
           client: userId(),
         },
       })

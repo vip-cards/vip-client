@@ -23,7 +23,6 @@ function OrderRequestsTable({ requests, handleOrderRequestProceed, refetch }) {
 
   return (
     <div className="flex flex-col shadow-lg rounded-lg">
-      <h1 className="title">{t("Order Requests")}</h1>
 
       <div className="overflow-hidden overflow-x-auto p-8 x-12 ">
         <table className="table-fixed w-full min-w-[60rem]">
