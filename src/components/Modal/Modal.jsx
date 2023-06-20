@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { IconButton } from "../Buttons";
 import classes from "./Modal.module.scss";
+import { motion } from "framer-motion";
 
 const Modal = ({
   visible = false,

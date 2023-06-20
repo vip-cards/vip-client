@@ -9,6 +9,9 @@ import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import CardContainer from "components/CardContainer/CardContainer";
 import LoadingProductCard from "./LoadingProductCard";
 
+const productFetcher = ([key, id]) =>
+  clientServices.getProductDetails(id).then((res) => res?.data?.record?.[0]);
+
 export default function ProductCard({ product: { _id: productId } }) {
   const { data, error, isLoading } = useSWR(
     `product-details-${productId}`,

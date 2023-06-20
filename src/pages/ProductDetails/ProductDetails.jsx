@@ -22,8 +22,13 @@ import { addToCartThunk, selectCartBranch } from "store/cart-slice";
 import { addWishProduct } from "store/wishlist-slice";
 import { SwiperSlide } from "swiper/react";
 import useSWR from "swr";
+import { motion } from "framer-motion";
+import Select from "react-select";
 
 import "./ProductDetails.scss";
+
+const productReviewFetcher = ([key, id]) =>
+  clientServices.getProductReview(id).then((res) => res.records);
 
 function ProductDetails(props) {
   const lang = i18n.language;
@@ -39,10 +44,10 @@ function ProductDetails(props) {
   const [cart, setCart] = useState({ quantity: 0, branchId: -1 });
   const [review, setReview] = useState({});
   const [reviewFormExpand, setReviewFormExpand] = useState(false);
-  const { data } = useSWR(`product-${productId}`, () =>
-    clientServices.getProductReview(productId)
+  const { data: reviews = [] } = useSWR(
+    ["product-rev", productId],
+    productReviewFetcher
   );
-  const reviews = data?.records ?? [];
 
   async function fetchProductData() {
     try {
@@ -119,8 +124,8 @@ function ProductDetails(props) {
   }, []);
 
   return (
-    <div className="app-card-shadow !flex !flex-col product-details-page">
-      <div className="product-details-page">
+    <div className="app-card-shadow !flex !flex-col product-details-page max-md:!m-0 max-md:!rounded-none">
+      <div className="product-details-page max-xs:!m-0">
         {/* image */}
         <HomeSwiper
           // ref={swiperRef}
@@ -139,6 +144,7 @@ function ProductDetails(props) {
             </SwiperSlide>
           ))}
         </HomeSwiper>
+
         {/* details */}
         <div className="product-details-container">
           <div className="product-details">
@@ -161,7 +167,7 @@ function ProductDetails(props) {
         {/* cart */}
         <div className="product-cart">
           <select
-            className="cart-branch-select"
+            className="cart-branch-select px-1 py-2 outline outline-1 outline-primary/75"
             name="branches"
             id="branches"
             onChange={(e) =>
@@ -170,11 +176,11 @@ function ProductDetails(props) {
             value={cart.branchId}
           >
             <option value="-1" disabled>
-              choose a branch
+              {t("choose a branch")}
             </option>
             {product?.branches?.map((branch) => (
               <option key={branch._id} value={branch._id}>
-                {branch?.name?.[lang]}
+                {getLocalizedWord(branch?.name)}
               </option>
             ))}
           </select>
@@ -232,15 +238,23 @@ function ProductDetails(props) {
           <FontAwesomeIcon
             icon={faCaretDown}
             className={classNames("transition-transform", {
-              "rotate-180": reviewFormExpand,
+              "rotate-180": !reviewFormExpand,
             })}
           />
         </div>
       </aside>
-      <section
-        className={classNames("px-8 overflow-hidden transition-all", {
-          "h-0": !reviewFormExpand,
-          "h-full": reviewFormExpand,
+      <motion.section
+        animate={{
+          height: reviewFormExpand ? "0" : "100%",
+          transition: {
+            type: "tween",
+            duration: 0.15,
+            ease: "circOut",
+          },
+        }}
+        className={classNames("px-8 overflow-hidden ", {
+          // "h-0": !reviewFormExpand,
+          // "h-full": reviewFormExpand,
         })}
       >
         <div className="bg-white p-6 rounded-lg shadow-md max-w-[50rem] mx-auto px-12 py-8">
@@ -266,7 +280,7 @@ function ProductDetails(props) {
             <MainButton type="submit">Submit</MainButton>
           </form>
         </div>
-      </section>
+      </motion.section>
 
       <section className="shadow shadow-primary/50 rounded-md p-3 m-3 lg:mx-16">
         <h1>reviews</h1>

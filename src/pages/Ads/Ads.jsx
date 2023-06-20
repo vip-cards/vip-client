@@ -14,7 +14,7 @@ function SponsorAds() {
       <div className="page-container">
         <SponsorImg />
         <h2>{t("manageYourAds")}</h2>
-        <p>{t("editOrCreateAd")}</p>
+          <p>{t("editOrCreateAd")}</p>
 
         <MainButton onClick={() => navigate(ROUTES.ADS.CREATE)}>
           {t("createAd")}

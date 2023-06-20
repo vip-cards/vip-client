@@ -174,7 +174,10 @@ export default function Login() {
           )}
         </div>
 
-        <form className="login-box app-card-shadow" onSubmit={loginHandler}>
+        <form
+          className="login-box app-card-shadow max-xs:!w-full max-xs:!shadow-none"
+          onSubmit={loginHandler}
+        >
           <p>{t("login")}</p>
 
           {errorMessage ? (
@@ -234,7 +237,7 @@ export default function Login() {
             loading={loading}
             type="button"
           />
-          <div className="text-primary hover:opacity-80">
+          <div className="text-primary hover:opacity-80 capitalize">
             <Link to={`/${ROUTES.FORGOT_PASSWORD}`}>{t("forgotPassword")}</Link>
           </div>
 
@@ -267,10 +270,10 @@ export default function Login() {
           </div>
 
           {/*---------FOOTER---------*/}
-          <p className="login-footer">
-            <span>{t("notRegistered")}</span>
-            &nbsp;
-            <Link to="/register" className="link-item">
+          <p className="login-footer flex flex-row gap-3 flex-wrap justify-center">
+            <span className="whitespace-nowrap">{t("notRegistered")}</span>
+
+            <Link to="/register" className="link-item whitespace-nowrap">
               {t("CreateAccount")}
             </Link>
           </p>

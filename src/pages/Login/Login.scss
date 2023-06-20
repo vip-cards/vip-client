@@ -1,4 +1,7 @@
+$box-width: 460px;
+
 .login {
+  
   display: grid;
   grid-template-areas: "logo form";
   grid-template-columns: 1fr 1fr;
@@ -130,6 +133,7 @@
 
 @media screen and (max-width: 992px) {
   .login {
+    margin-block: 3rem;
     grid-template-columns: 1fr;
     grid-template-areas: "form";
     .login-logo {
