@@ -6,7 +6,7 @@ import NoData from "../../components/NoData/NoData";
 import clientServices from "../../services/clientServices";
 import "./Categories.scss";
 import { CategoryCard } from "components/Cards";
-import { listRenderFn } from "helpers/rednerFn";
+import { listRenderFn } from "helpers/renderFn";
 import PageQueryContainer from "components/PageQueryContainer/PageQueryContainer";
 
 const LIMIT = 9;

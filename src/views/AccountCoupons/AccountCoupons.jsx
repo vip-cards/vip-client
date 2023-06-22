@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
-import { listRenderFn } from "helpers/rednerFn";
+import { listRenderFn } from "helpers/renderFn";
 import { useTranslation } from "react-i18next";
 import clientServices from "services/clientServices";
 import useSWR from "swr";

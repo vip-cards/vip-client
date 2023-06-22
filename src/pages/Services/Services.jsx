@@ -1,7 +1,7 @@
 import Pagination from "components/Pagination/Pagination";
 import Tabs from "components/Tabs/Tabs";
 import { getLocalizedWord } from "helpers/lang";
-import { listRenderFn } from "helpers/rednerFn";
+import { listRenderFn } from "helpers/renderFn";
 import { useLayoutEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import clientServices from "services/clientServices";
