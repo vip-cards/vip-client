@@ -25,7 +25,7 @@ export default function CategoryCard({ category, vendorId }) {
             className="category-img"
           />
         </div>
-        <div className="category-title">
+        <div className="category-title capitalize">
           <p>{getLocalizedWord(category.name)} </p>
         </div>
       </div>
