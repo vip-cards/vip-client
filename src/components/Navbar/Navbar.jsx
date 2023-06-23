@@ -21,18 +21,21 @@ import SideNav from "./SideNav/SideNav";
 
 import { selectAuth } from "store/auth-slice";
 import "./Navbar.scss";
+import ConfirmModal from "components/Modal/ConfirmModal";
 
 dayjs.extend(relativeTime);
 
 export default function Navbar() {
   const navigate = useNavigate();
 
-  const [lists, setLists] = useState({});
-  const [viweAccountMenu, setViweAccountMenu] = useState(false);
-  const [showSideMenu, setShowSideMenu] = useState(false);
-  const notificationList = useSelector(selectNotification);
-  const cartProducts = useSelector(selectCartProducts);
   const auth = useSelector(selectAuth);
+  const cartProducts = useSelector(selectCartProducts);
+  const notificationList = useSelector(selectNotification);
+
+  const [lists, setLists] = useState({});
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [showSideMenu, setShowSideMenu] = useState(false);
+  const [viweAccountMenu, setViweAccountMenu] = useState(false);
 
   const lang = i18n.language;
 
@@ -74,9 +77,9 @@ export default function Navbar() {
           { link: `/${ROUTES.ACCOUNT}`, title: "myAccount" },
           { link: `/${ROUTES.SUBSCRIBE}`, title: "VIP premium" },
           {
-            link: `/${ROUTES.LOGOUT}`,
+            link: `?`,
             title: "logout",
-            onClick: (e) => logoutHandler(e),
+            onClick: (e) => setConfirmModal(true),
           },
         ],
         listRender: (menu) =>
@@ -262,6 +265,16 @@ export default function Navbar() {
       <NofificationRing />
       {/* <NofificationRing /> */}
       {showSideMenu && <SideNav onToggle={toggleSideMenu} items={navItems} />}
+      <ConfirmModal
+        visible={confirmModal}
+        message={t("YouWillBeLoggedOut")}
+        title={"logout"}
+        onConfirm={(e) => {
+          setConfirmModal(false);
+          logoutHandler(e);
+        }}
+        onCancel={() => setConfirmModal(false)}
+      />
     </nav>
   );
 }
