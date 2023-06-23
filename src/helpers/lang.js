@@ -12,7 +12,8 @@ export function checkFixLang(lang) {
   }
 }
 
-export function switchLang(lang) {
+export async function switchLang(lang) {
+  await i18n.changeLanguage(lang);
   localStorage.setItem("lang", lang);
 
   document

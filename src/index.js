@@ -14,6 +14,8 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/scss"; // core Swiperimport "swiper/css/navigation";
+import "animate.css";
+
 import "./index.scss";
 
 const helmetContext = {};

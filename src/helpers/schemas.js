@@ -1,27 +1,22 @@
 import Joi from "joi";
 
+const email = Joi.string().email({ tlds: { allow: false } });
+const password = Joi.string()
+  .pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)
+  .required();
+
 export const registerSchema = Joi.object({
   name_en: Joi.string().required(),
-  email: Joi.string()
-    .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
-    .required(),
-  password: Joi.string()
-    .pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)
-    .required(),
-  "re-password": Joi.any().valid(Joi.ref("password")).required(),
-  phone: Joi.string().optional(),
+  email,
+  password,
+  "re-password": Joi.ref("password"),
+  phone: Joi.string(),
   age: Joi.number().min(5).max(100).optional(),
   gender: Joi.string().valid("male", "female"),
-});
+})
+  .or("email", "phone") // one of (email | phone) is required
+  .with("password", "re-password");
 
-export const loginSchema = Joi.object({
-  email: Joi.string()
-    .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
-    .required(),
-  password: Joi.string()
-    .pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)
-    .required(),
-});
 
 export const createJobSchema = Joi.object({
   client: Joi.string().required(),
