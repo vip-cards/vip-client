@@ -4,6 +4,7 @@
   "'email' must be a valid email": "'email' must be a valid email",
   "?": "?",
   "About": "About",
+  "AreYouSure": "Are you sure?",
   "Accepted Ads": "Accepted Ads",
   "Accepted Requests": "Accepted Requests",
   "Accepted Subscriptions": "Accepted Subscriptions",
@@ -478,6 +479,7 @@
   "1 Year subscription": "1 Year subscription",
   "Subscription fess will be sent to the wallet number": "Subscription fess will be sent to the wallet number",
   "You don't have enough credit to add a client": "You don't have enough credit to add a client",
+  "YouWillBeLoggedOut": "You will be logged out",
   "a ___": "A",
   "accepted": "accepted",
   "account": "Account",
@@ -535,6 +537,7 @@
   "confirm": "Confirm",
   "contact": "Contact",
   "country": "country",
+  "passwordValidation": "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character",
   "coupon": "Coupon",
   "coupons": "coupons",
   "createAd": "Create Ad",
@@ -564,6 +567,7 @@
   "editOffer": "Edit Offer",
   "editOrCreateAd": "Edit or create a new Ad",
   "email": "Email",
+  "emailOrPhone": "Email or Phone",
   "employee_one": "employee",
   "employee_other": "employees",
   "employee_zero": "no employees",
@@ -597,7 +601,7 @@
   "loadMore": "Load more",
   "location": "location",
   "login": "Login",
-  "loginByCode": "Login By Code",
+  "loginByCode": "Login By Barcode",
 
   "loginAs": "Login As",
   "loginAsGuest": "Login as a guest",
@@ -733,5 +737,6 @@
   "serviceName": {
     "ar": "Service name in arabic",
     "en": "Service name in english"
-  }
+  },
+  "emailOrPhoneValidation": "Please enter a valid email or phone number"
 }

@@ -8,6 +8,7 @@
   "Accepted Requests": "الطلبات المقبولة",
   "Accepted Subscriptions": "الإشتراكات المقبولة",
   "Active": "نشط",
+  "AreYouSure": "هل أنت متأكد؟",
   "Active Agents": "الوكلاء النشطة",
   "Active Banners": "اللافتات النشطة",
   "Active Branches": "الفروع النشطة",
@@ -479,10 +480,11 @@
   "Wishlists": "قوائم الرغبات",
   "Withdraw credit": "سحب من الرصيد",
   "You don't have enough credit to add a client": "ليس لديك قيمة إيداع كافية لإضافة عميل",
+  "YouWillBeLoggedOut": "سيتم تسجيل خروجك",
   "accepted": "مقبول",
   "account": "الحساب",
   "accountDetails": "تفاصيل الحساب",
-  "Actions":"الاستجابة",
+  "Actions": "الاستجابة",
   "ad": "الاعلانات",
   "addBranch": "اضافة فرع",
   "addClient": "إضافة عميل",
@@ -558,6 +560,7 @@
   "editOffer": "تعديل العرض",
   "editOrCreateAd": "قم بتعديل أو إضافة إعلان جديد",
   "email": "البريد الالكتروني",
+  "emailOrPhone": "البريد الالكتروني أو رقم الهاتف",
   "employee_many": "موظفون",
   "employee_one": "موظف",
   "employee_other": "موظفون",
@@ -589,7 +592,7 @@
   "loadMore": "تحميل المزيد",
   "location": "الموقع",
   "login": "تسجيل الدخول",
-  "loginByCode": "تسجيل الدخول باستخدام الكود",
+  "loginByCode": "تسجيل الدخول باستخدام الباركود",
   "loginAs": "تسجيل الدخول كـ",
   "loginAsGuest": "الدخول كـضيف",
   "logout": "تسجيل الخروج",
@@ -684,6 +687,7 @@
   "withdraw": "سحب",
   "with wallet": "باستخدام المحفظة",
   "writeAReview": "ضع تقييمًا",
+  "passwordValidation": "كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل وحرف كبير وحرف صغير ورقم ورمز",
   "address": {
     "": "العنوان",
     "ar": "عنوان الخدمة بالعربية",
@@ -724,5 +728,6 @@
   "serviceName": {
     "ar": "اسم الخدمة بالعربية",
     "en": "اسم الخدمة بالإنجليزية"
-  }
+  },
+  "emailOrPhoneValidation": "برجاء إدخال البريد الالكتروني أو الهاتف بشكل صحيح"
 }
