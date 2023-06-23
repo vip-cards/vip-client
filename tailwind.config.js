@@ -9,6 +9,11 @@ module.exports = {
       colors: {
         primary: "#fc7300",
         secondary: "#005247",
+        warning: "#FFC700",
+        danger: "#FF4136",
+        success: "#00B894",
+        info: "#0088FF",
+        link: "#0066FF",
       },
     },
   },
