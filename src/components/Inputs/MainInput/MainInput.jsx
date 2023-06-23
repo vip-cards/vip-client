@@ -1,5 +1,3 @@
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactComponent as EyeClose } from "assets/VIP-ICON-SVG/eye_close.svg";
 import { ReactComponent as EyeOPen } from "assets/VIP-ICON-SVG/eye_open.svg";
 import classNames from "classnames";
@@ -7,13 +5,13 @@ import { getLocalizedWord } from "helpers/lang";
 import { t } from "i18next";
 import { useEffect, useId, useRef, useState } from "react";
 import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import CheckboxInput from "./CheckboxInput";
+import EditButton from "./EditButton";
 import { ListInput } from "./ListInput";
-import { InputSelect } from "./SelectInput";
-
-import "react-datepicker/dist/react-datepicker.css";
 import "./MainInput.scss";
+import { InputSelect } from "./SelectInput";
 
 export default function MainInput(props) {
   const {
@@ -215,16 +213,3 @@ export default function MainInput(props) {
     </div>
   );
 }
-
-const EditButton = ({ toEdit, disableState, toggleDisabledHandler }) =>
-  !!toEdit && (
-    <button
-      type="button"
-      className={classNames("edit-field-icon", {
-        active: !disableState,
-      })}
-      onClick={toggleDisabledHandler}
-    >
-      <FontAwesomeIcon icon={faPenToSquare} />
-    </button>
-  );
