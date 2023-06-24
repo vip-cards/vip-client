@@ -24,12 +24,14 @@ const Search = ({ setSearchQuery, onClick }) => {
           onKeyUp={(e) => e.code === "Enter" && onClick()}
           value={value}
         />
-        <MainButton
-          className="h-full aspect-square shadow-lg hover:shadow-md"
-          onClick={onClick}
-        >
-          <IconButton icon={faMagnifyingGlass} variant="secondary" />
-        </MainButton>
+        <div>
+          <MainButton
+            className="h-full aspect-square shadow-lg hover:shadow-md"
+            onClick={onClick}
+          >
+            <IconButton icon={faMagnifyingGlass} variant="secondary" />
+          </MainButton>
+        </div>
       </div>
     </header>
   );

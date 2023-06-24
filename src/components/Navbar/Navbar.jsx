@@ -113,6 +113,7 @@ export default function Navbar() {
   function handleNotificationClick(notificationId, link) {
     markAsSeen(notificationId);
   }
+  
   const NofificationRing = useCallback(
     () => (
       <Dropdown

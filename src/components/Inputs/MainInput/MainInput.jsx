@@ -74,7 +74,7 @@ export default function MainInput(props) {
       ref: inputRef,
       value: state[name],
       disabled: disableState,
-      className: classNames("main-input", { error: invalid }),
+      className: classNames("main-input peer", { error: invalid }),
       placeholder: " ",
       min: type === "number" ? 0 : null,
       autoComplete: type === "password" ? "off" : type,
@@ -197,12 +197,12 @@ export default function MainInput(props) {
   };
 
   return (
-    <div className={classNames(className, "main-input-label")}>
+    <div className={classNames(className, "main-input-label group")}>
       {renderInput()}
       <label className="main-label relative" htmlFor={inputId}>
         {t(name)}
-        <span className="text-red-600/80 pl-1 font-extrabold">
-          {required ? "*" : ""}
+        <span className="text-red-600/80 pl-1 font-extrabold group-focus-within:text-white group-focus-within:font-black">
+          {required ? " * " : ""}
         </span>
       </label>
       <EditButton
