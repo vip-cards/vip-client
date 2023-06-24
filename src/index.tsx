@@ -34,12 +34,12 @@ const swrOptions = isDev()
       revalidateOnMount: true,
     }
   : Object.freeze({
-      revalidateIfStale: true,
+      revalidateIfStale: false,
       revalidateOnMount: true,
       revalidateOnFocus: true,
-      dedupingInterval: 5000,
+      dedupingInterval: 1000 * 60 * 60 * 24,
       loadingTimeout: 5000,
-      errorRetryCount: 5,
+      errorRetryCount: 3,
     });
 
 root.render(
