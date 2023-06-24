@@ -1,73 +1,68 @@
+import { MainButton } from "components/Buttons";
+import FormErrorMessage from "components/FormErrorMessage/FormErrorMessage";
+import { MainInput } from "components/Inputs";
 import dayjs from "dayjs";
+import { getInitialFormData } from "helpers/forms";
+import { registerFormData, registerSchema } from "helpers/forms/register";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-
-import { registerSchema } from "../../helpers/schemas";
 import toastPopup from "../../helpers/toastPopup";
 import clientServices from "../../services/clientServices";
-import { useNavigate } from "react-router";
-import { MainInput } from "components/Inputs";
-import { MainButton } from "components/Buttons";
+import _ from "lodash";
+import { clearEmpty } from "helpers";
 
 export default function RegisterForm() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [errorList, setErrorList] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
+
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState({
-    name_en: "",
-    email: "",
-    password: "",
-    "re-password": "",
-    gender: "male",
-  });
+  const [errorList, setErrorList] = useState([]);
+  const [user, setUser] = useState(getInitialFormData(registerFormData));
 
-  let formData = [
-    { name: "name_en", type: "text", required: true },
-    { name: "email", type: "email", required: true },
-    { name: "password", type: "password", required: true },
-    { name: "re-password", type: "password", required: true },
-    { name: "phone", type: "tel", required: false },
-  ];
   let timer;
-  async function registerHandler() {
-    const { value, error } = registerSchema.validate(user);
+  async function registerHandler(e) {
+    e.preventDefault();
+    setErrorList([]);
 
-    const mappedData = {
-      ...user,
-      name: {
-        en: user.name_en,
-      },
-    };
-    delete mappedData.name_en;
-    delete mappedData["re-password"];
+    const filteredObj = clearEmpty(user);
+    const { value: _user, error } = registerSchema.validate(filteredObj);
+
     setLoading(true);
     if (error) {
-      setErrorList(error.details);
-      setErrorMessage(error.message);
-      toast.error(error.name);
-    } else {
-      try {
-        const { data } = await clientServices.register(mappedData);
-        if (data.success && data.code === 201) {
-          setLoading(false);
-          toastPopup.success(t("Success"));
-          navigate("/login");
-        }
-      } catch (e) {
-        if (e.response.data.code === 409) {
-          toast.error(e.response.data.error);
-          timer = setTimeout(() => {
-            navigate("/login");
-          }, 3000);
-        }
-        setLoading(false);
-        setErrorMessage(e.response.data.error);
-      }
+      setErrorList(error.details.map((e) => e.message));
+
+      setLoading(false);
+      return 1;
     }
-    setLoading(false);
+    const arabicRegex = /[\u0600-\u06FF]/; // Arabic Unicode range
+    const isArabic = arabicRegex.test(_user.name);
+    const mappedData = {
+      ..._user,
+      name: {
+        [isArabic ? "ar" : "en"]: _user.name,
+      },
+    };
+    delete mappedData["re-password"];
+
+    try {
+      const { data } = await clientServices.register(mappedData);
+      if (data.success && data.code === 201) {
+        setLoading(false);
+        toastPopup.success(t("Success"));
+        navigate("/login");
+      }
+    } catch (e) {
+      if (e.response.data.code === 409) {
+        toastPopup.error(e.response.data.error);
+        timer = setTimeout(() => {
+          navigate("/login");
+        }, 3000);
+      }
+      setLoading(false);
+      setErrorList([e.response.data.error]);
+    }
   }
   useEffect(() => {
     return () => {
@@ -76,12 +71,15 @@ export default function RegisterForm() {
   }, []);
 
   return (
-    <>
-      {errorMessage ? <div className="err">{errorMessage}</div> : null}
-      {formData.map((formInput, index) => {
+    <form
+      className="flex flex-col w-full justify-center items-center mx-auto gap-4"
+      onSubmit={registerHandler}
+    >
+      {registerFormData.map((formInput, index) => {
         return (
           <MainInput
-            key={index}
+            {...formInput}
+            key={formInput.name}
             name={formInput.name}
             type={formInput.type}
             required={formInput.required}
@@ -150,11 +148,16 @@ export default function RegisterForm() {
           {t("gender")}
         </label>
       </div>
+
+      <FormErrorMessage errorList={errorList} />
+
       <MainButton
-        text={t("login")}
+        text={t("register")}
         loading={loading}
+        variant="primary"
+        type="button"
         onClick={registerHandler}
       />
-    </>
+    </form>
   );
 }

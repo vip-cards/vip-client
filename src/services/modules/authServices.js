@@ -1,10 +1,12 @@
 import toastPopup from "helpers/toastPopup";
 import { guestAxios } from "../Axios";
+import { clearEmpty } from "helpers";
 
 export const authServices = {
   /*--- AUTH ---*/
   register: async (obj) => {
-    const response = await guestAxios.post("/register", obj);
+    const _obj = clearEmpty(obj);
+    const response = await guestAxios.post("/register", _obj);
     return response;
   },
   loginBy: async (obj) => {

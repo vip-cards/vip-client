@@ -1,7 +1,4 @@
-import {
-  faCircleRight,
-  faExclamationTriangle,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactComponent as VendorLogo } from "assets/VIP-ICON-SVG/VendorLogo.svg";
 import { ReactComponent as VendorLogoOrange } from "assets/VIP-ICON-SVG/VendorLogoOrange.svg";
@@ -9,6 +6,7 @@ import { ReactComponent as FacebookLogo } from "assets/icons/facebook.svg";
 import { ReactComponent as GoogleLogo } from "assets/icons/google.svg";
 import { ReactComponent as TwitterLogo } from "assets/icons/twitter.svg";
 import { MainButton } from "components/Buttons";
+import FormErrorMessage from "components/FormErrorMessage/FormErrorMessage";
 import { MainInput } from "components/Inputs";
 import { ROUTES } from "constants";
 import { getInitialFormData } from "helpers/forms";
@@ -61,17 +59,18 @@ export default function Login() {
     setErrorList([]);
     const { error, value } = loginSchema.validate(user);
     setLoading(true);
-    if (error) {
-      setLoading(false);
-      setErrorList(error.details.map((e) => e.message));
-    } else {
-      clientServices
+
+    if (!error) {
+      return clientServices
         .login(value)
         .then(({ data }) => {
           handleLoginSuccess(data);
         })
         .catch(handleLoginCatch);
     }
+
+    setLoading(false);
+    setErrorList(error.details.map((e) => e.message));
   };
 
   const guestLoginHandler = async (e) => {
@@ -139,19 +138,7 @@ export default function Login() {
               />
             );
           })}
-          {errorList.map((error) => {
-            return (
-              <div
-                key={error}
-                className="mx-4 md:max-w-[80%] animate__animated animate__bounceIn duration-75"
-              >
-                <div className="err !text-sm font-serif !font-normal gap-3 flex flex-row whitespace-normal items-center !py-2 !px-3">
-                  <FontAwesomeIcon icon={faExclamationTriangle} size="xl" />
-                  <span>{error}</span>
-                </div>
-              </div>
-            );
-          })}
+          <FormErrorMessage errorList={errorList} />
           <MainButton text={t("login")} loading={loading} type="submit" />
           {qrCode.open && (
             <MainInput
