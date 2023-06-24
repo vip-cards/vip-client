@@ -39,7 +39,7 @@ export default function Home() {
   );
   const { data: advertsData, isLoading: advertsLoading } = useSWR(
     "all-adverts",
-    () => clientServices.listAllAds()
+    () => clientServices.listAllBanners()
   );
   const { data: bannersData, isLoading: bannersLoading } = useSWR(
     "all-banners",
@@ -66,7 +66,7 @@ export default function Home() {
     if (advertsLoading || !adverts) return <LoadingSpinner />;
     if (!adverts.length)
       return dummyAds
-        .filter((ad) => ad.bannerSize === size)
+        .filter((ad) => ad.size === size)
         .map((ad) => {
           return (
             <SwiperSlide
@@ -84,7 +84,7 @@ export default function Home() {
           );
         });
     return adverts
-      .filter((ad) => ad.bannerSize === size)
+      .filter((ad) => ad.size === size)
       .map((ad) => {
         return (
           <SwiperSlide

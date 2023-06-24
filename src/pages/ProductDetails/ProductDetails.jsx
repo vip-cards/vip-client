@@ -26,9 +26,14 @@ import { motion } from "framer-motion";
 import Select from "react-select";
 
 import "./ProductDetails.scss";
+import { Link } from "react-router-dom";
+import { ROUTES } from "constants";
 
 const productReviewFetcher = ([key, id]) =>
   clientServices.getProductReview(id).then((res) => res.records);
+
+const productFetcher = ([key, id]) =>
+  clientServices.getProductDetails(id).then((data) => data.record[0]);
 
 function ProductDetails(props) {
   const lang = i18n.language;
@@ -38,23 +43,16 @@ function ProductDetails(props) {
   const auth = useSelector(selectAuth);
   const cartBranch = useSelector(selectCartBranch);
 
-  const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
   const [cart, setCart] = useState({ quantity: 0, branchId: -1 });
   const [review, setReview] = useState({});
   const [reviewFormExpand, setReviewFormExpand] = useState(false);
+  const { data: product } = useSWR(["product", productId], productFetcher);
   const { data: reviews = [] } = useSWR(
     ["product-rev", productId],
     productReviewFetcher
   );
-
-  async function fetchProductData() {
-    try {
-      const data = await clientServices.getProductDetails(productId);
-      setProduct(data.record[0]);
-    } catch (e) {}
-  }
 
   async function addToCartHandler() {
     if (auth.userId === "guest") {
@@ -103,7 +101,6 @@ function ProductDetails(props) {
     clientServices
       .createProductReview({
         client: auth.userId,
-        // vendor: product.vendor._id,
         product: product._id,
         rating: +review.rating,
         review: review.review,
@@ -118,10 +115,6 @@ function ProductDetails(props) {
         setReviewFormExpand(false);
       });
   }
-
-  useEffect(() => {
-    fetchProductData();
-  }, []);
 
   return (
     <div className="app-card-shadow !flex !flex-col product-details-page max-md:!m-0 max-md:!rounded-none">
@@ -150,9 +143,14 @@ function ProductDetails(props) {
           <div className="product-details">
             <h2 className="product-title text-2xl">{product?.name?.[lang]}</h2>
             <h5 className="product-title">
-              <RatingStars rate={product?.rate} />
+              <RatingStars rate={product?.rate ?? 0} />
             </h5>
-            <h4 className="vendor-title">{product?.vendor?.name?.[lang]}</h4>
+            <Link
+              className="vendor-title text-primary hover:text-secondary hover:underline transition-all"
+              to={`/${ROUTES.VENDORS}/${product?.vendor._id}`}
+            >
+              {product?.vendor?.name?.[lang]}
+            </Link>
 
             <p>
               <span className="line-through text-slate-800">

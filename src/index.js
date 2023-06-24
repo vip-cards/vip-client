@@ -1,5 +1,5 @@
 import ErrorBoundary from "layouts/ErrorBoundary/ErrorBoundary";
-import ReactDOM from "react-dom/client";
+import { createRoot } from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -11,16 +11,16 @@ import "dayjs/locale/ar";
 import "dayjs/locale/en";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import "animate.css";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/scss"; // core Swiperimport "swiper/css/navigation";
-import "animate.css";
 
 import "./index.scss";
 
 const helmetContext = {};
 const container = document.getElementById("root");
-const root = ReactDOM.createRoot(container);
+const root = createRoot(container);
 
 document.getElementById("loader-container")?.remove();
 
