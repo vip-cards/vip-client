@@ -191,7 +191,7 @@ export default function Navbar() {
     <nav className="top-nav z-20">
       <BurgerMenuIcon className="burger-menu-icon" onClick={toggleSideMenu} />
       <NavbarLogo
-        className="app-logo max-lg:mx-auto"
+        className="app-logo max-xl:mx-auto"
         onClick={() => {
           navigate("/");
         }}

@@ -113,6 +113,8 @@ export default function Vendor() {
         itemsCount={productsCount}
         queryParams={queryParams}
         limit={LIMIT}
+        initialFilters={{ vendor: vendorId }}
+        
         setQueryParams={setQueryParams}
         listRenderFn={productListRender}
       >
@@ -282,15 +284,7 @@ export default function Vendor() {
           isVendorbranchesLoading
         )}
 
-        {/* <div className="flex flex-row w-full h-full gap-8 flex-wrap p-8 min-h-[12rem] justify-around flex-grow">
-        {productListRender()}
-      </div>
-      <Pagination
-        count={totalPages}
-        queryParams={queryParams}
-        setQueryParams={setQueryParams}
-      /> */}
-        <PageQueryWrapper></PageQueryWrapper>
+        <PageQueryWrapper />
       </SearchProvider>
       <ReviewModal
         isVisible={isReviewModalVisible}
