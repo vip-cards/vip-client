@@ -735,5 +735,7 @@
   "phoneValidation": "برجاء إدخال رقم الهاتف بشكل صحيح",
   "rePasswordValidation": "كلمة المرور غير متطابقة",
   "genderValidation": "برجاء إدخال النوع بشكل صحيح",
-  "ageValidation": "برجاء إدخال العمر بشكل صحيح"
+  "ageValidation": "برجاء إدخال العمر بشكل صحيح",
+  "onlinePaymentAvailable": "الدفع الإلكتروني متاح",
+  "onlinePaymentNotAvailable": "الدفع الإلكتروني غير متاح"
 }

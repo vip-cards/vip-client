@@ -744,5 +744,7 @@
   "phoneValidation": "Please enter a valid phone number",
   "rePasswordValidation": "Passwords don't match",
   "genderValidation": "Pleace choose a gender",
-  "ageValidation": "Please enter a valid age"
+  "ageValidation": "Please enter a valid age",
+  "onlinePaymentAvailable": "Online payment available",
+  "onlinePaymentNotAvailable": "Online payment not available"
 }
