@@ -10,12 +10,13 @@ import { ProductImageContainer } from "./ProductImageContainer";
 const productFetcher = async ([key, id]) =>
   clientServices.getProductDetails(id).then((res) => res?.record?.[0]);
 
-export default function ProductCard({ product: { _id: productId } }) {
-  const {
-    data: product,
-    error,
-    isLoading,
-  } = useSWR([`product-details-${productId}`, productId], productFetcher);
+export default function ProductCard({ product }: { product: IProduct }) {
+  // export default function ProductCard({ product: { _id: productId } }) {
+  //   const {
+  //     data: product,
+  //     error,
+  //     isLoading,
+  //   } = useSWR([`product-details-${productId}`, productId], productFetcher);
 
   const popupRef = useRef(null);
   const componentRef = useRef(null);
@@ -46,7 +47,7 @@ export default function ProductCard({ product: { _id: productId } }) {
     };
   }, []);
 
-  if (isLoading || error) return <LoadingProductCard />;
+  // if (isLoading || error) return <LoadingProductCard />;
 
   if (!product?._id) return null;
 

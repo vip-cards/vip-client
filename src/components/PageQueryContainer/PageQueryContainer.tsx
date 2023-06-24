@@ -2,11 +2,33 @@ import Search from "components/Inputs/Search/Search";
 import Pagination from "components/Pagination/Pagination";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import clientServices from "services/clientServices";
 import FilterGroup from "./FilterGroup";
 
 const LIMIT = 9;
+type TQueryParams = {
+  page: number;
+  limit: number;
+  [key: string]: any;
+};
+
+type TPageQueryContainerProps = {
+  itemsCount: number;
+
+  queryParams: TQueryParams;
+  setQueryParams: React.Dispatch<React.SetStateAction<TQueryParams>>;
+
+  initialFilters?: any;
+  filter?: any;
+  setFilter?: React.Dispatch<React.SetStateAction<any>>;
+
+  withSideFilter?: boolean;
+
+  listRenderFn: () => React.ReactNode;
+
+  children?: React.ReactNode;
+};
 
 export default function PageQueryContainer({
   queryParams,
@@ -18,7 +40,7 @@ export default function PageQueryContainer({
   listRenderFn,
   itemsCount,
   children,
-}) {
+}: TPageQueryContainerProps) {
   const { t } = useTranslation();
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
@@ -78,11 +100,7 @@ export default function PageQueryContainer({
 
   return (
     <>
-      <Search
-        setSearchQuery={setSearchQuery}
-        searchQuery={searchQuery}
-        onClick={handleListSearch}
-      />
+      <Search setSearchQuery={setSearchQuery} onClick={handleListSearch} />
       <section className="flex flex-col p-2 sm:p-8 min-h-[80vh]">
         {children}
         <div className="flex flex-row gap-2 h-full max-h-screen max-md:gap-1 max-xs:gap-0">
