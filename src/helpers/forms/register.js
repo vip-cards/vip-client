@@ -37,6 +37,8 @@ export const registerSchema = Joi.object({
     .messages({
       "any.required": t("genderValidation"),
     }),
+  profession: Joi.array(),
+  interests: Joi.array(),
 })
   .or("email", "phone")
   .with("password", "re-password")

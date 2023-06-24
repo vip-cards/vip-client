@@ -15,7 +15,6 @@ import { MainButton } from "components/Buttons";
 import { MainInput } from "components/Inputs";
 
 import "./AccountDetails.scss";
-import { getLocalizedWord } from "helpers/lang";
 /**
  * {obj1} new object
  * {obj2} old object

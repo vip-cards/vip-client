@@ -9,7 +9,7 @@ export const clearEmpty = (obj) => {
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       const value = obj[key];
-      if (typeof value === "object") {
+      if (typeof value === "object" && !Array.isArray(value)) {
         result[key] = clearEmpty(value);
       } else if (value !== null && value !== undefined && value !== "") {
         result[key] = value;

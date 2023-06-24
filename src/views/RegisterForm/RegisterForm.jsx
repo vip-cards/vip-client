@@ -2,16 +2,16 @@ import { MainButton } from "components/Buttons";
 import FormErrorMessage from "components/FormErrorMessage/FormErrorMessage";
 import { MainInput } from "components/Inputs";
 import dayjs from "dayjs";
+import { clearEmpty } from "helpers";
 import { getInitialFormData } from "helpers/forms";
 import { registerFormData, registerSchema } from "helpers/forms/register";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
-import { toast } from "react-toastify";
+import useSWR from "swr";
 import toastPopup from "../../helpers/toastPopup";
 import clientServices from "../../services/clientServices";
-import _ from "lodash";
-import { clearEmpty } from "helpers";
+import { guestAxios } from "services/Axios";
 
 export default function RegisterForm() {
   const { t } = useTranslation();
@@ -19,8 +19,30 @@ export default function RegisterForm() {
 
   const [loading, setLoading] = useState(false);
   const [errorList, setErrorList] = useState([]);
-  const [user, setUser] = useState(getInitialFormData(registerFormData));
+  const { data: professions } = useSWR("list-professions", () =>
+    guestAxios.get("/profession/list")?.then(({ data }) => data.records)
+  );
+  const { data: interests } = useSWR("list-interests", () =>
+    guestAxios.get("/interest/list")?.then(({ data }) => data.records)
+  );
 
+  const formData = [
+    ...registerFormData,
+    {
+      name: "profession",
+      type: "multi-select",
+      identifier: "name",
+      list: professions ?? [],
+    },
+    {
+      name: "interests",
+      type: "multi-select",
+      identifier: "name",
+      list: interests ?? [],
+    },
+  ];
+  
+  const [user, setUser] = useState(getInitialFormData(formData));
   let timer;
   async function registerHandler(e) {
     e.preventDefault();
@@ -75,7 +97,7 @@ export default function RegisterForm() {
       className="flex flex-col w-full justify-center items-center mx-auto gap-4"
       onSubmit={registerHandler}
     >
-      {registerFormData.map((formInput, index) => {
+      {formData.map((formInput, index) => {
         return (
           <MainInput
             {...formInput}
