@@ -25,10 +25,10 @@ export default function RegisterForm() {
   async function registerHandler(e) {
     e.preventDefault();
     setErrorList([]);
-
+    console.log(user);
     const filteredObj = clearEmpty(user);
     const { value: _user, error } = registerSchema.validate(filteredObj);
-
+    console.log(filteredObj);
     setLoading(true);
     if (error) {
       setErrorList(error.details.map((e) => e.message));

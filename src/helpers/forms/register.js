@@ -24,7 +24,13 @@ export const registerSchema = Joi.object({
       "any.required": t("rePasswordValidation"),
       "any.only": t("rePasswordValidation"),
     }),
-  age: Joi.number().min(15).max(100).optional(),
+  age: Joi.number()
+    .min(15)
+    .max(100)
+    .messages({
+      "number.min": t("ageValidation"),
+      "number.max": t("ageValidation"),
+    }),
   gender: Joi.string()
     .valid("male", "female")
     .required()

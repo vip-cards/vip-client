@@ -738,5 +738,11 @@
     "ar": "Service name in arabic",
     "en": "Service name in english"
   },
-  "emailOrPhoneValidation": "Please enter a valid email or phone number"
+  "register": "Register",
+  "emailOrPhoneValidation": "Please enter a valid email or phone number",
+  "nameValidation": "Please enter a valid name",
+  "phoneValidation": "Please enter a valid phone number",
+  "rePasswordValidation": "Passwords don't match",
+  "genderValidation": "Pleace choose a gender",
+  "ageValidation": "Please enter a valid age"
 }
