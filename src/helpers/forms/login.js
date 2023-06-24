@@ -1,7 +1,9 @@
 import { t } from "i18next";
 import Joi from "joi";
 
-const email = Joi.string().email({ tlds: { allow: false } });
+const email = Joi.string()
+  .email({ tlds: { allow: false } })
+  .normalize();
 const password = Joi.string()
   .pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)
   .required()
@@ -10,13 +12,11 @@ const password = Joi.string()
   });
 
 export const loginSchema = Joi.object({
-  // make a field that is either email or phone
   emailOrPhone: Joi.alternatives()
     .try(email, Joi.string().pattern(/^\d{11}$/))
     .required()
     .label(t("emailOrPhone"))
     .messages({
-      // integrate the next line with i18next
       "alternatives.match": t("emailOrPhoneValidation"),
     }),
   password,
