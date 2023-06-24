@@ -1,17 +1,16 @@
 import { MainButton } from "components/Buttons";
 import FormErrorMessage from "components/FormErrorMessage/FormErrorMessage";
 import { MainInput } from "components/Inputs";
-import dayjs from "dayjs";
 import { clearEmpty } from "helpers";
 import { getInitialFormData } from "helpers/forms";
 import { registerFormData, registerSchema } from "helpers/forms/register";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
+import { guestAxios } from "services/Axios";
 import useSWR from "swr";
 import toastPopup from "../../helpers/toastPopup";
 import clientServices from "../../services/clientServices";
-import { guestAxios } from "services/Axios";
 
 export default function RegisterForm() {
   const { t } = useTranslation();
@@ -41,7 +40,7 @@ export default function RegisterForm() {
       list: interests ?? [],
     },
   ];
-  
+
   const [user, setUser] = useState(getInitialFormData(formData));
   let timer;
   async function registerHandler(e) {
@@ -102,31 +101,13 @@ export default function RegisterForm() {
           <MainInput
             {...formInput}
             key={formInput.name}
-            name={formInput.name}
-            type={formInput.type}
-            required={formInput.required}
             state={user}
             setState={setUser}
             pattern={formInput.name === "phone" ? "^01[0125][0-9]{8}$" : null}
           />
         );
       })}
-      <div className="main-input-label">
-        <input
-          onChange={(e) => {
-            const age = dayjs().diff(dayjs(e.target.value), "year");
-            setUser((state) => ({ ...state, age }));
-          }}
-          className="main-input"
-          type="date"
-          name="age"
-          id="age"
-          placeholder=" "
-        />
-        <label className="main-label" htmlFor="age">
-          {t("birthDate")}
-        </label>
-      </div>
+
       <div className="main-input-label radio-input">
         <div className="radio-checkbox">
           <label htmlFor="male">
@@ -174,6 +155,7 @@ export default function RegisterForm() {
       <FormErrorMessage errorList={errorList} />
 
       <MainButton
+        active={true}
         text={t("register")}
         loading={loading}
         variant="primary"

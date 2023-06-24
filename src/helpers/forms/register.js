@@ -53,4 +53,5 @@ export const registerFormData = [
   { name: "phone", type: "tel", required: false },
   { name: "password", type: "password", required: true },
   { name: "re-password", type: "password", required: true },
+  { name: "age", type: "number", required: true, min: "15", max: "100" },
 ];

@@ -32,14 +32,15 @@ export async function switchLang(lang) {
   window.location.reload();
 }
 
-export function getLocalizedWord(word, defaultWord = "") {
+export function getLocalizedWord(
+  word: ILocalizedString | string | undefined,
+  defaultWord = ""
+): string {
   const lang = i18n.language;
-  return (
-    word?.[lang] ??
-    word?.en ??
-    word?.ar ??
-    ((typeof word === "string" && word) || defaultWord)
-  );
+
+  if (!word) return defaultWord;
+  if (typeof word === "string") return word;
+  return word?.[lang] ?? word?.en ?? word?.ar ?? defaultWord;
 }
 
 export function getLocalizedNumber(price = 0, isPrice = false) {
