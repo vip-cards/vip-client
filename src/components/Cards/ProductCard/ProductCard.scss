@@ -256,6 +256,7 @@ $card-height: 350px;
 
   .branches-list {
     position: absolute;
+    z-index: 9;
     box-shadow: 0 0px 10px 2px $mainColor;
     border-radius: 1rem;
     overflow: auto;

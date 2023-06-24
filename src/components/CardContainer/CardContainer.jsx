@@ -6,7 +6,7 @@ import "./CardContainer.scss";
 
 function CardContainer({ children, title, className }) {
   const { t } = useTranslation();
-  const smallTitle = title.toLowerCase();
+  const smallTitle = title?.toLowerCase()??"";
 
   return (
     <main

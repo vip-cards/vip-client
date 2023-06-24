@@ -5,8 +5,8 @@ import "./MainButton.scss";
 
 const MainButton = ({
   text = "",
-  children,
-  className,
+  children = () => <></>,
+  className = "",
   size = "medium",
   variant = "primary",
   loading = false,
