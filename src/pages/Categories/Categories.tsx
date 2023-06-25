@@ -1,7 +1,7 @@
 import { CategoryCard } from "components/Cards";
 import PageQueryContainer from "components/PageQueryContainer/PageQueryContainer";
 import { listRenderFn } from "helpers/renderFn";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
@@ -33,6 +33,12 @@ export default function Categories() {
   const { records: categories = undefined, counts: categoriesCount } =
     categoriesData ?? {};
 
+  useEffect(() => {
+    setQueryParams((prev) => ({
+      ...prev,
+      "vendor._id": vendorId ? vendorId : null,
+    }));
+  }, [vendorId]);
   const CategoriesRenderer = () =>
     listRenderFn({
       isLoading: cateogoriesLoading,

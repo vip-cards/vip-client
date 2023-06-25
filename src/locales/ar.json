@@ -737,5 +737,10 @@
   "genderValidation": "برجاء إدخال النوع بشكل صحيح",
   "ageValidation": "برجاء إدخال العمر بشكل صحيح",
   "onlinePaymentAvailable": "الدفع الإلكتروني متاح",
-  "onlinePaymentNotAvailable": "الدفع الإلكتروني غير متاح"
+  "onlinePaymentNotAvailable": "الدفع الإلكتروني غير متاح",
+  "review_notEmpty": "برجاء إدخال التقييم",
+  "review_min": "التقييم يجب أن يكون 0 على الأقل",
+  "review_max": "التقييم يجب أن يكون 5 على الأكثر",
+  "review_base": "برجاء إدخال قيمة التقييم",
+  "review_reqiured": "برجاء إدخال التقييم"
 }

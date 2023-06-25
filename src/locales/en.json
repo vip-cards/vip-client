@@ -746,5 +746,10 @@
   "genderValidation": "Pleace choose a gender",
   "ageValidation": "Please enter a valid age",
   "onlinePaymentAvailable": "Online payment available",
-  "onlinePaymentNotAvailable": "Online payment not available"
+  "onlinePaymentNotAvailable": "Online payment not available",
+  "review_notEmpty": "Review can't be empty",
+  "review_min": "Review must be at least 0",
+  "review_max": "Review must be at most 5",
+  "review_base": "Review must be a number",
+  "review_reqiured": "Review is required"
 }
