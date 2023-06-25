@@ -1,7 +1,7 @@
 # Getting Started with Create React App
 
 
-deployment 26-06-2023 ||
+deployment 27-06-2023 ||
 
 __ ADDED TS to couple the front with BE
 
