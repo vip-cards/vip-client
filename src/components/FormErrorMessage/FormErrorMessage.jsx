@@ -7,7 +7,7 @@ function FormErrorMessage({ errorList }) {
     return (
       <div
         key={error}
-        className="mx-4 max-w-[95%] md:max-w-[80%] animate__animated animate__bounceIn duration-75"
+        className="mx-auto max-w-[95%] md:max-w-[80%] animate__animated animate__bounceIn duration-75"
       >
         <div className="err !text-sm font-serif !font-normal gap-3 flex flex-row whitespace-normal items-center !py-2 !px-3">
           <FontAwesomeIcon icon={faExclamationTriangle} size="xl" />
