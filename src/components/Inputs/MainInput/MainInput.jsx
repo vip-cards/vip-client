@@ -199,9 +199,12 @@ export default function MainInput(props) {
   return (
     <div className={classNames(className, "main-input-label group")}>
       {renderInput()}
-      <label className="main-label relative" htmlFor={inputId}>
+      <label
+        className="main-label relative first-letter:capitalize"
+        htmlFor={inputId}
+      >
         {t(name)}
-        <span className="text-red-600/80 pl-1 font-extrabold group-focus-within:text-white group-focus-within:font-black">
+        <span className="text-red-600/80 pl-1 font-extrabold group-focus-within:!text-red text-lg -top-1 group-focus-within:font-black absolute ltr:-right-4 rtl:-left-4">
           {required ? " * " : ""}
         </span>
       </label>
