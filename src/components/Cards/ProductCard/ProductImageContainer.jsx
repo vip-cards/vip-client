@@ -96,7 +96,7 @@ export function ProductImageContainer({ product }) {
       loop={true}
       autoplay={{ delay: 5000 }}
       spaceBetween={10}
-      className="product-img-container pointer"
+      className="product-img-container pointer h-44"
     >
       {product.image.length ? (
         renderImages

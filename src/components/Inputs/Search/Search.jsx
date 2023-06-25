@@ -15,21 +15,23 @@ const Search = ({ setSearchQuery, onClick }) => {
   }, [value]);
 
   return (
-    <header className="flex flex-row  h-36 bg-gradient-to-r from-primary/30 via-primary/50 to-primary/30 shadow rounded-b-xl">
+    <header className="flex flex-row h-24 bg-gradient-to-r from-primary/30 via-primary/50 to-primary/30 shadow rounded-b-xl">
       <div className="flex flex-row flex-nowrap justify-center items-center  gap-4 min-w-[200px] w-[70vw] mx-auto max-w-full">
         <MainInput
           name="search"
-          className="flex-grow"
+          className="flex-grow focus-within:-translate-y-1 scale-90 focus-within:scale-100 transition-transform focus-within:drop-shadow-lg duration-200 ease-in-out"
           onChange={(e) => setValue(e.target.value)}
           onKeyUp={(e) => e.code === "Enter" && onClick()}
           value={value}
         />
-        <MainButton
-          className="h-full aspect-square shadow-lg hover:shadow-md"
-          onClick={onClick}
-        >
-          <IconButton icon={faMagnifyingGlass} variant="secondary" />
-        </MainButton>
+        <div>
+          <MainButton
+            className="h-full aspect-square shadow-lg hover:shadow-md"
+            onClick={onClick}
+          >
+            <IconButton icon={faMagnifyingGlass} variant="secondary" />
+          </MainButton>
+        </div>
       </div>
     </header>
   );

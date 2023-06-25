@@ -2,6 +2,7 @@ import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { MainButton } from "components/Buttons";
+import { getLocalizedNumber } from "helpers/lang";
 
 function Pagination({ queryParams, setQueryParams, count }) {
   return (
@@ -17,7 +18,11 @@ function Pagination({ queryParams, setQueryParams, count }) {
         className="p-2 !rounded-full justify-center items-center flex aspect-square disabled:bg-primary/50"
         size="small"
       >
-        <FontAwesomeIcon icon={faCaretLeft} size="lg" />
+        <FontAwesomeIcon
+          className="rtl:rotate-180"
+          icon={faCaretLeft}
+          size="lg"
+        />
       </MainButton>
       {[...Array.from({ length: count }, (v, i) => i + 1)]?.map((item) => (
         <MainButton
@@ -34,7 +39,7 @@ function Pagination({ queryParams, setQueryParams, count }) {
           )}
           size="small"
         >
-          {item}
+          {getLocalizedNumber(item)}
         </MainButton>
       ))}
       <MainButton
@@ -48,7 +53,11 @@ function Pagination({ queryParams, setQueryParams, count }) {
         className="p-2 !rounded-full justify-center items-center flex aspect-square disabled:bg-primary/50"
         size="small"
       >
-        <FontAwesomeIcon icon={faCaretRight} size="lg" />
+        <FontAwesomeIcon
+          className="rtl:rotate-180"
+          icon={faCaretRight}
+          size="lg"
+        />
       </MainButton>
     </footer>
   );

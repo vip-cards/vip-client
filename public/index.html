@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -59,11 +59,17 @@
     />
 
     <style>
+      body {
+        position: relative;
+        padding: 0;
+        margin: 0;
+      }
       #loader-container {
         position: absolute;
         inset: 0;
         display: grid;
         place-items: center;
+        min-height: 80vh;
       }
       .loader-ring {
         display: inline-block;
@@ -82,6 +88,24 @@
           rgba(248, 154, 54, 0.5) transparent;
         animation: loader-ring 1.2s linear infinite;
       }
+
+      .loader-bar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: -3rem;
+        z-index: 999999;
+
+        height: 0.5rem;
+        background: linear-gradient(270deg, #02ff00, #aaffa9, #257d43);
+        background-size: 200% 200%;
+
+        -webkit-animation: loader-animation 3s ease infinite;
+        -moz-animation: loader-animation 3s ease infinite;
+        -o-animation: loader-animation 3s ease infinite;
+        animation: loader-animation 3s ease infinite;
+      }
+
       @keyframes loader-ring {
         0% {
           transform: rotate(0deg);
@@ -90,10 +114,57 @@
           transform: rotate(360deg);
         }
       }
+
+      @-webkit-keyframes loader-animation {
+        0% {
+          background-position: 0% 46%;
+        }
+        50% {
+          background-position: 100% 55%;
+        }
+        100% {
+          background-position: 0% 46%;
+        }
+      }
+      @-moz-keyframes loader-animation {
+        0% {
+          background-position: 0% 46%;
+        }
+        50% {
+          background-position: 100% 55%;
+        }
+        100% {
+          background-position: 0% 46%;
+        }
+      }
+      @-o-keyframes loader-animation {
+        0% {
+          background-position: 0% 46%;
+        }
+        50% {
+          background-position: 100% 55%;
+        }
+        100% {
+          background-position: 0% 46%;
+        }
+      }
+      @keyframes loader-animation {
+        0% {
+          background-position: 0% 46%;
+        }
+        50% {
+          background-position: 100% 55%;
+        }
+        100% {
+          background-position: 0% 46%;
+        }
+      }
     </style>
   </head>
-  <body>
+  <body class="relative">
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div class="loader-bar"></div>
+
     <div id="root"></div>
     <div id="loader-container">
       <div class="loader-ring"></div>

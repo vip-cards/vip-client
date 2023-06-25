@@ -1,21 +1,22 @@
 import { useEffect, useRef } from "react";
+import clientServices from "services/clientServices";
 import useSWR from "swr";
+import LoadingProductCard from "./LoadingProductCard";
 import { ProductActionsContainer } from "./ProductActionsContainer";
 import "./ProductCard.scss";
 import { ProductDetailsContainer } from "./ProductDetailsContainer";
 import { ProductImageContainer } from "./ProductImageContainer";
-import clientServices from "services/clientServices";
-import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
-import CardContainer from "components/CardContainer/CardContainer";
-import LoadingProductCard from "./LoadingProductCard";
 
-export default function ProductCard({ product: { _id: productId } }) {
-  const { data, error, isLoading } = useSWR(
-    `product-details-${productId}`,
-    () => clientServices.getProductDetails(productId)
-  );
+const productFetcher = async ([key, id]) =>
+  clientServices.getProductDetails(id).then((res) => res?.record?.[0]);
 
-  const product = data?.record?.[0];
+export default function ProductCard({ product }: { product: IProduct }) {
+  // export default function ProductCard({ product: { _id: productId } }) {
+  //   const {
+  //     data: product,
+  //     error,
+  //     isLoading,
+  //   } = useSWR([`product-details-${productId}`, productId], productFetcher);
 
   const popupRef = useRef(null);
   const componentRef = useRef(null);
@@ -28,7 +29,7 @@ export default function ProductCard({ product: { _id: productId } }) {
         !componentRef.current.contains(e.target) &&
         !e.target.matches(".branch-item")
       ) {
-        popupRef.current && popupRef.current.classList.add("close");
+        popupRef.current?.classList.add("close");
       } else {
         return;
       }
@@ -46,14 +47,14 @@ export default function ProductCard({ product: { _id: productId } }) {
     };
   }, []);
 
-  if (isLoading || error) return <LoadingProductCard />;
+  // if (isLoading || error) return <LoadingProductCard />;
 
   if (!product?._id) return null;
 
   return (
     <div className="product-card" ref={componentRef}>
       <ProductImageContainer product={product} />
-      <div className="product-info-container">
+      <div className="product-info-container !h-40 !p-3">
         <ProductDetailsContainer product={product} />
         <ProductActionsContainer product={product} ref={popupRef} />
       </div>

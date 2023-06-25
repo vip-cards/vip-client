@@ -31,7 +31,7 @@ export default function ProtectedRoute({ children }) {
     });
 
     socket.on(EVENTS.CHAT.CREATE, (res) => {
-      console.log(res);
+
       if (!res.success) {
         return;
       }

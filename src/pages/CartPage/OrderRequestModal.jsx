@@ -39,7 +39,7 @@ export default function OrderRequestModal({ showModal, setShowModal }) {
         toastPopup.success("Your order is being requested");
         setShowModal(false);
         newOrderRequest(record._id);
-        console.log(record);
+
         dispatch(getCurrentCartThunk());
       })
       .catch(responseErrorToast);

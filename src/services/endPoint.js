@@ -1,3 +1,3 @@
-const endPoint = "https://vip-beta-testing.herokuapp.com/api/v1";
+const endPoint = process.env.REACT_APP_BASE_URL;
 
 export default endPoint;

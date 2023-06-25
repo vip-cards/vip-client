@@ -1,5 +1,3 @@
-import { useCallback, useEffect, useState } from "react";
-
 import { ReactComponent as NavbarLogo } from "assets/VIP-ICON-SVG/NavbarLogo.svg";
 import { ReactComponent as BurgerMenuIcon } from "assets/VIP-ICON-SVG/burgerMenu.svg";
 import { ReactComponent as Notification } from "assets/VIP-ICON-SVG/notification.svg";
@@ -10,6 +8,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { switchLang } from "helpers/lang";
 import { t } from "i18next";
 import i18n from "locales/i18n";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import clientServices from "services/clientServices";
@@ -20,20 +19,24 @@ import { selectNotification } from "store/notification-slice";
 import Dropdown from "../DropDown/DropDown";
 import SideNav from "./SideNav/SideNav";
 
-import "./Navbar.scss";
 import { selectAuth } from "store/auth-slice";
+import "./Navbar.scss";
+import ConfirmModal from "components/Modal/ConfirmModal";
 
 dayjs.extend(relativeTime);
 
 export default function Navbar() {
   const navigate = useNavigate();
 
-  const [lists, setLists] = useState({});
-  const [viweAccountMenu, setViweAccountMenu] = useState(false);
-  const [showSideMenu, setShowSideMenu] = useState(false);
-  const notificationList = useSelector(selectNotification);
-  const cartProducts = useSelector(selectCartProducts);
   const auth = useSelector(selectAuth);
+  const cartProducts = useSelector(selectCartProducts);
+  const wishlist = useSelector((state) => state.wishlist);
+  const notificationList = useSelector(selectNotification);
+
+  const [lists, setLists] = useState({});
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [showSideMenu, setShowSideMenu] = useState(false);
+  const [viweAccountMenu, setViweAccountMenu] = useState(false);
 
   const lang = i18n.language;
 
@@ -41,55 +44,70 @@ export default function Navbar() {
     setLists((list) => ({ ...list, ...item }));
   };
 
-  const navItems = [
-    { link: ROUTES.HOME, title: "home" },
-    { link: ROUTES.CATEGORIES, title: "categories" },
-    { link: ROUTES.VENDORS, title: "vendors" },
-    { link: ROUTES.HOT_DEALS, title: "hotDeals" },
-    { link: `/${ROUTES.OFFERS}`, title: "offers" },
-    { link: `/${ROUTES.JOBS.MAIN}`, title: "jobs" },
-    { link: `/${ROUTES.SERVICES}`, title: "services" },
-    { link: `/${ROUTES.WISHLIST}`, title: "wishlist" },
-    {
-      link: `/${ROUTES.CART}`,
-      title: "cart",
-      render: (children) => (
-        <div className="relative">
-          {!!cartProducts.length && (
-            <div className="h-5 p-1 w-5 bg-secondary text-white absolute -right-1 ring-primary ring-2 -top-3 flex justify-center items-center rounded-full text-xs">
-              {cartProducts.length}
-            </div>
-          )}
-          {children}
-        </div>
-      ),
-    },
-    { link: `/${ROUTES.ADS.MAIN}`, title: "Ads" },
-    { link: `/${ROUTES.CHAT}`, title: "chat" },
-    {
-      title: "account",
-
-      withHover: false,
-      withCaret: true,
-      menu: [
-        { link: `/${ROUTES.ACCOUNT}`, title: "myAccount" },
-        { link: `/${ROUTES.SUBSCRIBE}`, title: "VIP premium" },
-        {
-          link: `/${ROUTES.LOGOUT}`,
-          title: "logout",
-          onClick: (e) => logoutHandler(e),
-        },
-      ],
-      listRender: (menu) =>
-        menu.map((subItem, idx) => (
-          <li key={subItem.title || "menu-item-" + idx}>
-            <Link to={subItem.link} onClick={subItem.onClick}>
-              {t(subItem?.title ?? "Menu Item")}
-            </Link>
-          </li>
-        )),
-    },
-  ];
+  const navItems = useMemo(
+    () => [
+      { link: ROUTES.HOME, title: "home" },
+      { link: ROUTES.CATEGORIES, title: "categories" },
+      { link: ROUTES.VENDORS, title: "vendors" },
+      { link: ROUTES.HOT_DEALS, title: "hotDeals" },
+      { link: `/${ROUTES.OFFERS}`, title: "offers" },
+      { link: `/${ROUTES.JOBS.MAIN}`, title: "jobs" },
+      { link: `/${ROUTES.SERVICES}`, title: "services" },
+      {
+        link: `/${ROUTES.WISHLIST}`,
+        title: "wishlist",
+        render: (children) => (
+          <div className="relative">
+            {!!wishlist.ids.length && (
+              <div className="h-5 p-1 w-5 bg-secondary/95 text-white absolute -right-1 ring-primary ring-2 -top-3 flex justify-center items-center rounded-full text-xs">
+                {wishlist.ids.length}
+              </div>
+            )}
+            {children}
+          </div>
+        ),
+      },
+      {
+        link: `/${ROUTES.CART}`,
+        title: "cart",
+        render: (children) => (
+          <div className="relative">
+            {!!cartProducts.length && (
+              <div className="h-5 p-1 w-5 bg-secondary text-white absolute -right-1 ring-primary ring-2 -top-3 flex justify-center items-center rounded-full text-xs">
+                {cartProducts.length}
+              </div>
+            )}
+            {children}
+          </div>
+        ),
+      },
+      { link: `/${ROUTES.ADS.MAIN}`, title: "Ads" },
+      { link: `/${ROUTES.CHAT}`, title: "chat" },
+      {
+        title: "account",
+        withHover: false,
+        withCaret: true,
+        menu: [
+          { link: `/${ROUTES.ACCOUNT}`, title: "myAccount" },
+          { link: `/${ROUTES.SUBSCRIBE}`, title: "VIP premium" },
+          {
+            link: `?`,
+            title: "logout",
+            onClick: (e) => setConfirmModal(true),
+          },
+        ],
+        listRender: (menu) =>
+          menu.map((subItem, idx) => (
+            <li key={subItem.title || "menu-item-" + idx}>
+              <Link to={subItem.link} onClick={subItem.onClick}>
+                {t(subItem?.title ?? "Menu Item")}
+              </Link>
+            </li>
+          )),
+      },
+    ],
+    [cartProducts.length]
+  );
 
   function toggleSideMenu() {
     setShowSideMenu((prevState) => !prevState);
@@ -109,13 +127,11 @@ export default function Navbar() {
   function handleNotificationClick(notificationId, link) {
     markAsSeen(notificationId);
   }
+
   const NofificationRing = useCallback(
     () => (
       <Dropdown
-        className={classNames(
-          { "!hidden": auth.userId === "guest" },
-          "ltr:ml-auto ltr:xl:ml-0 rtl:mr-auto rtl:xl:mr-0"
-        )}
+        className={classNames({ "!hidden": auth.userId === "guest" })}
         menu={notificationList.list}
         left={lang === "en"}
         right={lang === "ar"}
@@ -189,7 +205,7 @@ export default function Navbar() {
     <nav className="top-nav z-20">
       <BurgerMenuIcon className="burger-menu-icon" onClick={toggleSideMenu} />
       <NavbarLogo
-        className="app-logo"
+        className="app-logo max-xl:mx-auto"
         onClick={() => {
           navigate("/");
         }}
@@ -264,6 +280,16 @@ export default function Navbar() {
       <NofificationRing />
       {/* <NofificationRing /> */}
       {showSideMenu && <SideNav onToggle={toggleSideMenu} items={navItems} />}
+      <ConfirmModal
+        visible={confirmModal}
+        message={t("YouWillBeLoggedOut")}
+        title={"logout"}
+        onConfirm={(e) => {
+          setConfirmModal(false);
+          logoutHandler(e);
+        }}
+        onCancel={() => setConfirmModal(false)}
+      />
     </nav>
   );
 }

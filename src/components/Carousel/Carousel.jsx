@@ -5,17 +5,15 @@ import {
   Mousewheel,
   Navigation,
   Pagination,
+  Scrollbar,
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "./Carousel.scss";
 
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-
-import { Scrollbar } from "swiper";
+import "./Carousel.scss";
 
 export default function Carousel({
   extraLarge,

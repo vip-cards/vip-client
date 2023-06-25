@@ -5,13 +5,16 @@ export function ProductDetailsContainer({ product }) {
   if (!product?._id) return null;
   return (
     <>
-      <Link to={`/product/${product._id}`} className="product-title">
+      <Link
+        to={`/product/${product._id}`}
+        className="product-title !line-clamp-1 overflow-ellipsis !leading-6"
+      >
         <p>{getLocalizedWord(product?.name)}</p>
       </Link>
-      <p className="product-vendor">
+      <p className="product-vendor !leading-6">
         {getLocalizedWord(product?.vendor?.name)}
       </p>
-      <div className="product-price">
+      <div className="product-price !flex-wrap max-w-full !leading-3">
         <div className="current-price">
           <span className="number px-1">
             {getLocalizedNumber(product.price, true)}

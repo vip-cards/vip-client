@@ -1,4 +1,7 @@
+$box-width: 460px;
+
 .login {
+  
   display: grid;
   grid-template-areas: "logo form";
   grid-template-columns: 1fr 1fr;
@@ -130,6 +133,7 @@
 
 @media screen and (max-width: 992px) {
   .login {
+    margin-block: 3rem;
     grid-template-columns: 1fr;
     grid-template-areas: "form";
     .login-logo {
@@ -197,17 +201,7 @@
   }
 }
 
-.err {
-  color: #842029;
-  background-color: #f8d7da;
-  border-color: #f5c2c7;
-  padding: 0px 10px;
-  border-radius: 5px;
-  font-size: 14px;
-  font-family: "Noto Sans Arabic", sans-serif;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
+
 
 [dir="rtl"] {
   .login {

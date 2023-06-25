@@ -10,7 +10,7 @@ const WebViewComponent = () => {
       webView.addEventListener("message", (event) => {
         // Handle messages received from WebView
         const message = event.data;
-        console.log("Received message from WebView:", message);
+
       });
     }
   };

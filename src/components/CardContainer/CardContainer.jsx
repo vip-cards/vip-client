@@ -4,9 +4,9 @@ import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import "./CardContainer.scss";
 
-function CardContainer({ children, title, className }) {
+function CardContainer({ children, title, className, withHeader = true }) {
   const { t } = useTranslation();
-  const smallTitle = title.toLowerCase();
+  const smallTitle = title?.toLowerCase() ?? "";
 
   return (
     <main
@@ -19,7 +19,7 @@ function CardContainer({ children, title, className }) {
         <title>{title ? _.upperFirst(t(smallTitle)) : "VIP"}</title>
       </Helmet>
 
-      {!!title && (
+      {!!title && withHeader && (
         <>
           <h1 className="page-title">{t(smallTitle)}</h1> <hr />
         </>

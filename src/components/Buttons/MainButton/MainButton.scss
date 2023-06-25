@@ -13,38 +13,13 @@
     opacity: 80%;
   }
 
-  /* size */
-  &.small {
-    font-size: 0.8rem;
-    height: 1.5rem;
-    border-radius: 0.7rem;
-    padding-left: 0.35rem;
-    padding-right: 0.35rem;
-  }
-  &.medium {
-    font-size: 1.5rem;
-    height: 3rem;
-    border-radius: 0.9rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
-  &.large {
-    font-size: 3rem;
-    height: 3rem;
-    border-radius: 1.2rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
-
   /* colors */
 
   &.primary {
     background-color: $primary;
     color: white;
     &:hover:not(:disabled) {
-      background-color: $primary-light;
-      color: $primary;
-      outline: 1px solid $primary;
+      outline: 1px solid darken($color: $primary, $amount: 10);
     }
   }
 }

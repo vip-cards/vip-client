@@ -5,15 +5,13 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { VendorCard } from "components/Cards";
 import PageQueryContainer from "components/PageQueryContainer/PageQueryContainer";
+import { listRenderFn } from "helpers/renderFn";
+import { t } from "i18next";
 import { useState } from "react";
 import { useParams } from "react-router";
 import Select from "react-select";
 import useSWR from "swr";
 import clientServices from "../../services/clientServices";
-
-import { t } from "i18next";
-
-import { listRenderFn } from "helpers/rednerFn";
 import "./Vendors.scss";
 
 const LIMIT = 8;
@@ -91,6 +89,7 @@ export default function Vendors() {
             className="w-60"
             isClearable
             name="sort"
+            placeholder={t("choose")}
             getOptionValue={(option) => option.value}
             options={sortOptions}
             onChange={(val) => setSort(val)}

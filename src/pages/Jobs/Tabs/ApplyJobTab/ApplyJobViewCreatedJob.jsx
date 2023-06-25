@@ -1,6 +1,6 @@
 import JobCard from "components/Cards/JobCard/JobCard";
 import Pagination from "components/Pagination/Pagination";
-import { listRenderFn } from "helpers/rednerFn";
+import { listRenderFn } from "helpers/renderFn";
 import { useState } from "react";
 import clientServices from "services/clientServices";
 import useSWR from "swr";

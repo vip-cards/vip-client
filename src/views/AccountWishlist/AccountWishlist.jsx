@@ -1,5 +1,5 @@
 import { ProductCard } from "components/Cards";
-import { listRenderFn } from "helpers/rednerFn";
+import { listRenderFn } from "helpers/renderFn";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 

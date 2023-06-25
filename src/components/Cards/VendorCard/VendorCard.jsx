@@ -13,7 +13,7 @@ export default function VendorCard({ vendor }) {
         navigate(`/vendors/${vendor._id}`);
       }}
     >
-      <div className="vendor-img-container">
+      <div className="vendor-img-container max-w-[102%]">
         <img
           src={`${vendor?.image?.Location ?? vendorPlaceHolder}`}
           alt="vendor-img"

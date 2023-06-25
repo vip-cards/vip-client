@@ -3,6 +3,8 @@
 
 deployment 01-06-2023 ||
 
+__ ADDED TS to couple the front with BE
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

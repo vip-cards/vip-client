@@ -8,13 +8,7 @@ import ResetPassword from "pages/ResetPassword/ResetPassword";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router";
+import { Navigate, Route, Routes, useLocation } from "react-router";
 import ProtectedRoute from "routes/ProtectedRoute/ProtectedRoute";
 import { SocketProvider } from "services/socket/provider";
 import { fetchWishlist } from "store/wishlist-slice";
@@ -26,7 +20,6 @@ function App() {
 
   const auth = useSelector((state) => state.auth);
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 

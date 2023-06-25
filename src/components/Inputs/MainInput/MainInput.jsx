@@ -1,5 +1,3 @@
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactComponent as EyeClose } from "assets/VIP-ICON-SVG/eye_close.svg";
 import { ReactComponent as EyeOPen } from "assets/VIP-ICON-SVG/eye_open.svg";
 import classNames from "classnames";
@@ -7,13 +5,13 @@ import { getLocalizedWord } from "helpers/lang";
 import { t } from "i18next";
 import { useEffect, useId, useRef, useState } from "react";
 import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import CheckboxInput from "./CheckboxInput";
+import EditButton from "./EditButton";
 import { ListInput } from "./ListInput";
-import { InputSelect } from "./SelectInput";
-
-import "react-datepicker/dist/react-datepicker.css";
 import "./MainInput.scss";
+import { InputSelect } from "./SelectInput";
 
 export default function MainInput(props) {
   const {
@@ -76,7 +74,7 @@ export default function MainInput(props) {
       ref: inputRef,
       value: state[name],
       disabled: disableState,
-      className: classNames("main-input", { error: invalid }),
+      className: classNames("main-input peer", { error: invalid }),
       placeholder: " ",
       min: type === "number" ? 0 : null,
       autoComplete: type === "password" ? "off" : type,
@@ -199,12 +197,12 @@ export default function MainInput(props) {
   };
 
   return (
-    <div className={classNames(className, "main-input-label")}>
+    <div className={classNames(className, "main-input-label group")}>
       {renderInput()}
       <label className="main-label relative" htmlFor={inputId}>
         {t(name)}
-        <span className="text-red-600/80 pl-1 font-extrabold">
-          {required ? "*" : ""}
+        <span className="text-red-600/80 pl-1 font-extrabold group-focus-within:text-white group-focus-within:font-black">
+          {required ? " * " : ""}
         </span>
       </label>
       <EditButton
@@ -215,16 +213,3 @@ export default function MainInput(props) {
     </div>
   );
 }
-
-const EditButton = ({ toEdit, disableState, toggleDisabledHandler }) =>
-  !!toEdit && (
-    <button
-      type="button"
-      className={classNames("edit-field-icon", {
-        active: !disableState,
-      })}
-      onClick={toggleDisabledHandler}
-    >
-      <FontAwesomeIcon icon={faPenToSquare} />
-    </button>
-  );
