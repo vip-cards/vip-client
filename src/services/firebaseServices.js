@@ -66,12 +66,17 @@ export const useSocialLogin = () => {
         return user;
       })
       .then(async (user) => {
-        const { data } = await clientServices.loginBy({
-          name: { en: user.displayName },
-          email: user.email,
-          googleId: user.uid,
-          image: user.photoURL,
-        });
+        const { data } =
+          platform === "twitter"
+            ? await clientServices.loginByTwitter({
+                userName: user.displayName,
+              })
+            : await clientServices.loginBy({
+                name: { en: user.displayName },
+                email: user.email,
+                googleId: user.uid,
+                image: user.photoURL,
+              });
         return data;
       })
       .then((data) => {

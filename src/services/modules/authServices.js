@@ -17,6 +17,14 @@ export const authServices = {
       toastPopup.error(e?.response?.data?.error ?? "something went wrong");
     }
   },
+  loginByTwitter: async (obj) => {
+    try {
+      const response = await guestAxios.post("/loginByTwitter", obj);
+      return response;
+    } catch (e) {
+      toastPopup.error(e?.response?.data?.error ?? "something went wrong");
+    }
+  },
   login: async (obj) => {
     const isEmail = obj.emailOrPhone.includes("@");
     const userKey = isEmail ? "email" : "phone";
