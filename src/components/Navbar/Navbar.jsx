@@ -30,6 +30,7 @@ export default function Navbar() {
 
   const auth = useSelector(selectAuth);
   const cartProducts = useSelector(selectCartProducts);
+  const wishlist = useSelector((state) => state.wishlist);
   const notificationList = useSelector(selectNotification);
 
   const [lists, setLists] = useState({});
@@ -52,7 +53,20 @@ export default function Navbar() {
       { link: `/${ROUTES.OFFERS}`, title: "offers" },
       { link: `/${ROUTES.JOBS.MAIN}`, title: "jobs" },
       { link: `/${ROUTES.SERVICES}`, title: "services" },
-      { link: `/${ROUTES.WISHLIST}`, title: "wishlist" },
+      {
+        link: `/${ROUTES.WISHLIST}`,
+        title: "wishlist",
+        render: (children) => (
+          <div className="relative">
+            {!!wishlist.ids.length && (
+              <div className="h-5 p-1 w-5 bg-secondary/95 text-white absolute -right-1 ring-primary ring-2 -top-3 flex justify-center items-center rounded-full text-xs">
+                {wishlist.ids.length}
+              </div>
+            )}
+            {children}
+          </div>
+        ),
+      },
       {
         link: `/${ROUTES.CART}`,
         title: "cart",
@@ -113,7 +127,7 @@ export default function Navbar() {
   function handleNotificationClick(notificationId, link) {
     markAsSeen(notificationId);
   }
-  
+
   const NofificationRing = useCallback(
     () => (
       <Dropdown
