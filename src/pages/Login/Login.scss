@@ -1,7 +1,6 @@
 $box-width: 460px;
 
 .login {
-  
   display: grid;
   grid-template-areas: "logo form";
   grid-template-columns: 1fr 1fr;
@@ -42,7 +41,7 @@ $box-width: 460px;
       gap: 30px;
       align-items: center;
       p {
-        font-family: "Open Sans", sans-serif;
+        font-family: "Noto Sans Arabic", sans-serif;
         color: black;
         font-size: 35px;
       }
@@ -200,8 +199,6 @@ $box-width: 460px;
     }
   }
 }
-
-
 
 [dir="rtl"] {
   .login {
