@@ -125,7 +125,7 @@ export const ProductActionsContainer = forwardRef<any, { product: IProduct }>(
             </span>
           </div>
           <div className="add-buttons" onClick={() => setActive(true)}>
-            <span>{t("addToCart")}</span>
+            <span className="whitespace-nowrap">{t("addToCart")}</span>
           </div>
         </div>
         {addToCartState.active ? (

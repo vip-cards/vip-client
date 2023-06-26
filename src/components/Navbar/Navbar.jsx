@@ -59,7 +59,7 @@ export default function Navbar() {
         render: (children) => (
           <div className="relative">
             {!!wishlist.ids.length && (
-              <div className="h-5 p-1 w-5 bg-secondary/95 text-white absolute -right-1 ring-primary ring-2 -top-3 flex justify-center items-center rounded-full text-xs">
+              <div className="h-5 p-1 w-5 bg-secondary/95 text-white absolute -right-1 ring-primary ring-2 -top-1 flex justify-center items-center rounded-full text-xs">
                 {wishlist.ids.length}
               </div>
             )}
@@ -73,7 +73,7 @@ export default function Navbar() {
         render: (children) => (
           <div className="relative">
             {!!cartProducts.length && (
-              <div className="h-5 p-1 w-5 bg-secondary text-white absolute -right-1 ring-primary ring-2 -top-3 flex justify-center items-center rounded-full text-xs">
+              <div className="h-5 p-1 w-5 bg-secondary text-white absolute -right-1 ring-primary ring-2 -top-1 flex justify-center items-center rounded-full text-xs">
                 {cartProducts.length}
               </div>
             )}
@@ -128,7 +128,7 @@ export default function Navbar() {
     markAsSeen(notificationId);
   }
 
-  const NofificationRing = useCallback(
+  const NotificationRing = useCallback(
     () => (
       <Dropdown
         className={classNames({ "!hidden": auth.userId === "guest" })}
@@ -168,7 +168,9 @@ export default function Navbar() {
         }
       >
         {!!notificationList.list.filter((item) => !item.seen).length && (
-          <div className="h-2 w-2 bg-green-500 absolute right-0 top-0 animate-fade-pulse rounded-full"></div>
+          <div className="h-4 w-4 flex items-center justify-center bg-green-500 absolute -right-1 -top-1 rounded-full text-[0.5rem]">
+            {notificationList.list.length}
+          </div>
         )}
         <Notification className="notification-icon hover:drop-shadow-xl hover:bg-white/10 transition-colors rounded-full" />
       </Dropdown>
@@ -240,7 +242,9 @@ export default function Navbar() {
               <NavLink
                 to={item.link}
                 className={(navData) =>
-                  item.link && navData.isActive ? "active nav-link" : "nav-link"
+                  item.link && navData.isActive
+                    ? "active nav-link block"
+                    : "nav-link block"
                 }
                 onClick={item.onClick}
               >
@@ -277,8 +281,8 @@ export default function Navbar() {
           {t("lang")}
         </button>
       </div>
-      <NofificationRing />
-      {/* <NofificationRing /> */}
+      <NotificationRing />
+      {/* <NotificationRing /> */}
       {showSideMenu && <SideNav onToggle={toggleSideMenu} items={navItems} />}
       <ConfirmModal
         visible={confirmModal}

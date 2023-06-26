@@ -2,7 +2,7 @@
 @import "styles/dimensions";
 @import "styles/globals";
 
-$card-height: 350px;
+$card-height: 360px;
 
 .product-card {
   height: $card-height;
@@ -29,7 +29,7 @@ $card-height: 350px;
     opacity: 1;
   }
   .product-img-container {
-    height: calc(#{$card-height} + 150px);
+    height: calc(#{$card-height} + 120px);
 
     overflow: hidden;
     border-radius: 12px;

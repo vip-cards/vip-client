@@ -1,9 +1,8 @@
+import ClientLayout from "layouts/ClientLayout/ClientLayout";
+import i18n from "locales/i18n";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router";
-
-import ClientLayout from "layouts/ClientLayout/ClientLayout";
-import i18n from "locales/i18n";
 import { toast } from "react-toastify";
 import { EVENTS } from "services/socket/config";
 import {
@@ -11,8 +10,12 @@ import {
   listenToNotification,
 } from "services/socket/notification";
 import { openOrderRoom } from "services/socket/order";
-import { SocketProvider, useSocket } from "services/socket/provider";
+import { useSocket } from "services/socket/provider";
 import { setNotifications } from "store/actions";
+
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
+import "swiper/scss"; // core Swiperimport "swiper/css/navigation";
 
 export default function ProtectedRoute({ children }) {
   const auth = useSelector((state) => state.auth);
@@ -31,7 +34,6 @@ export default function ProtectedRoute({ children }) {
     });
 
     socket.on(EVENTS.CHAT.CREATE, (res) => {
-
       if (!res.success) {
         return;
       }
