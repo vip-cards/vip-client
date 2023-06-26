@@ -1,10 +1,5 @@
 import classNames from "classnames";
-import {
-  BannerCard,
-  CategoryCard,
-  ProductCard,
-  VendorCard,
-} from "components/Cards";
+import { CategoryCard, ProductCard, VendorCard } from "components/Cards";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import Modal from "components/Modal/Modal";
 import NoData from "components/NoData/NoData";
@@ -201,7 +196,7 @@ export default function Home() {
             </HomeSwiper>
           </div>
           {/* small screens --> hidden for now */}
-          <div className="w-full hidden flex-grow justify-center items-center rounded-xl overflow-hidden max-w-full">
+          <div className="w-full flex lg:hidden flex-grow justify-center items-center rounded-xl overflow-hidden max-w-full">
             <HomeSwiper
               direction="horizontal"
               breakpoints={{
