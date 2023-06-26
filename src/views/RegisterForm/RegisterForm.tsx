@@ -108,6 +108,7 @@ export default function RegisterForm() {
   }
 
   useEffect(() => {
+    setUser((state) => ({ ...state, city: null }));
     if (user.country)
       setCities(
         countriesArr.find((cntry) => cntry._id === user.country._id)?.cities ??
@@ -116,7 +117,7 @@ export default function RegisterForm() {
     else {
       setCities([]);
     }
-  }, [user]);
+  }, [user.country]);
 
   useEffect(() => {
     return () => {
