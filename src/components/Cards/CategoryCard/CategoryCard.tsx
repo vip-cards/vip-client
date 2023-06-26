@@ -14,7 +14,7 @@ export default function CategoryCard({
 }: ICategoryCardProps) {
   return (
     <Link
-      className="category-card"
+      className="category-card block"
       to={
         vendorId
           ? `/vendors/${vendorId}/category/${category._id}`
