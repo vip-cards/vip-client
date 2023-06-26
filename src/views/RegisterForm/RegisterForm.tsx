@@ -101,9 +101,6 @@ export default function RegisterForm() {
     } catch (e) {
       if (e.response.data.code === 409) {
         toastPopup.error(e.response.data.error);
-        timer = setTimeout(() => {
-          navigate("/login");
-        }, 3000);
       }
       setLoading(false);
       setErrorList([e.response.data.error]);
