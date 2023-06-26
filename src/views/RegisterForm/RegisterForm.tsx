@@ -11,6 +11,7 @@ import { guestAxios } from "services/Axios";
 import useSWR from "swr";
 import toastPopup from "../../helpers/toastPopup";
 import clientServices from "../../services/clientServices";
+import { countriesArr } from "helpers/countries";
 
 export default function RegisterForm() {
   const { t } = useTranslation();
@@ -18,6 +19,7 @@ export default function RegisterForm() {
 
   const [loading, setLoading] = useState(false);
   const [errorList, setErrorList] = useState([]);
+  const [cities, setCities] = useState([]);
   const { data: professions } = useSWR("list-professions", () =>
     guestAxios.get("/profession/list")?.then(({ data }) => data.records)
   );
@@ -27,6 +29,24 @@ export default function RegisterForm() {
 
   const formData = [
     ...registerFormData,
+    {
+      name: "country",
+      type: "multi-select",
+      list: countriesArr,
+      required: true,
+      isMulti: false,
+      identifier: "name",
+      closeMenuOnSelect: true,
+    },
+    {
+      name: "city",
+      type: "multi-select",
+      list: cities,
+      required: true,
+      isMulti: false,
+      identifier: "name",
+      closeMenuOnSelect: true,
+    },
     {
       name: "profession",
       type: "multi-select",
@@ -49,7 +69,7 @@ export default function RegisterForm() {
     console.log(user);
     const filteredObj = clearEmpty(user);
     const { value: _user, error } = registerSchema.validate(filteredObj);
-    console.log(filteredObj);
+
     setLoading(true);
     if (error) {
       setErrorList(error.details.map((e) => e.message));
@@ -85,6 +105,18 @@ export default function RegisterForm() {
       setErrorList([e.response.data.error]);
     }
   }
+
+  useEffect(() => {
+    if (user.country)
+      setCities(
+        countriesArr.find((cntry) => cntry._id === user.country._id)?.cities ??
+          []
+      );
+    else {
+      setCities([]);
+    }
+  }, [user]);
+
   useEffect(() => {
     return () => {
       clearTimeout(timer);
@@ -96,11 +128,11 @@ export default function RegisterForm() {
       className="flex flex-col w-full justify-center items-center mx-auto gap-4"
       onSubmit={registerHandler}
     >
-      {formData.map((formInput, index) => {
+      {formData.map((formInput) => {
         return (
           <MainInput
-            {...formInput}
             key={formInput.name}
+            {...formInput}
             state={user}
             setState={setUser}
             pattern={formInput.name === "phone" ? "^01[0125][0-9]{8}$" : null}

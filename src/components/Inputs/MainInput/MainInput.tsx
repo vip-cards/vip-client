@@ -3,7 +3,14 @@ import { ReactComponent as EyeOPen } from "assets/VIP-ICON-SVG/eye_open.svg";
 import classNames from "classnames";
 import { getLocalizedWord } from "helpers/lang";
 import { t } from "i18next";
-import { useEffect, useId, useRef, useState } from "react";
+import {
+  DetailedHTMLProps,
+  InputHTMLAttributes,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
@@ -12,8 +19,52 @@ import EditButton from "./EditButton";
 import { ListInput } from "./ListInput";
 import "./MainInput.scss";
 import { InputSelect } from "./SelectInput";
+import i18n from "locales/i18n";
 
-export default function MainInput(props) {
+/**
+ * Main input component
+ *
+ * @param {Object} props - The component props
+ * @param {string} [props.name=""] - The name of the input
+ * @param {string} [props.type="text"] - The type of the input
+ * @param {function} [props.setState=() => {}] - The state update function
+ * @param {Object} [props.state={}] - The state object
+ * @param {Array} [props.list=[]] - The list of options for a select input
+ * @param {string} [props.identifier=""] - The identifier for the input
+ * @param {boolean} [props.required=false] - Indicates whether the input is required
+ * @param {boolean} [props.disabled=false] - Indicates whether the input is disabled
+ * @param {boolean} [props.toEdit=false] - Indicates whether the input is editable
+ * @param {boolean} [props.invalid=false] - Indicates whether the input is invalid
+ * @param {string} [props.className=""] - The CSS class for the component
+ * @returns {JSX.Element} The rendered component
+ */
+
+interface IMainInputProps {
+  name?: string;
+  type?:
+    | JSX.IntrinsicElements["input"]
+    | DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
+    | "select"
+    | "list"
+    | "checkbox"
+    | "password"
+    | "number"
+    | "date"
+    | "multi-select"
+    | "textarea";
+  setState?: React.Dispatch<React.SetStateAction<any>>;
+  state?: object;
+  list?: any[];
+  identifier?: string;
+  required?: boolean;
+  disabled?: boolean;
+  toEdit?: boolean;
+  invalid?: boolean;
+  className?: string;
+  dateRange?: "start" | "end";
+  [x: string]: any;
+}
+export default function MainInput(props: IMainInputProps): JSX.Element {
   const {
     name = "",
     type = "text",
@@ -33,6 +84,7 @@ export default function MainInput(props) {
   const [disableState, setDisabledState] = useState(disabled);
   const inputRef = useRef(null);
   const inputId = useId();
+  const lang = i18n.language;
 
   const toggleDisabledHandler = () => setDisabledState((state) => !state);
 
@@ -126,13 +178,16 @@ export default function MainInput(props) {
       case "multi-select":
         return (
           <Select
-            id={inputId}
             closeMenuOnSelect={false}
             className="multi-select w-full"
             classNamePrefix="multi-select"
             isMulti
             isDisabled={disableState}
             options={list}
+            isClearable={true}
+            isRtl={lang === "ar"}
+            isSearchable={true}
+            menuShouldScrollIntoView={true}
             getOptionLabel={(option) => getLocalizedWord(option[identifier])}
             getOptionValue={(option) => getLocalizedWord(option._id)}
             value={state[name]}
@@ -142,6 +197,7 @@ export default function MainInput(props) {
                 [name]: selectedOptions,
               }))
             }
+            {...restProps}
           />
         );
       case "list":
@@ -203,7 +259,7 @@ export default function MainInput(props) {
         className="main-label relative first-letter:capitalize"
         htmlFor={inputId}
       >
-        {t(name)}
+        {t(name) as string}
         <span className="text-red-600/80 pl-1 font-extrabold group-focus-within:!text-red text-lg -top-1 group-focus-within:font-black absolute ltr:-right-4 rtl:-left-4">
           {required ? " * " : ""}
         </span>
