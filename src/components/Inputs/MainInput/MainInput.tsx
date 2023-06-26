@@ -178,7 +178,6 @@ export default function MainInput(props: IMainInputProps): JSX.Element {
             getOptionLabel={(option) => getLocalizedWord(option[identifier])}
             getOptionValue={(option) => option._id}
             onChange={(selectedOptions) => {
-              console.log(selectedOptions);
               setState((state: any) => ({
                 ...state,
                 [name]: selectedOptions,
