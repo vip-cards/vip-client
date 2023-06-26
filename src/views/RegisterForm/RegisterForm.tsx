@@ -62,11 +62,12 @@ export default function RegisterForm() {
   ];
 
   const [user, setUser] = useState(getInitialFormData(formData));
-  let timer;
-  async function registerHandler(e) {
+  let timer: NodeJS.Timer;
+  async function registerHandler(e: SubmitEvent) {
     e.preventDefault();
+
     setErrorList([]);
-    console.log(user);
+
     const filteredObj = clearEmpty(user);
     const { value: _user, error } = registerSchema.validate(filteredObj);
 

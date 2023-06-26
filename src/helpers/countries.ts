@@ -73,6 +73,7 @@ export const countriesArr: IMappedCountry[] = _countriesArr.map(
     ...cntry,
     name: { en: cntry.en, ar: cntry.ar },
     _id: cntry.index,
+    
     cities: cntry.cities.map((city: ICity) => ({
       ...city,
       _id: city.index,
