@@ -59,7 +59,7 @@ export default function Navbar() {
         render: (children) => (
           <div className="relative">
             {!!wishlist.ids.length && (
-              <div className="h-5 p-1 w-5 bg-secondary/95 text-white absolute -right-1 ring-primary ring-2 -top-3 flex justify-center items-center rounded-full text-xs">
+              <div className="h-5 p-1 w-5 bg-secondary/95 text-white absolute -right-1 ring-primary ring-2 -top-1 flex justify-center items-center rounded-full text-xs">
                 {wishlist.ids.length}
               </div>
             )}
@@ -73,7 +73,7 @@ export default function Navbar() {
         render: (children) => (
           <div className="relative">
             {!!cartProducts.length && (
-              <div className="h-5 p-1 w-5 bg-secondary text-white absolute -right-1 ring-primary ring-2 -top-3 flex justify-center items-center rounded-full text-xs">
+              <div className="h-5 p-1 w-5 bg-secondary text-white absolute -right-1 ring-primary ring-2 -top-1 flex justify-center items-center rounded-full text-xs">
                 {cartProducts.length}
               </div>
             )}
@@ -240,7 +240,9 @@ export default function Navbar() {
               <NavLink
                 to={item.link}
                 className={(navData) =>
-                  item.link && navData.isActive ? "active nav-link" : "nav-link"
+                  item.link && navData.isActive
+                    ? "active nav-link block"
+                    : "nav-link block"
                 }
                 onClick={item.onClick}
               >
