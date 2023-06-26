@@ -6,7 +6,6 @@ export const emailSchema = Joi.string()
   .normalize();
 
 export const passwordSchema = Joi.string()
-  .pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)
   .required()
   .messages({
     "string.empty": t("passwordValidation"),
