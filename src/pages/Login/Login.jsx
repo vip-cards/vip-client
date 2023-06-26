@@ -48,7 +48,7 @@ export default function Login() {
         token: data.token,
         userId: tokenDecoded._id,
         userRole: tokenDecoded.role,
-        userData: data.record,
+        userData: data.record ?? tokenDecoded,
       })
     );
     navigate("/");

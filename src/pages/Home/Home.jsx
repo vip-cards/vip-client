@@ -41,20 +41,16 @@ export default function Home() {
     "all-adverts",
     () => clientServices.listAllBanners()
   );
-  const { data: bannersData, isLoading: bannersLoading } = useSWR(
-    "all-banners",
-    () => clientServices.listAllBanners()
-  );
 
   const { records: products = undefined } = productsData ?? {};
   const { records: categories = undefined } = categoriesData ?? {};
   const { records: vendors = undefined } = vendorsData ?? {};
-  const { records: banners = undefined } = bannersData ?? {};
+
   const { records: adverts = undefined } = advertsData ?? {};
 
   const popUps = useMemo(
-    () => banners?.filter((item) => item.isPopUp) ?? [],
-    [banners]
+    () => adverts?.filter((item) => item.isPopUp) ?? [],
+    [adverts]
   );
 
   const randomPopUp = useMemo(
@@ -101,22 +97,6 @@ export default function Home() {
           </SwiperSlide>
         );
       });
-  };
-
-  const renderBanners = () => {
-    if (bannersLoading || !banners) return <LoadingSpinner />;
-    if (!banners.length) return <NoData />;
-
-    return banners.map((banner) => {
-      return (
-        <SwiperSlide
-          key={banner._id}
-          className="w-full h-full rounded-xl shadow overflow-hidden"
-        >
-          <BannerCard banner={banner} />
-        </SwiperSlide>
-      );
-    });
   };
 
   const renderProducts = (type) => {
@@ -257,27 +237,6 @@ export default function Home() {
           </div>
         </SectionContainer>
       </header>
-
-      {/* Banners */}
-      <SectionContainer direction="col">
-        <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full">
-          <HomeSwiper
-            direction="horizontal"
-            spaceBetween={20}
-            breakpoints={{
-              300: { slidesPerView: 1 },
-              480: { slidesPerView: 1.25 },
-              540: { slidesPerView: 1.45 },
-              768: { slidesPerView: 2.1 },
-              860: { slidesPerView: 2.5 },
-              992: { slidesPerView: 3 },
-              1024: { slidesPerView: 3.2 },
-            }}
-          >
-            {renderBanners()}
-          </HomeSwiper>
-        </div>
-      </SectionContainer>
 
       {/* Categories */}
       <SectionContainer direction="col">
