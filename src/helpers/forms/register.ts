@@ -1,4 +1,3 @@
-import { countriesArr } from "helpers/countries";
 import {
   emailSchema,
   passwordSchema,
@@ -8,7 +7,14 @@ import { t } from "i18next";
 import Joi from "joi";
 
 export const registerSchema = Joi.object({
-  name: Joi.string()
+  name_en: Joi.string()
+    .messages({
+      "any.required": t("nameValidation"),
+      "string.empty": t("nameValidation"),
+    })
+    .trim()
+    .required(),
+  name_ar: Joi.string()
     .messages({
       "any.required": t("nameValidation"),
       "string.empty": t("nameValidation"),
@@ -28,6 +34,7 @@ export const registerSchema = Joi.object({
   age: Joi.number()
     .min(15)
     .max(100)
+    .required()
     .messages({
       "number.min": t("ageValidation"),
       "number.max": t("ageValidation"),
@@ -38,8 +45,10 @@ export const registerSchema = Joi.object({
     .messages({
       "any.required": t("genderValidation"),
     }),
-  profession: Joi.array(),
-  interests: Joi.array(),
+  profession: Joi.array().required(),
+  interests: Joi.array().required(),
+  country: Joi.any().required(),
+  city: Joi.any().required(),
 })
   .or("email", "phone")
   .with("password", "re-password")
@@ -49,11 +58,13 @@ export const registerSchema = Joi.object({
   });
 
 export const registerFormData = [
-  { name: "name", type: "text", required: true },
+  { name: "name_en", type: "text", required: true },
+  { name: "name_ar", type: "text", required: true },
+
   { name: "email", type: "email", required: false },
   { name: "phone", type: "tel", required: false },
   { name: "password", type: "password", required: true },
   { name: "re-password", type: "password", required: true },
-  
+
   { name: "age", type: "number", required: true, min: "15", max: "100" },
 ];

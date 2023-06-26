@@ -4,7 +4,7 @@ import { MainInput } from "components/Inputs";
 import { clearEmpty } from "helpers";
 import { getInitialFormData } from "helpers/forms";
 import { registerFormData, registerSchema } from "helpers/forms/register";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import { guestAxios } from "services/Axios";
@@ -63,7 +63,7 @@ export default function RegisterForm() {
 
   const [user, setUser] = useState(getInitialFormData(formData));
   let timer: NodeJS.Timer;
-  async function registerHandler(e: SubmitEvent) {
+  async function registerHandler(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     setErrorList([]);
@@ -78,15 +78,18 @@ export default function RegisterForm() {
       setLoading(false);
       return 1;
     }
-    const arabicRegex = /[\u0600-\u06FF]/; // Arabic Unicode range
-    const isArabic = arabicRegex.test(_user.name);
     const mappedData = {
       ..._user,
       name: {
-        [isArabic ? "ar" : "en"]: _user.name,
+        en: _user.name_en,
+        ar: _user.name_ar,
       },
     };
+
+    //! could be handled with destrcuturing
     delete mappedData["re-password"];
+    delete mappedData["name_en"];
+    delete mappedData["name_ar"];
 
     try {
       const { data } = await clientServices.register(mappedData);
