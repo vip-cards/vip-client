@@ -128,7 +128,7 @@ export default function Navbar() {
     markAsSeen(notificationId);
   }
 
-  const NofificationRing = useCallback(
+  const NotificationRing = useCallback(
     () => (
       <Dropdown
         className={classNames({ "!hidden": auth.userId === "guest" })}
@@ -277,8 +277,8 @@ export default function Navbar() {
           {t("lang")}
         </button>
       </div>
-      <NofificationRing />
-      {/* <NofificationRing /> */}
+      <NotificationRing />
+      {/* <NotificationRing /> */}
       {showSideMenu && <SideNav onToggle={toggleSideMenu} items={navItems} />}
       <ConfirmModal
         visible={confirmModal}

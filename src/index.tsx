@@ -13,9 +13,6 @@ import "dayjs/locale/en";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "animate.css";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
-import "swiper/scss"; // core Swiperimport "swiper/css/navigation";
 
 import "./index.scss";
 

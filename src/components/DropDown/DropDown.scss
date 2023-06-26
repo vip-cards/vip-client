@@ -9,6 +9,7 @@
     top: 100%;
     left: 50%;
 
+    user-select: none;
     transform: translate(-50%, 0);
     min-width: fit-content;
     border-radius: 0.5rem;
@@ -16,7 +17,7 @@
     background-color: #fff;
     border: 1px solid #ccc;
     opacity: 0;
-    animation: fade-in 200ms ease-in-out forwards;
+    animation: fade-in 50ms ease-in-out forwards;
 
     * {
       white-space: nowrap;
