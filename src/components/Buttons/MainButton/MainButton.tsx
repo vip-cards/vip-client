@@ -1,3 +1,5 @@
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import "./MainButton.scss";
@@ -103,7 +105,7 @@ const MainButton: React.FC<IMainButton> = ({
       {...props}
     >
       {loading ? (
-        <i className="fas fa-spinner fa-spin"></i>
+        <FontAwesomeIcon icon={faSpinner} spin />
       ) : (
         t(text) || (children as any)
       )}
