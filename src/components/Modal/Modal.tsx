@@ -26,6 +26,15 @@ const Modal: React.FC<IModal> = ({
   footer,
 }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (visible) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  }, [visible]);
+
   const content = (
     <div className={classes.backdrop} onClick={onClose}>
       <motion.div
@@ -44,7 +53,13 @@ const Modal: React.FC<IModal> = ({
               <IconButton icon={faClose} onClick={onClose} size="lg" />
             </div>
           </div>
-          <div className={classNames(classes.body, className, "max-w-full")}>
+          <div
+            className={classNames(
+              classes.body,
+              className,
+              "max-w-full overflow-hidden"
+            )}
+          >
             {children}
           </div>
           <div className={classes.footer}>{footer && footer()}</div>
