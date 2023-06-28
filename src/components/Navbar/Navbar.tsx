@@ -103,7 +103,7 @@ export default function Navbar() {
       >
         {!!notificationList.list.filter((item: INotification) => !item.seen)
           .length && (
-          <div className="h-5 w-5 flex z-20 p-1 items-center justify-center bg-secondary text-white absolute -right-2 -top-3 rounded-full !text-[0.25rem]">
+          <div className="h-5 w-5 flex z-20 p-1 items-center justify-center bg-secondary text-white absolute -right-2 -top-3 rounded-full !text-[0.7rem]">
             {notificationList.list.filter((item: INotification) => !item.seen)
               .length ?? 0}
           </div>
