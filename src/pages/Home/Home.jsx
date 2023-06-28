@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { CategoryCard, ProductCard, VendorCard } from "components/Cards";
+import { CategoryCard, VendorCard } from "components/Cards";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import Modal from "components/Modal/Modal";
 import NoData from "components/NoData/NoData";
@@ -12,17 +12,16 @@ import { SwiperSlide } from "swiper/react";
 import useSWR from "swr";
 import HomeSwiper from "./HomeSwiper";
 import SectionContainer from "./SectionContainer";
-
 import classes from "./Home.module.scss";
+import loadable from "@loadable/component";
+
+const ProdcutsSections = loadable(() =>
+  import("./_components/ProdcutsSections")
+);
 
 export default function Home() {
   const navigate = useNavigate();
   const [popUpModalVisible, setPopUpModalVisible] = useState(false);
-
-  const { data: productsData, isLoading: productsLoading } = useSWR(
-    "all-products",
-    () => clientServices.listAllProducts() // to prevent sending the string in the params
-  );
 
   const { data: vendorsData, isLoading: vendorsLoading } = useSWR(
     "all-vendors",
@@ -37,7 +36,6 @@ export default function Home() {
     () => clientServices.listAllBanners()
   );
 
-  const { records: products = undefined } = productsData ?? {};
   const { records: categories = undefined } = categoriesData ?? {};
   const { records: vendors = undefined } = vendorsData ?? {};
 
@@ -89,32 +87,6 @@ export default function Home() {
                 alt={ad.name}
               />
             </a>
-          </SwiperSlide>
-        );
-      });
-  };
-
-  const renderProducts = (type) => {
-    if (productsLoading || !products) return <LoadingSpinner />;
-    const productList = products?.filter(
-      (product) =>
-        (type === "hotDeal" && product.isHotDeal) ||
-        (type !== "hotDeal" && !product.isHotDeal)
-    );
-
-    if (!productList.length) {
-      return <NoData />;
-    }
-    return products
-      .filter(
-        (product) =>
-          (type === "hotDeal" && product.isHotDeal) ||
-          (type !== "hotDeal" && !product.isHotDeal)
-      )
-      .map((product) => {
-        return (
-          <SwiperSlide key={product._id} className="w-fit h-full">
-            <ProductCard product={product} />
           </SwiperSlide>
         );
       });
@@ -294,65 +266,8 @@ export default function Home() {
         </div>
       </SectionContainer>
 
-      {/* Offers */}
-      <SectionContainer direction="col">
-        <div className="flex w-full flex-row justify-between px-3">
-          <h4 className="text-primary"> {t("offers")}</h4>
-          <button
-            className="shadow text-primary px-3 font-semibold rounded-lg"
-            onClick={() => navigate("/offers")}
-          >
-            {t("showAllOffers")}
-          </button>
-        </div>
-        <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full">
-          <HomeSwiper
-            direction="horizontal"
-            spaceBetween={20}
-            breakpoints={{
-              300: { slidesPerView: 1 },
-              480: { slidesPerView: 1.25 },
-              540: { slidesPerView: 1.45 },
-              768: { slidesPerView: 2.1 },
-              860: { slidesPerView: 2.5 },
-              992: { slidesPerView: 3 },
-              1024: { slidesPerView: 3.2 },
-            }}
-          >
-            {renderProducts("")}
-          </HomeSwiper>
-        </div>
-      </SectionContainer>
+      <ProdcutsSections />
 
-      {/* Hot Deals */}
-      <SectionContainer direction="col">
-        <div className="flex w-full flex-row justify-between px-3">
-          <h4 className="text-primary"> {t("hotDeals")}</h4>
-          <button
-            className="shadow text-primary px-3 font-semibold rounded-lg"
-            onClick={() => navigate("/hot-deals")}
-          >
-            {t("showAllHotDeals")}
-          </button>
-        </div>
-        <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full">
-          <HomeSwiper
-            direction="horizontal"
-            spaceBetween={20}
-            breakpoints={{
-              300: { slidesPerView: 1 },
-              480: { slidesPerView: 1.25 },
-              540: { slidesPerView: 1.45 },
-              768: { slidesPerView: 2.1 },
-              860: { slidesPerView: 2.5 },
-              992: { slidesPerView: 3 },
-              1024: { slidesPerView: 3.2 },
-            }}
-          >
-            {renderProducts("hotDeal")}
-          </HomeSwiper>
-        </div>
-      </SectionContainer>
       {!!popUps.length && (
         <Modal
           visible={popUpModalVisible}
