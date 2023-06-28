@@ -2,41 +2,63 @@ import { ReactComponent as NavbarLogo } from "assets/VIP-ICON-SVG/NavbarLogo.svg
 import { ReactComponent as BurgerMenuIcon } from "assets/VIP-ICON-SVG/burgerMenu.svg";
 import { ReactComponent as Notification } from "assets/VIP-ICON-SVG/notification.svg";
 import classNames from "classnames";
-import { ROUTES } from "constants/routes";
+import MainImage from "components/MainImage/MainImage";
+import ConfirmModal from "components/Modal/ConfirmModal";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { motion } from "framer-motion";
 import { switchLang } from "helpers/lang";
 import { t } from "i18next";
-import i18n from "locales/i18n";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import clientServices from "services/clientServices";
 import { markAsSeen } from "services/socket/notification";
 import { logout } from "store/actions";
+import { selectAuth } from "store/auth-slice";
 import { selectCartProducts } from "store/cart-slice";
 import { selectNotification } from "store/notification-slice";
 import Dropdown from "../DropDown/DropDown";
 import SideNav from "./SideNav/SideNav";
 
-import { selectAuth } from "store/auth-slice";
 import "./Navbar.scss";
-import ConfirmModal from "components/Modal/ConfirmModal";
+import { navItemsRender } from "./_helpers/navItemsRender";
+import { notificationListRender } from "./_helpers/notificationListRender";
+import Modal from "components/Modal/Modal";
+
+interface INavItem {
+  title: string;
+  link: string;
+  withHover?: boolean;
+  withCaret?: boolean;
+  menu?: INavItem[];
+  render?: (children: any) => JSX.Element;
+  listRender?: (menu: INavItem[]) => JSX.Element[];
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+}
 
 dayjs.extend(relativeTime);
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const { i18n } = useTranslation();
 
   const auth = useSelector(selectAuth);
   const cartProducts = useSelector(selectCartProducts);
-  const wishlist = useSelector((state) => state.wishlist);
+  const wishlist = useSelector((state) => (state as any).wishlist);
   const notificationList = useSelector(selectNotification);
 
   const [lists, setLists] = useState({});
   const [confirmModal, setConfirmModal] = useState(false);
   const [showSideMenu, setShowSideMenu] = useState(false);
-  const [viweAccountMenu, setViweAccountMenu] = useState(false);
+  const [notificationModal, setNotificationModal] = useState<{
+    visible: boolean;
+    notification: INotification | null;
+  }>({
+    visible: false,
+    notification: null,
+  });
 
   const lang = i18n.language;
 
@@ -44,69 +66,9 @@ export default function Navbar() {
     setLists((list) => ({ ...list, ...item }));
   };
 
-  const navItems = useMemo(
-    () => [
-      { link: ROUTES.HOME, title: "home" },
-      { link: ROUTES.CATEGORIES, title: "categories" },
-      { link: ROUTES.VENDORS, title: "vendors" },
-      { link: ROUTES.HOT_DEALS, title: "hotDeals" },
-      { link: `/${ROUTES.OFFERS}`, title: "offers" },
-      { link: `/${ROUTES.JOBS.MAIN}`, title: "jobs" },
-      { link: `/${ROUTES.SERVICES}`, title: "services" },
-      {
-        link: `/${ROUTES.WISHLIST}`,
-        title: "wishlist",
-        render: (children) => (
-          <div className="relative">
-            {!!wishlist.ids.length && (
-              <div className="h-5 p-1 w-5 bg-secondary/95 text-white absolute -right-1 ring-primary ring-2 -top-1 flex justify-center items-center rounded-full text-xs">
-                {wishlist.ids.length}
-              </div>
-            )}
-            {children}
-          </div>
-        ),
-      },
-      {
-        link: `/${ROUTES.CART}`,
-        title: "cart",
-        render: (children) => (
-          <div className="relative">
-            {!!cartProducts.length && (
-              <div className="h-5 p-1 w-5 bg-secondary text-white absolute -right-1 ring-primary ring-2 -top-1 flex justify-center items-center rounded-full text-xs">
-                {cartProducts.length}
-              </div>
-            )}
-            {children}
-          </div>
-        ),
-      },
-      { link: `/${ROUTES.ADS.MAIN}`, title: "Ads" },
-      { link: `/${ROUTES.CHAT}`, title: "chat" },
-      {
-        title: "account",
-        withHover: false,
-        withCaret: true,
-        menu: [
-          { link: `/${ROUTES.ACCOUNT}`, title: "myAccount" },
-          { link: `/${ROUTES.SUBSCRIBE}`, title: "VIP premium" },
-          {
-            link: `?`,
-            title: "logout",
-            onClick: (e) => setConfirmModal(true),
-          },
-        ],
-        listRender: (menu) =>
-          menu.map((subItem, idx) => (
-            <li key={subItem.title || "menu-item-" + idx}>
-              <Link to={subItem.link} onClick={subItem.onClick}>
-                {t(subItem?.title ?? "Menu Item")}
-              </Link>
-            </li>
-          )),
-      },
-    ],
-    [cartProducts.length]
+  const navItems: INavItem[] | any[] = useMemo(
+    () => navItemsRender(wishlist, cartProducts, setConfirmModal),
+    [cartProducts, wishlist]
   );
 
   function toggleSideMenu() {
@@ -121,61 +83,35 @@ export default function Navbar() {
   function logoutHandler(e) {
     e.preventDefault();
     logout();
-    setViweAccountMenu((prevState) => !prevState);
   }
 
-  function handleNotificationClick(notificationId, link) {
+  function handleNotificationClick(
+    notificationId: string,
+    notification: INotification
+  ) {
+    setNotificationModal({ visible: true, notification });
     markAsSeen(notificationId);
   }
 
   const NotificationRing = useCallback(
     () => (
       <Dropdown
-        className={classNames({ "!hidden": auth.userId === "guest" })}
         menu={notificationList.list}
         left={lang === "en"}
         right={lang === "ar"}
-        listRender={(menu) =>
-          menu.slice(0, 10).map((item, idx) => (
-            <li
-              key={item._id}
-              className={classNames("relative cursor-pointer px-3 py-5", {
-                "bg-slate-100/40 border-0 border-b-2 border-b-slate-300/40":
-                  !item.seen,
-              })}
-              onClick={() => handleNotificationClick(item._id, item.link)}
-            >
-              {!item.seen && (
-                <span className="ml-auto absolute w-2 h-2 bg-primary rounded-full right-2 top-2 animate-pulse"></span>
-              )}
-              <a
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => handleNotificationClick(item._id, item.link)}
-                className="!flex w-full flex-row justify-between items-baseline"
-              >
-                <span>
-                  {item.text.slice(0, 30) +
-                    (item.text.length > 30 ? "..." : "") ?? "No text"}
-                </span>
-                <span className="text-xs text-gray-600/50 lowercase">
-                  {dayjs(item.timestamp).fromNow()}
-                </span>
-              </a>
-            </li>
-          ))
-        }
+        listRender={notificationListRender(handleNotificationClick)}
       >
-        {!!notificationList.list.filter((item) => !item.seen).length && (
-          <div className="h-4 w-4 flex items-center justify-center bg-green-500 absolute -right-1 -top-1 rounded-full text-[0.5rem]">
-            {notificationList.list.length}
+        {!!notificationList.list.filter((item: INotification) => !item.seen)
+          .length && (
+          <div className="h-5 w-5 flex z-20 p-1 items-center justify-center bg-secondary text-white absolute -right-2 -top-3 rounded-full !text-[0.25rem]">
+            {notificationList.list.filter((item: INotification) => !item.seen)
+              .length ?? 0}
           </div>
         )}
         <Notification className="notification-icon hover:drop-shadow-xl hover:bg-white/10 transition-colors rounded-full" />
       </Dropdown>
     ),
-    [notificationList]
+    [notificationList.list, lang]
   );
 
   useEffect(() => {
@@ -226,7 +162,9 @@ export default function Navbar() {
 
               {menu.length > 5 && (
                 <li>
-                  <Link to={item.link || ""}>{t("navbar.seeAll")} ...</Link>
+                  <Link to={item.link || ""}>
+                    {t("navbar.seeAll") as string} ...
+                  </Link>
                 </li>
               )}
             </>
@@ -248,7 +186,7 @@ export default function Navbar() {
                 }
                 onClick={item.onClick}
               >
-                {t(item.title)}
+                {t(item.title) as string}
               </NavLink>
             </Dropdown>
           );
@@ -278,12 +216,31 @@ export default function Navbar() {
                 }
           }
         >
-          {t("lang")}
+          {t("lang") as string}
         </button>
       </div>
       <NotificationRing />
-      {/* <NotificationRing /> */}
+
       {showSideMenu && <SideNav onToggle={toggleSideMenu} items={navItems} />}
+      <Modal
+        visible={notificationModal.visible}
+        onClose={() =>
+          setNotificationModal({
+            visible: false,
+            notification: null,
+          })
+        }
+        title={notificationModal.notification?.text}
+      >
+        <a
+          href={notificationModal.notification?.link}
+          target="_blank"
+          rel="noreferrer"
+          className="w-full h-full block"
+        >
+          <MainImage src={notificationModal.notification?.image?.Location} />
+        </a>
+      </Modal>
       <ConfirmModal
         visible={confirmModal}
         message={t("YouWillBeLoggedOut")}

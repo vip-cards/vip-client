@@ -1,10 +1,19 @@
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { MainButton } from "components/Buttons";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import Modal from "./Modal";
-import { MainButton } from "components/Buttons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 
-const ConfirmModal = ({
+interface IConfirmModal {
+  visible?: boolean;
+  title: string;
+  message: string;
+  onConfirm?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onCancel?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+const ConfirmModal: React.FC<IConfirmModal> = ({
   visible = false,
   title,
   message,
