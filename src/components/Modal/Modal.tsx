@@ -1,14 +1,23 @@
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
-import PropTypes from "prop-types";
+import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { IconButton } from "../Buttons";
-import classes from "./Modal.module.scss";
-import { motion } from "framer-motion";
 
-const Modal = ({
+import classes from "./Modal.module.scss";
+
+interface IModal {
+  visible?: boolean;
+  onClose: (x: any) => void;
+  title: string;
+  children: React.ReactNode;
+  className?: string;
+  footer?: () => React.ReactNode;
+}
+
+const Modal: React.FC<IModal> = ({
   visible = false,
   onClose,
   title,
@@ -61,10 +70,6 @@ const Modal = ({
 
   if (visible) return createPortal(content, document.getElementById("root"));
   return null;
-};
-
-Modal.defaultProps = {
-  visible: PropTypes.bool,
 };
 
 export default Modal;

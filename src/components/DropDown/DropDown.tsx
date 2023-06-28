@@ -1,11 +1,24 @@
-import { useEffect, useRef, useState } from "react";
-import "./DropDown.scss";
+import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { useOutsideClick } from "helpers/useOuterClick";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { useMemo, useRef, useState } from "react";
 
-const Dropdown = ({
+import "./DropDown.scss";
+
+interface IDropdown {
+  menu: any[];
+  children?: React.ReactNode;
+  right?: boolean;
+  left?: boolean;
+  itemRender?: (item: any, index: number) => React.ReactNode;
+  listRender?: (menu: any[]) => React.ReactNode;
+  className?: string;
+  withCaret?: boolean;
+  withHover?: boolean;
+}
+
+const Dropdown: React.FC<IDropdown> = ({
   menu,
   children,
   right,
@@ -18,7 +31,9 @@ const Dropdown = ({
 }) => {
   const [showMenu, setShowMenu] = useState(false);
   const wrapperRef = useRef(null);
+
   useOutsideClick(wrapperRef, () => setShowMenu(false));
+
   const toggleMenu = (event) => {
     switch (event.type) {
       case "mouseenter":
@@ -35,14 +50,20 @@ const Dropdown = ({
     }
   };
 
+  const ulStyle = useMemo(() => {
+    const rightTransform = right ? "-2rem" : "-50%";
+    const transormX = left ? "-21rem" : rightTransform;
+
+    return { transform: `translate(${transormX},0px) translateZ(0px)` };
+  }, [right, left]);
+
   const TriggerComponent = () => children;
 
   if (!menu?.length) return <TriggerComponent />;
-  const transormX = left ? "-90%" : right ? "-10%" : "-50%";
 
   return (
     <div
-      className={classNames(className, "dropdown-menu", "z-10")}
+      className={classNames(className, "dropdown-menu z-10")}
       onMouseEnter={toggleMenu}
       onMouseLeave={toggleMenu}
       onClick={toggleMenu}
@@ -62,7 +83,10 @@ const Dropdown = ({
         </span>
       )}
       {showMenu && (
-        <ul style={{ transform: `translate(${transormX}, 0)` }}>
+        <ul
+          style={ulStyle}
+          className="max-h-[75vh] overflow-y-auto transform-gpu max-xs:ltr:!-translate-x-[91.7%] max-xs:rtl:!-translate-x-[8.09%]"
+        >
           {listRender ? listRender(menu) : menu.map(itemRender)}
         </ul>
       )}

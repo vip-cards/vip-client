@@ -17,7 +17,7 @@ import "animate.css";
 import "./index.scss";
 
 const helmetContext = {};
-const container = document.getElementById("root");
+const container = document.getElementById("root") as HTMLElement;
 const root = createRoot(container);
 
 document.getElementById("loader-container")?.remove();

@@ -249,7 +249,7 @@ export default function MainInput(props: IMainInputProps): JSX.Element {
         htmlFor={id}
       >
         {t(name) as string}
-        <span className="text-red-600/80 pl-1 font-extrabold group-focus-within:!text-red text-lg -top-1 group-focus-within:font-black absolute ltr:-right-4 rtl:-left-4">
+        <span className="text-red-600/80 pl-1 font-extrabold group-focus-within:!text-red text-lg -top-1 group-focus-within:font-black absolute ltr:-right-3 rtl:-left-3">
           {required ? " * " : ""}
         </span>
       </label>

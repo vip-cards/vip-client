@@ -1,9 +1,42 @@
 import classNames from "classnames";
-import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 import "./MainButton.scss";
 
-const MainButton = ({
+interface IMainButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  text?: string;
+  children?: React.ReactNode;
+  className?: string;
+  size?: "small" | "medium" | "large";
+  variant?:
+    | "primary"
+    | "secondary"
+    | "primary-outline"
+    | "secondary-outline"
+    | "primary-light"
+    | "secondary-light"
+    | "primary-light-outline"
+    | "secondary-light-outline"
+    | "danger"
+    | "danger-light"
+    | "danger-light-outline"
+    | "danger-outline"
+    | "success"
+    | "success-light"
+    | "success-light-outline"
+    | "success-outline"
+    | "warning"
+    | "warning-light"
+    | "warning-light-outline"
+    | "warning-outline"
+    | "info"
+    | "info-light"
+    | "info-light-outline"
+    | "info-outline";
+  loading?: boolean;
+  active?: boolean;
+}
+
+const MainButton: React.FC<IMainButton> = ({
   text = "",
   children = () => <></>,
   className = "",
@@ -72,56 +105,10 @@ const MainButton = ({
       {loading ? (
         <i className="fas fa-spinner fa-spin"></i>
       ) : (
-        t(text) || children
+        t(text) || (children as any)
       )}
     </button>
   );
 };
 
 export default MainButton;
-// generate proptypes for this component
-MainButton.propTypes = {
-  text: PropTypes.string,
-  children: PropTypes.node,
-  className: PropTypes.string,
-  size: PropTypes.oneOf(["small", "medium", "large"]),
-  variant: PropTypes.oneOf([
-    "primary",
-    "secondary",
-    "primary-outline",
-    "secondary-outline",
-    "primary-light",
-    "secondary-light",
-    "primary-light-outline",
-    "secondary-light-outline",
-    "danger",
-    "danger-light",
-    "danger-light-outline",
-    "danger-outline",
-    "success",
-    "success-light",
-    "success-light-outline",
-    "success-outline",
-    "warning",
-    "warning-light",
-    "warning-light-outline",
-    "warning-outline",
-    "info",
-    "info-light",
-    "info-light-outline",
-    "info-outline",
-  ]),
-  loading: PropTypes.bool,
-  active: PropTypes.bool,
-};
-
-// generate default props for this component
-MainButton.defaultProps = {
-  text: "",
-  children: null,
-  className: "",
-  size: "medium",
-  variant: "primary",
-  loading: false,
-  active: false,
-};
