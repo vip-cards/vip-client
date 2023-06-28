@@ -11,7 +11,8 @@ export const useAddressList = () => {
 
   useEffect(() => {
     const countryList = getCountries(lang);
-    const cityList = countryId >= 0 ? getCities(countryId, lang) : [];
+    const cityList =
+      countryId && countryId >= 0 ? getCities(countryId, lang) : [];
 
     setCountries(
       countryList.map((country) => ({
@@ -30,50 +31,12 @@ export const useAddressList = () => {
   return [countries, cities, setCountryId];
 };
 
-interface ICity {
-  en: string;
-  ar: string;
-  index: number;
-}
-
-interface ICountry {
-  en: string;
-  ar: string;
-  index: number;
-  code: string;
-  cities: ICity[];
-  alpha3: string;
-}
-
-interface IMappedCountry {
-  name: {
-    en: string;
-    ar: string;
-  };
-  _id: number;
-  cities: {
-    _id: number;
-    name: {
-      en: string;
-      ar: string;
-    };
-    en: string;
-    ar: string;
-    index: number;
-  }[];
-  en: string;
-  ar: string;
-  index: number;
-  code: string;
-  alpha3: string;
-}
-
 export const countriesArr: IMappedCountry[] = _countriesArr.map(
   (cntry: ICountry) => ({
     ...cntry,
     name: { en: cntry.en, ar: cntry.ar },
     _id: cntry.index,
-    
+
     cities: cntry.cities.map((city: ICity) => ({
       ...city,
       _id: city.index,

@@ -1,9 +1,10 @@
+import loadable from "@loadable/component";
 import BranchProducts from "components/BranchProducts/BranchProducts";
 import Footer from "components/Footer/Footer";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
-import Navbar from "components/Navbar/Navbar";
 import { ProtectedModule } from "components/auth-components/ProtectedModule";
 import { ROUTES } from "constants/routes";
+import TransactionProcess from "layouts/TransactionProcess";
 import {
   ApplyJobTab,
   Branch,
@@ -30,24 +31,25 @@ import {
   Vendors,
   Wishlist,
 } from "pages";
+import DynamicPage from "pages/DynamicPage/DynamicPage";
+import PostPage from "pages/Jobs/views/PostPage";
 import { ServiceDetails } from "pages/Services/ServiceDetails";
 import { Suspense, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { getCurrentCartThunk } from "store/cart-slice";
 import AccountBarcode from "views/AccountBarcode/AccountBarcode";
+import AccountCoupons from "views/AccountCoupons/AccountCoupons";
 import AccountDetails from "views/AccountDetails/AccountDetails";
+import AccountLocation from "views/AccountLocation/AccountLocation";
+import AccountOrderRequests from "views/AccountOrderRequests/AccountOrderRequests";
 import AccountOrders from "views/AccountOrders/AccountOrders";
 import AccountWishlist from "views/AccountWishlist/AccountWishlist";
 import AccountLayout from "../AccountLayout/AccountLayout";
+
 import "./ClientLayout.scss";
-import PostPage from "pages/Jobs/views/PostPage";
-import AccountCoupons from "views/AccountCoupons/AccountCoupons";
-import AccountLocation from "views/AccountLocation/AccountLocation";
-import DynamicPage from "pages/DynamicPage/DynamicPage";
-import TransactionProcess from "layouts/TransactionProcess";
-import OrderRequestsTable from "pages/CartPage/OrderRequestsTable";
-import AccountOrderRequests from "views/AccountOrderRequests/AccountOrderRequests";
+
+const Navbar = loadable(() => import("components/Navbar/Navbar"));
 
 const PageLoader = () => (
   <div className="h-[80vh] w-[80vw] m-auto flex justify-center items-center">
