@@ -104,13 +104,20 @@ export const ProductActionsContainer = forwardRef<any, { product: IProduct }>(
 
     return (
       <>
-        <div className="product-actions">
+        <div
+          className="product-actions"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           <div
             className={`add-to-cart ${addToCartState.active ? "show-add" : ""}`}
           >
             <span
               className="add-field-minus"
-              onClick={() => addToCartState.count > 1 && changeCount("minus")}
+              onClick={(e) => {
+                addToCartState.count > 1 && changeCount("minus");
+              }}
             >
               <FontAwesomeIcon icon={faMinus} className="fa-xs" />
             </span>
@@ -130,6 +137,9 @@ export const ProductActionsContainer = forwardRef<any, { product: IProduct }>(
         </div>
         {addToCartState.active ? (
           <div
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
             className="branches-list"
             ref={ref}
             onAnimationEnd={(e) => {

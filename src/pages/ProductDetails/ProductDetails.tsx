@@ -197,7 +197,13 @@ function ProductDetails(props) {
             <span
               className="qty-action"
               onClick={() => {
-                setQuantity((q) => --q);
+                setQuantity((q) => {
+                  if (q > 1) {
+                    return --q;
+                  } else {
+                    return 1;
+                  }
+                });
               }}
             >
               <FontAwesomeIcon icon={faMinus} className="fa-xs" />
@@ -261,7 +267,7 @@ function ProductDetails(props) {
         </div>
       </aside>
       <motion.section
-      layout
+        layout
         initial={{ height: "0px" }}
         animate={{
           height: reviewFormExpand ? "100%" : "0px",

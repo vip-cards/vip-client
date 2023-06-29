@@ -118,7 +118,7 @@ export default function Navbar() {
   }, [showSideMenu]);
 
   useEffect(() => {
-    clientServices.categoryQuery().then((response) => {
+    clientServices.categoryQuery({ type: "vendor" }).then((response) => {
       const categoryList = response.data.records.map((item) => ({
         key: item._id,
         _id: item._id,
