@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import i18n from "locales/i18n";
-import { forwardRef } from "react";
+import { forwardRef, useId } from "react";
 
 export const ListInput = forwardRef(function ListInput(
   {
@@ -17,11 +17,13 @@ export const ListInput = forwardRef(function ListInput(
   inputRef
 ) {
   const lang = i18n.language;
+  const listItemId = useId();
+  const id = props.id || listItemId;
 
   return (
     <>
       <select
-        id={props.id}
+        id={id}
         required
         disabled={disabled}
         className="main-input"
@@ -48,7 +50,7 @@ export const ListInput = forwardRef(function ListInput(
             );
           })}
       </select>
-      <label className="main-label" htmlFor={props.id}>
+      <label className="main-label" htmlFor={id}>
         {t(name)}
       </label>
     </>

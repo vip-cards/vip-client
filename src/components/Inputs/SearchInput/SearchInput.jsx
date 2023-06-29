@@ -1,9 +1,8 @@
-import React from "react";
-import "./SearchInput.scss";
-import { ReactComponent as SearchIcon } from "../../../assets/VIP-ICON-SVG/SearchIcon.svg";
-import { t } from "i18next";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStore } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { t } from "i18next";
+import { ReactComponent as SearchIcon } from "../../../assets/VIP-ICON-SVG/SearchIcon.svg";
+import "./SearchInput.scss";
 
 export default function SearchInput({ onChange, loading, ...props }) {
   return (

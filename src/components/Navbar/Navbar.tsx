@@ -1,27 +1,26 @@
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ReactComponent as NavbarLogo } from "assets/VIP-ICON-SVG/NavbarLogo.svg";
 import { ReactComponent as Notification } from "assets/VIP-ICON-SVG/notification.svg";
 import MainImage from "components/MainImage/MainImage";
 import ConfirmModal from "components/Modal/ConfirmModal";
+import Modal from "components/Modal/Modal";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import { motion } from "framer-motion";
 import { switchLang } from "helpers/lang";
 import { t } from "i18next";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { MouseEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import clientServices from "services/clientServices";
 import { markAsSeen } from "services/socket/notification";
 import { logout } from "store/actions";
-import { selectAuth } from "store/auth-slice";
 import { selectCartProducts } from "store/cart-slice";
 import { selectNotification } from "store/notification-slice";
 import Dropdown from "../DropDown/DropDown";
 import SideNav from "./SideNav/SideNav";
-import { motion } from "framer-motion";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Modal from "components/Modal/Modal";
 import { navItemsRender } from "./_helpers/navItemsRender";
 import { notificationListRender } from "./_helpers/notificationListRender";
 
@@ -44,7 +43,6 @@ export default function Navbar() {
   const navigate = useNavigate();
   const { i18n } = useTranslation();
 
-  const auth = useSelector(selectAuth);
   const cartProducts = useSelector(selectCartProducts);
   const wishlist = useSelector((state) => (state as any).wishlist);
   const notificationList = useSelector(selectNotification);
@@ -62,7 +60,7 @@ export default function Navbar() {
 
   const lang = i18n.language;
 
-  const setListItem = (item) => {
+  const setListItem = (item: { categories?: any; vendors?: any }) => {
     setLists((list) => ({ ...list, ...item }));
   };
 
@@ -75,7 +73,7 @@ export default function Navbar() {
     setShowSideMenu((prevState) => !prevState);
   }
 
-  function logoutHandler(e) {
+  function logoutHandler(e: MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     logout();
   }
@@ -119,23 +117,33 @@ export default function Navbar() {
 
   useEffect(() => {
     clientServices.categoryQuery().then((response) => {
-      const categoryList = response.data.records.map((item) => ({
-        key: item._id,
-        _id: item._id,
-        to: "categories/" + item._id,
-        content: item.name[lang] || item.name.en || item.name.ar,
-      }));
+      const categoryList = response.data.records.map(
+        (item: {
+          _id: string;
+          name: { [x: string]: any; en: any; ar: any };
+        }) => ({
+          key: item._id,
+          _id: item._id,
+          to: "categories/" + item._id,
+          content: item.name[lang] || item.name.en || item.name.ar,
+        })
+      );
 
       setListItem({ categories: categoryList });
     });
 
     clientServices.vendorQuery().then((response) => {
-      const vendorList = response.data.records.map((item) => ({
-        key: item._id,
-        _id: item._id,
-        to: "vendors/" + item._id,
-        content: item.name[lang] || item.name.en || item.name.ar,
-      }));
+      const vendorList = response.data.records.map(
+        (item: {
+          _id: string;
+          name: { [x: string]: any; en: any; ar: any };
+        }) => ({
+          key: item._id,
+          _id: item._id,
+          to: "vendors/" + item._id,
+          content: item.name[lang] || item.name.en || item.name.ar,
+        })
+      );
 
       setListItem({ vendors: vendorList });
     });
@@ -159,21 +167,28 @@ export default function Navbar() {
       />
       <ul className="nav-menu rtl:mr-auto rtl:!ml-0 z-[100]">
         {navItems.map((item, idx) => {
-          const defaultListRender = (menu) => (
+          const defaultListRender = (menu: any[]) => (
             <>
-              {menu.slice(0, 5).map((subItem, idx) => (
-                <motion.li
-                  transition={{ delay: idx * 0.03 }}
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  key={subItem.key || "menu-item-" + idx}
-                >
-                  <Link to={subItem.to || ""} className="block">
-                    {subItem.content || "Menu Item"}
-                  </Link>
-                </motion.li>
-              ))}
+              {menu
+                .slice(0, 5)
+                .map(
+                  (
+                    subItem: { key: any; to: any; content: any },
+                    idx: number
+                  ) => (
+                    <motion.li
+                      transition={{ delay: idx * 0.03 }}
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      key={subItem.key || "menu-item-" + idx}
+                    >
+                      <Link to={subItem.to || ""} className="block">
+                        {subItem.content || "Menu Item"}
+                      </Link>
+                    </motion.li>
+                  )
+                )}
 
               {menu.length > 5 && (
                 <motion.li

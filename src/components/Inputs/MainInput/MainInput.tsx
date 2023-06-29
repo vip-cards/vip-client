@@ -55,13 +55,14 @@ export default function MainInput(props: IMainInputProps): JSX.Element {
     ...restProps
   } = props;
 
+  const id = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [showPassword, setShowPassword] = useState(false);
   const [disableState, setDisabledState] = useState(disabled);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const id = useId();
-  const lang = i18n.language;
 
-  const className = classNames("main-input peer", { error: invalid }); // input class names
+  const lang = i18n.language;
+  const className = classNames("main-input peer w-full", { error: invalid }); // input class names
 
   const toggleDisabledHandler = () => setDisabledState((state) => !state);
 
@@ -120,7 +121,7 @@ export default function MainInput(props: IMainInputProps): JSX.Element {
     };
 
     switch (type) {
-      case "date":
+      case "date": {
         const _props = () => {
           switch (inputProps.dateRange) {
             case "start":
@@ -161,6 +162,7 @@ export default function MainInput(props: IMainInputProps): JSX.Element {
             }
           />
         );
+      }
       case "multi-select":
         return (
           <Select
@@ -276,6 +278,7 @@ export default function MainInput(props: IMainInputProps): JSX.Element {
     </div>
   );
 }
+
 function PasswordInput({ showPassword = false, setShowPassword, inputProps }) {
   return (
     <>
