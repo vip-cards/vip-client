@@ -4,6 +4,7 @@ import { MainInput } from "components/Inputs";
 import { clearEmpty } from "helpers";
 import { getInitialFormData } from "helpers/forms";
 import { registerFormData, registerSchema } from "helpers/forms/register";
+import useCountriesArr from "helpers/useCountriesArr";
 import { FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
@@ -11,7 +12,6 @@ import { guestAxios } from "services/Axios";
 import useSWR from "swr";
 import toastPopup from "../../helpers/toastPopup";
 import clientServices from "../../services/clientServices";
-import { countriesArr } from "helpers/countries";
 
 export default function RegisterForm() {
   const { t } = useTranslation();
@@ -19,7 +19,8 @@ export default function RegisterForm() {
 
   const [loading, setLoading] = useState(false);
   const [errorList, setErrorList] = useState([]);
-  const [cities, setCities] = useState([]);
+
+  const { countries, cities, setCities } = useCountriesArr();
   const { data: professions } = useSWR("list-professions", () =>
     guestAxios.get("/profession/list")?.then(({ data }) => data.records)
   );
@@ -32,7 +33,7 @@ export default function RegisterForm() {
     {
       name: "country",
       type: "multi-select",
-      list: countriesArr,
+      list: countries,
       required: true,
       isMulti: false,
       identifier: "name",
@@ -109,15 +110,8 @@ export default function RegisterForm() {
 
   useEffect(() => {
     setUser((state) => ({ ...state, city: null }));
-    if (user.country)
-      setCities(
-        countriesArr.find((cntry) => cntry._id === user.country._id)?.cities ??
-          []
-      );
-    else {
-      setCities([]);
-    }
-  }, [user.country]);
+    setCities(user.country);
+  }, [setCities, user.country]);
 
   useEffect(() => {
     return () => {
@@ -193,8 +187,7 @@ export default function RegisterForm() {
         text={t("register")}
         loading={loading}
         variant="primary"
-        type="button"
-        onClick={registerHandler}
+        type="submit"
       />
     </form>
   );

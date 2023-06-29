@@ -29,5 +29,5 @@ declare interface IMappedCountry {
   ar: string;
   index: number;
   code: string;
-  alpha3: string;
+  alpha3?: string;
 }

@@ -1,9 +1,6 @@
-import { getCities, getCountries } from "country-city-multilanguage";
-
 import { MainButton } from "components/Buttons";
 import CardContainer from "components/CardContainer/CardContainer";
 import { ImageEdit, MainInput } from "components/Inputs";
-import { useAddressList } from "helpers/countries";
 import toastPopup from "helpers/toastPopup";
 import i18n from "locales/i18n";
 import { useEffect, useState } from "react";
@@ -11,8 +8,9 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import clientServices from "services/clientServices";
-
+import useCountriesArr from "helpers/useCountriesArr";
 import "./CreateAd.scss";
+import { adFormData } from "helpers/forms/ad";
 
 /***
  * name
@@ -26,7 +24,7 @@ import "./CreateAd.scss";
 function CreateAd() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [countries, cities, setCountryId] = useAddressList();
+  const { cities, countries, setCities } = useCountriesArr();
   const user = useSelector((state) => state.auth.userData);
   const vendor = useSelector((state) => state.auth.vendorId);
   const [loading, setLoading] = useState(false);
@@ -41,36 +39,25 @@ function CreateAd() {
   const withNotification = ad.type === "notification";
 
   const formDataList = [
-    { name: "name", type: "text", required: false },
-
-    { name: "startDate", type: "date", required: true, dateRange: "start" },
-    { name: "endDate", type: "date", required: true, dateRange: "end" },
+    ...adFormData,
     {
       name: "country",
-      type: "list",
+      type: "multi-select",
       list: countries,
-      identifier: "name",
       required: true,
+      isMulti: false,
+      identifier: "name",
+      closeMenuOnSelect: true,
     },
     {
       name: "city",
-      type: "list",
+      type: "multi-select",
       list: cities,
-      identifier: "name",
       required: true,
-    },
-    {
-      name: "type",
-      type: "list",
-      list: [
-        { _id: "banner", name: { en: "banner", ar: "بانر" } },
-        { _id: "pop-up", name: { en: "pop-up", ar: "إعلان منبثق" } },
-        { _id: "notification", name: { en: "notification", ar: "إشعار" } },
-      ],
+      isMulti: false,
       identifier: "name",
-      required: true,
+      closeMenuOnSelect: true,
     },
-    { name: "notification", type: "textarea", required: false },
     {
       name: "product",
       type: "list",
@@ -78,26 +65,6 @@ function CreateAd() {
       identifier: "name",
       required: true,
     },
-    {
-      name: "bannerSize",
-      type: "list",
-      list: [
-        { _id: "small", name: { en: "small", ar: "صغير" } },
-        { _id: "medium", name: { en: "medium", ar: "وسط" } },
-        { _id: "large", name: { en: "large", ar: "كبير" } },
-      ],
-      identifier: "name",
-      required: true,
-    },
-    {
-      name: "gender",
-      type: "select",
-      list: [{ name: "male" }, { name: "female" }, { name: "both" }],
-      identifier: "name",
-      required: true,
-    },
-    { name: "age_from", type: "number", required: false },
-    { name: "age_to", type: "number", required: false },
   ];
 
   const submitCreateAdHandler = async (e) => {
@@ -112,34 +79,13 @@ function CreateAd() {
 
     formData.append("image", uploadImage);
 
-    const countryIdx = getCountries(lang)?.find(
-      (country) =>
-        country.label === ad.country || country.label_ar === ad.country
-    )?.index;
-    const cityIdx = getCities(countryIdx, lang).find(
-      (cty) => cty.label === ad.city || cty.label_ar === ad.city
-    )?.value;
-
-    const country = {
-      index: countryIdx,
-      en: getCountries("en")?.find((ctry) => ctry.index === countryIdx).label,
-      ar: getCountries("ar")?.find((ctry) => ctry.index === countryIdx).label,
-    };
-
-    const city = {
-      index: cityIdx,
-      en: getCities(countryIdx, "en").find((cty) => cty.value === cityIdx)
-        .label,
-      ar: getCities(countryIdx, "ar").find((cty) => cty.value === cityIdx)
-        .label,
-    };
     const { age_from, age_to, ...restAd } = ad;
     const mappedData = {
       ...restAd,
       startDate: ad.startDate ?? new Date(),
       endDate: ad.endDate ?? new Date(),
-      country: country,
-      city: city,
+      country: ad.country,
+      city: ad.city,
       client: user._id,
       age: {
         from: ad.age_from ?? 15,
@@ -168,11 +114,9 @@ function CreateAd() {
   };
 
   useEffect(() => {
-    if (!ad.country) return;
-
-    const idx = countries.findIndex(({ name }) => name[lang] === ad.country);
-    if (idx >= 0) setCountryId(countries[idx].index);
-  }, [ad.country, countries, lang, setCountryId]);
+    setAd((prev) => ({ ...prev, city: null }));
+    setCities(ad.country);
+  }, [ad.country, setCities]);
 
   return (
     <CardContainer className="create-ad-page" title={"create_ad"}>
@@ -185,15 +129,10 @@ function CreateAd() {
 
           return (
             <MainInput
+              {...formInput}
               key={formInput.name}
-              name={formInput.name}
-              type={formInput.type}
-              required={formInput.required}
-              list={formInput.list}
-              identifier={formInput.identifier}
               state={ad}
               setState={setAd}
-              dateRange={formInput.dateRange}
             />
           );
         })}
