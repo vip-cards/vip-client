@@ -22,7 +22,7 @@ export default function Categories() {
   });
 
   const { data: categoriesData, isLoading: cateogoriesLoading } = useSWR(
-    ["all-categories", vendorId, queryParams],
+    ["vendor-categories", vendorId, queryParams],
     () =>
       clientServices.listAllCategories({
         ...queryParams,
