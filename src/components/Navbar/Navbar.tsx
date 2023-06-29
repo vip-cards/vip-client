@@ -1,12 +1,9 @@
 import { ReactComponent as NavbarLogo } from "assets/VIP-ICON-SVG/NavbarLogo.svg";
-import { ReactComponent as BurgerMenuIcon } from "assets/VIP-ICON-SVG/burgerMenu.svg";
 import { ReactComponent as Notification } from "assets/VIP-ICON-SVG/notification.svg";
-import classNames from "classnames";
 import MainImage from "components/MainImage/MainImage";
 import ConfirmModal from "components/Modal/ConfirmModal";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { motion } from "framer-motion";
 import { switchLang } from "helpers/lang";
 import { t } from "i18next";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -22,10 +19,12 @@ import { selectNotification } from "store/notification-slice";
 import Dropdown from "../DropDown/DropDown";
 import SideNav from "./SideNav/SideNav";
 
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Modal from "components/Modal/Modal";
 import "./Navbar.scss";
 import { navItemsRender } from "./_helpers/navItemsRender";
 import { notificationListRender } from "./_helpers/notificationListRender";
-import Modal from "components/Modal/Modal";
 
 interface INavItem {
   title: string;
@@ -115,6 +114,13 @@ export default function Navbar() {
   );
 
   useEffect(() => {
+    document.body.style.overflow = showSideMenu ? "hidden" : "auto";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showSideMenu]);
+
+  useEffect(() => {
     clientServices.categoryQuery().then((response) => {
       const categoryList = response.data.records.map((item) => ({
         key: item._id,
@@ -137,11 +143,17 @@ export default function Navbar() {
       setListItem({ vendors: vendorList });
     });
     return () => {};
-  }, []);
+  }, [lang]);
 
   return (
     <nav className="top-nav z-20">
-      <BurgerMenuIcon className="burger-menu-icon" onClick={toggleSideMenu} />
+      <FontAwesomeIcon
+        icon={faBars}
+        size="xl"
+        className="text-white hover:text-white/80 cursor-pointer select-none active:scale-95 transition-transform"
+        onClick={toggleSideMenu}
+      />
+
       <NavbarLogo
         className="app-logo max-xl:mx-auto"
         onClick={() => {
