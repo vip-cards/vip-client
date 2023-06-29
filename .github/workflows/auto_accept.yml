@@ -11,7 +11,7 @@ jobs:
       - name: Check if contributor is allowed
         id: contributor_check
         run: |
-          if [ "${{ github.event.pull_request.user.login }}" == "mohammadkhallaf" ]; then
+          if [ "${{ github.event.pull_request.user.login }}" == "MohammadKhallaf" ]; then
             echo "::set-output name=allow::true"
           else
             echo "::set-output name=allow::false"
