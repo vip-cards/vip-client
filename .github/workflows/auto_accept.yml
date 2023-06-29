@@ -18,7 +18,9 @@ jobs:
           fi
 
       - name: Auto Accept PR
-        if: ${{ steps.contributor_check.outputs.allow == 'true' }}
+        run: | 
+          npm install @octokit/rest
+      - if: ${{ steps.contributor_check.outputs.allow == 'true' }}
         uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
