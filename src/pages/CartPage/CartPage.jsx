@@ -101,6 +101,7 @@ export default function CartPage() {
                 onChange={(e) => setCoupon(e.currentTarget.value)}
               />
               <MainButton
+                disabled={userData.usedFreeTrial && !userData.isSubscribed}
                 className="!text-xs !h-7 px-2 whitespace-nowrap"
                 onClick={handleCouponApply}
               >
@@ -110,7 +111,11 @@ export default function CartPage() {
 
             <button
               className="checkout-btn disabled:opacity-40 disabled:!cursor-default"
-              disabled={cartLoading || !cart?.products?.length}
+              disabled={
+                cartLoading ||
+                !cart?.products?.length ||
+                (userData.usedFreeTrial && !userData.isSubscribed)
+              }
               onClick={() => setShowCard(true)}
             >
               {cartLoading ? (
@@ -125,7 +130,8 @@ export default function CartPage() {
               disabled={
                 cartLoading ||
                 !cart?.products?.length ||
-                !cart?.branch?.hasDelivery
+                !cart?.branch?.hasDelivery ||
+                (userData.usedFreeTrial && !userData.isSubscribed)
               }
               onClick={() => setShowModal(true)}
             >

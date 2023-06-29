@@ -69,7 +69,12 @@ export const ProductActionsContainer = forwardRef<any, { product: IProduct }>(
 
     const BranchSelectPopup = () => {
       return (
-        <div className="branch-select-error">
+        <div
+          className="branch-select-error"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           <p>{t("onlyYourCartBaranch")}</p>
           <div className="branch-select-error-actions">
             <button className="action-cancel" onClick={() => setError(false)}>
