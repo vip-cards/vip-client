@@ -38,7 +38,12 @@ export function ProductImageContainer({ product }) {
     }
   }
   const renderImages = product?.image?.map((image, index) => (
-    <SwiperSlide key={image?.Location ?? index}>
+    <SwiperSlide
+      key={image?.Location ?? index}
+      onClick={() => {
+        navigate("/product/" + product._id);
+      }}
+    >
       <div className="product-img">
         <img
           src={image?.Location ?? ""}
@@ -101,7 +106,11 @@ export function ProductImageContainer({ product }) {
       {product.image.length ? (
         renderImages
       ) : (
-        <SwiperSlide>
+        <SwiperSlide
+          onClick={() => {
+            navigate("/product/" + product._id);
+          }}
+        >
           <div className="flex flex-row justify-center items-center text-secondary/80 w-full h-full">
             <FontAwesomeIcon icon={faShop} size="4x" />
           </div>

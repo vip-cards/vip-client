@@ -6,6 +6,7 @@ import { ProductActionsContainer } from "./ProductActionsContainer";
 import "./ProductCard.scss";
 import { ProductDetailsContainer } from "./ProductDetailsContainer";
 import { ProductImageContainer } from "./ProductImageContainer";
+import { useLocation, useNavigate } from "react-router";
 
 const productFetcher = async ([key, id]) =>
   clientServices.getProductDetails(id).then((res) => res?.record?.[0]);
@@ -17,6 +18,9 @@ export default function ProductCard({ product }: { product: IProduct }) {
   //     error,
   //     isLoading,
   //   } = useSWR([`product-details-${productId}`, productId], productFetcher);
+  const navigate = useNavigate();
+  const location = useLocation();
+  console.log("------------", location.pathname);
 
   const popupRef = useRef(null);
   const componentRef = useRef(null);
@@ -54,9 +58,16 @@ export default function ProductCard({ product }: { product: IProduct }) {
   return (
     <div className="product-card" ref={componentRef}>
       <ProductImageContainer product={product} />
-      <div className="product-info-container !h-40 !p-3">
+      <div
+        className="product-info-container !h-40 !p-3"
+        onClick={() => {
+          navigate("/product/" + product._id);
+        }}
+      >
         <ProductDetailsContainer product={product} />
-        <ProductActionsContainer product={product} ref={popupRef} />
+        {location.pathname !== "/wishlist" && (
+          <ProductActionsContainer product={product} ref={popupRef} />
+        )}
       </div>
     </div>
   );

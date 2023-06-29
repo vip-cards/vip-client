@@ -28,7 +28,7 @@ export default function Home() {
     () => clientServices.listAllVendors() // to prevent sending the string in the params
   );
   const { data: categoriesData, isLoading: categoriesLoading } = useSWR(
-    "all-categories",
+    "vendor-categories",
     () => clientServices.listAllCategories({ type: "vendor" })
   );
   const { data: advertsData, isLoading: advertsLoading } = useSWR(

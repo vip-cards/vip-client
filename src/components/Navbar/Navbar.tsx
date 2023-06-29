@@ -116,18 +116,13 @@ export default function Navbar() {
   }, [showSideMenu]);
 
   useEffect(() => {
-    clientServices.categoryQuery().then((response) => {
-      const categoryList = response.data.records.map(
-        (item: {
-          _id: string;
-          name: { [x: string]: any; en: any; ar: any };
-        }) => ({
-          key: item._id,
-          _id: item._id,
-          to: "categories/" + item._id,
-          content: item.name[lang] || item.name.en || item.name.ar,
-        })
-      );
+    clientServices.categoryQuery({ type: "vendor" }).then((response) => {
+      const categoryList = response.data.records.map((item) => ({
+        key: item._id,
+        _id: item._id,
+        to: "categories/" + item._id,
+        content: item.name[lang] || item.name.en || item.name.ar,
+      }));
 
       setListItem({ categories: categoryList });
     });

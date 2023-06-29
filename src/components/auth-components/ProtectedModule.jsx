@@ -10,9 +10,7 @@ export const ProtectedModule = ({ children, role = "auth" }) => {
   const isAuthUser = role === "auth";
   const isUserSubscribed = role === "subscribed" && auth.userData?.isSubscribed;
   const isGeneralClient = role === "client";
-  const canView =
-    isAuthUser ||
-    (userType !== "guest" && (isUserSubscribed || isGeneralClient));
+  const canView = isAuthUser || userType !== "guest";
 
   if (canView) return children;
 

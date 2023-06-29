@@ -43,7 +43,7 @@ Axios.interceptors.request.use(async (req) => {
     }
     if (
       req.method !== "get" &&
-      (token._id === "guest" || !auth.userData.isSubscribed) &&
+      token._id === "guest" &&
       !req.url.includes("update") &&
       !req.url.includes("subscribe")
     ) {
