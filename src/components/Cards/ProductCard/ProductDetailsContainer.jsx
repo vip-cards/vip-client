@@ -16,11 +16,11 @@ export function ProductDetailsContainer({ product }) {
       </p>
       <div className="product-price !flex-wrap max-w-full !leading-3 gap-1 !flex-col">
         <div className="current-price">
-          <span className="number px-1">
+          <span className="number pe-1">
             {getLocalizedNumber(product.price, true)}
           </span>
         </div>
-        <div className="origional-price px-1 rtl:mt-2">
+        <div className="origional-price pe-1 rtl:mt-2">
           <span className="number">
             {getLocalizedNumber(product.originalPrice, true)}
           </span>
