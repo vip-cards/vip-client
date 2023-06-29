@@ -27,14 +27,6 @@ const Modal: React.FC<IModal> = ({
 }) => {
   const { t } = useTranslation();
 
-  useEffect(() => {
-    if (visible) {
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.body.classList.remove("overflow-hidden");
-    }
-  }, [visible]);
-
   const content = (
     <div className={classes.backdrop} onClick={onClose}>
       <motion.div
@@ -70,19 +62,11 @@ const Modal: React.FC<IModal> = ({
 
   useEffect(() => {
     if (visible) {
-      const toToDistance = document.documentElement.scrollTop;
-      // When the modal is shown, we want a fixed body
-      document.body.classList.add("modal-open");
-      document.body.style.top = `-${toToDistance}px`;
+      document.body.classList.add("overflow-hidden");
     } else {
-      // When the modal is hidden...
-      const scrollY = document.body.style.top;
-      document.body.classList.remove("modal-open");
-      document.body.style.top = "";
-      window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      document.body.classList.remove("overflow-hidden");
     }
   }, [visible]);
-
   if (visible) return createPortal(content, document.getElementById("root"));
   return null;
 };

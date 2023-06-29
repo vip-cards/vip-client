@@ -175,6 +175,21 @@ export default function MainInput(props: IMainInputProps): JSX.Element {
             classNamePrefix="multi-select"
             className="multi-select w-full"
             menuShouldScrollIntoView={true}
+            styles={{
+              control: (provided, state) => ({
+                ...provided,
+                border: "1px solid #e2e8f0",
+                borderRadius: "0.5rem",
+                boxShadow: state.isFocused ? "0 0 0 1px #fc7300" : null,
+                "&:hover": {
+                  border: "1px solid #fc7300",
+                },
+              }),
+              menu: (provided, state) => ({
+                ...provided,
+                zIndex: 100,
+              }),
+            }}
             getOptionLabel={(option) => getLocalizedWord(option[identifier])}
             getOptionValue={(option) => option._id}
             onChange={(selectedOptions) => {

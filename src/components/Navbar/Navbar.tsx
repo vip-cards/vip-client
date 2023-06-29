@@ -1,12 +1,9 @@
 import { ReactComponent as NavbarLogo } from "assets/VIP-ICON-SVG/NavbarLogo.svg";
-import { ReactComponent as BurgerMenuIcon } from "assets/VIP-ICON-SVG/burgerMenu.svg";
 import { ReactComponent as Notification } from "assets/VIP-ICON-SVG/notification.svg";
-import classNames from "classnames";
 import MainImage from "components/MainImage/MainImage";
 import ConfirmModal from "components/Modal/ConfirmModal";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { motion } from "framer-motion";
 import { switchLang } from "helpers/lang";
 import { t } from "i18next";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -21,11 +18,14 @@ import { selectCartProducts } from "store/cart-slice";
 import { selectNotification } from "store/notification-slice";
 import Dropdown from "../DropDown/DropDown";
 import SideNav from "./SideNav/SideNav";
-
-import "./Navbar.scss";
+import { motion } from "framer-motion";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Modal from "components/Modal/Modal";
 import { navItemsRender } from "./_helpers/navItemsRender";
 import { notificationListRender } from "./_helpers/notificationListRender";
-import Modal from "components/Modal/Modal";
+
+import "./Navbar.scss";
 
 interface INavItem {
   title: string;
@@ -75,11 +75,6 @@ export default function Navbar() {
     setShowSideMenu((prevState) => !prevState);
   }
 
-  function changeLang(lang) {
-    i18n.changeLanguage(lang);
-    switchLang(lang);
-  }
-
   function logoutHandler(e) {
     e.preventDefault();
     logout();
@@ -115,6 +110,14 @@ export default function Navbar() {
   );
 
   useEffect(() => {
+    if (showSideMenu) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  }, [showSideMenu]);
+
+  useEffect(() => {
     clientServices.categoryQuery().then((response) => {
       const categoryList = response.data.records.map((item) => ({
         key: item._id,
@@ -137,11 +140,17 @@ export default function Navbar() {
       setListItem({ vendors: vendorList });
     });
     return () => {};
-  }, []);
+  }, [lang]);
 
   return (
-    <nav className="top-nav z-20">
-      <BurgerMenuIcon className="burger-menu-icon" onClick={toggleSideMenu} />
+    <nav className="top-nav relative z-[900]">
+      <FontAwesomeIcon
+        icon={faBars}
+        size="xl"
+        className="text-white hover:text-white/80 cursor-pointer select-none active:scale-95 transition-transform"
+        onClick={toggleSideMenu}
+      />
+
       <NavbarLogo
         className="app-logo max-xl:mx-auto"
         onClick={() => {
@@ -153,19 +162,30 @@ export default function Navbar() {
           const defaultListRender = (menu) => (
             <>
               {menu.slice(0, 5).map((subItem, idx) => (
-                <li key={subItem.key || "menu-item-" + idx}>
-                  <Link to={subItem.to || ""}>
+                <motion.li
+                  transition={{ delay: idx * 0.03 }}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  key={subItem.key || "menu-item-" + idx}
+                >
+                  <Link to={subItem.to || ""} className="block">
                     {subItem.content || "Menu Item"}
                   </Link>
-                </li>
+                </motion.li>
               ))}
 
               {menu.length > 5 && (
-                <li>
-                  <Link to={item.link || ""}>
+                <motion.li
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ delay: 6 * 0.03 }}
+                >
+                  <Link to={item.link || ""} className="block">
                     {t("navbar.seeAll") as string} ...
                   </Link>
-                </li>
+                </motion.li>
               )}
             </>
           );
@@ -206,15 +226,7 @@ export default function Navbar() {
       <div className="notifictation-language">
         <button
           className="lang-btn"
-          onClick={
-            lang === "en"
-              ? () => {
-                  changeLang("ar");
-                }
-              : () => {
-                  changeLang("en");
-                }
-          }
+          onClick={() => switchLang(lang === "en" ? "ar" : "en")}
         >
           {t("lang") as string}
         </button>

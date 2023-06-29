@@ -67,6 +67,21 @@ export default function AccountOrders() {
             name="status"
             className="w-52"
             isRtl={lang === "ar"}
+            styles={{
+              control: (provided, state) => ({
+                ...provided,
+                border: "1px solid #e2e8f0",
+                borderRadius: "0.5rem",
+                boxShadow: state.isFocused ? "0 0 0 1px #fc7300" : null,
+                "&:hover": {
+                  border: "1px solid #fc7300",
+                },
+              }),
+              menu: (provided, state) => ({
+                ...provided,
+                zIndex: 100,
+              }),
+            }}
             options={statusFilter}
             placeholder={t("Status")}
             getOptionValue={(option) => option.value}
@@ -78,6 +93,21 @@ export default function AccountOrders() {
             name="payment"
             className="w-52"
             isRtl={lang === "ar"}
+            styles={{
+              control: (provided, state) => ({
+                ...provided,
+                border: "1px solid #e2e8f0",
+                borderRadius: "0.5rem",
+                boxShadow: state.isFocused ? "0 0 0 1px #fc7300" : null,
+                "&:hover": {
+                  border: "1px solid #fc7300",
+                },
+              }),
+              menu: (provided, state) => ({
+                ...provided,
+                zIndex: 100,
+              }),
+            }}
             options={paymentFilter}
             placeholder={t("Payment method")}
             getOptionValue={(option) => option.value}
