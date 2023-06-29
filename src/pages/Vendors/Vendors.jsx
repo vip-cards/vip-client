@@ -83,7 +83,7 @@ export default function Vendors() {
       setQueryParams={setQueryParams}
     >
       <header className="flex flex-row justify-end w-full gap-4">
-        <div className="z-10 p-5">
+        <div className="p-5">
           <Select
             defaultValue={sort?.value}
             className="w-60"

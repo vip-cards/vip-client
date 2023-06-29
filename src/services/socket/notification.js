@@ -17,7 +17,5 @@ export function listenToNotification(onEvent) {
 }
 
 export function listNotification() {
-  const userData = JSON.parse(localStorage.getItem("userData"));
-
   socket.emit(EVENTS.NOTIFICATION.LIST, {});
 }
