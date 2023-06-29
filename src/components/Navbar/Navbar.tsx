@@ -147,7 +147,7 @@ export default function Navbar() {
       <FontAwesomeIcon
         icon={faBars}
         size="xl"
-        className="text-white hover:text-white/80 cursor-pointer select-none active:scale-95 transition-transform"
+        className="text-white hidden max-[1070px]:block hover:text-white/80 cursor-pointer select-none active:scale-95 transition-transform"
         onClick={toggleSideMenu}
       />
 
