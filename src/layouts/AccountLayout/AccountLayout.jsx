@@ -35,7 +35,7 @@ export default function AccountLayout() {
           </ul>
         </nav>
         {/* CONTENT */}
-        <div className="account-outlet overflow-x-hidden">
+        <div className="account-outlet">
           <Outlet />
         </div>
       </div>
