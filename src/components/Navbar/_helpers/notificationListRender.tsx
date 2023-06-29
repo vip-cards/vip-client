@@ -4,7 +4,10 @@ import dayjs from "dayjs";
 import { motion } from "framer-motion";
 
 export function notificationListRender(
-  handleNotificationClick: (notificationId: any, notification: INotification) => void
+  handleNotificationClick: (
+    notificationId: any,
+    notification: INotification
+  ) => void
 ) {
   return (menu: INotification[]) =>
     menu.map((item, idx: number) => (
@@ -24,7 +27,7 @@ export function notificationListRender(
         onClick={() => handleNotificationClick(item._id, item)}
       >
         {!item.seen && (
-          <span className="ml-auto absolute w-2 h-2 bg-primary rounded-full right-2 top-2 animate-pulse"></span>
+          <span className="ml-auto absolute w-2 h-2 bg-primary rounded-full ltr:right-2 rtl:left-2 top-2 animate-pulse"></span>
         )}
         <div className="!flex w-full flex-row justify-center items-start gap-2 h-12">
           <div className="w-10 h-10 bg-primary rounded-xl overflow-hidden shrink-0">

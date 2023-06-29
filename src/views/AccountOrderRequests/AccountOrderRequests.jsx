@@ -42,6 +42,21 @@ const AccountOrderRequests = () => {
         <div className="z-10 p-5 flex justify-between flex-row flex-wrap gap-4">
           <Select
             isClearable
+            styles={{
+              control: (provided, state) => ({
+                ...provided,
+                border: "1px solid #e2e8f0",
+                borderRadius: "0.5rem",
+                boxShadow: state.isFocused ? "0 0 0 1px #fc7300" : null,
+                "&:hover": {
+                  border: "1px solid #fc7300",
+                },
+              }),
+              menu: (provided, state) => ({
+                ...provided,
+                zIndex: 100,
+              }),
+            }}
             name="status"
             className="w-52"
             isRtl={lang === "ar"}

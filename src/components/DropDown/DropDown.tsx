@@ -63,7 +63,7 @@ const Dropdown: React.FC<IDropdown> = ({
 
   return (
     <div
-      className={classNames(className, "dropdown-menu z-10")}
+      className={classNames(className, "dropdown-menu z-[500]")}
       onMouseEnter={toggleMenu}
       onMouseLeave={toggleMenu}
       onClick={toggleMenu}
@@ -85,7 +85,7 @@ const Dropdown: React.FC<IDropdown> = ({
       {showMenu && (
         <ul
           style={ulStyle}
-          className="max-h-[75vh] overflow-y-auto transform-gpu max-xs:ltr:!-translate-x-[91.7%] max-xs:rtl:!-translate-x-[8.09%]"
+          className="max-h-[75vh] z-50 relative overflow-y-auto transform-gpu max-xs:ltr:!-translate-x-[91.7%] max-xs:rtl:!-translate-x-[8.09%]"
         >
           {listRender ? listRender(menu) : menu.map(itemRender)}
         </ul>

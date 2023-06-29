@@ -18,13 +18,14 @@ import { selectCartProducts } from "store/cart-slice";
 import { selectNotification } from "store/notification-slice";
 import Dropdown from "../DropDown/DropDown";
 import SideNav from "./SideNav/SideNav";
-
+import { motion } from "framer-motion";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Modal from "components/Modal/Modal";
-import "./Navbar.scss";
 import { navItemsRender } from "./_helpers/navItemsRender";
 import { notificationListRender } from "./_helpers/notificationListRender";
+
+import "./Navbar.scss";
 
 interface INavItem {
   title: string;
@@ -72,11 +73,6 @@ export default function Navbar() {
 
   function toggleSideMenu() {
     setShowSideMenu((prevState) => !prevState);
-  }
-
-  function changeLang(lang) {
-    i18n.changeLanguage(lang);
-    switchLang(lang);
   }
 
   function logoutHandler(e) {
@@ -146,7 +142,7 @@ export default function Navbar() {
   }, [lang]);
 
   return (
-    <nav className="top-nav z-20">
+    <nav className="top-nav relative z-[900]">
       <FontAwesomeIcon
         icon={faBars}
         size="xl"
@@ -165,19 +161,30 @@ export default function Navbar() {
           const defaultListRender = (menu) => (
             <>
               {menu.slice(0, 5).map((subItem, idx) => (
-                <li key={subItem.key || "menu-item-" + idx}>
-                  <Link to={subItem.to || ""}>
+                <motion.li
+                  transition={{ delay: idx * 0.03 }}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  key={subItem.key || "menu-item-" + idx}
+                >
+                  <Link to={subItem.to || ""} className="block">
                     {subItem.content || "Menu Item"}
                   </Link>
-                </li>
+                </motion.li>
               ))}
 
               {menu.length > 5 && (
-                <li>
-                  <Link to={item.link || ""}>
+                <motion.li
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ delay: 6 * 0.03 }}
+                >
+                  <Link to={item.link || ""} className="block">
                     {t("navbar.seeAll") as string} ...
                   </Link>
-                </li>
+                </motion.li>
               )}
             </>
           );
@@ -218,15 +225,7 @@ export default function Navbar() {
       <div className="notifictation-language">
         <button
           className="lang-btn"
-          onClick={
-            lang === "en"
-              ? () => {
-                  changeLang("ar");
-                }
-              : () => {
-                  changeLang("en");
-                }
-          }
+          onClick={() => switchLang(lang === "en" ? "ar" : "en")}
         >
           {t("lang") as string}
         </button>
