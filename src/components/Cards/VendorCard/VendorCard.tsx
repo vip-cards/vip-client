@@ -33,7 +33,7 @@ export default function VendorCard({ vendor }) {
         {/* <img src={vendorPlaceHolder} alt="vendor-img" className="vendor-img" /> */}
       </div>
       <div className="vendor-info-container">
-        <p className="vendor-title">{getLocalizedWord(vendor.name)} </p>
+        <p className="vendor-title text-start">{getLocalizedWord(vendor.name)} </p>
         <div className="vendor-description leading-6 !mt-1 !text-xs">
           <p className="price">{getLocalizedWord(vendor.description)}</p>
         </div>

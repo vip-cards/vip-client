@@ -752,5 +752,7 @@
   "review_min": "Review must be at least 0",
   "review_max": "Review must be at most 5",
   "review_base": "Review must be a number",
-  "review_reqiured": "Review is required"
+  "review_reqiured": "Review is required",
+  "typeMessage": "Type a message ...",
+  "selectRoom": "Select a room"
 }
