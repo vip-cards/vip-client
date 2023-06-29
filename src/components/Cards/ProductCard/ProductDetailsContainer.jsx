@@ -7,7 +7,7 @@ export function ProductDetailsContainer({ product }) {
     <>
       <Link
         to={`/product/${product._id}`}
-        className="product-title block !line-clamp-1 overflow-ellipsis !leading-6"
+        className="product-title block !line-clamp-1 overflow-ellipsis !leading-6 rtl:!leading-5"
       >
         <p>{getLocalizedWord(product?.name)}</p>
       </Link>
@@ -20,7 +20,7 @@ export function ProductDetailsContainer({ product }) {
             {getLocalizedNumber(product.price, true)}
           </span>
         </div>
-        <div className="origional-price px-1">
+        <div className="origional-price px-1 rtl:mt-2">
           <span className="number">
             {getLocalizedNumber(product.originalPrice, true)}
           </span>
