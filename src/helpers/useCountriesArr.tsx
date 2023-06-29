@@ -1,15 +1,30 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const useCountriesArr = () => {
   const [countries, setCountries] = useState<IMappedCountry[]>();
+  const [cities, setCities] = useState<IMappedCity[]>([]);
+
+  const chooseCountry = useCallback(
+    (country: IMappedCountry | null) => {
+      if (!country) return setCities([]);
+
+      const selectedCountry = countries.find(
+        (cntry) => cntry._id === country._id
+      );
+
+      return setCities(selectedCountry?.cities ?? []);
+    },
+    [countries]
+  );
 
   useEffect(() => {
-    import("helpers/countries-arr.json").then((data) => {
-      const list = data.map(countryMapping());
+    import("helpers/countries-arr.json").then(({countries}) => {
+      const list = countries?.map(countryMapping());
       setCountries(list);
     });
   }, []);
-  return { countries };
+
+  return { countries, cities, setCities: chooseCountry };
 };
 
 export default useCountriesArr;
