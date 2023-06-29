@@ -157,7 +157,7 @@ export default function Navbar() {
           navigate("/");
         }}
       />
-      <ul className="nav-menu rtl:mr-auto rtl:!ml-0">
+      <ul className="nav-menu rtl:mr-auto rtl:!ml-0 z-[100]">
         {navItems.map((item, idx) => {
           const defaultListRender = (menu) => (
             <>
