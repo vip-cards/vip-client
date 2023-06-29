@@ -11,24 +11,22 @@ import Carousel from "components/Carousel/Carousel";
 import { withLoadingSkeleton } from "components/LoadingSkeleton/LoadingSkeleton";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import NoData from "components/NoData/NoData";
-import Pagination from "components/Pagination/Pagination";
-import RatingStars from "components/RatingStars/RatingStars";
-import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
-import { useEffect, useLayoutEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useLocation, useNavigate, useParams } from "react-router";
-import clientServices from "services/clientServices";
-import { createRoom } from "services/socket/chat";
-import useSWR from "swr";
-import ReviewModal from "./ReviewModal";
-import "./Vendor.scss";
-import { Link } from "react-router-dom";
-import PageQueryContainer from "components/PageQueryContainer/PageQueryContainer";
 import {
   PageQueryWrapper,
   SearchBar,
   SearchProvider,
 } from "components/PageQueryContainer/PageQueryContext";
+import RatingStars from "components/RatingStars/RatingStars";
+import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
+import { useLayoutEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate, useParams } from "react-router";
+import { Link } from "react-router-dom";
+import clientServices from "services/clientServices";
+import { createRoom } from "services/socket/chat";
+import useSWR from "swr";
+import ReviewModal from "./ReviewModal";
+import "./Vendor.scss";
 
 const LIMIT = 9;
 
@@ -114,7 +112,6 @@ export default function Vendor() {
         queryParams={queryParams}
         limit={LIMIT}
         initialFilters={{ vendor: vendorId }}
-        
         setQueryParams={setQueryParams}
         listRenderFn={productListRender}
       >

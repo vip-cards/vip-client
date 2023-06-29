@@ -110,10 +110,11 @@ export default function Navbar() {
   );
 
   useEffect(() => {
-    document.body.style.overflow = showSideMenu ? "hidden" : "auto";
-    return () => {
-      document.body.style.overflow = "auto";
-    };
+    if (showSideMenu) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
   }, [showSideMenu]);
 
   useEffect(() => {

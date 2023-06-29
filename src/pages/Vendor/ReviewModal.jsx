@@ -64,13 +64,13 @@ const ReviewModal = ({ isVisible, onClose, reviews }) => {
     setReview({});
     onClose();
   };
-  if (!isVisible) return null;
 
+  if (!reviews) return null;
   return (
     <Modal
       visible={isVisible}
       title="Review"
-      className="overflow-hidden flex flex-col gap-4"
+      className="flex flex-col gap-4"
       onClose={handleModalClose}
     >
       <aside
@@ -100,14 +100,9 @@ const ReviewModal = ({ isVisible, onClose, reviews }) => {
               return (
                 <div className="mb-4" key={formInput.name}>
                   <MainInput
-                    name={formInput.name}
-                    type={formInput.type}
-                    required={formInput.required}
-                    list={formInput.list}
-                    identifier={formInput.identifier}
+                    {...formInput}
                     state={review}
                     setState={setReview}
-                    dateRange={formInput.dateRange}
                   />
                 </div>
               );
