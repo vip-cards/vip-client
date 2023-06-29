@@ -261,6 +261,7 @@ function ProductDetails(props) {
         </div>
       </aside>
       <motion.section
+      layout
         initial={{ height: "0px" }}
         animate={{
           height: reviewFormExpand ? "100%" : "0px",
