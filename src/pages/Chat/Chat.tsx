@@ -67,13 +67,16 @@ function Chat() {
   };
 
   const handleSendMessage = () => {
+    // Replace multiple spaces at the beginning and end with a single space
+
     const _text = messageText.trim();
+    const normalizedText = _text.replace(/^\s+|\s+$/g, "").replace(/\s+/g, " ");
     if (!_text || !_text.length) return;
 
     const message = {
       _id: activeRoom,
       message: {
-        text: messageText,
+        text: normalizedText,
         timestamp: new Date().toISOString(),
         client: userId,
       },
@@ -83,7 +86,8 @@ function Chat() {
   };
 
   const onListRooms = (data) => {
-    setRoomList(data.records);
+    console.log("--------", data.records);
+    setRoomList(data.records.filter((record) => record.lastMessage));
   };
 
   const onCreateRoom = useCallback(() => {

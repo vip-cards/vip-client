@@ -158,7 +158,9 @@ export function ChatTextInput({
           className="w-full ring-1 h-[2.5rem] leading-[2.4rem] rounded-lg ring-primary whitespace-pre-line resize-none py-2 px-4"
           placeholder={activeRoom ? t("typeMessage") : t("selectRoom")}
           value={messageText}
-          onChange={(e) => setMessageText(e.target.value.trim())}
+          onChange={(e) => {
+            setMessageText(e.target.value);
+          }}
           onKeyUp={(e) => {
             if (e.code === "Enter" && !e.shiftKey) {
               handleSendMessage();
