@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import clientServices from "services/clientServices";
+import { motion } from "framer-motion";
 
 const JobCard = ({ job, mutate }) => {
   const navigate = useNavigate();
@@ -35,8 +36,18 @@ const JobCard = ({ job, mutate }) => {
     navigate("", { state: { tab: "create" } });
   };
   return (
-    <div
+    <motion.div
+      layout
       key={job._id}
+      whileHover={{
+        scale: 1.05,
+      }}
+      transition={{
+        duration: 0.2,
+        type: "spring",
+        stiffness: 260,
+        damping: 14,
+      }}
       className="job-card bg-gray-300 cursor-pointer relative h-[150px]"
       onClick={() => navigate("/jobs/" + job._id)}
     >
@@ -65,7 +76,7 @@ const JobCard = ({ job, mutate }) => {
         <span>{getLocalizedWord(job.address)}</span>
         <span>{dayjs(job.publishDate).format("DD, MMM")}</span>
       </p>
-    </div>
+    </motion.div>
   );
 };
 
