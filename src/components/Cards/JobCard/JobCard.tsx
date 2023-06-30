@@ -1,4 +1,4 @@
-import { faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { getLocalizedWord } from "helpers/lang";
@@ -37,7 +37,7 @@ const JobCard = ({ job, mutate }) => {
   return (
     <div
       key={job._id}
-      className="job-card cursor-pointer relative h-[150px]"
+      className="job-card bg-gray-300 cursor-pointer relative h-[150px]"
       onClick={() => navigate("/jobs/" + job._id)}
     >
       {createdByMe && (
