@@ -1,5 +1,4 @@
 import loadable from "@loadable/component";
-import BranchProducts from "components/BranchProducts/BranchProducts";
 import Footer from "components/Footer/Footer";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import { ProtectedModule } from "components/auth-components/ProtectedModule";
@@ -62,7 +61,7 @@ export default function ClientLayout() {
 
   useEffect(() => {
     dispatch(getCurrentCartThunk());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="base-layout">

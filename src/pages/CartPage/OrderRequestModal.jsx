@@ -72,7 +72,7 @@ export default function OrderRequestModal({ showModal, setShowModal }) {
           </fieldset>
 
           <fieldset className="border border-1 rounded-md flex flex-col gap-5 p-3 mt-8">
-            <legend className="font-semibold px-1">{t("address.")}</legend>
+            <legend className="font-semibold px-1">{t("address")}</legend>
             {formData.map((formInput, index) => {
               return (
                 <MainInput

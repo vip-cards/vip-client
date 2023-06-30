@@ -85,7 +85,7 @@
   "All Reviews": "كل التقييمات",
   "Applicants": "عدد المتقدمين",
   "Apply Sort": "تطبيق الترتيب",
-  "Apply for a job": "التقدم للوظائف",
+  "Apply for a job": "الوظائف المتاحة",
   "Approve": "قبول",
   "Arabic Address": "العنوان بالعربية",
   "Arabic Category": "الفئة بالعربية",
@@ -217,7 +217,7 @@
   "Governorate_ar": "المحافظة بالعربية",
   "Governorate_en": "المحافظة بالانجليزية",
   "Has Delivery": "لديه توصيل",
-  "Hiring Employees": "تعيين موظفين",
+  "Hiring Employees": "طالبي التوظيف",
   "Home": "الرئيسية",
   "Hot Deal": "صفقة حاسمة",
   "ID": "هوية شخصية",
@@ -533,6 +533,7 @@
   "client": "العملاء",
   "companyName_ar": "اسم الشركة بالعربية",
   "companyName_en": "اسم الشركة بالإنجليزية",
+  "companyName": "اسم الشركة",
   "confirm": "تأكيد",
   "contact": "التواصل",
   "country": "البلد",
@@ -584,6 +585,7 @@
   "jobRemovedSuccessfully": "تم حذف إعلان الوظيفة بنجاح",
   "jobTitle_ar": "عنوان الوظيفة بالعربية",
   "jobTitle_en": "عنوان الوظيفة بالإنجليزية",
+  "jobTitle": "عنوان الوظيفة",
   "jobs": "الوظائف",
   "join": "طلبات الانضمام",
   "lang": "English",
@@ -689,15 +691,8 @@
   "with wallet": "باستخدام المحفظة",
   "writeAReview": "ضع تقييمًا",
   "passwordValidation": "كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل وحرف كبير وحرف صغير ورقم ورمز",
-  "address": {
-    "": "العنوان",
-    "ar": "عنوان الخدمة بالعربية",
-    "en": "عنوان الخدمة بالإنجليزية"
-  },
-  "description": {
-    "ar": "الوصف بالعربية",
-    "en": "الوصف بالإنجليزية"
-  },
+  "address": "العنوان",
+  "description": "الوصف",
   "footer": {
     "about": "من نحن",
     "chatWithUs": "الدعم الفني",
@@ -708,10 +703,7 @@
   "navbar": {
     "seeAll": "شاهد الجميع"
   },
-  "providerName": {
-    "ar": "اسم مزود الخدمة بالعربية",
-    "en": "اسم مزود الخدمة بالإنجليزية"
-  },
+  "providerName": "اسم مقدم الخدمة",
   "see less": {
     "": {
       "": {
@@ -726,10 +718,7 @@
       }
     }
   },
-  "serviceName": {
-    "ar": "اسم الخدمة بالعربية",
-    "en": "اسم الخدمة بالإنجليزية"
-  },
+  "serviceName": "اسم الخدمة",
   "emailOrPhoneValidation": "برجاء إدخال البريد الالكتروني أو الهاتف بشكل صحيح",
   "nameValidation": "برجاء إدخال الاسم بشكل صحيح",
   "phoneValidation": "برجاء إدخال رقم الهاتف بشكل صحيح",
@@ -744,5 +733,44 @@
   "review_base": "برجاء إدخال قيمة التقييم",
   "review_reqiured": "برجاء إدخال التقييم",
   "typeMessage": "اكتب رسالة",
-  "selectRoom": "اختر محادثة"
+  "selectRoom": "اختر محادثة",
+  "service_name_notEmpty": "يرجى إدخال اسم الخدمة",
+  "service_name_required": "اسم الخدمة مطلوب",
+  "service_providerName_notEmpty": "يرجى إدخال اسم مقدم الخدمة",
+  "service_providerName_required": "اسم مقدم الخدمة مطلوب",
+  "service_description_notEmpty": "يرجى إدخال وصف الخدمة",
+  "service_description_required": "وصف الخدمة مطلوب",
+  "service_address_notEmpty": "يرجى إدخال العنوان",
+  "service_address_required": "العنوان مطلوب",
+  "service_category_notEmpty": "يرجى تحديد فئة الخدمة",
+  "service_category_required": "فئة الخدمة مطلوبة",
+  "service_phone_notEmpty": "يرجى إدخال رقم الهاتف",
+  "service_phone_required": "رقم الهاتف مطلوب",
+  "service_whatsapp_notEmpty": "يرجى إدخال رقم واتساب",
+  "service_whatsapp_required": "رقم واتساب مطلوب",
+  "service_telegram_notEmpty": "يرجى إدخال اسم مستخدم تليغرام",
+  "service_telegram_required": "اسم مستخدم تليغرام مطلوب",
+  "service_category_min": "يرجى تحديد فئة الخدمة",
+  "service_companyName_notEmpty": "يرجى إدخال اسم الشركة",
+  "service_companyName_required": "اسم الشركة مطلوب",
+  "service_jobTitle_notEmpty": "يرجى إدخال عنوان الوظيفة",
+  "service_jobTitle_required": "عنوان الوظيفة مطلوب",
+  "job_description_notEmpty": "يرجى إدخال وصف الوظيفة",
+  "job_description_required": "وصف الوظيفة مطلوب",
+  "job_companyName_notEmpty": "يرجى إدخال اسم الشركة",
+  "job_companyName_required": "اسم الشركة مطلوب",
+  "job_jobTitle_notEmpty": "يرجى إدخال عنوان الوظيفة",
+  "job_jobTitle_required": "عنوان الوظيفة مطلوب",
+  "job_address_notEmpty": "يرجى إدخال العنوان",
+  "job_address_required": "العنوان مطلوب",
+  "job_phone_notEmpty": "يرجى إدخال رقم الهاتف",
+  "job_phone_required": "رقم الهاتف مطلوب",
+  "job_whatsapp_notEmpty": "يرجى إدخال رقم واتساب",
+  "job_whatsapp_required": "رقم واتساب مطلوب",
+  "job_telegram_notEmpty": "يرجى إدخال اسم مستخدم تليغرام",
+  "job_telegram_required": "اسم مستخدم تليغرام مطلوب",
+  "job_jobType_notEmpty": "يرجى تحديد نوع الوظيفة",
+  "job_jobType_required": "نوع الوظيفة مطلوب",
+  "job_jobType_min": "يرجى تحديد نوع الوظيفة",
+  "job_jobType_max": "يرجى تحديد نوع الوظيفة"
 }

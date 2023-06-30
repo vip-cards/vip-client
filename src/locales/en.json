@@ -86,7 +86,7 @@
   "All Reviews": "All Reviews",
   "Applicants": "Applicants",
   "Apply Sort": "Apply Sort",
-  "Apply for a job": "Apply for a job",
+  "Apply for a job": "Available Jobs",
   "Approve": "Approve",
   "Arabic Address": "Arabic Address",
   "Arabic Category": "Arabic Category",
@@ -217,7 +217,7 @@
   "Governorate_ar": "English Governorate",
   "Governorate_en": "English Governorate",
   "Has Delivery": "Has Delivery",
-  "Hiring Employees": "Hiring Employees",
+  "Hiring Employees": "Job Seekers",
   "Hot Deal": "Hot Deal",
   "ID": "ID",
   "Image deleted successfully": "Image deleted successfully",
@@ -535,6 +535,7 @@
   "client": "Client",
   "companyName_ar": "اسم الشركة",
   "companyName_en": "Company Name",
+  "companyName": "Company Name",
   "confirm": "Confirm",
   "contact": "Contact",
   "country": "country",
@@ -593,6 +594,7 @@
   "jobRemovedSuccessfully": "job Removed Successfully!",
   "jobTitle_ar": "Job title in arabic",
   "jobTitle_en": "Job title in english",
+  "jobTitle": "Job title",
   "jobs": "Jobs",
   "join": "Join",
   "l ___": "L",
@@ -698,15 +700,8 @@
   "walletNumber": "walletNumber",
   "wishlist": "Wishlist",
   "writeAReview": "Write a review",
-  "address": {
-    "": "Address",
-    "ar": "Address in arabic",
-    "en": "Address in english"
-  },
-  "description": {
-    "ar": "Description in arabic",
-    "en": "Description in english"
-  },
+  "address": "Address",
+  "description": "Description",
   "footer": {
     "about": "About Us",
     "chatWithUs": "Chat with support",
@@ -717,10 +712,7 @@
   "navbar": {
     "seeAll": "See All"
   },
-  "providerName": {
-    "ar": "Provide name in arabic",
-    "en": "Provider name in english"
-  },
+  "providerName": "Provider Name",
   "see less": {
     "": {
       "": {
@@ -735,10 +727,7 @@
       }
     }
   },
-  "serviceName": {
-    "ar": "Service name in arabic",
-    "en": "Service name in english"
-  },
+  "serviceName": "Service Name",
   "register": "Register",
   "emailOrPhoneValidation": "Please enter a valid email or phone number",
   "nameValidation": "Please enter a valid name",
@@ -754,5 +743,44 @@
   "review_base": "Review must be a number",
   "review_reqiured": "Review is required",
   "typeMessage": "Type a message ...",
-  "selectRoom": "Select a room"
+  "selectRoom": "Select a room",
+  "service_name_notEmpty": "Please enter a service name",
+  "service_name_required": "Service name is required",
+  "service_providerName_notEmpty": "Please enter a provider name",
+  "service_providerName_required": "Provider name is required",
+  "service_description_notEmpty": "Please enter a service description",
+  "service_description_required": "Service description is required",
+  "service_address_notEmpty": "Please enter an address",
+  "service_address_required": "Address is required",
+  "service_category_notEmpty": "Please select a service category",
+  "service_category_required": "Service category is required",
+  "service_phone_notEmpty": "Please enter a phone number",
+  "service_phone_required": "Phone number is required",
+  "service_whatsapp_notEmpty": "Please enter a WhatsApp number",
+  "service_whatsapp_required": "WhatsApp number is required",
+  "service_telegram_notEmpty": "Please enter a Telegram username",
+  "service_telegram_required": "Telegram username is required",
+  "service_category_min": "Please select a service category",
+  "service_companyName_required": "Company name is required",
+  "service_companyName_notEmpty": "Please enter a company name",
+  "service_jobTitle_notEmpty": "Please enter a job title",
+  "service_jobTitle_required": "Job title is required",
+  "job_description_notEmpty": "Please enter a job description",
+  "job_description_required": "Job description is required",
+  "job_companyName_notEmpty": "Please enter a company name",
+  "job_companyName_required": "Company name is required",
+  "job_jobTitle_notEmpty": "Please enter a job title",
+  "job_jobTitle_required": "Job title is required",
+  "job_address_notEmpty": "Please enter an address",
+  "job_address_required": "Address is required",
+  "job_phone_notEmpty": "Please enter a phone number",
+  "job_phone_required": "Phone number is required",
+  "job_whatsapp_notEmpty": "Please enter a WhatsApp number",
+  "job_whatsapp_required": "WhatsApp number is required",
+  "job_telegram_notEmpty": "Please enter a Telegram username",
+  "job_telegram_required": "Telegram username is required",
+  "job_category_min": "Please select a job category",
+  "job_category_notEmpty": "Please select a job category",
+  "job_category_required": "Job category is required",
+  "job_companyName_min": "Please enter a company name"
 }
