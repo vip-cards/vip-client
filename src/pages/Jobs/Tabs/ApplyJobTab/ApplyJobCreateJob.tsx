@@ -45,7 +45,6 @@ export default function ApplyJobCreateJob() {
     const arabicReg = /[\u0621-\u064A]/g;
     const isArabic = (q) => arabicReg.test(q);
     if (error) return setErrorList(error.details.map((e) => e.message));
-
     const newJobForm = {
       client: _job.client,
       companyName: {
@@ -61,9 +60,9 @@ export default function ApplyJobCreateJob() {
         [isArabic(_job["address"]) ? "ar" : "en"]: _job["address"],
       },
       contacts: {
-        phone: _job.phone,
-        whatsapp: _job.whatsapp,
-        telegram: _job.telegram,
+        phone: _job.phone?.toString(),
+        whatsapp: _job.whatsapp?.toString(),
+        telegram: _job.telegram?.toString(),
       },
       category: _job.category,
     };

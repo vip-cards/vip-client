@@ -59,7 +59,7 @@ export const jobForm = (categories) => [
     identifier: "name",
     list: categories ?? [],
   },
-  { name: "phone", type: "phone", required: true },
-  { name: "whatsapp", type: "phone", required: false },
-  { name: "telegram", type: "phone", required: false },
+  { name: "phone", type: "tel", required: true },
+  { name: "whatsapp", type: "tel", required: false },
+  { name: "telegram", type: "tel", required: false },
 ];
