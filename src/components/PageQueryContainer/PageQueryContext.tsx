@@ -83,14 +83,15 @@ export function SearchProvider({
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const totalPages = Math.ceil(itemsCount / LIMIT);
+  const searchKey = queryParams.type ? queryParams.type : "name";
 
   const handleListSearch = () => {
     if (!searchQuery) return;
     const arabicReg = /[\u0621-\u064A]/g;
     const isArabic = arabicReg.test(searchQuery);
     const queryObj = {
-      ...(!isArabic && { "name.en": searchQuery }),
-      ...(isArabic && { "name.ar": searchQuery }),
+      ...(!isArabic && { [`${searchKey}.en`]: searchQuery }),
+      ...(isArabic && { [`${searchKey}.ar`]: searchQuery }),
     };
     setQueryParams((prev) => ({ ...prev, page: 1, ...queryObj }));
   };
@@ -101,14 +102,15 @@ export function SearchProvider({
         ...prev,
         page: 1,
         limit: LIMIT,
-        "name.en": undefined,
-        "name.ar": undefined,
+
+        [`${searchKey}.ar`]: undefined,
+        [`${searchKey}.ar`]: undefined,
       }));
     } else {
       handleListSearch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchQuery]);
+  }, [searchQuery, searchKey]);
 
   useEffect(() => {
     setQueryParams((p) => ({ ...p, ...filter }));
@@ -139,10 +141,18 @@ export function SearchProvider({
 }
 
 // Use the useSearch hook in your SearchBar component to access the search query and update function
-export function SearchBar() {
-  const { setSearchQuery, handleListSearch } = useSearch();
+export function SearchBar({ withSelector = false, types = [] }) {
+  const { setSearchQuery, handleListSearch, setQueryParams } = useSearch();
 
-  return <Search setSearchQuery={setSearchQuery} onClick={handleListSearch} />;
+  return (
+    <Search
+      types={types}
+      onClick={handleListSearch}
+      withSelector={withSelector}
+      setSearchQuery={setSearchQuery}
+      setQueryParams={setQueryParams}
+    />
+  );
 }
 
 // Use the useSearch hook in your SearchResults component to access the search query

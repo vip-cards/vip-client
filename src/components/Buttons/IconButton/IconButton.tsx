@@ -7,7 +7,7 @@ import classes from "./IconButton.module.scss";
 
 interface IIconButton {
   className?: string;
-  variant?: "primary";
+  variant?: "primary" | "secondary";
   icon: FontAwesomeIconProps["icon"];
   onClick?: (e: React.MouseEvent<HTMLSpanElement>) => void;
   [x: string]: Omit<FontAwesomeIconProps, "icon"> | any;
@@ -23,6 +23,7 @@ const IconButton: React.FC<IIconButton> = ({
     <span
       className={cls(classes.btn, className, {
         [classes.primary]: !!(variant === "primary"),
+        // "text-secondary": !!(variant === "secondary"),
       })}
     >
       <FontAwesomeIcon
