@@ -1,4 +1,9 @@
 import JobCard from "components/Cards/JobCard/JobCard";
+import {
+  PageQueryWrapper,
+  SearchBar,
+  SearchProvider,
+} from "components/PageQueryContainer/PageQueryContext";
 import Pagination from "components/Pagination/Pagination";
 import { listRenderFn } from "helpers/renderFn";
 import { useLayoutEffect, useState } from "react";
@@ -29,21 +34,29 @@ export default function ApplyJobHome({ id = undefined }) {
   }, [id]);
 
   return (
-    <div className="flex flex-col h-full flex-grow">
-      <div className="jobs-cards-container ">
-        {listRenderFn({
+    <SearchProvider
+      limit={LIMIT}
+      itemsCount={counts}
+      queryParams={queryParams}
+      setQueryParams={setQueryParams}
+      listRenderFn={() =>
+        listRenderFn({
           isLoading,
           list: jobs,
           render: (job) => {
             return <JobCard key={job._id} job={job} mutate={mutate} />;
           },
-        })}
+        })
+      }
+    >
+      <div className="focus-within:drop-shadow-2xl shadow-none transition-all border-t-primary border-t-2">
+        <SearchBar withSelector={true} types={["jobTitle", "companyName"]} />
       </div>
-      <Pagination
-        count={totalPages}
-        queryParams={queryParams}
-        setQueryParams={setQueryParams}
-      />
-    </div>
+      <div className="flex flex-col h-full flex-grow">
+        <div className="jobs-cards-container ">
+          <PageQueryWrapper />
+        </div>
+      </div>
+    </SearchProvider>
   );
 }
