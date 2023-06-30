@@ -10,6 +10,7 @@ export default function CartProductsList({ cart }) {
   const { t } = useTranslation();
 
   function flushCartHandler() {
+    if (!cart._id) return;
     dispatch(flushCart(cart._id));
   }
 
