@@ -45,14 +45,22 @@ const MainButton: React.FC<IMainButton> = ({
   size = "medium",
   variant = "primary",
   loading = false,
-  active,
+  active = true,
   ...props
 }) => {
   const { t } = useTranslation();
 
   return (
     <button
+      disabled={loading}
       className={classNames(
+        "main-button hover:-translate-y-[2px] hover:disabled:translate-y-0 shadow transition-all capitalize hover:shadow-lg hover:disabled:shadow-none active:-translate-y-[0.5px] active:shadow will-change-transform",
+        "!duration-150 before:translate-x-0 after:translate-x-0 before:translate-y-0 after:translate-y-0",
+        "ease-in-out",
+        {
+          "opacity-50 !bg-secondary": !active,
+          "opacity-50 pointer-events-none": loading,
+        },
         {
           "px-2 py-0.5 text-sm rounded-md": size === "small",
           "px-3 py-1 text-base rounded-lg": size === "medium",
@@ -95,9 +103,6 @@ const MainButton: React.FC<IMainButton> = ({
             variant === "info-light-outline",
           "bg-info/10 text-info border-info border": variant === "info-outline",
         },
-
-        "main-button hover:-translate-y-[2px] hover:disabled:translate-y-0 shadow transition-all capitalize hover:shadow-lg hover:disabled:shadow-none active:-translate-y-[0.5px] active:shadow will-change-transform",
-        "duration-200 ease-in-out",
         className,
         variant,
         size
