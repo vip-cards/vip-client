@@ -42,6 +42,7 @@ export default function CreateServiceForm() {
 
     const arabicReg = /[\u0621-\u064A]/g;
     const isArabic = (q) => arabicReg.test(q);
+    if (error) return setErrorList(error.details.map((e) => e.message));
 
     const newServiceForm = {
       provider: _service.client,
@@ -69,14 +70,10 @@ export default function CreateServiceForm() {
       category: _service.category.map((item) => ({ _id: item })),
     };
 
-    if (error) {
-      setErrorList(error.details.map((e) => e.message));
-    } else {
-      clientServices.createService(newServiceForm).then((res) => {
-        toastPopup.success("Created Successfully");
-        navigate(location.pathname, { state: { openedTap: "viewCreatedJob" } });
-      });
-    }
+    clientServices.createService(newServiceForm).then((res) => {
+      toastPopup.success("Created Successfully");
+      navigate(location.pathname, { state: { openedTap: "viewCreatedJob" } });
+    });
   };
 
   return (

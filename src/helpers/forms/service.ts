@@ -40,7 +40,10 @@ export const serviceSchema = Joi.object({
       "any.required": t("service_category_required"),
       "array.min": t("service_category_min"),
     }),
-  phone: phoneSchema,
+  phone: phoneSchema.required().messages({
+    "string.empty": t("service_phone_notEmpty"),
+    "any.required": t("service_phone_required"),
+  }),
   whatsapp: Joi.string().optional(),
   telegram: Joi.string().optional(),
 });
@@ -52,13 +55,10 @@ export const serviceForm = (records) => [
   { name: "address", type: "text", required: true },
   {
     name: "category",
-    type: "checkbox",
+    type: "multi-select",
     required: false,
-    list: [...records]?.map((item) => ({
-      value: item._id,
-      name: getLocalizedWord(item.name),
-    })),
     identifier: "name",
+    list: records ?? [],
   },
   { name: "phone", type: "phone", required: true },
   { name: "whatsapp", type: "phone", required: false },

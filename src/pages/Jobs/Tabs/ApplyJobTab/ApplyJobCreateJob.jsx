@@ -1,6 +1,10 @@
 import classNames from "classnames";
 import { MainButton } from "components/Buttons";
+import FormErrorMessage from "components/FormErrorMessage/FormErrorMessage";
 import { MainInput } from "components/Inputs";
+import { clearEmpty } from "helpers";
+import { getInitialFormData } from "helpers/forms";
+import { jobForm as jobFormData, jobSchema } from "helpers/forms/job";
 import toastPopup, { responseErrorToast } from "helpers/toastPopup";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -10,150 +14,79 @@ import clientServices from "services/clientServices";
 import useSWR from "swr";
 
 export default function ApplyJobCreateJob() {
-  const ref = useRef(null);
   const userId = localStorage.getItem("userId");
+
+  const ref = useRef(null);
   const navigate = useNavigate();
   const { t } = useTranslation();
+
   const [formError, setFormError] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [jobForm, setJobForm] = useState({ client: userId, category: "" });
+  const [errorList, setErrorList] = useState([]);
+
   const { data, error, isLoading, mutate, isValidating } = useSWR(
     "jobs-categories",
     () => clientServices.listAllCategories({ type: "job" })
   );
+  const [jobForm, setJobForm] = useState({
+    ...getInitialFormData(jobFormData(data?.records)),
+    client: userId,
+  });
 
-  const formData = [
-    {
-      name: "companyName_en",
-      type: "text",
-      required: true,
-      className: "company-en-input",
-    },
-    {
-      name: "companyName_ar",
-      type: "text",
-      required: true,
-      className: "company-ar-input",
-    },
-    {
-      name: "jobTitle_en",
-      type: "text",
-      required: true,
-      className: "job-en-input",
-    },
-    {
-      name: "jobTitle_ar",
-      type: "text",
-      required: true,
-      className: "job-ar-input",
-    },
-    {
-      name: "description_en",
-      type: "textarea",
-      required: true,
-      className: "description-en-input row-span-2",
-    },
-    {
-      name: "description_ar",
-      type: "textarea",
-      required: true,
-      className: "description-ar-input row-span-2",
-    },
-    {
-      name: "address_en",
-      type: "text",
-      required: true,
-      className: "address-en-input",
-    },
-    {
-      name: "address_ar",
-      type: "text",
-      required: true,
-      className: "address-ar-input",
-    },
-    {
-      name: "category",
-      type: "multi-select",
-      required: false,
-      className: "category-input",
-      identifier: "name",
-      list: data?.records ?? [],
-    },
-    { name: "phone", type: "phone", required: true, className: "phone-input" },
-    {
-      name: "whatsapp",
-      type: "phone",
-      required: false,
-      className: "whatsapp-input",
-    },
-    {
-      name: "telegram",
-      type: "phone",
-      required: false,
-      className: "telegram-input",
-    },
-  ];
+  const formData = jobFormData(data?.records);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    setErrorList([]);
+    const _form = clearEmpty(jobForm);
+    const { value: _job, error } = jobSchema.validate(_form);
+
+    const arabicReg = /[\u0621-\u064A]/g;
+    const isArabic = (q) => arabicReg.test(q);
+    if (error) return setErrorList(error.details.map((e) => e.message));
 
     const newJobForm = {
-      client: jobForm.client,
+      client: _job.client,
       companyName: {
-        en: jobForm.companyName_en,
-        ar: jobForm.companyName_ar,
+        [isArabic(_job["companyName"]) ? "ar" : "en"]: _job["companyName"],
       },
       jobTitle: {
-        en: jobForm.jobTitle_en,
-        ar: jobForm.jobTitle_ar,
+        [isArabic(_job["jobTitle"]) ? "ar" : "en"]: _job["jobTitle"],
       },
       description: {
-        en: jobForm.description_en,
-        ar: jobForm.description_ar,
+        [isArabic(_job["description"]) ? "ar" : "en"]: _job["description"],
       },
       address: {
-        en: jobForm.address_en,
-        ar: jobForm.address_ar,
+        [isArabic(_job["address"]) ? "ar" : "en"]: _job["address"],
       },
       contacts: {
-        phone: jobForm.phone,
-        whatsapp: jobForm.whatsapp,
-        telegram: jobForm.telegram,
+        phone: _job.phone,
+        whatsapp: _job.whatsapp,
+        telegram: _job.telegram,
       },
-      category: jobForm.category,
+      category: _job.category,
     };
 
-    // const { value, error } = createJobSchema.validate(newJobForm);
-
-    // if (false) {
-    //   setFormError(true);
-    // } else {
-    setFormError(false);
     setLoading(true);
     clientServices
       .createJob(newJobForm)
       .then((res) => {
-        toast.success("Created Successfully");
+        toastPopup.success("Created Successfully");
         navigate("/jobs/apply");
       })
       .catch(responseErrorToast)
       .finally(() => setLoading(false));
-    // }
   };
 
-  useEffect(() => {
-    formError && setFormError(false);
-    if (ref.current && ref.current.checkValidity()) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
-  }, [jobForm]);
-
   return (
-    <form ref={ref} className="create-job-panel" onSubmit={onSubmitHandler}>
-      <div className="w-full grid mt-8  gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
+    <form
+      ref={ref}
+      className="create-job-panel"
+      onSubmit={onSubmitHandler}
+      noValidate
+    >
+      <div className="w-full flex flex-col mt-8  gap-4 sm:max-w-[80%]">
         {formData.map(({ className, ...formInput }, index) => {
           const cls = classNames({ "col-span-1": true }, className);
 
@@ -171,9 +104,8 @@ export default function ApplyJobCreateJob() {
             />
           );
         })}
-        {formError && (
-          <p className="error-message">Please check the input values</p>
-        )}
+        <FormErrorMessage errorList={errorList} />
+
         <MainButton
           text={t("confirm")}
           type="submit"
