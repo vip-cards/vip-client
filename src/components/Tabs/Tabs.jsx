@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router";
 import classes from "./Tabs.module.scss";
 import { ProtectedComponent } from "components/auth-components/ProtectedComponent";
 import { t } from "i18next";
+import { MainButton } from "components/Buttons";
 
 /**
  * It takes an object of tabs `{label, panel}`, and a default tab.
@@ -18,11 +19,11 @@ export default function Tabs({ tabs, defaultTab }) {
       <div className={classNames(classes["tab-btns"], "flex-col")}>
         {Object.entries(tabs).map(([key, { label, role }]) => (
           <ProtectedComponent key={key} role={role}>
-            <button
+            <MainButton
               active={tab === key}
-              className={classNames(classes["btn"], {
-                [classes["active"]]: tab === key,
-              })}
+              // className={classNames(classes["btn"], {
+              //   [classes["active"]]: tab === key,
+              // })}
               onClick={() => {
                 navigate(location.pathname, {
                   state: {
@@ -32,7 +33,7 @@ export default function Tabs({ tabs, defaultTab }) {
               }}
             >
               {t(label)}
-            </button>
+            </MainButton>
           </ProtectedComponent>
         ))}
       </div>

@@ -1,26 +1,14 @@
 import { useEffect, useRef } from "react";
-import clientServices from "services/clientServices";
-import useSWR from "swr";
-import LoadingProductCard from "./LoadingProductCard";
+import { useLocation, useNavigate } from "react-router";
 import { ProductActionsContainer } from "./ProductActionsContainer";
-import "./ProductCard.scss";
 import { ProductDetailsContainer } from "./ProductDetailsContainer";
 import { ProductImageContainer } from "./ProductImageContainer";
-import { useLocation, useNavigate } from "react-router";
-
-const productFetcher = async ([key, id]) =>
-  clientServices.getProductDetails(id).then((res) => res?.record?.[0]);
+import { motion } from "framer-motion";
+import "./ProductCard.scss";
 
 export default function ProductCard({ product }: { product: IProduct }) {
-  // export default function ProductCard({ product: { _id: productId } }) {
-  //   const {
-  //     data: product,
-  //     error,
-  //     isLoading,
-  //   } = useSWR([`product-details-${productId}`, productId], productFetcher);
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("------------", location.pathname);
 
   const popupRef = useRef(null);
   const componentRef = useRef(null);
@@ -56,7 +44,20 @@ export default function ProductCard({ product }: { product: IProduct }) {
   if (!product?._id) return null;
 
   return (
-    <div className="product-card" ref={componentRef}>
+    <motion.div
+      layout
+      whileHover={{
+        scale: 1.05,
+      }}
+      transition={{
+        duration: 0.2,
+        type: "spring",
+        stiffness: 260,
+        damping: 14,
+      }}
+      className="product-card"
+      ref={componentRef}
+    >
       <ProductImageContainer product={product} />
       <div
         className="product-info-container !h-40 !p-3"
@@ -69,6 +70,6 @@ export default function ProductCard({ product }: { product: IProduct }) {
           <ProductActionsContainer product={product} ref={popupRef} />
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

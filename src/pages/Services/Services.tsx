@@ -7,6 +7,11 @@ import clientServices from "services/clientServices";
 import useSWR from "swr";
 import CreateServiceForm from "./CreateServiceForm";
 import "./Services.scss";
+import {
+  PageQueryWrapper,
+  SearchBar,
+  SearchProvider,
+} from "components/PageQueryContainer/PageQueryContext";
 
 const LIMIT = 9;
 const initialQueryParams = { page: 1, limit: LIMIT };
@@ -25,7 +30,6 @@ function ServiceHome({ id = undefined }) {
   );
 
   const { records: services = undefined, counts = 0 } = servicesData ?? {};
-  const totalPages = Math.ceil(counts / LIMIT);
 
   const renderObj = {
     isLoading,
@@ -36,16 +40,25 @@ function ServiceHome({ id = undefined }) {
   };
 
   return (
-    <div className="flex flex-col h-full flex-grow my-8">
-      <div className="flex flex-row gap-4 items-center justify-center flex-wrap my-8">
-        {listRenderFn(renderObj)}
+    <SearchProvider
+      limit={LIMIT}
+      itemsCount={counts}
+      queryParams={queryParams}
+      setQueryParams={setQueryParams}
+      listRenderFn={() => listRenderFn(renderObj)}
+    >
+      <div className="transition-all border-t-primary border-t-2">
+        <SearchBar
+          withSelector={true}
+          types={["serviceName", "providerName"]}
+        />
       </div>
-      <Pagination
-        count={totalPages}
-        queryParams={queryParams}
-        setQueryParams={setQueryParams}
-      />
-    </div>
+      <div className="flex flex-col h-full flex-grow">
+        <div className="flex flex-row gap-4 items-center justify-center flex-wrap my-8">
+          <PageQueryWrapper />
+        </div>
+      </div>
+    </SearchProvider>
   );
 }
 

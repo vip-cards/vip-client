@@ -1,13 +1,24 @@
 import dayjs from "dayjs";
 import { getLocalizedWord } from "helpers/lang";
 import { useNavigate } from "react-router";
+import { motion } from "framer-motion";
 
 const PostCard = ({ post }) => {
   const navigate = useNavigate();
   return (
-    <div
+    <motion.div
+      layout
       key={post._id}
-      className="job-card cursor-pointer"
+      whileHover={{
+        scale: 1.05,
+      }}
+      transition={{
+        duration: 0.2,
+        type: "spring",
+        stiffness: 260,
+        damping: 14,
+      }}
+      className="job-card cursor-pointer bg-gray-300"
       onClick={() => navigate("/jobs/posts/" + post._id)}
     >
       <h3 className="title">{getLocalizedWord(post.name)}</h3>
@@ -20,7 +31,7 @@ const PostCard = ({ post }) => {
           {dayjs(post.publishDate).format("DD, MMM")}
         </span>
       </p>
-    </div>
+    </motion.div>
   );
 };
 

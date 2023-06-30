@@ -86,7 +86,6 @@ function Chat() {
   };
 
   const onListRooms = (data) => {
-    console.log("--------", data.records);
     setRoomList(data.records.filter((record) => record.lastMessage));
   };
 

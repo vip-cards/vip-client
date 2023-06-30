@@ -1,5 +1,10 @@
 import JobCard from "components/Cards/JobCard/JobCard";
-import Pagination from "components/Pagination/Pagination";
+import {
+  PageQueryWrapper,
+  SearchBar,
+  SearchProvider,
+} from "components/PageQueryContainer/PageQueryContext";
+
 import { listRenderFn } from "helpers/renderFn";
 import { useLayoutEffect, useState } from "react";
 import clientServices from "services/clientServices";
@@ -16,12 +21,11 @@ export default function ApplyJobHome({ id = undefined }) {
     data: jobsData,
     isLoading,
     mutate,
-  } = useSWR([`view-${id}-jobs`, queryParams], ([, queryParams]) =>
+  } = useSWR([`view-${id ?? "all"}-jobs`, queryParams], ([, queryParams]) =>
     clientServices.listAllJobs(queryParams)
   );
 
   const { records: jobs = undefined, counts = 0 } = jobsData ?? {};
-  const totalPages = Math.ceil(counts / LIMIT);
 
   useLayoutEffect(() => {
     if (id) setQueryParams((q) => ({ ...q, client: id }));
@@ -29,21 +33,29 @@ export default function ApplyJobHome({ id = undefined }) {
   }, [id]);
 
   return (
-    <div className="flex flex-col h-full flex-grow">
-      <div className="jobs-cards-container ">
-        {listRenderFn({
+    <SearchProvider
+      limit={LIMIT}
+      itemsCount={counts}
+      queryParams={queryParams}
+      setQueryParams={setQueryParams}
+      listRenderFn={() =>
+        listRenderFn({
           isLoading,
           list: jobs,
           render: (job) => {
             return <JobCard key={job._id} job={job} mutate={mutate} />;
           },
-        })}
+        })
+      }
+    >
+      <div className="transition-all border-t-primary border-t-2">
+        <SearchBar withSelector={true} types={["jobTitle", "companyName"]} />
       </div>
-      <Pagination
-        count={totalPages}
-        queryParams={queryParams}
-        setQueryParams={setQueryParams}
-      />
-    </div>
+      <div className="flex flex-col h-full flex-grow">
+        <div className="jobs-cards-container ">
+          <PageQueryWrapper />
+        </div>
+      </div>
+    </SearchProvider>
   );
 }
