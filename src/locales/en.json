@@ -698,15 +698,8 @@
   "walletNumber": "walletNumber",
   "wishlist": "Wishlist",
   "writeAReview": "Write a review",
-  "address": {
-    "": "Address",
-    "ar": "Address in arabic",
-    "en": "Address in english"
-  },
-  "description": {
-    "ar": "Description in arabic",
-    "en": "Description in english"
-  },
+  "address": "Address",
+  "description": "Description",
   "footer": {
     "about": "About Us",
     "chatWithUs": "Chat with support",
@@ -717,10 +710,7 @@
   "navbar": {
     "seeAll": "See All"
   },
-  "providerName": {
-    "ar": "Provide name in arabic",
-    "en": "Provider name in english"
-  },
+  "providerName": "Provider Name",
   "see less": {
     "": {
       "": {
@@ -735,10 +725,7 @@
       }
     }
   },
-  "serviceName": {
-    "ar": "Service name in arabic",
-    "en": "Service name in english"
-  },
+  "serviceName": "Service Name",
   "register": "Register",
   "emailOrPhoneValidation": "Please enter a valid email or phone number",
   "nameValidation": "Please enter a valid name",
@@ -754,5 +741,22 @@
   "review_base": "Review must be a number",
   "review_reqiured": "Review is required",
   "typeMessage": "Type a message ...",
-  "selectRoom": "Select a room"
+  "selectRoom": "Select a room",
+  "service_name_notEmpty": "Please enter a service name",
+  "service_name_required": "Service name is required",
+  "service_providerName_notEmpty": "Please enter a provider name",
+  "service_providerName_required": "Provider name is required",
+  "service_description_notEmpty": "Please enter a service description",
+  "service_description_required": "Service description is required",
+  "service_address_notEmpty": "Please enter an address",
+  "service_address_required": "Address is required",
+  "service_category_notEmpty": "Please select a service category",
+  "service_category_required": "Service category is required",
+  "service_phone_notEmpty": "Please enter a phone number",
+  "service_phone_required": "Phone number is required",
+  "service_whatsapp_notEmpty": "Please enter a WhatsApp number",
+  "service_whatsapp_required": "WhatsApp number is required",
+  "service_telegram_notEmpty": "Please enter a Telegram username",
+  "service_telegram_required": "Telegram username is required",
+  "service_category_min": "Please select a service category"
 }

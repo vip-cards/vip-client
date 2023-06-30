@@ -689,15 +689,8 @@
   "with wallet": "باستخدام المحفظة",
   "writeAReview": "ضع تقييمًا",
   "passwordValidation": "كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل وحرف كبير وحرف صغير ورقم ورمز",
-  "address": {
-    "": "العنوان",
-    "ar": "عنوان الخدمة بالعربية",
-    "en": "عنوان الخدمة بالإنجليزية"
-  },
-  "description": {
-    "ar": "الوصف بالعربية",
-    "en": "الوصف بالإنجليزية"
-  },
+  "address": "العنوان",
+  "description": "الوصف",
   "footer": {
     "about": "من نحن",
     "chatWithUs": "الدعم الفني",
@@ -708,10 +701,7 @@
   "navbar": {
     "seeAll": "شاهد الجميع"
   },
-  "providerName": {
-    "ar": "اسم مزود الخدمة بالعربية",
-    "en": "اسم مزود الخدمة بالإنجليزية"
-  },
+  "providerName": "اسم مقدم الخدمة",
   "see less": {
     "": {
       "": {
@@ -726,10 +716,7 @@
       }
     }
   },
-  "serviceName": {
-    "ar": "اسم الخدمة بالعربية",
-    "en": "اسم الخدمة بالإنجليزية"
-  },
+  "serviceName": "اسم الخدمة",
   "emailOrPhoneValidation": "برجاء إدخال البريد الالكتروني أو الهاتف بشكل صحيح",
   "nameValidation": "برجاء إدخال الاسم بشكل صحيح",
   "phoneValidation": "برجاء إدخال رقم الهاتف بشكل صحيح",
@@ -744,5 +731,22 @@
   "review_base": "برجاء إدخال قيمة التقييم",
   "review_reqiured": "برجاء إدخال التقييم",
   "typeMessage": "اكتب رسالة",
-  "selectRoom": "اختر محادثة"
+  "selectRoom": "اختر محادثة",
+  "service_name_notEmpty": "يرجى إدخال اسم الخدمة",
+  "service_name_required": "اسم الخدمة مطلوب",
+  "service_providerName_notEmpty": "يرجى إدخال اسم مقدم الخدمة",
+  "service_providerName_required": "اسم مقدم الخدمة مطلوب",
+  "service_description_notEmpty": "يرجى إدخال وصف الخدمة",
+  "service_description_required": "وصف الخدمة مطلوب",
+  "service_address_notEmpty": "يرجى إدخال العنوان",
+  "service_address_required": "العنوان مطلوب",
+  "service_category_notEmpty": "يرجى تحديد فئة الخدمة",
+  "service_category_required": "فئة الخدمة مطلوبة",
+  "service_phone_notEmpty": "يرجى إدخال رقم الهاتف",
+  "service_phone_required": "رقم الهاتف مطلوب",
+  "service_whatsapp_notEmpty": "يرجى إدخال رقم واتساب",
+  "service_whatsapp_required": "رقم واتساب مطلوب",
+  "service_telegram_notEmpty": "يرجى إدخال اسم مستخدم تليغرام",
+  "service_telegram_required": "اسم مستخدم تليغرام مطلوب",
+  "service_category_min": "يرجى تحديد فئة الخدمة"
 }

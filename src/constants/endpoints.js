@@ -12,6 +12,7 @@ export const API = Object.freeze({
     CREATE: "service/create",
     LSIT: "service/list",
     UPDATE: "service/update",
+    REMOVE: "service/remove",
   },
   AGENTS: {
     GET: "get",
