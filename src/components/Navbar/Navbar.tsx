@@ -12,7 +12,7 @@ import { switchLang } from "helpers/lang";
 import { t } from "i18next";
 import { MouseEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import clientServices from "services/clientServices";
 import { markAsSeen } from "services/socket/notification";
@@ -24,6 +24,7 @@ import SideNav from "./SideNav/SideNav";
 import { navItemsRender } from "./_helpers/navItemsRender";
 import { notificationListRender } from "./_helpers/notificationListRender";
 
+import { authActions } from "store/auth-slice";
 import "./Navbar.scss";
 
 interface INavItem {
@@ -42,6 +43,7 @@ dayjs.extend(relativeTime);
 export default function Navbar() {
   const navigate = useNavigate();
   const { i18n } = useTranslation();
+  const dispatch = useDispatch();
 
   const cartProducts = useSelector(selectCartProducts);
   const wishlist = useSelector((state) => (state as any).wishlist);
@@ -144,6 +146,12 @@ export default function Navbar() {
     });
     return () => {};
   }, [lang]);
+
+  useEffect(() => {
+    clientServices.updateInfo({}).then((data) => {
+      dispatch(authActions.update({ userData: data.record }));
+    });
+  }, [dispatch]);
 
   return (
     <nav className="top-nav relative z-[900]">
@@ -269,7 +277,7 @@ export default function Navbar() {
         title={"logout"}
         onConfirm={(e) => {
           setConfirmModal(false);
-          logoutHandler(e);
+          logoutHandler(e as any);
         }}
         onCancel={() => setConfirmModal(false)}
       />
