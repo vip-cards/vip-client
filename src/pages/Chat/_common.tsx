@@ -62,7 +62,7 @@ export function ChatBodyContainer({
 
   return (
     <div
-      className={classNames("w-full h-full flex flex-col", {
+      className={classNames("w-full h-full flex flex-col overflow-hidden", {
         "bg-slate-200 duration-1000 animate-pulse":
           !messageList?.length && activeRoom?._id,
       })}
@@ -122,7 +122,9 @@ export function MessageListRender({
         transition={{ duration: 0.3, delay: 0.1 }}
         className="flex flex-col"
       >
-        <span className="whitespace-pre-line break-words max-w-full overflow-hidden">{message.text}</span>
+        <span className="whitespace-pre-line break-words max-w-full overflow-hidden">
+          {message.text}
+        </span>
         <span className="text-xs self-end text-slate-400 leading-3 whitespace-pre">
           {message.timestamp
             ? dayjs(message.timestamp).format("DD-MM-YYYY hh:mma")
@@ -226,7 +228,10 @@ export const RenderRoomList = ({
   if (!roomList.length) return null;
 
   return (
-    <motion.div layoutScroll className="overflow-y-auto max-h-[73vh] max-w-full !h-min">
+    <motion.div
+      layoutScroll
+      className="overflow-y-auto max-h-[73vh] max-w-full !h-min"
+    >
       {roomList?.map((room, idx) => {
         const { members, _id: RoomId, lastUpdated, lastMessage } = room;
         const vipImg = require("../../assets/images/vip.png");
