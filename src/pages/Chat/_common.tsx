@@ -27,7 +27,7 @@ interface IChatSidebar {
 export function ChatSidebar({ children, onCreateModal }: IChatSidebar) {
   const { t } = useTranslation();
   return (
-    <div className="chat-sidebar max-sm:!w-32 max-sm:!px-0 rtl:!pr-3 rtl:!pl-0">
+    <div className="chat-sidebar max-sm:!w-32 w-[25vw] max-w-[240px] flex-shrink-0 max-sm:!px-0 rtl:!pr-3 rtl:!pl-0">
       {children}
       <MainButton
         variant="primary"
@@ -109,7 +109,7 @@ export function MessageListRender({
       transition={{ duration: 0.3, type: "spring", bounce: 0.25 }}
       layoutScroll
       exit={{ opacity: 0, scale: 0.8 }}
-      className={classNames("py-3 px-5 rounded", {
+      className={classNames("py-3 px-5 rounded max-w-[80%]", {
         "bg-slate-600 ml-auto w-fit rounded-l-3xl rounded-tr-3xl text-slate-100":
           message[userRole] === userId || message[userRole]?._id === userId,
         "bg-slate-300 mr-auto w-fit rounded-r-3xl rounded-bl-3xl text-slate-900":
@@ -122,7 +122,7 @@ export function MessageListRender({
         transition={{ duration: 0.3, delay: 0.1 }}
         className="flex flex-col"
       >
-        <span>{message.text}</span>
+        <span className="whitespace-pre-line break-words max-w-full overflow-hidden">{message.text}</span>
         <span className="text-xs self-end text-slate-400 leading-3 whitespace-pre">
           {message.timestamp
             ? dayjs(message.timestamp).format("DD-MM-YYYY hh:mma")
@@ -226,7 +226,7 @@ export const RenderRoomList = ({
   if (!roomList.length) return null;
 
   return (
-    <motion.div layoutScroll className="overflow-y-auto max-h-[73vh] !h-min">
+    <motion.div layoutScroll className="overflow-y-auto max-h-[73vh] max-w-full !h-min">
       {roomList?.map((room, idx) => {
         const { members, _id: RoomId, lastUpdated, lastMessage } = room;
         const vipImg = require("../../assets/images/vip.png");
@@ -253,7 +253,7 @@ export const RenderRoomList = ({
             transition={{ duration: 0.1, delay: idx * 0.03 }}
             key={otherChatter?._id}
             className={classNames(
-              "flex sm:flex-row items-center gap-3 sm:h-20 max-sm:flex-col",
+              "flex sm:flex-row max-w-full overflow-hidden text-ellipsis items-center gap-3 sm:h-20 max-sm:flex-col",
               "hover:bg-slate-300/80 cursor-pointer transition-all duration-100 ease-in-out",
               "ltr:rounded-l-2xl rtl:rounded-r-2xl px-3 py-2 max-w-full overflow-hidden max-sm:!rounded-none",
               { "active-room-tab": activeRoom?._id === RoomId }

@@ -75,7 +75,9 @@ function Chat() {
     // Replace multiple spaces at the beginning and end with a single space
 
     const _text = messageText.trim();
-    const normalizedText = _text.replace(/^\s+|\s+$/g, "").replace(/\s+/g, " ");
+    const normalizedText = _text
+      .replace(/^\s+|\s+$/g, "")
+      .replace(/[^\S\n]+/g, " ");
     if (!_text || !_text.length) return;
 
     const message = {
