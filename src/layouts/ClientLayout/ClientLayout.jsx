@@ -163,17 +163,11 @@ export default function ClientLayout() {
               path={`/${ROUTES.VENDORS}/:vendorId/branches`}
               element={<Branches />}
             />
+
             <Route
               path={`/${ROUTES.VENDORS}/:vendorId/:branchId`}
               element={<Branch />}
-            >
-              <Route path={`${ROUTES.OFFERS}`} element={<BranchProducts />} />
-              <Route
-                path={`${ROUTES.HOT_DEALS}`}
-                element={<BranchProducts />}
-              />
-              <Route path="" element={<Navigate to={`${ROUTES.OFFERS}`} />} />
-            </Route>
+            ></Route>
             <Route
               path={`/${ROUTES.VENDORS}/:vendorId/category/:categoryId`}
               element={<VendorCategory />}
