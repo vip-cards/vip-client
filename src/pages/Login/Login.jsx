@@ -36,7 +36,7 @@ export default function Login() {
 
   function handleLoginCatch(e) {
     setLoading(false);
-    setErrorList([e.response.data.error]);
+    setErrorList([e.response?.data?.error]);
   }
 
   function handleLoginSuccess(data) {

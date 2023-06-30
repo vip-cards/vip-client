@@ -4,7 +4,31 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  
+  .service-card {
+    width: 20rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.7rem;
+    background-color: $light;
+    border-radius: 1rem;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
 
+    .title {
+      color: $primary;
+    }
+    .sub-title {
+      color: $primary;
+    }
+    .body {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
   .route-switch-container {
     margin-top: 2rem;
     width: 70%;
