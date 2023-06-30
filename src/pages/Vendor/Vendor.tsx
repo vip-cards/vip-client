@@ -18,7 +18,7 @@ import {
 } from "components/PageQueryContainer/PageQueryContext";
 import RatingStars from "components/RatingStars/RatingStars";
 import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { Link } from "react-router-dom";
@@ -47,6 +47,8 @@ const vendorBranchesFetcher = (
     .then((data) => data.records);
 
 export default function Vendor() {
+  const [filter, setFilter] = useState({ vendors: [], categories: [] });
+
   const params = useParams();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -59,16 +61,16 @@ export default function Vendor() {
   const [isReviewModalVisible, setReviewModelVisible] = useState(false);
 
   const { data: vendor, isLoading: isVendorLoading } = useSWR(
-    ["vendor-details", vendorId],
+    [`vendor-details-${vendorId}`, vendorId],
     vendorFetcher
   );
   const { data: reviews, isLoading: isReviewsLoading } = useSWR(
-    ["vendor-rev", vendorId],
+    [`vendor-rev-${vendorId}`, vendorId],
     reviewFetcher
   );
 
   const { data: branches, isLoading: isVendorbranchesLoading } = useSWR(
-    ["vendor-branches", vendorId],
+    [`vendor-branches-${vendorId}`, vendorId],
     vendorBranchesFetcher,
     {
       suspense: !vendor,
@@ -76,7 +78,7 @@ export default function Vendor() {
   );
 
   const { data: productsData, isLoading: productsLoading } = useSWR(
-    ["all-products", queryParams],
+    [`all-vendor-products-${vendorId}`, queryParams],
     productsFetcher,
     {
       suspense: !vendor,
@@ -96,6 +98,33 @@ export default function Vendor() {
   function startChatHandler() {
     createRoom({ vendor: vendorId });
   }
+
+  const toggleFilter = (arrayKey = "vendors", itemId) => {
+    const newVendorFilterList = [...filter[arrayKey]];
+    const idx = filter[arrayKey].findIndex((value) => value === itemId);
+    if (idx > -1) {
+      newVendorFilterList.splice(idx, 1);
+    } else {
+      newVendorFilterList.push(itemId);
+    }
+
+    setFilter((filters) => ({ ...filters, [arrayKey]: newVendorFilterList }));
+  };
+
+  useEffect(() => {
+    setQueryParams((q) => {
+      const category = filter.categories?.length
+        ? { category: filter.categories }
+        : null;
+
+      if (!category && "category" in q) delete q.category;
+
+      return {
+        ...q,
+        ...category,
+      };
+    });
+  }, [filter]);
 
   useLayoutEffect(() => {
     setQueryParams({ page: 1, limit: LIMIT, vendor: vendorId });
@@ -219,36 +248,6 @@ export default function Vendor() {
           </div>
         </header>
 
-        {/* CATEGORIES */}
-        {withLoadingSkeleton(
-          <div className="carousel-container">
-            <div className="add-button-container">
-              <Link
-                to={`/categories?vendor=${vendorId}`}
-                className="add-button"
-              >
-                {t("showAllCategories")}
-              </Link>
-            </div>
-            <Carousel
-              pagination={true}
-              data={vendor?.productCategories}
-              autoplay={false}
-              extraLarge={3}
-              midLarge={2.5}
-              large={1.5}
-              medium={1.3}
-              largeSmall={1.2}
-              midSmall={1.1}
-              extraSmall={1}
-              render={(props: IProductCategory) => {
-                return <CategoryCard category={props} vendorId={vendorId} />;
-              }}
-            />
-          </div>,
-          isVendorLoading
-        )}
-
         {/* BRANCHES */}
         {withLoadingSkeleton(
           <div className="carousel-container">
@@ -266,12 +265,12 @@ export default function Vendor() {
               pagination={true}
               data={branches}
               autoplay={false}
-              extraLarge={2.5}
-              midLarge={1.85}
-              large={1.6}
-              medium={1.45}
-              largeSmall={1.3}
-              midSmall={1}
+              extraLarge={4.5}
+              midLarge={4}
+              large={3.5}
+              medium={3}
+              largeSmall={2.5}
+              midSmall={2}
               extraSmall={1}
               render={(props) => {
                 return <BranchCard branch={props} />;
@@ -280,6 +279,46 @@ export default function Vendor() {
           </div>,
           isVendorbranchesLoading
         )}
+
+        {/* CATEGORIES */}
+
+        <aside className="flex flex-row flex-wrap gap-x-3 gap-y-2 justify-start items-start mb-2">
+          <button
+            onClick={() => {
+              setFilter((f) => ({ ...f, categories: [] }));
+              setQueryParams({ page: 1, limit: LIMIT, vendor: vendorId });
+            }}
+            className={classNames("px-3 py-1 rounded-lg border text-sm", {
+              "bg-primary/50 shadow-lg text-slate-800":
+                !filter.categories?.length,
+              "bg-primary shadow text-black": filter.categories?.length,
+            })}
+          >
+            {t("reset")}
+          </button>
+          {vendor?.productCategories?.map((category) => (
+            <button
+              onClick={() => {
+                toggleFilter("categories", category._id);
+                setQueryParams({ page: 1, limit: LIMIT, vendor: vendorId });
+              }}
+              key={category._id}
+              className={classNames("px-3 py-1 rounded-lg border text-sm", {
+                "bg-primary":
+                  filter.categories?.findIndex(
+                    (item) => item === category._id
+                  ) > -1,
+                "bg-transparent group-hover:bg-primary/50": !(
+                  filter.categories?.findIndex(
+                    (item) => item === category._id
+                  ) > -1
+                ),
+              })}
+            >
+              {getLocalizedWord(category.name)}
+            </button>
+          ))}
+        </aside>
 
         <PageQueryWrapper />
       </SearchProvider>

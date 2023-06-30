@@ -1,99 +1,47 @@
 .branch-card {
+  height: 150px;
+  width: 150px;
+  border-radius: 12px;
   position: relative;
-  .branch-card-container {
-    position: relative;
-    height: 150px;
-    width: 400px;
-    border: 2px solid #e2e2e2;
-    border-radius: 12px;
-    background-color: #f1f1f1;
-    cursor: pointer;
+  cursor: pointer;
 
+  .branch-info-container {
     .branch-img-container {
-      height: 150px;
-      width: 150px;
-      overflow: hidden;
       box-shadow: 0 0 10px #07070732;
       border-radius: 12px;
+      width: 150px;
+      height: 150px;
+      overflow: hidden;
       position: absolute;
-      top: -2px;
+      top: 0;
+      left: 0;
 
       .branch-img {
         position: relative;
-        height: 150px;
         width: 150px;
+        height: 150px;
         border-radius: 12px;
       }
     }
-    .branch-info-actions {
-      width: 200px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
+
+    .branch-title {
+      border-radius: 12px;
+      width: 150px;
+      height: 150px;
       position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       top: 0;
-      padding: 10px;
-
-      .brcanch-info {
-        display: flex;
-        flex-direction: column;
-        gap: 7px;
-        .branch-name {
-          font-size: 18px;
-          color: var(--mainColor);
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 2; /* number of lines to show */
-          line-clamp: 2; /* number of lines to show */
-          -webkit-box-orient: vertical;
-        }
-        .manager-name {
-          font-size: 15px;
-        }
-        .orders {
-          font-size: 14px;
-        }
-        .open {
-          color: var(--mainColor);
-          cursor: pointer;
-          background-color: transparent;
-          border: none;
-          width: fit-content;
-        }
-        .rate {
-          display: flex;
-          align-items: center;
-          gap: 5px;
-          font-size: 14px;
-          .rate-icon {
-            width: 15px;
-            height: 15px;
-          }
-        }
+      left: 0;
+      z-index: 5;
+      font-size: 18px;
+      background-color: #00000099;
+      color: var(--secondaryColor);
+      transition: opacity ease-out 250ms;
+      &:hover {
+        opacity: 0.5;
       }
-    }
-  }
-}
-
-[dir="ltr"] {
-  .branch-card {
-    .branch-info-actions {
-      left: 150px;
-    }
-    .branch-img-container {
-      left: -2px;
-    }
-  }
-}
-
-[dir="rtl"] {
-  .branch-card {
-    .branch-info-actions {
-      right: 150px;
-    }
-    .branch-img-container {
-      right: -2px;
     }
   }
 }

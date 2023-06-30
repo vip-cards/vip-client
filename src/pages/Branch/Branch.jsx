@@ -4,131 +4,254 @@ import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import RoutingTab from "components/RoutingTab/RoutingTab";
 import SearchInput from "components/SearchInput/SearchInput";
 import i18n from "locales/i18n";
-import { useEffect, useState } from "react";
-import { Outlet, useParams } from "react-router";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router";
 import clientServices from "services/clientServices";
 import { createRoom } from "services/socket/chat";
+import useSWR from "swr";
 
 import "./Branch.scss";
 import { getLocalizedWord } from "helpers/lang";
 import classNames from "classnames";
 import RatingStars from "components/RatingStars/RatingStars";
 import { useTranslation } from "react-i18next";
+import BranchProducts from "components/BranchProducts/BranchProducts";
+import { ProductCard } from "components/Cards";
+import CardContainer from "components/CardContainer/CardContainer";
+import {
+  PageQueryWrapper,
+  SearchBar,
+  SearchProvider,
+} from "components/PageQueryContainer/PageQueryContext";
+import NoData from "components/NoData/NoData";
+import { withLoadingSkeleton } from "components/LoadingSkeleton/LoadingSkeleton";
+
+const LIMIT = 9;
+
+const branchFetcher = ([key, id]) =>
+  clientServices.getBranchDetails(id).then(({ data }) => data.record[0]);
+
+const productsFetcher = ([key, params]) =>
+  clientServices.listAllProducts({ ...params });
+
+const vendorFetcher = ([key, id]) =>
+  clientServices.getVendor(id).then(({ data }) => data.record[0]);
 
 export default function Branch() {
+  const [filter, setFilter] = useState({ vendors: [], categories: [] });
+
   const params = useParams();
   const branchId = params.branchId;
   const vendorId = params.vendorId;
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
-  const [loading, setLoading] = useState(false);
-  let routes;
-  const [branchhInfo, setBranchInfo] = useState({
-    name_en: "",
-    name_ar: "",
-    lat: "",
-    lng: "",
-    email: "",
-    address_en: "",
-    address_ar: "",
-    phone: "",
-    governorate: "",
-    vendor: "",
-  });
+  const initialQuerParams = { page: 1, limit: LIMIT, branches: branchId };
+  const [queryParams, setQueryParams] = useState(initialQuerParams);
 
-  async function getBranchDetailsHandler() {
-    setLoading(true);
-    try {
-      const { data } = await clientServices.getBranchDetails(branchId);
+  const { data: vendor, isLoading: isVendorLoading } = useSWR(
+    [`vendor-details-${vendorId}`, vendorId],
+    vendorFetcher
+  );
 
-      setBranchInfo(data.record[0]);
+  const { data: branch, isLoading: isBranchLoading } = useSWR(
+    [`branch-details-${branchId}`, branchId],
+    branchFetcher
+  );
 
-      setLoading(false);
-    } catch (e) {
-      setLoading(false);
+  const { data: productsData, isLoading: productsLoading } = useSWR(
+    [`all-branch-products-${branchId}`, queryParams],
+    productsFetcher,
+    {
+      suspense: !branch,
     }
-  }
+  );
+  const { records: products = undefined, counts: productsCount } =
+    productsData ?? {};
 
-  routes = [
-    { name: "offers", route: `/vendors/${vendorId}/${branchId}/offers` },
-    { name: "hot-deals", route: `/vendors/${vendorId}/${branchId}/hot-deals` },
-  ];
+  const productListRender = () => {
+    if (productsLoading) return <LoadingSpinner />;
+    if (!products?.length) return <NoData />;
+    return products.map((offer) => {
+      return <ProductCard key={offer._id} product={offer} />;
+    });
+  };
+
+  const toggleFilter = (arrayKey = "vendors", itemId) => {
+    const newVendorFilterList = [...filter[arrayKey]];
+    const idx = filter[arrayKey].findIndex((value) => value === itemId);
+    if (idx > -1) {
+      newVendorFilterList.splice(idx, 1);
+    } else {
+      newVendorFilterList.push(itemId);
+    }
+
+    setFilter((filters) => ({ ...filters, [arrayKey]: newVendorFilterList }));
+  };
+
+  useEffect(() => {
+    setQueryParams((q) => {
+      const category = filter.categories?.length
+        ? { category: filter.categories }
+        : null;
+
+      if (!category && "category" in q) delete q.category;
+
+      return {
+        ...q,
+        ...category,
+      };
+    });
+  }, [filter]);
+
+  useLayoutEffect(() => {
+    setQueryParams({ page: 1, limit: LIMIT, branches: branchId });
+  }, [pathname, branchId]);
+
   function startChatHandler() {
     createRoom({ branch: branchId });
   }
 
-  useEffect(() => {
-    getBranchDetailsHandler();
-  }, [params]);
-
-  if (loading) return <LoadingSpinner />;
-
   return (
-    <div className="pb-8 my-8 app-card-shadow page-wrapper branch-container">
-      <header className="relative flex flex-col justify-between gap-4 p-4 pb-4 border-0 border-b-2 rounded-3xl">
-        <div className="w-full h-48 overflow-hidden rounded-lg bg-primary/20">
-          <img
-            src={branchhInfo?.cover?.Location}
-            alt={getLocalizedWord(branchhInfo?.name) + " cover"}
-            className="object-cover w-full h-full"
-          />
-        </div>
-        <div className="relative pt-2 pr-2 pl-36">
-          <div className="absolute overflow-hidden border-4 border-white rounded-full shadow w-28 h-28 -top-14 left-7">
-            <img
-              src={branchhInfo?.image?.Location}
-              alt={getLocalizedWord(branchhInfo?.name) + " img"}
-            />
+    <CardContainer
+      withHeader={false}
+      title={getLocalizedWord(branch?.name)}
+      className="client-vendor-home"
+    >
+      <SearchProvider
+        itemsCount={productsCount}
+        queryParams={queryParams}
+        limit={LIMIT}
+        initialFilters={{ branches: branchId }}
+        setQueryParams={setQueryParams}
+        listRenderFn={productListRender}
+      >
+        <header className="rounded-3xl border-b-2 p-4 gap-4 pb-4 flex flex-col justify-between relative border-0">
+          {/* --- cover --- */}
+
+          <div className="h-48 w-full bg-primary/20 overflow-hidden rounded-lg shadow-lg">
+            {withLoadingSkeleton(
+              <img
+                src={branch?.cover?.Location}
+                alt={getLocalizedWord(branch?.name) + " cover"}
+                className="w-full h-full object-cover"
+              />,
+              isBranchLoading
+            )}
           </div>
-          <div className="flex flex-row items-center justify-start gap-3 mb-3">
-            <h4 className="font-semibold text-primary">
-              {getLocalizedWord(branchhInfo?.name)}
-            </h4>
-            <div>
-              <RatingStars rate={branchhInfo?.rate ?? 0} />
+
+          {/* --- image --- */}
+          <div className="relative ltr:pl-36 pt-2 ltr:pr-2 rtl:pl-2 rtl:pr-36">
+            <div className="w-28 h-28 overflow-hidden rounded-full absolute -top-16 ltr:left-7 rtl:right-7 border-white border-4 shadow">
+              {withLoadingSkeleton(
+                <img
+                  src={branch?.image?.Location}
+                  alt={getLocalizedWord(branch?.name) + " img"}
+                />,
+                isBranchLoading
+              )}
             </div>
-            <div className="ml-auto">
-              <span className="mr-2 text-sm">
-                {branchhInfo?.hasDelivery
-                  ? "Delivery Available"
-                  : "Delivery Not Available"}
-              </span>
-              <FontAwesomeIcon
-                icon={faTruckFast}
-                size="xl"
-                className={classNames({
-                  "text-primary": branchhInfo?.hasDelivery,
-                  "text-slate-700": !branchhInfo?.hasDelivery,
-                })}
-              />
-            </div>
+
+            {/* --- headers --- */}
+            {withLoadingSkeleton(
+              <div className="flex flex-row gap-3 justify-start items-center mb-3 flex-wrap">
+                <h4 className="text-primary font-semibold whitespace-nowrap">
+                  {getLocalizedWord(branch?.name)}
+                </h4>
+
+                <div className="ml-auto">
+                  <span className="text-xs ltr:mr-2 rtl:ml-2 whitespace-nowrap">
+                    {branch?.hasDelivery
+                      ? t("delivaryAvailable")
+                      : t("delivaryNotAvailable")}
+                  </span>
+                  <FontAwesomeIcon
+                    icon={faTruckFast}
+                    size="lg"
+                    className={classNames({
+                      "text-primary": branch?.hasDelivery,
+                      "text-slate-700": !branch?.hasDelivery,
+                    })}
+                  />
+                </div>
+              </div>,
+              isBranchLoading
+            )}
           </div>
-        </div>
-        <div className="flex flex-row items-center gap-4 pr-2 ml-6">
-          <p className="max-w-full overflow-hidden text-ellipsis whitespace-nowrap">
-            {getLocalizedWord(branchhInfo?.description)}
-          </p>
+
+          {/* description */}
+          <div className="flex flex-row gap-4 items-center ltr:ml-6 rtl:mr-6 ltr:pr-2 rtl:pl-2">
+            {withLoadingSkeleton(
+              <p className="max-w-full text-ellipsis overflow-hidden whitespace-nowrap">
+                {getLocalizedWord(branch?.address)}
+              </p>,
+              isBranchLoading
+            )}
+            {withLoadingSkeleton(
+              <button
+                className="flex flex-row items-center justify-center gap-3 p-0 m-0 ltr:ml-auto rtl:mr-auto cursor-pointer min-w-fit"
+                onClick={startChatHandler}
+              >
+                <span className="font-semibold text-primary whitespace-nowrap">
+                  {t("chatWithUs")}
+                </span>
+                <FontAwesomeIcon
+                  icon={faCommentDots}
+                  size="2x"
+                  className="text-primary"
+                />
+              </button>,
+              isBranchLoading
+            )}
+          </div>
+          <div className="rounded-lg overflow-hidden focus-within:shadow-2xl shadow-none transition-shadow">
+            <SearchBar />
+          </div>
+        </header>
+
+        {/* CATEGORIES */}
+
+        <aside className="flex flex-row flex-wrap gap-x-3 gap-y-2 justify-start items-start mt-5 mb-2">
           <button
-            className="flex flex-row items-center justify-center gap-3 p-0 m-0 ltr:ml-auto rtl:mr-auto cursor-pointer min-w-fit"
-            onClick={startChatHandler}
+            onClick={() => {
+              setFilter((f) => ({ ...f, categories: [] }));
+              setQueryParams({ page: 1, limit: LIMIT, branches: branchId });
+            }}
+            className={classNames("px-3 py-1 rounded-lg border text-sm", {
+              "bg-primary/50 shadow-lg text-slate-800":
+                !filter.categories?.length,
+              "bg-primary shadow text-black": filter.categories?.length,
+            })}
           >
-            <span className="font-semibold text-primary whitespace-nowrap">
-              {t("chatWithUs")}
-            </span>
-            <FontAwesomeIcon
-              icon={faCommentDots}
-              size="2x"
-              className="text-primary"
-            />
+            {t("reset")}
           </button>
-        </div>
-      </header>
+          {vendor?.productCategories?.map((category) => (
+            <button
+              onClick={() => {
+                toggleFilter("categories", category._id);
+                setQueryParams({ page: 1, limit: LIMIT, branches: branchId });
+              }}
+              key={category._id}
+              className={classNames("px-3 py-1 rounded-lg border text-sm", {
+                "bg-primary":
+                  filter.categories?.findIndex(
+                    (item) => item === category._id
+                  ) > -1,
+                "bg-transparent group-hover:bg-primary/50": !(
+                  filter.categories?.findIndex(
+                    (item) => item === category._id
+                  ) > -1
+                ),
+              })}
+            >
+              {getLocalizedWord(category.name)}
+            </button>
+          ))}
+        </aside>
 
-      <div className="p-8">
-        <RoutingTab routes={routes} />
-
-        <Outlet />
-      </div>
-    </div>
+        <PageQueryWrapper />
+      </SearchProvider>
+    </CardContainer>
   );
 }
