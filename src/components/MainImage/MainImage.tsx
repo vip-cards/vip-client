@@ -34,7 +34,7 @@ const MainImage: React.FC<IMainImageProps> = ({
     return (
       <div
         className={classNames(
-          "w-full h-full object-cover flex justify-center items-center",
+          "w-full h-full object-cover flex justify-center items-center shrink-0",
           className
         )}
         {...props}

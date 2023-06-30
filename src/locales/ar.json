@@ -772,5 +772,6 @@
   "job_jobType_notEmpty": "يرجى تحديد نوع الوظيفة",
   "job_jobType_required": "نوع الوظيفة مطلوب",
   "job_jobType_min": "يرجى تحديد نوع الوظيفة",
-  "job_jobType_max": "يرجى تحديد نوع الوظيفة"
+  "job_jobType_max": "يرجى تحديد نوع الوظيفة",
+  "last update": "آخر تحديث"
 }

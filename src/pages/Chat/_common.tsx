@@ -1,4 +1,5 @@
 import {
+  faClock,
   faPaperPlane,
   faPlusCircle,
   faUserTie,
@@ -10,12 +11,8 @@ import dayjs from "dayjs";
 import { getLocalizedWord } from "helpers/lang";
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
-
-interface IMessage {
-  text: string;
-  timestamp: string;
-  [key: string]: any;
-}
+import { motion } from "framer-motion";
+import { MainImage } from "components";
 
 export const ChatContainer = ({ children }) => (
   <div className="chat-page-container app-card-shadow max-w-[80vw] max-sm:max-w-full max-h-[80vh] max-sm:max-h-full min-w-[300px] mx-auto my-8">
@@ -30,7 +27,7 @@ interface IChatSidebar {
 export function ChatSidebar({ children, onCreateModal }: IChatSidebar) {
   const { t } = useTranslation();
   return (
-    <div className="chat-sidebar max-sm:!w-32 rtl:!pr-3 rtl:!pl-0">
+    <div className="chat-sidebar max-sm:!w-32 max-sm:!px-0 rtl:!pr-3 rtl:!pl-0">
       {children}
       <MainButton
         variant="primary"
@@ -51,7 +48,7 @@ export function ChatSidebar({ children, onCreateModal }: IChatSidebar) {
 interface IChatBodyContainer {
   children: React.ReactNode;
   messageList: IMessage[];
-  activeRoom: string | null;
+  activeRoom?: IRoom;
   onCreateModal: () => void;
 }
 
@@ -60,13 +57,33 @@ export function ChatBodyContainer({
   messageList,
   activeRoom,
 }: IChatBodyContainer) {
+  const { i18n, t } = useTranslation();
+  const lang = i18n.language;
+
   return (
     <div
       className={classNames("w-full h-full flex flex-col", {
         "bg-slate-200 duration-1000 animate-pulse":
-          !messageList?.length && activeRoom,
+          !messageList?.length && activeRoom?._id,
       })}
     >
+      <div
+        className={classNames(
+          "bg-primary text-white/70 gap-3 text-xs w-full h-10 flex justify-start items-end",
+          { "!hidden": !activeRoom?._id }
+        )}
+      >
+        <span className="first-letter:capitalize">{t("last update")}</span>
+        <time>
+          {" "}
+          {activeRoom?.lastUpdated &&
+            (dayjs(activeRoom?.lastUpdated).isBefore(dayjs().subtract(3, "day"))
+              ? dayjs(activeRoom?.lastUpdated)
+                  .locale(lang)
+                  .format("DD-MM-YYYY hh:mm a")
+              : dayjs(activeRoom?.lastUpdated).locale(lang).fromNow() + " ...")}
+        </time>
+      </div>
       {children}
     </div>
   );
@@ -85,8 +102,13 @@ export function MessageListRender({
 }: IMessageListRender) {
   if (!messageList.length) return null;
   return messageList?.map((message) => (
-    <div
+    <motion.div
       key={message.timestamp ?? new Date().toISOString() + Math.random() * 10}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.3, type: "spring", bounce: 0.25 }}
+      layoutScroll
+      exit={{ opacity: 0, scale: 0.8 }}
       className={classNames("py-3 px-5 rounded", {
         "bg-slate-600 ml-auto w-fit rounded-l-3xl rounded-tr-3xl text-slate-100":
           message[userRole] === userId || message[userRole]?._id === userId,
@@ -94,15 +116,20 @@ export function MessageListRender({
           !(message[userRole] === userId || message[userRole]?._id === userId),
       })}
     >
-      <div className="flex flex-col">
+      <motion.div
+        initial={{ y: 10 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+        className="flex flex-col"
+      >
         <span>{message.text}</span>
-        <span className="text-xs self-end text-slate-400 leading-3">
+        <span className="text-xs self-end text-slate-400 leading-3 whitespace-pre">
           {message.timestamp
-            ? dayjs(message.timestamp).format("DD-MM-YYYY hh:mm a")
+            ? dayjs(message.timestamp).format("DD-MM-YYYY hh:mma")
             : null}
         </span>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   ));
 }
 
@@ -134,7 +161,7 @@ export function ChatMessageListContainer({
 }
 
 interface IChatTextInput {
-  activeRoom: string | null;
+  activeRoom?: IRoom;
   messageText: string;
   setMessageText: React.Dispatch<React.SetStateAction<string>>;
   handleSendMessage: () => void;
@@ -150,13 +177,13 @@ export function ChatTextInput({
     <div className="mt-auto w-full border-t-2">
       <div
         className={classNames(
-          { "pointer-events-none opacity-50": !activeRoom },
+          { "pointer-events-none opacity-50": !activeRoom?._id },
           "flex flex-row justify-center items-center w-full gap-5 p-4"
         )}
       >
         <textarea
           className="w-full ring-1 h-[2.5rem] leading-[2.4rem] rounded-lg ring-primary whitespace-pre-line resize-none py-2 px-4"
-          placeholder={activeRoom ? t("typeMessage") : t("selectRoom")}
+          placeholder={activeRoom?._id ? t("typeMessage") : t("selectRoom")}
           value={messageText}
           onChange={(e) => {
             setMessageText(e.target.value);
@@ -179,11 +206,11 @@ export function ChatTextInput({
 }
 
 interface IRenderRoomList {
-  roomList: any[];
+  roomList: IRoom[];
   userRole: string;
   userId: string;
-  activeRoom: string | null;
-  onSelectRoom: (roomId: string) => void;
+  activeRoom?: IRoom;
+  onSelectRoom: (room: IRoom) => void;
 }
 
 export const RenderRoomList = ({
@@ -193,40 +220,51 @@ export const RenderRoomList = ({
   activeRoom,
   onSelectRoom,
 }: IRenderRoomList) => {
+  const { i18n } = useTranslation();
+  const lang = i18n.language;
+
   if (!roomList.length) return null;
+
   return (
-    <div className="overflow-y-scroll max-h-[73vh] !h-min">
-      {roomList?.map(({ members, _id: RoomId }) => {
+    <motion.div layoutScroll className="overflow-y-auto max-h-[73vh] !h-min">
+      {roomList?.map((room, idx) => {
+        const { members, _id: RoomId, lastUpdated, lastMessage } = room;
         const vipImg = require("../../assets/images/vip.png");
 
         if (!Object.keys(members).includes(userRole)) return null;
 
-        const otherChatter =
+        const otherChatter: IChatter =
           members?.[
             Object.keys(members).filter(
               (item) => members[item]._id !== userId
             )[0]
           ];
+
         const img = otherChatter.name.en.includes("VIP")
           ? vipImg
           : otherChatter?.image?.Location;
+
         return (
-          <div
+          <motion.div
+            layout
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.1, delay: idx * 0.03 }}
             key={otherChatter?._id}
             className={classNames(
-              "flex sm:flex-row items-center gap-3 sm:h-14 max-sm:flex-col",
-              "hover:bg-slate-300/80 cursor-pointer",
-              "ltr:rounded-l-2xl rtl:rounded-r-2xl px-3 py-2 max-w-full overflow-hidden",
-              { "active-room-tab": activeRoom === RoomId }
+              "flex sm:flex-row items-center gap-3 sm:h-20 max-sm:flex-col",
+              "hover:bg-slate-300/80 cursor-pointer transition-all duration-100 ease-in-out",
+              "ltr:rounded-l-2xl rtl:rounded-r-2xl px-3 py-2 max-w-full overflow-hidden max-sm:!rounded-none",
+              { "active-room-tab": activeRoom?._id === RoomId }
             )}
-            onClick={() => onSelectRoom(RoomId)}
+            onClick={() => onSelectRoom(room)}
           >
-            <div className="w-12 h-12 min-w-[3rem] min-h-[3rem] shrink-0 grow-0 max-w-[3rem] max-h-12 rounded-full flex items-center border bg-slate-200/50 justify-center overflow-hidden">
+            <div className="w-9 h-9 md:w-11 md:h-11 shrink-0 grow-0 max-w-[3rem] max-h-12 rounded-full flex items-center border bg-slate-200/50 justify-center overflow-hidden">
               {img ? (
-                <img
+                <MainImage
                   src={img}
-                  alt=""
-                  className="max-h-full max-w-full object-cover h-full w-full"
+                  alt={getLocalizedWord(otherChatter.name)}
                 />
               ) : (
                 <FontAwesomeIcon
@@ -236,13 +274,26 @@ export const RenderRoomList = ({
                 />
               )}
             </div>
-            <span className="flex-grow text-lg whitespace-nowrap overflow-hidden text-ellipsis max-sm:text-xs max-sm:whitespace-normal max-sm:leading-3 max-sm:text-center line-clamp-2">
-              {getLocalizedWord(otherChatter?.name)}
-            </span>
-          </div>
+            <div className="flex w-full flex-col h-full justify-between">
+              <span className="flex-grow w-full text-lg whitespace-nowrap overflow-hidden text-ellipsis max-sm:text-xs max-sm:whitespace-normal max-sm:leading-3 max-sm:text-center line-clamp-2">
+                {getLocalizedWord(otherChatter?.name)}
+              </span>
+              <span className="flex-grow text-xs w-full text-slate-800 whitespace-nowrap overflow-hidden text-ellipsis max-sm:text-[0.6rem] max-sm:whitespace-normal max-sm:leading-3 text-start line-clamp-1">
+                <FontAwesomeIcon icon={faPaperPlane} className="me-1" />
+
+                {lastMessage.text}
+              </span>
+              <span className="mt-auto text-xs whitespace-nowrap text-slate-600 leading-3">
+                <FontAwesomeIcon icon={faClock} className="me-1" />
+                {dayjs(lastUpdated).isBefore(dayjs().subtract(3, "day"))
+                  ? dayjs(lastUpdated).locale(lang).format("DD-MM-YYYY")
+                  : dayjs(lastUpdated).locale(lang).fromNow()}
+              </span>
+            </div>
+          </motion.div>
         );
       })}
-    </div>
+    </motion.div>
   );
 };
 

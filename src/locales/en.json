@@ -11,6 +11,7 @@
   "Accepted Subscriptions": "Accepted Subscriptions",
   "Active": "Active",
   "Active Agents": "Active Agents",
+
   "Active Banners": "Active Banners",
   "Active Branches": "Active Branches",
   "Active Cashiers": "Active Cashiers",
@@ -782,5 +783,6 @@
   "job_category_min": "Please select a job category",
   "job_category_notEmpty": "Please select a job category",
   "job_category_required": "Job category is required",
-  "job_companyName_min": "Please enter a company name"
+  "job_companyName_min": "Please enter a company name",
+  "last update": "Last update"
 }

@@ -35,14 +35,16 @@ function Chat() {
   const { socket } = useSocket();
   const { t } = useTranslation();
   const location = useLocation();
-  const user = useSelector(selectAuth);
-  const { data } = useSWR("admin-list", () => chatServices.getAdmins());
 
-  const [roomList, setRoomList] = useState([]);
-  const [activeRoom, setActiveRoom] = useState("");
+  const user = useSelector(selectAuth);
+
+  const [roomList, setRoomList] = useState<IRoom[]>([]);
+  const [activeRoom, setActiveRoom] = useState<IRoom>();
   const [messageText, setMessageText] = useState("");
-  const [messageList, setMessageList] = useState([]);
+  const [messageList, setMessageList] = useState<IMessage[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const { data } = useSWR("admin-list", () => chatServices.getAdmins());
 
   const { state } = location;
   const userId = user.userData._id;
@@ -58,11 +60,14 @@ function Chat() {
     setIsModalVisible(false);
   };
 
-  const handleSelectRoom = (_id) => {
-    setActiveRoom(_id);
+  const handleSelectRoom = (room: IRoom) => {
+    setActiveRoom(room);
     setMessageList([]);
-    getRoom(_id, (data) => {
-      setMessageList(data.record?.messages);
+    setMessageText("");
+    getRoom(room._id, (data: { record: IRoom }) => {
+      const room: IRoom = data.record;
+      if (!room) return;
+      setMessageList(room.messages);
     });
   };
 
@@ -74,18 +79,18 @@ function Chat() {
     if (!_text || !_text.length) return;
 
     const message = {
-      _id: activeRoom,
+      _id: activeRoom._id,
       message: {
         text: normalizedText,
         timestamp: new Date().toISOString(),
         client: userId,
-      },
+      } as Omit<IMessage, "_id">,
     };
     sendMessage(message);
     setMessageText("");
   };
 
-  const onListRooms = (data) => {
+  const onListRooms = (data: ICustomResponse<IRoom>["data"]) => {
     setRoomList(data.records.filter((record) => record.lastMessage));
   };
 
@@ -96,6 +101,7 @@ function Chat() {
 
   const onSentMessage = (data) => {
     setMessageList((list) => [...list, data.message]);
+    listRooms({ client: userId, page: 1, limit: 20 }, onListRooms);
   };
 
   useEffect(() => {
@@ -157,7 +163,7 @@ function Chat() {
         <div className="chat-modal">
           {/* Admin */}
           {!!adminsList.length &&
-            adminsList?.map((admin) => (
+            adminsList?.map((admin: IChatter) => (
               <button
                 onClick={() => handleCreateAdminRoom(admin?._id)}
                 key={admin._id + "-item"}
