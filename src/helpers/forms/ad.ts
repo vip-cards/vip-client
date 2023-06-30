@@ -8,7 +8,7 @@ export const adFormData = [
     type: "list",
     list: [
       { _id: "banner", name: { en: "banner", ar: "بانر" } },
-      { _id: "pop-up", name: { en: "pop-up", ar: "إعلان منبثق" } },
+      { _id: "popup", name: { en: "popup", ar: "إعلان منبثق" } },
       { _id: "notification", name: { en: "notification", ar: "إشعار" } },
     ],
     identifier: "name",
