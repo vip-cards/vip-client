@@ -4,7 +4,7 @@ import {
   SearchBar,
   SearchProvider,
 } from "components/PageQueryContainer/PageQueryContext";
-import Pagination from "components/Pagination/Pagination";
+
 import { listRenderFn } from "helpers/renderFn";
 import { useLayoutEffect, useState } from "react";
 import clientServices from "services/clientServices";
@@ -21,12 +21,11 @@ export default function ApplyJobHome({ id = undefined }) {
     data: jobsData,
     isLoading,
     mutate,
-  } = useSWR([`view-${id}-jobs`, queryParams], ([, queryParams]) =>
+  } = useSWR([`view-${id ?? "all"}-jobs`, queryParams], ([, queryParams]) =>
     clientServices.listAllJobs(queryParams)
   );
 
   const { records: jobs = undefined, counts = 0 } = jobsData ?? {};
-  const totalPages = Math.ceil(counts / LIMIT);
 
   useLayoutEffect(() => {
     if (id) setQueryParams((q) => ({ ...q, client: id }));
@@ -49,7 +48,7 @@ export default function ApplyJobHome({ id = undefined }) {
         })
       }
     >
-      <div className="focus-within:drop-shadow-2xl shadow-none transition-all border-t-primary border-t-2">
+      <div className="transition-all border-t-primary border-t-2">
         <SearchBar withSelector={true} types={["jobTitle", "companyName"]} />
       </div>
       <div className="flex flex-col h-full flex-grow">

@@ -99,12 +99,15 @@ export function SearchProvider({
   useEffect(() => {
     if (!searchQuery) {
       setQueryParams((prev) => ({
-        ...prev,
+        // ...prev,
         page: 1,
         limit: LIMIT,
 
-        [`${searchKey}.ar`]: undefined,
-        [`${searchKey}.ar`]: undefined,
+        // [`name.ar`]: undefined,
+        // [`name.en`]: undefined,
+
+        // [`${searchKey}.ar`]: undefined,
+        // [`${searchKey}.en`]: undefined,
       }));
     } else {
       handleListSearch();
