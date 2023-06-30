@@ -14,29 +14,40 @@ function SearchTypeSelector({
 
   return (
     <Select
+      autoFocus
       isClearable
       isSearchable
       isMulti={false}
-      name="list-selector"
-      isRtl={lang === "ar"}
-      closeMenuOnSelect={true}
-      placeholder={t("select")}
-      className="w-40 max-w-60"
-      classNamePrefix="list-select"
+      closeMenuOnScroll
+      closeMenuOnSelect
+      blurInputOnSelect
+      hideSelectedOptions
+      defaultMenuIsOpen={false}
       menuShouldScrollIntoView={true}
+      //
+      isRtl={lang === "ar"}
+      name="list-selector"
+      placeholder={t("select")}
+      className="w-40 max-w-60 max-sm:w-[90%] max-sm:max-w-[90%]"
+      classNamePrefix="list-select"
       getOptionValue={(option) => option.value}
       getOptionLabel={(option) => t(option.label)}
       options={types.map((type) => ({ value: type, label: type }))}
+      //
       styles={{
         control: (provided, state) => ({
           ...provided,
           height: "2.5rem",
-          borderRadius: "0.5rem",
+          borderRadius: "0.7rem",
           border: "1px solid #e2e8f0",
           boxShadow: state.isFocused ? "0 0 0 1px #fc7300" : null,
           "&:hover": { border: "1px solid #fc7300" },
         }),
-        menu: (provided) => ({ ...provided, zIndex: 100 }),
+
+        menu: (provided) => ({
+          ...provided,
+          zIndex: 100,
+        }),
       }}
       onChange={(val) =>
         setQueryParams((q) => ({ ...q, type: val?.value ?? "" }))
