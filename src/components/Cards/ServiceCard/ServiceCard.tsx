@@ -8,11 +8,14 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import clientServices from "services/clientServices";
+import { motion } from "framer-motion";
 
 type Props = {
   service: IService;
   refetch?: () => void;
 };
+
+const AnimatedLink = motion(Link);
 
 const ServiceCard = (props: Props) => {
   const { service } = props;
@@ -38,7 +41,17 @@ const ServiceCard = (props: Props) => {
   };
 
   return (
-    <Link
+    <AnimatedLink
+      layout
+      whileHover={{
+        scale: 1.05,
+      }}
+      transition={{
+        duration: 0.2,
+        type: "spring",
+        stiffness: 260,
+        damping: 14,
+      }}
       key={service._id}
       to={`/services/${service._id}`}
       className={classNames(
@@ -67,7 +80,7 @@ const ServiceCard = (props: Props) => {
       <time dateTime={service.publishDate} className="self-end">
         {dayjs(service.publishDate).format("DD, MMM")}
       </time>
-    </Link>
+    </AnimatedLink>
   );
 };
 

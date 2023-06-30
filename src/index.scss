@@ -90,7 +90,20 @@
 ::-moz-scrollbar-button:hover {
   background-color: #bbb;
 }
+@layer utilities {
+  @variants responsive {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
 
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
+}
 $font-size-base: 1rem;
 
 $font-size-upper: 2.5rem;

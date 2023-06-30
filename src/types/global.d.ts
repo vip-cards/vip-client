@@ -11,3 +11,26 @@ declare interface IImage {
   Key: string;
   Bucket: string;
 }
+
+declare interface ICustomResponse<T> {
+  success: boolean;
+  code: number;
+  error?: string;
+  data?: {
+    records?: T[];
+    record?: T;
+  };
+
+  counts?: number;
+}
+
+declare enum EUserType {
+  CLIENT = "client",
+  VENDOR = "vendor",
+  ADMIN = "admin",
+  ORG = "org",
+  BRANCH = "branch",
+  AGENT = "agent",
+  PARENT = "parent",
+  CHILD = "child",
+}

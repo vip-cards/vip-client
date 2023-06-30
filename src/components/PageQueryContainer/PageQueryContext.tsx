@@ -1,5 +1,6 @@
 import Search from "components/Inputs/Search/Search";
 import Pagination from "components/Pagination/Pagination";
+import { use } from "i18next";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router";
 // TODO: split all exports
@@ -82,16 +83,16 @@ export function SearchProvider({
 }: ISearchProviderProps) {
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
+  const [queryType, setQueryType] = useState<string>("name");
   const totalPages = Math.ceil(itemsCount / LIMIT);
-  const searchKey = queryParams.type ? queryParams.type : "name";
 
   const handleListSearch = () => {
     if (!searchQuery) return;
     const arabicReg = /[\u0621-\u064A]/g;
     const isArabic = arabicReg.test(searchQuery);
     const queryObj = {
-      ...(!isArabic && { [`${searchKey}.en`]: searchQuery }),
-      ...(isArabic && { [`${searchKey}.ar`]: searchQuery }),
+      ...(!isArabic && { [`${queryType}.en`]: searchQuery }),
+      ...(isArabic && { [`${queryType}.ar`]: searchQuery }),
     };
     setQueryParams((prev) => ({ ...prev, page: 1, ...queryObj }));
   };
@@ -106,14 +107,25 @@ export function SearchProvider({
         [`name.ar`]: undefined,
         [`name.en`]: undefined,
 
-        [`${queryParams.type}.ar`]: undefined,
-        [`${queryParams.type}.en`]: undefined,
+        [`${queryType}.ar`]: undefined,
+        [`${queryType}.en`]: undefined,
       }));
     } else {
       handleListSearch();
     }
+    if (queryParams.type) {
+      setQueryType(queryParams.type.toString());
+    } else {
+      setQueryParams((prev) => ({
+        ...prev,
+        [`${queryType}.ar`]: undefined,
+        [`${queryType}.en`]: undefined,
+      }));
+      setQueryType("");
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchQuery, searchKey]);
+  }, [searchQuery, queryParams.type]);
 
   useEffect(() => {
     setQueryParams((p) => ({ ...p, ...filter }));
