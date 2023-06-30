@@ -35,7 +35,7 @@ Axios.interceptors.request.use(async (req) => {
 
   if (!isTokenExpired) {
     req.headers.Authorization = `Bearer ${auth.token}`;
-    if (req.method === "get") {
+    if (req.method === "get" && !req.url.includes("ad/list")) {
       req.params = {
         ...req.params,
         isActive: req.url.includes("subs") ? false : true,

@@ -5,13 +5,18 @@ import NoData from "components/NoData/NoData";
 import clientServices from "services/clientServices";
 import useSWR from "swr";
 import "./PreviousAds.scss";
+import { useSelector } from "react-redux";
+
+const adsFetcher = ([key, params]) => clientServices.listAllAds({ ...params });
 
 const PreviousAds = () => {
+  const auth = useSelector((state) => state.auth.userData);
+
   const {
     data: adsData,
     error,
     isLoading,
-  } = useSWR("list-ads", () => clientServices.listAllAds());
+  } = useSWR(["list-previous-ads", { client: auth._id }], adsFetcher);
 
   const { records: adsList = undefined } = adsData ?? {};
 

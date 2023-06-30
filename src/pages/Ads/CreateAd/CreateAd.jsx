@@ -71,7 +71,7 @@ function CreateAd() {
   const submitCreateAdHandler = async (e) => {
     e.preventDefault();
 
-    if (!uploadImage && withSize) {
+    if (!uploadImage) {
       toastPopup.error("Please provide a valid image!");
       return;
     }
@@ -102,9 +102,9 @@ function CreateAd() {
     try {
       const adData = await clientServices.createAd(mappedData);
       const adId = adData.record._id;
-      if ("image" in formData) {
-        const data = await clientServices.uploadAdImg(adId, formData);
-      }
+
+      const data = await clientServices.uploadAdImg(adId, formData);
+
       toastPopup.success("Ad Created Successfully");
       navigate("/ads");
     } catch (e) {
@@ -137,23 +137,22 @@ function CreateAd() {
             />
           );
         })}
-        {withSize && ad.bannerSize && (
-          <ImageEdit
-            setImgUpdated={setUploadImage}
-            setUploadImage={setUploadImage}
-            uploadImage={uploadImage}
-            style={{
-              overflow: "hidden",
-              width: "100%",
-              height:
-                ad.bannerSize === "small"
-                  ? "100px"
-                  : ad.bannerSize === "medium"
-                  ? "200px"
-                  : "300px",
-            }}
-          />
-        )}
+
+        <ImageEdit
+          setImgUpdated={setUploadImage}
+          setUploadImage={setUploadImage}
+          uploadImage={uploadImage}
+          style={{
+            overflow: "hidden",
+            width: "100%",
+            height:
+              ad.bannerSize === "small"
+                ? "100px"
+                : ad.bannerSize === "medium"
+                ? "200px"
+                : "300px",
+          }}
+        />
 
         <div className="main-input-label">
           <MainButton
