@@ -166,7 +166,7 @@ function OrderRequestsTable({
                           className={classNames(
                             "text-sm rounded-md py-1 px-2",
                             {
-                              "bg-primary/10 ring-primary/80 ring-2":
+                              "bg-green-600/10 ring-green-600/80 ring-2":
                                 request.status.includes("accepted"),
                               "bg-red-500/10 ring-red-500/80 ring-2":
                                 request.status.includes("rejected"),

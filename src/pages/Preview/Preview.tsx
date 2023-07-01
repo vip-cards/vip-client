@@ -1,10 +1,8 @@
-import { faImage } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MainImage } from "components";
 import CardContainer from "components/CardContainer/CardContainer";
 import HomeSwiper from "pages/Home/HomeSwiper";
 import { useTranslation } from "react-i18next";
-import { useLocation, useParams } from "react-router";
+import { useLocation } from "react-router";
 import { SwiperSlide } from "swiper/react";
 
 export interface IPreviewProps {}
@@ -12,7 +10,7 @@ export interface IPreviewProps {}
 export default function Preview(props: IPreviewProps) {
   const { t } = useTranslation();
   const { state } = useLocation();
-  console.log(state);
+
   return (
     <CardContainer title="" className="flex flex-col gap-5 max-w-5xl mx-auto">
       {/* --- */}

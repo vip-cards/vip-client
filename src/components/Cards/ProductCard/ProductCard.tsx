@@ -66,7 +66,7 @@ export default function ProductCard({ product }: { product: IProduct }) {
         }}
       >
         <ProductDetailsContainer product={product} />
-        {location.pathname !== "/wishlist" && (
+        {!location.pathname.includes("/wishlist") && (
           <ProductActionsContainer product={product} ref={popupRef} />
         )}
       </div>

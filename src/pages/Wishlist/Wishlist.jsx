@@ -4,7 +4,6 @@ import LoadingProductCard from "components/Cards/ProductCard/LoadingProductCard"
 import { listRenderFn } from "helpers/renderFn";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 export default function Wishlist() {
   const { products: wishlist, loading } = useSelector(

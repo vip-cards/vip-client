@@ -26,7 +26,7 @@ export default function Categories() {
     () =>
       clientServices.listAllCategories({
         ...queryParams,
-        type: !!vendorId ? "product" : "vendor",
+        type: vendorId ? "product" : "vendor",
       })
   );
 

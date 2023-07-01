@@ -35,4 +35,5 @@ export const adFormData = [
   },
   { name: "age_from", type: "number", required: false },
   { name: "age_to", type: "number", required: false },
+  { name: "link", type: "text", required: false },
 ];
