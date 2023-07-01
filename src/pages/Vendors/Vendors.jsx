@@ -36,20 +36,23 @@ const sortOptions = [
 
 export default function Vendors() {
   const { categoryId } = useParams();
+
   const initialFilters = { category: [categoryId] };
+  const initialQueryParams = {
+    page: 1,
+    limit: LIMIT,
+    ...initialFilters,
+  };
+
   const [filter, setFilter] = useState(initialFilters);
   const [sort, setSort] = useState(null);
 
-  const [queryParams, setQueryParams] = useState({
-    page: 1,
-    limit: LIMIT,
-    ...filter,
-  });
+  const [queryParams, setQueryParams] = useState(initialQueryParams);
 
   const fetcherSwitch = (key, params) => {
     switch (key) {
       case "rating":
-        return clientServices.listAllVendors(params);
+        return clientServices.listAllVendorsByRating(params);
       case "nearest":
         return clientServices.listNearestVendorBranches(params);
       default:
