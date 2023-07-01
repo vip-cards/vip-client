@@ -61,7 +61,7 @@ export default function AccountOrders() {
             </b>
           </p>
         </div>
-        <div className="z-10 p-5 flex justify-between flex-row flex-wrap gap-4">
+        <div className="p-5 flex justify-between flex-row flex-wrap gap-4">
           <Select
             isClearable
             name="status"
