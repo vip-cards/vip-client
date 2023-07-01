@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { MainButton } from "components/Buttons";
 import ProductCard from "components/Cards/ProductCard/ProductCard";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import NoData from "components/NoData/NoData";
@@ -24,7 +23,7 @@ export default function Offers({ isHotDeal = false }) {
     () => clientServices.listAllProducts({ isHotDeal, ...queryParams })
   );
 
-  const { data: categoriesData } = useSWR("all-categories", () =>
+  const { data: categoriesData } = useSWR("all--product-categories", () =>
     clientServices.listAllCategories({ type: "product" })
   );
 
@@ -36,7 +35,6 @@ export default function Offers({ isHotDeal = false }) {
     productsData ?? {};
   const { records: categories = undefined } = categoriesData ?? {};
   const { records: vendors = undefined } = vendorsData ?? {};
-  const totalPages = Math.ceil(productsCount / LIMIT);
 
   const toggleFilter = (arrayKey = "vendors", itemId) => {
     const newVendorFilterList = [...filter[arrayKey]];
