@@ -1,6 +1,7 @@
 import {
   faBuilding,
   faCity,
+  faCoins,
   faCreditCard,
   faFlag,
   faHouseUser,
@@ -9,6 +10,7 @@ import {
   faMap,
   faMapPin,
   faMountainCity,
+  faPhone,
   faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -221,10 +223,10 @@ function OrderRequestsTable({
                         ]}
                       />
                       <hr className="mt-8" />
-                      <section>
+                      <section className="">
                         <h5 className="my-3">{t("paymentDetails")}</h5>
-                        <div className="flex flex-row gap-3">
-                          <div className="h-24 w-24 items-center flex-col flex justify-center border-primary rounded-lg border text-primary">
+                        <div className="max-w-lg mx-auto flex flex-row gap-3 flex-wrap w-full">
+                          <div className="h-24 shrink-0 w-24 items-center flex-col flex justify-center border-primary rounded-lg border text-primary">
                             <FontAwesomeIcon
                               icon={
                                 request.paymentMethod === "cash on delivery"
@@ -258,13 +260,25 @@ function OrderRequestsTable({
                                 )}
                             </p>
                           </div>
+                          <div className="ms-auto">
+                            <div className="h-24 w-24 items-center flex-col flex justify-center border-primary rounded-lg border text-primary">
+                              <FontAwesomeIcon
+                                icon={faCoins}
+                                className="p-2"
+                                size="2x"
+                              />
+                              <span>
+                                {getLocalizedNumber(request.points ?? 0)}
+                              </span>
+                            </div>{" "}
+                          </div>
                         </div>
                       </section>
 
                       <hr className="mt-8" />
                       <section>
                         <h5 className="my-3">{t("orderDetails")}</h5>
-                        <div className="flex flex-col divide-y divide-black/5 gap-2">
+                        <div className="max-w-lg mx-auto flex flex-col divide-y divide-black/5 gap-2">
                           {request.items.map((item) => (
                             <div
                               key={item.product._id}
@@ -306,8 +320,17 @@ function OrderRequestsTable({
                       <hr className="mt-8" />
                       <section>
                         <h5 className="my-3">{t("address")}</h5>
-                        <div className="flex flex-col divide-y divide-black/5 gap-2">
-                          <p className="flex flex-row gap-3">
+                        <div className="max-w-lg mx-auto flex flex-col divide-y divide-black/5 gap-2">
+                          <div className="flex flex-row gap-3">
+                            <div className="h-7 w-7 mb-2 items-center flex-col flex justify-center border-primary rounded-lg border text-primary">
+                              <FontAwesomeIcon
+                                icon={faPhone}
+                                className="text-primary"
+                              />
+                            </div>
+                            {request.contactPhone ?? "---"}
+                          </div>
+                          <div className="flex flex-row gap-3">
                             <div className="h-7 w-7 items-center flex-col flex justify-center border-primary rounded-lg border text-primary">
                               <FontAwesomeIcon
                                 icon={faHouseUser}
@@ -315,8 +338,8 @@ function OrderRequestsTable({
                               />
                             </div>
                             {request.shippingAddress?.flatNumber ?? "---"}
-                          </p>
-                          <p className="flex flex-row gap-3">
+                          </div>
+                          <div className="flex flex-row gap-3">
                             <div className="h-7 w-7 items-center flex-col flex justify-center border-primary rounded-lg border text-primary">
                               <FontAwesomeIcon
                                 icon={faBuilding}
@@ -324,8 +347,8 @@ function OrderRequestsTable({
                               />
                             </div>
                             {request.shippingAddress?.buildingNumber ?? "---"}
-                          </p>
-                          <p className="flex flex-row gap-3">
+                          </div>
+                          <div className="flex flex-row gap-3">
                             <div className="h-7 w-7 items-center flex-col flex justify-center border-primary rounded-lg border text-primary">
                               <FontAwesomeIcon
                                 icon={faLandmark}
@@ -333,8 +356,8 @@ function OrderRequestsTable({
                               />
                             </div>
                             {request.shippingAddress?.specialMark ?? "---"}
-                          </p>
-                          <p className="flex flex-row gap-3">
+                          </div>
+                          <div className="flex flex-row gap-3">
                             <div className="h-7 w-7 items-center flex-col flex justify-center border-primary rounded-lg border text-primary">
                               <FontAwesomeIcon
                                 icon={faMapPin}
@@ -342,8 +365,8 @@ function OrderRequestsTable({
                               />
                             </div>
                             {request.shippingAddress?.street ?? "---"}
-                          </p>
-                          <p className="flex flex-row gap-3">
+                          </div>
+                          <div className="flex flex-row gap-3">
                             <div className="h-7 w-7 items-center flex-col flex justify-center border-primary rounded-lg border text-primary">
                               <FontAwesomeIcon
                                 icon={faMountainCity}
@@ -351,8 +374,8 @@ function OrderRequestsTable({
                               />
                             </div>
                             {request.shippingAddress?.district ?? "---"}
-                          </p>
-                          <p className="flex flex-row gap-3">
+                          </div>
+                          <div className="flex flex-row gap-3">
                             <div className="h-7 w-7 items-center flex-col flex justify-center border-primary rounded-lg border text-primary">
                               <FontAwesomeIcon
                                 icon={faCity}
@@ -360,8 +383,8 @@ function OrderRequestsTable({
                               />
                             </div>
                             {request.shippingAddress?.city ?? "---"}
-                          </p>
-                          <p className="flex flex-row gap-3">
+                          </div>
+                          <div className="flex flex-row gap-3">
                             <div className="h-7 w-7 items-center flex-col flex justify-center border-primary rounded-lg border text-primary">
                               <FontAwesomeIcon
                                 icon={faFlag}
@@ -369,8 +392,38 @@ function OrderRequestsTable({
                               />
                             </div>
                             {request.shippingAddress?.country ?? "---"}
-                          </p>
+                          </div>
                         </div>
+                      </section>
+                      <hr className="mt-8" />
+
+                      <section className="max-w-lg mx-auto flex w-full flex-row gap-4 justify-center items-center py-3">
+                        <button
+                          onClick={() =>
+                            handleOrderRequestProceed(
+                              request._id,
+                              +request.total
+                            )
+                          }
+                          disabled={
+                            request.status.includes("pending") ||
+                            request.status.includes("rejected") ||
+                            request.status.includes("client")
+                          }
+                          className="disabled:!opacity-20 bg-primary flex-grow rounded-lg text-white opacity-80 transition-opacity py-1 hover:opacity-100"
+                        >
+                          {t("checkout")}
+                        </button>
+                        <button
+                          disabled={
+                            request.status.includes("rejected") ||
+                            request.status.includes("client")
+                          }
+                          onClick={() => handleClientReject(request)}
+                          className="disabled:!opacity-20 bg-red-500 flex-grow rounded-lg text-white opacity-80 transition-opacity py-1 hover:opacity-100"
+                        >
+                          {t("Decline")}
+                        </button>
                       </section>
                     </Modal>
                   </Fragment>
