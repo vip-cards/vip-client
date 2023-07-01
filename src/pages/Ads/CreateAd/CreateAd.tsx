@@ -1,24 +1,23 @@
+import classNames from "classnames";
+import { MainImage } from "components";
 import { MainButton } from "components/Buttons";
 import CardContainer from "components/CardContainer/CardContainer";
 import { ImageEdit, MainInput } from "components/Inputs";
+import Modal from "components/Modal/Modal";
 import { adFormData } from "helpers/forms/ad";
 import toastPopup from "helpers/toastPopup";
 import useCountriesArr from "helpers/useCountriesArr";
 import i18n from "locales/i18n";
+import HomeSwiper from "pages/Home/HomeSwiper";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import clientServices from "services/clientServices";
-
-import "./CreateAd.scss";
-import { Link } from "react-router-dom";
-import { ROUTES } from "constants/routes";
-import classNames from "classnames";
-import Modal from "components/Modal/Modal";
 import { SwiperSlide } from "swiper/react";
-import { MainImage } from "components";
-import HomeSwiper from "pages/Home/HomeSwiper";
+import "./CreateAd.scss";
+import { selectAuth } from "store/auth-slice";
+import dayjs from "dayjs";
 
 /***
  * name
@@ -33,15 +32,15 @@ function CreateAd() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { cities, countries, setCities } = useCountriesArr();
-  const user = useSelector((state) => state.auth.userData);
-  const vendor = useSelector((state) => state.auth.vendorId);
+  const user = useSelector(selectAuth).userData;
+  const vendor = useSelector(selectAuth).vendorId;
   const [loading, setLoading] = useState(false);
   const [productList, setProductList] = useState([]);
   const [uploadImage, setUploadImage] = useState(null);
   const [previewModal, setPreviewModal] = useState(false);
-  const [ad, setAd] = useState({ vendor });
+  const [notificationModal, setNotificationModal] = useState(false);
+  const [ad, setAd] = useState<{ [x: string]: any }>({ vendor });
 
-  const lang = i18n.language;
   const withSize = ad.type === "banner";
   //  || ad.type === "pop-up" || ad.type === "notification";
   const withProduct = ad.type === "promotion";
@@ -169,7 +168,7 @@ function CreateAd() {
           })}
           onClick={() => setPreviewModal(!!uploadImage)}
         >
-          preview
+          {t("preview")}
         </MainButton>
         <div className="main-input-label">
           <MainButton
@@ -302,6 +301,68 @@ function CreateAd() {
         >
           <MainImage src={imgUrl} />
         </div>
+
+        {/*         */}
+        <div
+          className={classNames("overflow-y-scroll h-[70vh]", {
+            hidden: !uploadImage || ad.type !== "notification",
+          })}
+        >
+          <h4>{t("notification")}</h4>
+          <div className="flex-grow min-w-[200px] rounded-xl overflow-hidden flex justify-center items-center max-w-full">
+            <ul className="max-h-[75vh] z-50 relative overflow-y-auto transform-gpu max-xs:ltr:!-translate-x-[91.7%] max-xs:rtl:!-translate-x-[8.09%]">
+              {Array(7)
+                .fill(0)
+                .map((_, i) => (
+                  <li
+                    key={"notification" + i}
+                    className={classNames(
+                      "relative cursor-pointer px-3 py-5 hover:bg-gray-100 w-[21rem] max-w-[90vw]",
+                      {
+                        "bg-slate-100/40 border-0 border-b-2 border-b-slate-300/40":
+                          false,
+                      }
+                    )}
+                    onClick={() => setNotificationModal(true)}
+                  >
+                    <span className="ml-auto absolute w-2 h-2 bg-primary rounded-full ltr:right-2 rtl:left-2 top-2 animate-pulse"></span>
+
+                    <div className="!flex w-full flex-row justify-center items-start gap-2 h-12">
+                      <div className="w-10 h-10 bg-primary rounded-xl overflow-hidden shrink-0">
+                        <MainImage src={imgUrl} />
+                      </div>
+                      <p className="me-auto !whitespace-normal line-clamp-2 text-ellipsis shrink-0 grow-0 w-[10rem]">
+                        {ad.notification ?? "No Text"}
+                      </p>
+                      <time
+                        className="text-xs text-gray-600/50 lowercase mt-auto flex-grow-0 flex-shrink-0"
+                        dateTime={dayjs().toISOString()}
+                      >
+                        {dayjs().isBefore(dayjs().subtract(3, "day"))
+                          ? dayjs().format("DD-MM-YYYY")
+                          : dayjs().fromNow()}
+                      </time>
+                    </div>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        onClose={() => setNotificationModal(false)}
+        visible={notificationModal}
+      
+        title=""
+      >
+        <a
+          href={ad.link ?? "/"}
+          target="_blank"
+          rel="noreferrer"
+          className="w-full h-full block"
+        >
+          <MainImage src={imgUrl} />
+        </a>
       </Modal>
     </CardContainer>
   );
