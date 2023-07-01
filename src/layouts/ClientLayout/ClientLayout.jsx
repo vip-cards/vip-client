@@ -20,6 +20,7 @@ import {
   JobPage,
   Jobs,
   Offers,
+  Preview,
   PreviousAds,
   ProductDetails,
   Services,
@@ -217,6 +218,8 @@ export default function ClientLayout() {
               path="/transaction-process"
               element={<TransactionProcess />}
             />
+            <Route path={`/${ROUTES.PREVIEW}`} element={<Preview />} />
+            <Route path="*" element={<Navigate to={`/${ROUTES.HOME}`} />} />
           </Routes>
         </Suspense>
       </div>

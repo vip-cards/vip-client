@@ -27,7 +27,7 @@ export default function AccountLayout() {
             <NavItem
               to="orders-requests"
               icon={faList}
-              title={t("orderRequests")}
+              title={t("Order Requests")}
             />
             <NavItem to="wishlist" icon={faHeart} title={t("wishlist")} />
             <NavItem to="coupons" icon={faRug} title={t("coupons")} />
@@ -35,7 +35,7 @@ export default function AccountLayout() {
           </ul>
         </nav>
         {/* CONTENT */}
-        <div className="account-outlet">
+        <div className="account-outlet overflow-hidden">
           <Outlet />
         </div>
       </div>

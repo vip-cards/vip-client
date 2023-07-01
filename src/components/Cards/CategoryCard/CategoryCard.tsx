@@ -1,19 +1,31 @@
 import categoryPlaceholder from "assets/images/categoreyPlaceHolder.png";
 import { getLocalizedWord } from "helpers/lang";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import "./CategoryCard.scss";
 
 interface ICategoryCardProps {
   category: IProductCategory;
   vendorId?: string;
 }
+const AnimatedLink = motion(Link);
 
 export default function CategoryCard({
   category,
   vendorId,
 }: ICategoryCardProps) {
   return (
-    <Link
+    <AnimatedLink
+      layout
+      whileHover={{
+        scale: 1.05,
+      }}
+      transition={{
+        duration: 0.2,
+        type: "spring",
+        stiffness: 260,
+        damping: 14,
+      }}
       className="category-card block"
       to={
         vendorId
@@ -33,6 +45,6 @@ export default function CategoryCard({
           <p>{getLocalizedWord(category.name)} </p>
         </div>
       </div>
-    </Link>
+    </AnimatedLink>
   );
 }

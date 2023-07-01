@@ -145,7 +145,7 @@ function ProductDetails(props) {
               </SwiperSlide>
             ))}
           </HomeSwiper>,
-          isProductLoading
+          isProductLoading || !product
         )}
 
         {/* details */}

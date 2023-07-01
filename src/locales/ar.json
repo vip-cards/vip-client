@@ -676,6 +676,7 @@
   "Subscription fess will be sent to the wallet number": "رسوم الاشتراك سوف ترسل إلى محفظة الرقم",
   "success": "تم بنجاح!",
   "upload the receipt": "رفع الإيصال",
+  "uploadImage": "رفع صورة",
   "scanByCashier": "المسح بواسطة الصرّاف",
   "Set to current location": "تحديث إلى الموقع الحالي",
   "telegram": "رقم التليجرام",
@@ -780,5 +781,8 @@
   "job_jobType_max": "يرجى تحديد نوع الوظيفة",
   "last update": "آخر تحديث",
   "orderStatus": "حالة الطلب",
-  "order requeset details": "تفاصيل طلب العميل"
+  "order requeset details": "تفاصيل طلب العميل",
+  "largeBanner": "لافتة كبيرة",
+  "mediumBanner": "لافتة متوسطة",
+  "smallBanner": "لافتة صغيرة"
 }
