@@ -11,7 +11,6 @@ import { listRenderFn } from "helpers/renderFn";
 import { t } from "i18next";
 import { useState } from "react";
 import { useParams } from "react-router";
-import Select from "react-select";
 import useSWR from "swr";
 import clientServices from "../../services/clientServices";
 import "./Vendors.scss";
@@ -22,7 +21,8 @@ const sortOptions = [
     value: "rating",
     label: (
       <span className="flex justify-between items-center gap-2">
-        {t("sortByRating")} <FontAwesomeIcon icon={faArrowDownWideShort} />
+        {t("sortByRating") as string}{" "}
+        <FontAwesomeIcon icon={faArrowDownWideShort} />
       </span>
     ),
   },
@@ -30,7 +30,7 @@ const sortOptions = [
     value: "nearest",
     label: (
       <span className="flex justify-between items-center gap-2">
-        {t("sortByNearest")} <FontAwesomeIcon icon={faLocation} />
+        {t("sortByNearest") as string} <FontAwesomeIcon icon={faLocation} />
       </span>
     ),
   },
@@ -39,7 +39,7 @@ const sortOptions = [
 export default function Vendors() {
   const { categoryId } = useParams();
 
-  const initialFilters = { category: [categoryId] };
+  const initialFilters = { category: categoryId };
   const initialQueryParams = {
     page: 1,
     limit: LIMIT,
@@ -47,9 +47,13 @@ export default function Vendors() {
   };
 
   const [filter, setFilter] = useState(initialFilters);
-  const [sort, setSort] = useState(null);
+  const [sort, setSort] = useState<{ value?: string; label?: any }>(null);
 
-  const [queryParams, setQueryParams] = useState(initialQueryParams);
+  const [queryParams, setQueryParams] = useState<{
+    page: number;
+    limit: number;
+    [x: string]: any;
+  }>(initialQueryParams);
 
   const fetcherSwitch = (key, params) => {
     switch (key) {
@@ -75,20 +79,6 @@ export default function Vendors() {
     ([key, params, sort]) => fetcherSwitch(key, params)
   );
 
-  const toggleCategory = (id) => {
-    const idx = filter.category?.findIndex((item) => item === id);
-    if (idx > -1) {
-      setFilter((f) => ({
-        ...f,
-        category: f.category.filter((item) => item !== id),
-      }));
-    } else {
-      setFilter((f) => ({
-        ...f,
-        category: [...f.category, id],
-      }));
-    }
-  };
   const vendorListRender = () =>
     listRenderFn({
       isLoading: vendorsLoading,
@@ -110,41 +100,49 @@ export default function Vendors() {
       initialFilters={initialFilters}
       setQueryParams={setQueryParams}
     >
-      <header className="flex flex-row justify-end w-full gap-4">
-        <div className="p-5">
-          <Select
-            defaultValue={sort?.value}
-            className="w-60"
-            styles={{
-              control: (provided, state) => ({
-                ...provided,
-                border: "1px solid #e2e8f0",
-                borderRadius: "0.5rem",
-                boxShadow: state.isFocused ? "0 0 0 1px #fc7300" : null,
-                "&:hover": {
-                  border: "1px solid #fc7300",
-                },
-              }),
-              menu: (provided) => ({
-                ...provided,
-                zIndex: 100,
-              }),
+      <aside className="flex flex-row flex-wrap gap-x-3 gap-y-2 justify-start items-start mb-5">
+        <button
+          onClick={() => {
+            setSort({});
+          }}
+          className={classNames("px-3 py-1 rounded-lg border text-sm", {
+            "bg-primary/50 shadow-lg text-slate-800": sort?.value === undefined,
+            "bg-primary shadow text-black": sort?.value !== undefined,
+          })}
+        >
+          <>{t("reset")}</>
+        </button>
+        {sortOptions.map((option) => (
+          <button
+            onClick={() => {
+              setSort((sort) =>
+                sort?.value === option?.value
+                  ? {}
+                  : {
+                      ...sort,
+                      value: option.value,
+                      label: option.label,
+                    }
+              );
             }}
-            isClearable
-            name="sort"
-            placeholder={t("choose")}
-            getOptionValue={(option) => option.value}
-            options={sortOptions}
-            onChange={(val) => setSort(val)}
-          />
-        </div>
-      </header>
+            key={option.value}
+            className={classNames("px-3 py-1 rounded-lg border text-sm", {
+              "bg-primary": sort?.value === option.value,
+              "bg-transparent group-hover:bg-primary/50":
+                sort?.value !== option.value,
+            })}
+          >
+            {option.label}
+          </button>
+        ))}
+      </aside>
+
       <aside className="flex flex-row flex-wrap gap-x-3 gap-y-2 justify-start items-start mb-2">
         <button
           onClick={() => {
             setFilter((f) => ({
               ...f,
-              category: categoryId ? [categoryId] : [],
+              category: categoryId ? categoryId : null,
             }));
             setQueryParams({ page: 1, limit: LIMIT });
           }}
@@ -153,22 +151,23 @@ export default function Vendors() {
             "bg-primary shadow text-black": filter.category?.length,
           })}
         >
-          {t("reset")}
+          <>{t("reset")}</>
         </button>
         {categories?.map((category) => (
           <button
             onClick={() => {
-              toggleCategory(category._id);
+              setFilter((f) => ({
+                ...f,
+                category:
+                  filter.category === category._id ? null : category._id,
+              }));
               setQueryParams(initialQueryParams);
             }}
             key={category._id}
             className={classNames("px-3 py-1 rounded-lg border text-sm", {
-              "bg-primary":
-                filter.category?.findIndex((item) => item === category._id) >
-                -1,
-              "bg-transparent group-hover:bg-primary/50": !(
-                filter.category?.findIndex((item) => item === category._id) > -1
-              ),
+              "bg-primary": filter.category === category._id,
+              "bg-transparent group-hover:bg-primary/50":
+                filter.category !== category._id,
             })}
           >
             {getLocalizedWord(category.name)}
