@@ -34,3 +34,17 @@ declare enum EUserType {
   PARENT = "parent",
   CHILD = "child",
 }
+
+declare enum EOrderRequestStatus {
+  PENDING = "pending",
+  VENDOR_ACCEPTED = "vendor accepted",
+  VENDOR_REJECTED = "vendor rejected",
+  CLIENT_ACCEPTED = "client accepted",
+  CLIENT_REJECTED = "client rejected",
+}
+
+declare interface ISumUser {
+  _id: string;
+  name: ILocalizedString;
+  image?: IImage;
+}
