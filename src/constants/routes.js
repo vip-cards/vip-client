@@ -22,4 +22,6 @@ export const ROUTES = Object.freeze({
   ADS: { MAIN: "ads", LIST: "list", CREATE: "create" },
   BLOCKED: "blocked",
   PAGE: "page",
+
+  PREVIEW: "preview",
 });

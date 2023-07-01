@@ -441,6 +441,7 @@
   "Type": "Type",
   "Updated successfully": "Updated successfully",
   "Upload": "Upload",
+  "uploadImage": "Upload Image",
   "Used": "Used",
   "Used Points": "Used Points",
   "Used free Trial": "Used free Trial",
@@ -791,5 +792,8 @@
   "job_companyName_min": "Please enter a company name",
   "last update": "Last update",
   "orderStatus": "Order Status",
-  "order requeset details": "Order Request Details"
+  "order requeset details": "Order Request Details",
+  "largeBanner": "Large Banner",
+  "smallBanner": "Small Banner",
+  "mediumBanner": "Medium Banner"
 }
