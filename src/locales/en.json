@@ -241,6 +241,7 @@
   "Is Editable": "Is Editable",
   "Is Hot Deal": "Is Hot Deal",
   "Is Limited": "Is Limited",
+  "items": "items",
   "Is Subscribed": "Is Subscribed",
   "Job": "Job",
   "Job Title": "Job Title",
@@ -292,6 +293,7 @@
   "NumberOfBarcodes": "Number of barcodes",
   "Order Requests": "Order Requests",
   "Orders": "Orders",
+  "orderDetails": "Order Details",
   "Org": "Org",
   "Organization": "Organization",
   "Organizations": "Organizations",
@@ -300,6 +302,7 @@
   "Password": "Password",
   "Payment Method": "Payment Method",
   "Payment method": "Payment method",
+  "paymentDetails": "Payment Details",
   "Pending": "Pending",
   "Pending Ads": "Pending Ads",
   "Pending Requests": "Pending Requests",
@@ -524,6 +527,8 @@
   "cart": "Cart",
   "casheir": "Casheir",
   "cashier": "Cashier",
+  "cash": "cash",
+
   "categories": "Categories",
   "category": "Category",
   "chat": "chat",
@@ -784,5 +789,7 @@
   "job_category_notEmpty": "Please select a job category",
   "job_category_required": "Job category is required",
   "job_companyName_min": "Please enter a company name",
-  "last update": "Last update"
+  "last update": "Last update",
+  "orderStatus": "Order Status",
+  "order requeset details": "Order Request Details"
 }

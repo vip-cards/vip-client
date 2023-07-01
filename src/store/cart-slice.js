@@ -142,6 +142,8 @@ const cartSlice = createSlice({
     });
 
     builder.addCase(removeFromCartThunk.fulfilled, (state, { payload }) => {
+      if (!payload?._id) return state;
+
       state._id = payload._id;
       state.vendor = payload.vendor;
       state.products = payload.items;

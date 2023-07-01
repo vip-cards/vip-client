@@ -27,6 +27,14 @@ const Modal: React.FC<IModal> = ({
 }) => {
   const { t } = useTranslation();
 
+  useEffect(() => {
+    if (visible) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  }, [visible]);
+
   const content = (
     <div className={classes.backdrop} onClick={onClose}>
       <motion.div
