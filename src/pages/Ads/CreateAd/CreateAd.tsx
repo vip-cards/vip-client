@@ -185,7 +185,11 @@ function CreateAd() {
         title=""
         onClose={() => setPreviewModal(false)}
       >
-        <div className="overflow-y-scroll h-[70vh]">
+        <div
+          className={classNames("overflow-y-scroll h-[70vh]", {
+            hidden: !uploadImage || ad.type !== "banner",
+          })}
+        >
           {/* --- */}
           <section>
             <h4>{t("largeBanner")}</h4>
@@ -289,6 +293,14 @@ function CreateAd() {
               </HomeSwiper>
             </div>
           </section>
+        </div>
+
+        <div
+          className={classNames("overflow-y-scroll h-[70vh]", {
+            hidden: !uploadImage || ad.type !== "popup",
+          })}
+        >
+          <MainImage src={imgUrl} />
         </div>
       </Modal>
     </CardContainer>
