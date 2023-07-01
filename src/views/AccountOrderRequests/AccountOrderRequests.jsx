@@ -54,7 +54,7 @@ const AccountOrderRequests = () => {
               }),
               menu: (provided, state) => ({
                 ...provided,
-                zIndex: 100,
+                zIndex: 50,
               }),
             }}
             name="status"

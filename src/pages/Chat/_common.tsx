@@ -27,7 +27,7 @@ interface IChatSidebar {
 export function ChatSidebar({ children, onCreateModal }: IChatSidebar) {
   const { t } = useTranslation();
   return (
-    <div className="chat-sidebar max-sm:!w-32 w-[25vw] max-w-[240px] flex-shrink-0 max-sm:!px-0 rtl:!pr-3 rtl:!pl-0">
+    <div className="chat-sidebar !pt-8 max-sm:!w-32 w-[25vw] max-w-[240px] flex-shrink-0 max-sm:!px-0 rtl:!pr-3 rtl:!pl-0">
       {children}
       <MainButton
         variant="primary"
@@ -69,7 +69,7 @@ export function ChatBodyContainer({
     >
       <div
         className={classNames(
-          "bg-primary text-white/70 gap-3 text-xs w-full h-10 flex justify-start items-end",
+          "bg-primary text-white/70 gap-3 text-xs w-full h-8 !opacity-100 shrink-0 min-h-8 flex justify-start items-end",
           { "!hidden": !activeRoom?._id }
         )}
       >

@@ -14,11 +14,11 @@ import { t } from "i18next";
 export default function AccountLayout() {
   return (
     <div className="app-card-shadow edit-account-container max-sm:!m-0 max-sm:!p-3 max-sm:!rounded-none">
-      <div className="account-layout-container">
+      <div className="account-layout-container relative">
         {/* TOP BAR */}
         {/* <div className="account-topbar">topbar</div> */}
         {/* SIDE BAR */}
-        <nav className="account-sidebar  max-w-full overflow-hidden  overflow-x-scroll max-sm:!border-none">
+        <nav className="account-sidebar  max-w-full overflow-hidden  max-sm:!border-none">
           <ul className="nav-menu gap-x-1">
             <NavItem to="details" icon={faUser} title={t("accountDetails")} />
             <NavItem to="barcode" icon={faBarcode} title={t("barcode")} />
@@ -35,7 +35,7 @@ export default function AccountLayout() {
           </ul>
         </nav>
         {/* CONTENT */}
-        <div className="account-outlet overflow-hidden">
+        <div className="account-outlet overflow-hidden pb-5">
           <Outlet />
         </div>
       </div>
