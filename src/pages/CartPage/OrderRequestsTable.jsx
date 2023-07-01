@@ -23,7 +23,6 @@ function OrderRequestsTable({ requests, handleOrderRequestProceed, refetch }) {
 
   return (
     <div className="flex flex-col shadow-lg rounded-lg">
-
       <div className="overflow-hidden overflow-x-auto p-8 x-12 ">
         <table className="table-fixed w-full min-w-[60rem]">
           <thead>
@@ -93,12 +92,7 @@ function OrderRequestsTable({ requests, handleOrderRequestProceed, refetch }) {
                         getLocalizedNumber(request.shippingFees ?? 0, true)) ||
                         "---"}
                     </td>
-                    <td>
-                      {getLocalizedNumber(
-                        +request.total + +(request.shippingFees ?? 0),
-                        true
-                      )}
-                    </td>
+                    <td>{getLocalizedNumber(+request.total, true)}</td>
                     <td>
                       <span
                         className={classNames("text-sm rounded-md py-1 px-2", {
@@ -117,10 +111,7 @@ function OrderRequestsTable({ requests, handleOrderRequestProceed, refetch }) {
                     <td className="flex flex-col gap-4 justify-center py-3">
                       <button
                         onClick={() =>
-                          handleOrderRequestProceed(
-                            request._id,
-                            +request.total + +(request.shippingFees ?? 0)
-                          )
+                          handleOrderRequestProceed(request._id, +request.total)
                         }
                         disabled={
                           request.status.includes("pending") ||
