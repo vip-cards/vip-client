@@ -184,10 +184,20 @@ export function ChatTextInput({
         )}
       >
         <textarea
-          className="w-full ring-1 h-[2.5rem] leading-[2.4rem] rounded-lg ring-primary whitespace-pre-line resize-none py-2 px-4"
-          placeholder={activeRoom?._id ? t("typeMessage") : t("selectRoom")}
+          className={classNames(
+            "w-full ring-1 h-[2.5rem] leading-[2.4rem] rounded-lg ring-primary whitespace-pre-line resize-none py-2 px-4",
+            { "opacity-60 pointer-events-none": activeRoom.isBlocked }
+          )}
+          placeholder={
+            activeRoom?._id
+              ? activeRoom.isBlocked
+                ? t("youCannotSendMessagesToThisChat")
+                : t("typeMessage")
+              : t("selectRoom")
+          }
           value={messageText}
           onChange={(e) => {
+            if (activeRoom.isBlocked) return;
             setMessageText(e.target.value);
           }}
           onKeyUp={(e) => {
