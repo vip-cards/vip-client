@@ -785,5 +785,6 @@
   "largeBanner": "لافتة كبيرة",
   "mediumBanner": "لافتة متوسطة",
   "smallBanner": "لافتة صغيرة",
-  "preview": "معاينة"
+  "preview": "معاينة",
+  "youCannotSendMessagesToThisChat": "لا يمكنك إرسال رسائل إلى هذه المحادثة"
 }

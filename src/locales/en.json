@@ -796,5 +796,6 @@
   "largeBanner": "Large Banner",
   "smallBanner": "Small Banner",
   "mediumBanner": "Medium Banner",
-  "preview": "Preview"
+  "preview": "Preview",
+  "youCannotSendMessagesToThisChat": "You cannot send messages to this chat"
 }
