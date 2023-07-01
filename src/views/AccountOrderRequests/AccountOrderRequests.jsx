@@ -68,11 +68,13 @@ const AccountOrderRequests = () => {
           />
         </div>
       </header>
-      <OrderRequestsTable
-        requests={requests}
-        handleOrderRequestProceed={handleOrderRequestProceed}
-        refetch={mutate}
-      />
+      <section className="max-w-full overflow-x-scroll">
+        <OrderRequestsTable
+          requests={requests}
+          handleOrderRequestProceed={handleOrderRequestProceed}
+          refetch={mutate}
+        />
+      </section>
       <Modal
         className="w-screen h-screen"
         visible={paymentModal.open}
