@@ -6,7 +6,6 @@ import {
   SearchProvider,
 } from "components/PageQueryContainer/PageQueryContext";
 import { getLocalizedWord } from "helpers/lang";
-
 import { listRenderFn } from "helpers/renderFn";
 import { t } from "i18next";
 import { useLayoutEffect, useState } from "react";
