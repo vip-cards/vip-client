@@ -1,30 +1,24 @@
 import { faCommentDots, faTruckFast } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
-import RoutingTab from "components/RoutingTab/RoutingTab";
-import SearchInput from "components/SearchInput/SearchInput";
-import i18n from "locales/i18n";
-import { useEffect, useLayoutEffect, useState } from "react";
-import { Outlet, useLocation, useNavigate, useParams } from "react-router";
-import clientServices from "services/clientServices";
-import { createRoom } from "services/socket/chat";
-import useSWR from "swr";
-
-import "./Branch.scss";
-import { getLocalizedWord } from "helpers/lang";
 import classNames from "classnames";
-import RatingStars from "components/RatingStars/RatingStars";
-import { useTranslation } from "react-i18next";
-import BranchProducts from "components/BranchProducts/BranchProducts";
-import { ProductCard } from "components/Cards";
 import CardContainer from "components/CardContainer/CardContainer";
+import { ProductCard } from "components/Cards";
+import { withLoadingSkeleton } from "components/LoadingSkeleton/LoadingSkeleton";
+import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
+import NoData from "components/NoData/NoData";
 import {
   PageQueryWrapper,
   SearchBar,
   SearchProvider,
 } from "components/PageQueryContainer/PageQueryContext";
-import NoData from "components/NoData/NoData";
-import { withLoadingSkeleton } from "components/LoadingSkeleton/LoadingSkeleton";
+import { getLocalizedWord } from "helpers/lang";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useLocation, useParams } from "react-router";
+import clientServices from "services/clientServices";
+import { createRoom } from "services/socket/chat";
+import useSWR from "swr";
+import "./Branch.scss";
 
 const LIMIT = 9;
 
@@ -44,7 +38,6 @@ export default function Branch() {
   const branchId = params.branchId;
   const vendorId = params.vendorId;
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const initialQuerParams = { page: 1, limit: LIMIT, branches: branchId };
@@ -130,7 +123,12 @@ export default function Branch() {
         <header className="rounded-3xl border-b-2 p-4 gap-4 pb-4 flex flex-col justify-between relative border-0">
           {/* --- cover --- */}
 
-          <div className="h-48 w-full bg-primary/20 overflow-hidden rounded-lg shadow-lg">
+          <a
+            href={branch?.link ?? ""}
+            target="_blank"
+            rel="noreferrer"
+            className="h-48 w-full bg-primary/20 overflow-hidden rounded-lg shadow-lg"
+          >
             {withLoadingSkeleton(
               <img
                 src={branch?.cover?.Location}
@@ -139,7 +137,7 @@ export default function Branch() {
               />,
               isBranchLoading
             )}
-          </div>
+          </a>
 
           {/* --- image --- */}
           <div className="relative ltr:pl-36 pt-2 ltr:pr-2 rtl:pl-2 rtl:pr-36">

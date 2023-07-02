@@ -6,7 +6,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import CardContainer from "components/CardContainer/CardContainer";
-import { BranchCard, CategoryCard, ProductCard } from "components/Cards";
+import { BranchCard, ProductCard } from "components/Cards";
 import Carousel from "components/Carousel/Carousel";
 import { withLoadingSkeleton } from "components/LoadingSkeleton/LoadingSkeleton";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
@@ -21,7 +21,6 @@ import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router";
-import { Link } from "react-router-dom";
 import clientServices from "services/clientServices";
 import { createRoom } from "services/socket/chat";
 import useSWR from "swr";
@@ -147,7 +146,12 @@ export default function Vendor() {
         <header className="rounded-3xl border-b-2 p-4 gap-4 pb-4 flex flex-col justify-between relative border-0">
           {/* --- cover --- */}
 
-          <div className="h-48 w-full bg-primary/20 overflow-hidden rounded-lg shadow-lg">
+          <a
+            href={vendor?.link ?? ""}
+            target="_blank"
+            rel="noreferrer"
+            className="block h-48 w-full bg-primary/20 overflow-hidden rounded-lg shadow-lg"
+          >
             {withLoadingSkeleton(
               <img
                 src={vendor?.cover?.Location}
@@ -156,7 +160,7 @@ export default function Vendor() {
               />,
               isVendorLoading
             )}
-          </div>
+          </a>
 
           {/* --- image --- */}
           <div className="relative ltr:pl-36 pt-2 ltr:pr-2 rtl:pl-2 rtl:pr-36">
