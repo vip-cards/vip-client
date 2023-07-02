@@ -488,7 +488,7 @@
   "Parent": "المسؤول",
   "Password": "كلمة المرور",
   "password": "كلمة المرور",
-  "passwordValidation": "كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل وحرف كبير وحرف صغير ورقم ورمز",
+  "passwordValidation": "برجاء إدخال كلمة المرور بشكل صحيح",
   "Payment Method": "طريقة الدفع",
   "Payment method": "طريقة الدفع",
   "paymentDetails": "تفاصيل الدفع",
