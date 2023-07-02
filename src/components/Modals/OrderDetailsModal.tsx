@@ -39,7 +39,7 @@ export default function OrderDetailsModal({
   withAction?: boolean;
 }) {
   const { t } = useTranslation();
-  console.log(request);
+
   const orderClientStatus =
     request.status === EOrderRequestStatus.CLIENT_ACCEPTED
       ? EStepStatus.COMPLETED
@@ -79,7 +79,7 @@ export default function OrderDetailsModal({
         (typeof activeModal === "string" && activeModal === request._id) ||
         (typeof activeModal === "boolean" && activeModal)
       }
-      title="order requeset details"
+      title="orderDetails"
       onClose={onClose}
       className="p-5 min-w-[70vw] overflow-y-scroll"
     >
