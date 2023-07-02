@@ -46,10 +46,7 @@ export default function Home() {
     [adverts]
   );
 
-  const randomPopUp = useMemo(
-    () => Math.floor(Math.random() * (popUps?.length ?? 0)),
-    [popUps?.length]
-  );
+  const randomPopUp = 0;
 
   const renderAds = (size) => {
     if (advertsLoading || !adverts) return <LoadingSpinner />;
@@ -121,8 +118,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const hidePopUp = sessionStorage.getItem("hide-popup") ?? "false";
-    if (popUps?.length && !JSON.parse(hidePopUp)) {
+    if (popUps?.length) {
       setPopUpModalVisible(true);
     }
   }, [popUps]);
@@ -273,7 +269,6 @@ export default function Home() {
           visible={popUpModalVisible}
           onClose={() => {
             setPopUpModalVisible(false);
-            sessionStorage.setItem("hide-popup", true);
           }}
         >
           <a href={popUps[randomPopUp].link} target="_blank" rel="noreferrer">
