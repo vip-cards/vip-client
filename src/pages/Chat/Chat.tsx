@@ -25,6 +25,7 @@ import { ChatMessageListContainer } from "./_components/ChatMessageListContainer
 import { ChatSidebar } from "./_components/ChatSidebar";
 import { ChatTextInput } from "./_components/ChatTextInput";
 import { RenderRoomList } from "./_components/RenderRoomList";
+import { ICustomResponse } from "types/global";
 
 const { CHAT } = EVENTS;
 
