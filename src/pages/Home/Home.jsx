@@ -46,7 +46,10 @@ export default function Home() {
     [adverts]
   );
 
-  const randomPopUp = () => Math.floor(Math.random() * (popUps?.length ?? 0));
+  const randomPopUp = useMemo(
+    () => Math.floor(Math.random() * (popUps?.length ?? 0)),
+    [popUps]
+  );
 
   const renderAds = (size) => {
     if (advertsLoading || !adverts) return <LoadingSpinner />;
@@ -271,8 +274,8 @@ export default function Home() {
             setPopUpModalVisible(false);
           }}
         >
-          <a href={popUps[randomPopUp()].link} target="_blank" rel="noreferrer">
-            <img src={popUps[randomPopUp()].image.Location} alt="" />
+          <a href={popUps[randomPopUp].link} target="_blank" rel="noreferrer">
+            <img src={popUps[randomPopUp].image.Location} alt="" />
           </a>
         </Modal>
       )}
