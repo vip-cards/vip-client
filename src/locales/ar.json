@@ -224,6 +224,7 @@
   "credit_other": "الرصيد",
   "credit_zero": "لا رصيد",
   "CV": "السيرة الذاتية",
+  "cvLink": "رابط السيرة الذاتية",
   "Date": "التاريخ",
   "Date of birth": "تاريخ الميلاد",
   "DateOfBirth": "تاريخ الميلاد",
@@ -366,6 +367,8 @@
   "job_address_required": "العنوان مطلوب",
   "job_companyName_notEmpty": "يرجى إدخال اسم الشركة",
   "job_companyName_required": "اسم الشركة مطلوب",
+  "job_cvLink_notEmpty": "يرجى إدخال رابط السيرة الذاتية",
+  "job_cvLink_required": "رابط السيرة الذاتية مطلوب",
   "job_description_notEmpty": "يرجى إدخال وصف الوظيفة",
   "job_description_required": "وصف الوظيفة مطلوب",
   "job_jobTitle_notEmpty": "يرجى إدخال عنوان الوظيفة",
@@ -427,6 +430,8 @@
   "name_ar": "الاسم باللغة العربية",
   "Name_en": "الأسم بالإنجليزية",
   "name_en": "الاسم باللغة الإنجليزية",
+  "name_notEmpty": "يرجى إدخال الاسم",
+  "name_required": "الاسم مطلوب",
   "nameValidation": "برجاء إدخال الاسم بشكل صحيح",
   "navbar": {
     "seeAll": "شاهد الجميع"

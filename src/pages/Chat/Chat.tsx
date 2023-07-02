@@ -5,7 +5,7 @@ import toastPopup from "helpers/toastPopup";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { chatServices } from "services/modules/chatServices";
 import {
   createRoom,
@@ -17,16 +17,15 @@ import { EVENTS } from "services/socket/config";
 import { useSocket } from "services/socket/provider";
 import { selectAuth } from "store/auth-slice";
 import useSWR from "swr";
-import {
-  ChatBodyContainer,
-  ChatContainer,
-  ChatMessageListContainer,
-  ChatSidebar,
-  ChatTextInput,
-  RenderRoomList,
-} from "./_common";
 
 import "./Chat.scss";
+import { ChatBodyContainer } from "./_components/ChatBodyContainer";
+import { ChatContainer } from "./_components/ChatContainer";
+import { ChatMessageListContainer } from "./_components/ChatMessageListContainer";
+import { ChatSidebar } from "./_components/ChatSidebar";
+import { ChatTextInput } from "./_components/ChatTextInput";
+import { RenderRoomList } from "./_components/RenderRoomList";
+import { ICustomResponse } from "types/global";
 
 const { CHAT } = EVENTS;
 
@@ -35,14 +34,16 @@ function Chat() {
   const { socket } = useSocket();
   const { t } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const user = useSelector(selectAuth);
 
   const [roomList, setRoomList] = useState<IRoom[]>([]);
   const [activeRoom, setActiveRoom] = useState<IRoom>();
-  const [messageText, setMessageText] = useState("");
+  const [excludeRoom, setExcludeRoom] = useState<IRoom["_id"]>("");
+  const [messageText, setMessageText] = useState<IMessage["text"]>("");
   const [messageList, setMessageList] = useState<IMessage[]>([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   const { data } = useSWR("admin-list", () => chatServices.getAdmins());
 
@@ -51,9 +52,7 @@ function Chat() {
   const adminsList = data?.record ?? [];
   const userRole = user?.userData?.role ?? user?.userRole;
 
-  const handleCreateRoomModal = () => {
-    setIsModalVisible(true);
-  };
+  const handleCreateRoomModal = () => setIsModalVisible(true);
 
   const handleCreateAdminRoom = (_id) => {
     createRoom({ admin: _id });
@@ -64,16 +63,17 @@ function Chat() {
     setActiveRoom(room);
     setMessageList([]);
     setMessageText("");
-    getRoom(room._id, (data: { record: IRoom }) => {
+    getRoom(room?._id, (data: { record: IRoom }) => {
       const room: IRoom = data.record;
       if (!room) return;
-      setMessageList(room.messages);
+
+      if (room._id === state?.room?._id) return setMessageList(room.messages);
+      navigate("", { state: { room } });
     });
   };
 
   const handleSendMessage = () => {
     // Replace multiple spaces at the beginning and end with a single space
-
     const _text = messageText.trim();
     const normalizedText = _text
       .replace(/^\s+|\s+$/g, "")
@@ -93,31 +93,42 @@ function Chat() {
   };
 
   const onListRooms = (data: ICustomResponse<IRoom>["data"]) => {
-    setRoomList(data.records.filter((record) => record.lastMessage));
+    const { records } = data;
+    if (!records?.length) return;
+
+    const isListed = (record: IRoom) =>
+      record.lastMessage || record._id === excludeRoom;
+
+    setRoomList(records.filter(isListed));
   };
 
   const onCreateRoom = useCallback(() => {
     toastPopup.success("Room Created");
     listRooms({ client: userId, page: 1, limit: 20 }, onListRooms);
-  }, [userId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, excludeRoom]);
 
-  const onSentMessage = (data) => {
+  const onSentMessage = (data: { message: IMessage }) => {
     setMessageList((list) => [...list, data.message]);
     listRooms({ client: userId, page: 1, limit: 20 }, onListRooms);
   };
 
+  /* scroll to the bottom of chat when fetching the message list */
   useEffect(() => {
-    if (chatRef && chatRef.current) {
+    if (chatRef?.current)
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
-    }
   }, [messageList]);
 
+  /* select room and exclude it from being hidden, when navigate to chat module */
   useEffect(() => {
-    if (state?.roomId) {
-      handleSelectRoom(state.roomId);
+    if (state?.room) {
+      setExcludeRoom(state.room._id);
+      handleSelectRoom(state.room);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
+  /* listen to creating rooms and sending messages with socket */
   useEffect(() => {
     listRooms({ client: userId, page: 1, limit: 20 }, onListRooms);
 
@@ -128,7 +139,15 @@ function Chat() {
       socket.off(CHAT.CREATE, onCreateRoom);
       socket.off(CHAT.MESSAGE, onSentMessage);
     };
-  }, [onCreateRoom, socket, userId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket, userId]);
+
+  /* update the active room details when the room list is updated */
+  useEffect(() => {
+    if (activeRoom?._id) {
+      setActiveRoom(roomList.find((room) => room._id === activeRoom._id));
+    }
+  }, [activeRoom, roomList]);
 
   return (
     <ChatContainer>

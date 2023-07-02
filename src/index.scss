@@ -21,7 +21,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "Noto Sans Arabic", "Open Sans", sans-serif;
+  font-family: "Open Sans", "Noto Sans Arabic", sans-serif;
   scrollbar-width: thin;
   scrollbar-color: rgba($primary, 0.5) #f1f1f1;
 }
@@ -206,7 +206,7 @@ img {
     display: grid;
     place-items: center;
     background: var(--mainColorLight);
-    font-family: "Noto Sans Arabic", sans-serif;
+    font-family: "Open Sans", "Noto Sans Arabic", sans-serif;
   }
   &::after {
     content: attr(alt);

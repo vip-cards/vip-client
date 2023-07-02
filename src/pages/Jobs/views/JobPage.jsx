@@ -18,7 +18,6 @@ export default function JobPage() {
   const {
     data: jobData,
     isLoading,
-    isValidating,
   } = useSWR(["job-detail", id], ([, id]) => clientServices.getJobDetails(id));
   const job = jobData?.record[0] ?? {};
 

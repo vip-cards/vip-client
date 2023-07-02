@@ -124,8 +124,8 @@ export default function ClientLayout() {
             <Route path={`services`} element={<Services />} />
             <Route path={`services/:id`} element={<ServiceDetails />} />
             <Route path={`/${ROUTES.JOBS.MAIN}/:id`} element={<JobPage />} />
+            <Route path={`/posts/:id`} element={<PostPage />} />
             <Route path={`${ROUTES.JOBS.MAIN}`} element={<Jobs />}>
-              <Route path={`posts/:id`} element={<PostPage />} />
               <Route
                 path={`${ROUTES.JOBS.APPLY}`}
                 element={<ApplyJobTab />}

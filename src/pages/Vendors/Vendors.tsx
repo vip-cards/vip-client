@@ -147,8 +147,8 @@ export default function Vendors() {
             setQueryParams({ page: 1, limit: LIMIT });
           }}
           className={classNames("px-3 py-1 rounded-lg border text-sm", {
-            "bg-primary/50 shadow-lg text-slate-800": !filter.category?.length,
-            "bg-primary shadow text-black": filter.category?.length,
+            "bg-primary/50 shadow-lg text-slate-800": !filter.category,
+            "bg-primary shadow text-black": filter.category,
           })}
         >
           <>{t("reset")}</>

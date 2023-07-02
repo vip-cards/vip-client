@@ -15,11 +15,11 @@
     outline: none;
     border-radius: 7px;
     font-size: 16px;
-    font-family: "Noto Sans Arabic", sans-serif;
+    font-family: "Open Sans", "Noto Sans Arabic", sans-serif;
     &::placeholder {
       color: #111111;
       font-size: 14px;
-      font-family: "Noto Sans Arabic", sans-serif;
+      font-family: "Open Sans", "Noto Sans Arabic", sans-serif;
     }
   }
   .label-search {
@@ -27,7 +27,7 @@
     top: 50%;
     margin-left: 5px;
     transform: translate(0, -50%);
-    font-family: "Noto Sans Arabic", sans-serif;
+    font-family: "Open Sans", "Noto Sans Arabic", sans-serif;
     font-size: 16px;
     color: #86817c;
     font-weight: 100;

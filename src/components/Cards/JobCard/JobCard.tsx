@@ -30,11 +30,7 @@ const JobCard = ({ job, mutate }) => {
       .catch(responseErrorToast)
       .finally(() => setLoading(false));
   };
-  const handleUpdateJob = (e) => {
-    e.stopPropagation();
 
-    navigate("", { state: { tab: "create" } });
-  };
   return (
     <motion.div
       layout

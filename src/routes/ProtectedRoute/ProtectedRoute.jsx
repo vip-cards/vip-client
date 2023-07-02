@@ -37,8 +37,8 @@ export default function ProtectedRoute({ children }) {
       if (!res.success) {
         return;
       }
-      const roomId = res.record?._id;
-      navigate("/chat", { state: { roomId } });
+      const room = res.record;
+      navigate("/chat", { state: { room } });
     });
 
     openOrderRoom((data) => {
