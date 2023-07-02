@@ -29,12 +29,14 @@ export default function OrderDetailsModal({
   onClose,
   refetch,
   handleOrderRequestProceed,
+  withAction = true,
 }: {
   activeModal: string | boolean;
   request: IOrderRequest;
   onClose: (x: any) => void;
   refetch?: () => void;
   handleOrderRequestProceed?: (requestId: string, total: number) => void;
+  withAction?: boolean;
 }) {
   const { t } = useTranslation();
   console.log(request);
@@ -212,33 +214,34 @@ export default function OrderDetailsModal({
         </div>
       </section>
       <hr className="mt-8" />
-
-      <section className="max-w-lg mx-auto flex w-full flex-row gap-4 justify-center items-center py-3">
-        <button
-          onClick={() =>
-            handleOrderRequestProceed &&
-            handleOrderRequestProceed(request._id, +request.total)
-          }
-          disabled={
-            request.status.includes("pending") ||
-            request.status.includes("rejected") ||
-            request.status.includes("client")
-          }
-          className="disabled:!opacity-20 bg-primary flex-grow rounded-lg text-white opacity-80 transition-opacity py-1 hover:opacity-100"
-        >
-          {t("checkout")}
-        </button>
-        <button
-          disabled={
-            request.status.includes("rejected") ||
-            request.status.includes("client")
-          }
-          onClick={() => handleClientReject && handleClientReject(request)}
-          className="disabled:!opacity-20 bg-red-500 flex-grow rounded-lg text-white opacity-80 transition-opacity py-1 hover:opacity-100"
-        >
-          {t("Decline")}
-        </button>
-      </section>
+      {withAction && (
+        <section className="max-w-lg mx-auto flex w-full flex-row gap-4 justify-center items-center py-3">
+          <button
+            onClick={() =>
+              handleOrderRequestProceed &&
+              handleOrderRequestProceed(request._id, +request.total)
+            }
+            disabled={
+              request.status.includes("pending") ||
+              request.status.includes("rejected") ||
+              request.status.includes("client")
+            }
+            className="disabled:!opacity-20 bg-primary flex-grow rounded-lg text-white opacity-80 transition-opacity py-1 hover:opacity-100"
+          >
+            {t("checkout")}
+          </button>
+          <button
+            disabled={
+              request.status.includes("rejected") ||
+              request.status.includes("client")
+            }
+            onClick={() => handleClientReject && handleClientReject(request)}
+            className="disabled:!opacity-20 bg-red-500 flex-grow rounded-lg text-white opacity-80 transition-opacity py-1 hover:opacity-100"
+          >
+            {t("Decline")}
+          </button>
+        </section>
+      )}
     </Modal>
   );
 }

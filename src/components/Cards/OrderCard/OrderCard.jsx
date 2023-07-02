@@ -68,40 +68,12 @@ export default function OrderCard({ order }) {
           </button>
         </div>
       </article>
-      <div
-        className={classNames(
-          { hidden: !orderDetailsVisible },
-          "border border-t-0 mx-2 p-3 flex flex-col gap-3 pt-3 transition will-change-transform"
-        )}
-      >
-        {order.items?.map((item) => (
-          <div
-            key={item._id}
-            className="flex flex-row gap-2 justify-between items-center"
-          >
-            <div className="flex flex-row gap-2 items-center">
-              <div className="w-9 h-9 overflow-hidden rounded-md border">
-                <img
-                  src={item.product.image[0]?.Location}
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h6 className="font-semibold capitalize">
-                {getLocalizedWord(item?.product?.name)}
-              </h6>
-            </div>
 
-            <div className="font-semibold text-slate-800 px-4">
-              {item.total}
-            </div>
-          </div>
-        ))}
-      </div>
       <OrderDetailsModal
         onClose={() => setOrderDetailsVisible(false)}
         activeModal={orderDetailsVisible}
         request={order}
+        withAction={false}
       />
     </div>
   );
