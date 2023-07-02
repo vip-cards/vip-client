@@ -55,7 +55,7 @@ export default function Home() {
     if (advertsLoading || !adverts) return <LoadingSpinner />;
     if (!adverts.length)
       return dummyAds
-        .filter((ad) => ad.size === size)
+        .filter((ad) => ad.size === size && !ad.isPopUp)
         .map((ad) => {
           return (
             <SwiperSlide
@@ -73,7 +73,7 @@ export default function Home() {
           );
         });
     return adverts
-      .filter((ad) => ad.size === size)
+      .filter((ad) => ad.size === size && !ad.isPopUp)
       .map((ad) => {
         return (
           <SwiperSlide
