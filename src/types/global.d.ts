@@ -1,3 +1,5 @@
+import { EOrderRequestStatus } from "./enums";
+
 declare interface ILocalizedString {
   en: string;
   ar: string;
@@ -35,12 +37,48 @@ declare enum EUserType {
   CHILD = "child",
 }
 
-declare enum EOrderRequestStatus {
-  PENDING = "pending",
-  VENDOR_ACCEPTED = "vendor accepted",
-  VENDOR_REJECTED = "vendor rejected",
-  CLIENT_ACCEPTED = "client accepted",
-  CLIENT_REJECTED = "client rejected",
+declare interface IProduct {
+  _id: string;
+  name: ILocalizedString;
+  vendor: string;
+  branches: string[];
+  category: string;
+  price: number;
+  originalPrice: number;
+  image: IImage[];
+  isActive: boolean;
+  isHotDeal: boolean;
+  isLimited: boolean;
+  isEditable: boolean;
+  rate: number;
+  numOfReviews: number;
+  description: ILocalizedString;
+  rank: number;
+  vendorRank: number;
+  __v: number;
+}
+export interface IOrderClass {
+  _id: string;
+  client: IClient;
+  vendor: IVendor;
+  branch: IBranch;
+  items: IOrderItem[];
+
+  total: number;
+  originalTotal: number;
+
+  points: number;
+  usedPoints?: IUsedPoints;
+
+  paymentMethod: TpaymentMethod;
+
+  shippingAddress?: IShippingAddress;
+  shippingFees?: number;
+
+  purchaseDate: string;
+  status: EOrderRequestStatus;
+
+  __v: number;
 }
 
 declare interface ISumUser {
@@ -48,3 +86,37 @@ declare interface ISumUser {
   name: ILocalizedString;
   image?: IImage;
 }
+declare interface IClient extends ISumUser {
+  phone?: string;
+  usedFreeTrial?: boolean;
+  isSubscribed?: boolean;
+}
+
+declare interface IVendor extends ISumUser {}
+
+declare interface IBranch extends ISumUser {}
+declare interface IShippingAddress {
+  city?: string;
+  street?: string;
+  country?: string;
+  district?: string;
+  flatNumber?: string;
+  specialMark?: string;
+  buildingNumber?: string;
+}
+
+declare interface IUsedPoints {
+  vendorPoints: number;
+  systemPoints: number;
+  pointsValue: number;
+  discount: number;
+}
+
+declare interface IOrderItem {
+  product: IProduct;
+  quantity: number;
+  total: number;
+  _id: string;
+}
+
+declare type TpaymentMethod = "cash on delivery" | "visa" | "branch";
