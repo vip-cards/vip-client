@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import dayjs from "dayjs";
-
-import "./OrderCard.scss";
-import clientServices from "services/clientServices";
-import RatingStars from "components/RatingStars/RatingStars";
-import { getLocalizedWord } from "helpers/lang";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfo } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
+import RatingStars from "components/RatingStars/RatingStars";
+import dayjs from "dayjs";
+import { getLocalizedWord } from "helpers/lang";
+import { useEffect, useState } from "react";
+import clientServices from "services/clientServices";
+import "./OrderCard.scss";
+import OrderDetailsModal from "components/Modals/OrderDetailsModal";
 
 export default function OrderCard({ order }) {
   const [orderDetailsVisible, setOrderDetailsVisible] = useState(false);
@@ -98,6 +98,11 @@ export default function OrderCard({ order }) {
           </div>
         ))}
       </div>
+      <OrderDetailsModal
+        onClose={() => setOrderDetailsVisible(false)}
+        activeModal={orderDetailsVisible}
+        request={order}
+      />
     </div>
   );
 }
