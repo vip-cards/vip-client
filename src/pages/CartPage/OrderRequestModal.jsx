@@ -48,7 +48,7 @@ export default function OrderRequestModal({ showModal, setShowModal }) {
   return (
     <Modal
       visible={showModal}
-      title="order"
+      title="orderRequest"
       className="min-w-[30vw] max-w-[400px]"
       onClose={() => setShowModal(false)}
     >

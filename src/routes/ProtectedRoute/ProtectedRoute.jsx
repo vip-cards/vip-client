@@ -25,7 +25,7 @@ export default function ProtectedRoute({ children }) {
   useEffect(() => {
     if (!auth.token || !isConnected) return;
 
-    listenToNotification((first) => console.log(first));
+    listenToNotification(() => {});
 
     listNotification();
 
