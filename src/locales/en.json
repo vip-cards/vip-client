@@ -791,5 +791,6 @@
   "WRONG PASSWORD": "WRONG PASSWORD",
   "You don't have enough credit to add a client": "You don't have enough credit to add a client",
   "youCannotSendMessagesToThisChat": "You cannot send messages to this chat",
-  "YouWillBeLoggedOut": "You will be logged out"
+  "YouWillBeLoggedOut": "You will be logged out",
+  "emailValidation": "Please enter a valid email"
 }

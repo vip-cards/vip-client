@@ -45,6 +45,8 @@ export function ChatSidebar({ children, onCreateModal }: IChatSidebar) {
   );
 }
 
+/**********************************************/
+
 interface IChatBodyContainer {
   children: React.ReactNode;
   messageList: IMessage[];
@@ -88,6 +90,8 @@ export function ChatBodyContainer({
     </div>
   );
 }
+
+/**********************************************/
 
 interface IMessageListRender {
   messageList: IMessage[];
@@ -135,6 +139,8 @@ export function MessageListRender({
   ));
 }
 
+/**********************************************/
+
 interface IChatMessageListContainer {
   chatRef: React.RefObject<HTMLDivElement>;
   messageList: IMessage[];
@@ -161,6 +167,8 @@ export function ChatMessageListContainer({
     </div>
   );
 }
+
+/**********************************************/
 
 interface IChatTextInput {
   activeRoom?: IRoom;
@@ -216,6 +224,8 @@ export function ChatTextInput({
     </div>
   );
 }
+
+/**********************************************/
 
 interface IRenderRoomList {
   roomList: IRoom[];

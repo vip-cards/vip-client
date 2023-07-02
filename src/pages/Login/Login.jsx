@@ -129,10 +129,8 @@ export default function Login() {
           {loginFormData.map((formInput, index) => {
             return (
               <MainInput
-                key={index}
-                name={formInput.name}
-                type={formInput.type}
-                required={formInput.required}
+                {...formInput}
+                key={formInput.name}
                 state={user}
                 setState={setUser}
               />

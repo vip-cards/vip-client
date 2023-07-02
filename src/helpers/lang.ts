@@ -25,9 +25,8 @@ export async function switchLang(lang: "en" | "ar") {
   if (lang === "ar") {
     document.getElementsByTagName("body")[0].classList.add("ar-lang");
   } else document.getElementsByTagName("body")[0].classList.remove("ar-lang");
-  document.getElementsByTagName("html")[0].setAttribute("lang", lang);
 
-  // editTitle(lang);
+  document.getElementsByTagName("html")[0].setAttribute("lang", lang);
 
   window.location.reload();
 }

@@ -278,6 +278,7 @@
   "email": "البريد الالكتروني",
   "emailOrPhone": "البريد الالكتروني أو رقم الهاتف",
   "emailOrPhoneValidation": "برجاء إدخال البريد الالكتروني أو الهاتف بشكل صحيح",
+  "emailValidation": "برجاء إدخال البريد الإلكتروني بشكل صحيح",
   "employee_many": "موظفون",
   "employee_one": "موظف",
   "employee_other": "موظفون",
