@@ -1,8 +1,8 @@
-import { ReactComponent as VendorLogoOrange } from "assets/VIP-ICON-SVG/VendorLogoOrange.svg";
-import Modal from "components/Modal/Modal";
-import { getLocalizedWord } from "helpers/lang";
+import relativeTime from "dayjs/plugin/relativeTime";
 import toastPopup from "helpers/toastPopup";
+import { capitalize } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router";
@@ -17,24 +17,28 @@ import { EVENTS } from "services/socket/config";
 import { useSocket } from "services/socket/provider";
 import { selectAuth } from "store/auth-slice";
 import useSWR from "swr";
-
-import "./Chat.scss";
+import { ICustomResponse } from "types/global";
+import AdminSelectModal from "./_components/AdminSelectModal";
 import { ChatBodyContainer } from "./_components/ChatBodyContainer";
 import { ChatContainer } from "./_components/ChatContainer";
 import { ChatMessageListContainer } from "./_components/ChatMessageListContainer";
 import { ChatSidebar } from "./_components/ChatSidebar";
 import { ChatTextInput } from "./_components/ChatTextInput";
 import { RenderRoomList } from "./_components/RenderRoomList";
-import { ICustomResponse } from "types/global";
+
+import dayjs from "dayjs";
+import "./Chat.scss";
+
+dayjs.extend(relativeTime);
 
 const { CHAT } = EVENTS;
 
 function Chat() {
   const chatRef = useRef(null);
   const { socket } = useSocket();
-  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const user = useSelector(selectAuth);
 
@@ -45,11 +49,12 @@ function Chat() {
   const [messageList, setMessageList] = useState<IMessage[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
-  const { data } = useSWR("admin-list", () => chatServices.getAdmins());
+  const { data: adminsList = [] } = useSWR("admin-list", () =>
+    chatServices.getAdmins().then((data) => data.record)
+  );
 
   const { state } = location;
   const userId = user.userData._id;
-  const adminsList = data?.record ?? [];
   const userRole = user?.userData?.role ?? user?.userRole;
 
   const handleCreateRoomModal = () => setIsModalVisible(true);
@@ -78,7 +83,7 @@ function Chat() {
     const normalizedText = _text
       .replace(/^\s+|\s+$/g, "")
       .replace(/[^\S\n]+/g, " ");
-    if (!_text || !_text.length) return;
+    if (!_text?.length) return;
 
     const message = {
       _id: activeRoom._id,
@@ -88,6 +93,7 @@ function Chat() {
         client: userId,
       } as Omit<IMessage, "_id">,
     };
+
     sendMessage(message);
     setMessageText("");
   };
@@ -105,6 +111,7 @@ function Chat() {
   const onCreateRoom = useCallback(() => {
     toastPopup.success("Room Created");
     listRooms({ client: userId, page: 1, limit: 20 }, onListRooms);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, excludeRoom]);
 
@@ -151,56 +158,47 @@ function Chat() {
 
   return (
     <ChatContainer>
+      <Helmet>
+        <title>{capitalize(t("chat"))}</title>
+      </Helmet>
+
+      {/* --- Sidebar --- */}
       <ChatSidebar onCreateModal={handleCreateRoomModal}>
         <RenderRoomList
+          userId={userId}
+          userRole={userRole}
+          roomList={roomList}
           activeRoom={activeRoom}
           onSelectRoom={handleSelectRoom}
-          roomList={roomList}
-          userRole={userRole}
-          userId={userId}
         />
       </ChatSidebar>
+
+      {/* --- Body --- */}
       <ChatBodyContainer
-        messageList={messageList ?? []}
         activeRoom={activeRoom}
+        messageList={messageList ?? []}
         onCreateModal={handleCreateRoomModal}
       >
         <ChatMessageListContainer
-          {...{ chatRef, messageList, userId, userRole }}
+          userId={userId}
+          chatRef={chatRef}
+          userRole={userRole}
+          messageList={messageList}
         />
         <ChatTextInput
           activeRoom={activeRoom}
-          handleSendMessage={handleSendMessage}
           messageText={messageText}
           setMessageText={setMessageText}
+          handleSendMessage={handleSendMessage}
         />
       </ChatBodyContainer>
-      <Modal
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-        title={t("availableToChat")}
-        className="max-h-48 overflow-auto p-3"
-      >
-        <div className="chat-modal">
-          {/* Admin */}
-          {!!adminsList.length &&
-            adminsList?.map((admin: IChatter) => (
-              <button
-                onClick={() => handleCreateAdminRoom(admin?._id)}
-                key={admin._id + "-item"}
-                className="flex-row w-full flex-nowrap flex items-center gap-3 hover:ring border-2 px-3 py-1 rounded-xl"
-              >
-                <span className="w-12 flex  items-center border bg-slate-200/50 justify-center aspect-square rounded-3xl overflow-hidden">
-                  <VendorLogoOrange className="text-slate-800 p-1.5" />
-                </span>
-                <span className="flex-grow text-lg whitespace-nowrap overflow-hidden text-ellipsis">
-                  {getLocalizedWord(admin?.name)}
-                </span>
-              </button>
-            ))}
-          {/* Parent Agent */}
-        </div>
-      </Modal>
+
+      <AdminSelectModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        adminsList={adminsList}
+        handleCreateAdminRoom={handleCreateAdminRoom}
+      />
     </ChatContainer>
   );
 }
