@@ -1,6 +1,5 @@
 import Search from "components/Inputs/Search/Search";
 import Pagination from "components/Pagination/Pagination";
-import { use } from "i18next";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router";
 // TODO: split all exports
@@ -121,7 +120,7 @@ export function SearchProvider({
         [`${queryType}.ar`]: undefined,
         [`${queryType}.en`]: undefined,
       }));
-      setQueryType("");
+      setQueryType("name");
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

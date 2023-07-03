@@ -17,7 +17,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/scss"; // core Swiperimport "swiper/css/navigation";
 
-export default function ProtectedRoute({ children }) {
+export default function ProtectedRoute() {
   const auth = useSelector((state) => state.auth);
   const { socket, isConnected } = useSocket();
   const navigate = useNavigate();
@@ -37,6 +37,7 @@ export default function ProtectedRoute({ children }) {
       if (!res.success) {
         return;
       }
+      console.log(res);
       const room = res.record;
       navigate("/chat", { state: { room } });
     });

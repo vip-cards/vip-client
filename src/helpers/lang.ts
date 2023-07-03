@@ -1,4 +1,5 @@
 import i18n from "locales/i18n";
+import type { ILocalizedString } from "types/global";
 
 export function checkFixLang(lang) {
   if (lang === "en") {

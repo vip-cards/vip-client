@@ -40,7 +40,11 @@ export const RenderRoomList = ({
         const { members, _id: RoomId, lastUpdated, lastMessage } = room;
         const vipImg = require("assets/images/vip.png");
 
-        if (!Object.keys(members).includes(userRole)) return null;
+        if (
+          !Object.keys(members).length ||
+          !Object.keys(members)?.includes(userRole)
+        )
+          return null;
 
         const otherChatter: IChatter =
           members?.[
@@ -49,7 +53,7 @@ export const RenderRoomList = ({
             )[0]
           ];
 
-        const img = otherChatter.name.en.includes("VIP")
+        const img = otherChatter.name.en?.includes("VIP")
           ? vipImg
           : otherChatter?.image?.Location;
 
@@ -85,7 +89,7 @@ export const RenderRoomList = ({
             </div>
             <div className="flex w-full flex-col h-full justify-between overflow-hidden">
               <span className="flex-grow w-full text-lg whitespace-nowrap overflow-hidden text-ellipsis max-sm:text-xs max-sm:whitespace-normal max-sm:leading-3 max-sm:text-center">
-                {getLocalizedWord(otherChatter?.name)+"yhwtfbcgvbuyt"}
+                {getLocalizedWord(otherChatter?.name)}
               </span>
               <span className="flex-grow text-xs w-full text-slate-800 whitespace-nowrap overflow-hidden text-ellipsis max-sm:text-[0.6rem] max-sm:whitespace-normal max-sm:leading-3 text-start line-clamp-1">
                 <FontAwesomeIcon icon={faPaperPlane} className="me-1" />

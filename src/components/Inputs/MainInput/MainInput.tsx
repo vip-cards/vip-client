@@ -172,7 +172,7 @@ export default function MainInput(props: IMainInputProps): JSX.Element {
             value={state[name]}
             isSearchable={true}
             isRtl={lang === "ar"}
-            closeMenuOnSelect={false}
+            closeMenuOnSelect={false} //this is done for some reason
             isDisabled={disableState}
             classNamePrefix="multi-select"
             className="multi-select w-full"

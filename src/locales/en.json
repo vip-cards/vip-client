@@ -496,7 +496,7 @@
   "Parent": "Parent",
   "Password": "Password",
   "password": "Password",
-  "passwordValidation": "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number and one special character",
+  "passwordValidation": "Please enter a valid password",  
   "Payment Method": "Payment Method",
   "Payment method": "Payment method",
   "paymentDetails": "Payment Details",
