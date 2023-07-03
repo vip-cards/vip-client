@@ -15,7 +15,7 @@ import useSWR from "swr";
 const LIMIT = 5;
 const initialFilters = { "category._id": null };
 
-export default function ApplyJobHome({ id = undefined }) {
+export default function HiringTabHome({ id = undefined }) {
   const initialQueryParams = {
     page: 1,
     limit: LIMIT,

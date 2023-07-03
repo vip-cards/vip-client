@@ -9,9 +9,10 @@ import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
 import clientServices from "services/clientServices";
+
 import useSWR from "swr";
 
-export default function ApplyJobCreateJob() {
+export default function HiringTabCreateJob() {
   const userId = localStorage.getItem("userId");
 
   const ref = useRef(null);

@@ -31,6 +31,7 @@ export default function ApplyJobHome({ id = undefined }) {
   } = useSWR([`view-${id ?? "all"}-jobs`, queryParams], ([, queryParams]) =>
     clientServices.listAllJobs(queryParams)
   );
+  
   const { data: categories } = useSWR("jobs-categories", () =>
     clientServices
       .listAllCategories({ type: "job" })
