@@ -221,10 +221,9 @@ function ProductDetails(props) {
           <div className="cart-actions">
             <button
               disabled={
-                auth.userId === "guest" ||
-                !cartBranch?._id ||
-                !cart.branchId ||
-                !quantity ||
+                // auth.userId === "guest" ||
+                // (cartBranch?._id && cart.branchId !== cartBranch?._id) ||
+                // !quantity ||
                 loading
               }
               type="button"
