@@ -6,21 +6,18 @@ import {
   faNetworkWired,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { getLocalizedWord } from "helpers/lang";
-import { listRenderFn } from "helpers/rednerFn";
-import { t } from "i18next";
+import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
+import { listRenderFn } from "helpers/renderFn";
+import { useTranslation } from "react-i18next";
 import clientServices from "services/clientServices";
 import useSWR from "swr";
 
-const AccountCoupons = () => {
-  const {
-    data: couponsData,
-    error,
-    isLoading,
-    isValidating,
-  } = useSWR("all-coupons", () => clientServices.listAllCoupons());
+const fetchCoupons = () =>
+  clientServices.listAllCoupons().then((res) => res.records);
 
-  const { records: coupons = undefined, counts = 0 } = couponsData ?? {};
+const AccountCoupons = () => {
+  const { t } = useTranslation();
+  const { data: coupons, isLoading } = useSWR("all-coupons", fetchCoupons);
 
   const renderCoupons = () =>
     listRenderFn({
@@ -76,7 +73,7 @@ const AccountCoupons = () => {
           <p className="flex flex-row gap-3 items-center">
             <FontAwesomeIcon icon={faCoins} className="w-6 text-center" />
             <span>
-              Value :<b>{getLocalizedWord(coupon.value)}</b>
+              {t("Value")} :<b>{getLocalizedNumber(coupon.value)}</b>
             </span>
           </p>
           <p className="flex flex-row gap-3 items-center">
@@ -85,7 +82,7 @@ const AccountCoupons = () => {
               className="w-6 text-center"
             />
             <span>
-              Quantity : <b>{getLocalizedWord(coupon.quantity)}</b>
+              {t("Quantity")} : <b>{getLocalizedNumber(coupon.quantity)}</b>
             </span>
           </p>
         </div>

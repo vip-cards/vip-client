@@ -1,10 +1,16 @@
 import { MainButton } from "components/Buttons";
+import FormErrorMessage from "components/FormErrorMessage/FormErrorMessage";
 import { MainInput } from "components/Inputs";
-import { getLocalizedWord } from "helpers/lang";
-import { useEffect, useRef, useState } from "react";
+import { clearEmpty } from "helpers";
+import { getInitialFormData } from "helpers/forms";
+import {
+  serviceForm as serviceFormData,
+  serviceSchema,
+} from "helpers/forms/service";
+import toastPopup from "helpers/toastPopup";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router";
-import { toast } from "react-toastify";
 import clientServices from "services/clientServices";
 import useSWR from "swr";
 
@@ -14,159 +20,89 @@ export default function CreateServiceForm() {
   const userId = localStorage.getItem("userId");
   const location = useLocation();
   const navigate = useNavigate();
-  const [formError, setFormError] = useState(false);
-  const [disabled, setDisabled] = useState(true);
-  const [jobForm, setJobForm] = useState({ client: userId, category: [] });
+  const [errorList, setErrorList] = useState([]);
+
   const { data: { records = [] } = {} } = useSWR("service-category", () =>
     clientServices.listAllCategories({ type: "service" })
   );
 
-  const formData = [
-    {
-      name: "serviceName.en",
-      type: "text",
-      required: true,
-      className: "grid-service-en",
-    },
-    {
-      name: "serviceName.ar",
-      type: "text",
-      required: true,
-      className: "grid-service-ar",
-    },
-    {
-      name: "providerName.en",
-      type: "text",
-      required: true,
-      className: "provider-input-en",
-    },
-    {
-      name: "providerName.ar",
-      type: "text",
-      required: true,
-      className: "provider-input-ar",
-    },
-    {
-      name: "description.en",
-      type: "textarea",
-      required: true,
-      className: "description-input-en h-[7rem]",
-    },
-    {
-      name: "description.ar",
-      type: "textarea",
-      required: true,
-      className: "description-input-ar h-[7rem]",
-    },
-    {
-      name: "address.en",
-      type: "text",
-      required: true,
-      className: "address-input-en",
-    },
-    {
-      name: "address.ar",
-      type: "text",
-      required: false,
-      className: "address-input-ar",
-    },
-    {
-      name: "category",
-      type: "checkbox",
-      required: false,
-      className: "category-input",
-      list: [...records]?.map((item) => ({
-        value: item._id,
-        name: getLocalizedWord(item.name),
-      })),
-      identifier: "name",
-    },
-    { name: "phone", type: "phone", required: true, className: "phone-input" },
-    {
-      name: "whatsapp",
-      type: "phone",
-      required: true,
-      className: "whatsapp-input",
-    },
-    {
-      name: "telegram",
-      type: "phone",
-      required: true,
-      className: "telegram-input",
-    },
-  ];
+  const [serviceForm, setServiceForm] = useState({
+    ...getInitialFormData(serviceFormData(records)),
+    client: userId,
+    category: [],
+  });
+
+  const formData = serviceFormData(records);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    setErrorList([]);
+    const _form = clearEmpty(serviceForm);
+    const { value: _service, error } = serviceSchema.validate(_form);
 
-    const newJobForm = {
-      provider: jobForm.client,
+    const arabicReg = /[\u0621-\u064A]/g;
+    const isArabic = (q) => arabicReg.test(q);
+    if (error) return setErrorList(error.details.map((e) => e.message));
+
+    const newServiceForm = {
+      provider: _service.client,
       serviceName: {
-        en: jobForm["serviceName.en"],
-        ar: jobForm["serviceName.ar"],
+        [isArabic(_service["serviceName"]) ? "ar" : "en"]:
+          _service["serviceName"],
       },
       providerName: {
-        en: jobForm["providerName.en"],
-        ar: jobForm["providerName.ar"],
+        [isArabic(_service["providerName"]) ? "ar" : "en"]:
+          _service["providerName"],
       },
 
       description: {
-        en: jobForm["description.en"],
-        ar: jobForm["description.ar"],
+        [isArabic(_service["description"]) ? "ar" : "en"]:
+          _service["description"],
       },
       address: {
-        en: jobForm["address.en"],
-        ar: jobForm["address.ar"],
+        [isArabic(_service["address"]) ? "ar" : "en"]: _service["address"],
       },
       contacts: {
-        phone: jobForm.phone,
-        whatsapp: jobForm.whatsapp,
-        telegram: jobForm.telegram,
+        phone: _service.phone,
+        whatsapp: _service.whatsapp,
+        telegram: _service.telegram,
       },
-      category: jobForm.category.map((item) => ({ _id: item })),
+      category: _service.category.map((item) => ({ _id: item })),
     };
 
-    // const { value, error } = createJobSchema.validate(newJobForm);
-
-    if (false) {
-      setFormError(true);
-    } else {
-      setFormError(false);
-      clientServices.createService(newJobForm).then((res) => {
-        toast.success("Created Successfully");
-        navigate(location.pathname, { state: { openedTap: "viewCreatedJob" } });
-      });
-    }
+    clientServices.createService(newServiceForm).then((res) => {
+      toastPopup.success("Created Successfully");
+      navigate(location.pathname, { state: { openedTap: "viewCreatedJob" } });
+    });
   };
 
-  useEffect(() => {
-    formError && setFormError(false);
-    if (ref.current && ref.current.checkValidity()) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
-  }, [jobForm]);
-
   return (
-    <form ref={ref} className="create-service-panel" onSubmit={onSubmitHandler}>
-      <div className="flex flex-col gap-8 my-8 w-[80%]">
+    <form
+      ref={ref}
+      className="create-service-panel"
+      onSubmit={onSubmitHandler}
+      noValidate
+    >
+      <div className="flex flex-col gap-5 my-8 w-[80%]">
         {formData.map((formInput, index) => {
           return (
             <MainInput
               key={index}
               className="w-full max-w-sm mx-auto"
-              state={jobForm}
-              setState={setJobForm}
+              state={serviceForm}
+              setState={setServiceForm}
               {...formInput}
             />
           );
         })}
-        {formError && (
-          <p className="error-message">Please check the input values</p>
-        )}
+        <FormErrorMessage errorList={errorList} />
+
+        <MainButton
+          text={t("confirm")}
+          type="submit"
+          className="w-full max-w-sm mx-auto"
+        />
       </div>
-      <MainButton text={t("confirm")} type="submit" className="confirm" />
     </form>
   );
 }

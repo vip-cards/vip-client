@@ -1,5 +1,17 @@
+import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ReactComponent as VendorLogo } from "assets/VIP-ICON-SVG/VendorLogo.svg";
+import { ReactComponent as VendorLogoOrange } from "assets/VIP-ICON-SVG/VendorLogoOrange.svg";
+import { ReactComponent as FacebookLogo } from "assets/icons/facebook.svg";
+import { ReactComponent as GoogleLogo } from "assets/icons/google.svg";
+import { ReactComponent as TwitterLogo } from "assets/icons/twitter.svg";
+import { MainButton } from "components/Buttons";
+import FormErrorMessage from "components/FormErrorMessage/FormErrorMessage";
+import { MainInput } from "components/Inputs";
+import { ROUTES } from "constants";
+import { getInitialFormData } from "helpers/forms";
+import { loginFormData, loginSchema } from "helpers/forms/login";
 import { switchLang } from "helpers/lang";
-import { loginSchema } from "helpers/schemas";
 import toastPopup from "helpers/toastPopup";
 import jwt_decode from "jwt-decode";
 import { useState } from "react";
@@ -9,114 +21,82 @@ import { Link, useNavigate } from "react-router-dom";
 import clientServices from "services/clientServices";
 import { useSocialLogin } from "services/firebaseServices";
 import { authActions } from "store/auth-slice";
-
-import { ReactComponent as VendorLogo } from "assets/VIP-ICON-SVG/VendorLogo.svg";
-import { ReactComponent as VendorLogoOrange } from "assets/VIP-ICON-SVG/VendorLogoOrange.svg";
-import { ReactComponent as FacebookLogo } from "assets/icons/facebook.svg";
-import { ReactComponent as GoogleLogo } from "assets/icons/google.svg";
-import { ReactComponent as TwitterLogo } from "assets/icons/twitter.svg";
-import { MainButton } from "components/Buttons";
-import { MainInput } from "components/Inputs";
-
 import "./Login.scss";
-import { ROUTES } from "constants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleRight } from "@fortawesome/free-solid-svg-icons";
 
 export default function Login() {
-  const socialLogin = useSocialLogin();
-  const { t, i18n } = useTranslation();
-  const dispatch = useDispatch();
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const socialLogin = useSocialLogin();
+
   const [loading, setLoading] = useState(false);
   const [errorList, setErrorList] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [user, setUser] = useState({
-    email: "",
-    password: "",
-  });
+  const [qrCode, setQrCode] = useState({ open: false, code: "" });
+  const [user, setUser] = useState(getInitialFormData(loginFormData));
 
-  const formData = [
-    { name: "email", type: "email", required: true },
-    { name: "password", type: "password", required: true },
-  ];
-
-  function changeLang(lang) {
-    i18n.changeLanguage(lang);
-    switchLang(lang);
+  function handleLoginCatch(e) {
+    setLoading(false);
+    setErrorList([e.response?.data?.error]);
   }
 
-  function loginValidation(user) {
-    return loginSchema.validate(user);
+  function handleLoginSuccess(data) {
+    setLoading(false);
+    toastPopup.success(t("Success"));
+    const tokenDecoded = jwt_decode(data.token);
+    dispatch(
+      authActions.login({
+        token: data.token,
+        userId: tokenDecoded._id,
+        userRole: tokenDecoded.role,
+        userData: data.record ?? tokenDecoded,
+      })
+    );
+    navigate("/");
   }
 
   const loginHandler = async (e) => {
     e.preventDefault();
     setErrorList([]);
-    let validationResult = loginValidation(user);
-
+    const { error, value } = loginSchema.validate(user);
     setLoading(true);
-    if (validationResult.error) {
-      setLoading(false);
-      setErrorList(validationResult.error.details);
-    } else {
-      setLoading(true);
-      try {
-        const result = await clientServices.login(user);
-        const data = result.data;
 
-        if (data.success && data.code === 200) {
-          setLoading(false);
-
-          toastPopup.success(t("Success"));
-          const tokenDecoded = jwt_decode(data.token);
-
-          dispatch(
-            authActions.login({
-              token: data.token,
-              userId: tokenDecoded._id,
-              userRole: tokenDecoded.role,
-              userData: data.record,
-            })
-          );
-          navigate("/");
-        }
-      } catch (e) {
-        setLoading(false);
-        setErrorMessage(e.response.data.error);
-      }
+    if (!error) {
+      return clientServices
+        .login(value)
+        .then(({ data }) => {
+          handleLoginSuccess(data);
+        })
+        .catch(handleLoginCatch);
     }
+
+    setLoading(false);
+    setErrorList(error.details.map((e) => e.message));
   };
 
   const guestLoginHandler = async (e) => {
     e.preventDefault();
-
+    setErrorList([]);
     setLoading(true);
+    clientServices
+      .loginAsGuest()
+      .then(({ data }) => {
+        handleLoginSuccess(data);
+      })
+      .catch(handleLoginCatch);
+  };
 
-    setLoading(true);
-    try {
-      const result = await clientServices.loginAsGuest();
-      const data = result.data;
-
-      if (data.success && data.code === 200) {
-        setLoading(false);
-
-        toastPopup.success(t("Success"));
-        const tokenDecoded = jwt_decode(data.token);
-
-        dispatch(
-          authActions.login({
-            token: data.token,
-            userId: tokenDecoded._id,
-            userRole: tokenDecoded.role,
-            userData: { role: tokenDecoded.role, type: "guest" },
-          })
-        );
-        navigate("/");
-      }
-    } catch (e) {
-      setLoading(false);
-      setErrorMessage(e.response.data.error);
+  const codeLoginHandler = async () => {
+    setErrorList([]);
+    if (!qrCode.open) {
+      setQrCode((s) => ({ ...s, open: true }));
+    } else {
+      setLoading(true);
+      clientServices
+        .loginByCode(qrCode.code)
+        .then(({ data }) => {
+          handleLoginSuccess(data);
+        })
+        .catch(handleLoginCatch);
     }
   };
 
@@ -133,60 +113,51 @@ export default function Login() {
 
         <div className="lang">
           {localStorage.getItem("i18nextLng") === "en" ? (
-            <button onClick={() => changeLang("ar")}>العربية</button>
+            <button onClick={() => switchLang("ar")}>العربية</button>
           ) : (
-            <button onClick={() => changeLang("en")}>English</button>
+            <button onClick={() => switchLang("en")}>English</button>
           )}
         </div>
 
-        <form className="login-box app-card-shadow" onSubmit={loginHandler}>
+        <form
+          className="login-box app-card-shadow max-xs:!w-full max-xs:!shadow-none"
+          onSubmit={loginHandler}
+          noValidate
+        >
           <p>{t("login")}</p>
 
-          {errorMessage ? (
-            <div className="err">
-              {errorMessage.includes("Client")
-                ? t("Client is not found!")
-                : t("Incorrect Password")}
-            </div>
-          ) : (
-            ""
-          )}
-          {errorList.map((error, index) => {
-            if (error.message.includes("password")) {
-              return (
-                <div className="err" key={index}>
-                  {t("WRONG PASSWORD")}{" "}
-                  <i className="fa-solid fa-circle-xmark"></i>
-                </div>
-              );
-            } else {
-              return (
-                <div key={index}>
-                  <div className="err" key={index}>
-                    {t("'email' must be a valid email")}
-                    <i className="fa-solid fa-circle-xmark"></i>
-                  </div>
-                </div>
-              );
-            }
-          })}
-
-          {formData.map((formInput, index) => {
+          {loginFormData.map((formInput, index) => {
             return (
               <MainInput
-                key={index}
-                name={formInput.name}
-                type={formInput.type}
-                required={formInput.required}
+                {...formInput}
+                key={formInput.name}
                 state={user}
                 setState={setUser}
               />
             );
           })}
-          <div className="text-primary hover:opacity-80">
-            <Link to={`/${ROUTES.FORGOT_PASSWORD}`}>Forgot Password?</Link>
-          </div>
+          <FormErrorMessage errorList={errorList} />
           <MainButton text={t("login")} loading={loading} type="submit" />
+          {qrCode.open && (
+            <MainInput
+              type="text"
+              state={qrCode}
+              setState={setQrCode}
+              name="code"
+            />
+          )}
+          <MainButton
+            onClick={codeLoginHandler}
+            className="!bg-secondary/80 hover:!bg-secondary !text-white"
+            text={"loginByCode"}
+            loading={loading}
+            type="button"
+          />
+          <div className="text-primary hover:opacity-80 capitalize">
+            <Link to={`/${ROUTES.FORGOT_PASSWORD}`}>{t("forgotPassword")}</Link>
+          </div>
+
+          {/*---------SOCIAL MEDIA BUTTONS---------*/}
           <div className="flex flex-row max-w-full gap-4 justify-around">
             <MainButton
               type="button"
@@ -194,7 +165,7 @@ export default function Login() {
               loading={loading}
               onClick={() => socialLogin("google")}
             >
-              <GoogleLogo className="w-8 h-8 lg:w-16 lg:h-16" />
+              <GoogleLogo className="w-12 h-12 lg:w-16 lg:h-16" />
             </MainButton>
             <MainButton
               type="button"
@@ -202,7 +173,7 @@ export default function Login() {
               loading={loading}
               onClick={() => socialLogin("facebook")}
             >
-              <FacebookLogo className="w-8 h-8 lg:w-16 lg:h-16" />
+              <FacebookLogo className="w-12 h-12 lg:w-16 lg:h-16" />
             </MainButton>
             <MainButton
               type="button"
@@ -210,13 +181,15 @@ export default function Login() {
               loading={loading}
               onClick={() => socialLogin("twitter")}
             >
-              <TwitterLogo className="w-8 h-8 lg:w-16 lg:h-16" />
+              <TwitterLogo className="w-12 h-12 lg:w-16 lg:h-16" />
             </MainButton>
           </div>
-          <p className="login-footer">
-            <span>{t("notRegistered")}</span>
-            &nbsp;
-            <Link to="/register" className="link-item">
+
+          {/*---------FOOTER---------*/}
+          <p className="login-footer flex flex-row gap-3 flex-wrap justify-center">
+            <span className="whitespace-nowrap">{t("notRegistered")}</span>
+
+            <Link to="/register" className="link-item whitespace-nowrap">
               {t("CreateAccount")}
             </Link>
           </p>

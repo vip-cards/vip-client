@@ -1,9 +1,9 @@
-import BranchProducts from "components/BranchProducts/BranchProducts";
+import loadable from "@loadable/component";
 import Footer from "components/Footer/Footer";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
-import Navbar from "components/Navbar/Navbar";
 import { ProtectedModule } from "components/auth-components/ProtectedModule";
 import { ROUTES } from "constants/routes";
+import TransactionProcess from "layouts/TransactionProcess";
 import {
   ApplyJobTab,
   Branch,
@@ -20,6 +20,7 @@ import {
   JobPage,
   Jobs,
   Offers,
+  Preview,
   PreviousAds,
   ProductDetails,
   Services,
@@ -30,22 +31,25 @@ import {
   Vendors,
   Wishlist,
 } from "pages";
+import DynamicPage from "pages/DynamicPage/DynamicPage";
+import PostPage from "pages/Jobs/views/PostPage";
 import { ServiceDetails } from "pages/Services/ServiceDetails";
 import { Suspense, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { getCurrentCartThunk } from "store/cart-slice";
 import AccountBarcode from "views/AccountBarcode/AccountBarcode";
+import AccountCoupons from "views/AccountCoupons/AccountCoupons";
 import AccountDetails from "views/AccountDetails/AccountDetails";
+import AccountLocation from "views/AccountLocation/AccountLocation";
+import AccountOrderRequests from "views/AccountOrderRequests/AccountOrderRequests";
 import AccountOrders from "views/AccountOrders/AccountOrders";
 import AccountWishlist from "views/AccountWishlist/AccountWishlist";
 import AccountLayout from "../AccountLayout/AccountLayout";
+
 import "./ClientLayout.scss";
-import PostPage from "pages/Jobs/views/PostPage";
-import AccountCoupons from "views/AccountCoupons/AccountCoupons";
-import AccountLocation from "views/AccountLocation/AccountLocation";
-import DynamicPage from "pages/DynamicPage/DynamicPage";
-import TransactionProcess from "layouts/TransactionProcess";
+
+const Navbar = loadable(() => import("components/Navbar/Navbar"));
 
 const PageLoader = () => (
   <div className="h-[80vh] w-[80vw] m-auto flex justify-center items-center">
@@ -58,7 +62,7 @@ export default function ClientLayout() {
 
   useEffect(() => {
     dispatch(getCurrentCartThunk());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="base-layout">
@@ -119,9 +123,9 @@ export default function ClientLayout() {
 
             <Route path={`services`} element={<Services />} />
             <Route path={`services/:id`} element={<ServiceDetails />} />
+            <Route path={`/${ROUTES.JOBS.MAIN}/:id`} element={<JobPage />} />
+            <Route path={`/posts/:id`} element={<PostPage />} />
             <Route path={`${ROUTES.JOBS.MAIN}`} element={<Jobs />}>
-              <Route path={`posts/:id`} element={<PostPage />} />
-              <Route path={`/${ROUTES.JOBS.MAIN}/:id`} element={<JobPage />} />
               <Route
                 path={`${ROUTES.JOBS.APPLY}`}
                 element={<ApplyJobTab />}
@@ -159,17 +163,11 @@ export default function ClientLayout() {
               path={`/${ROUTES.VENDORS}/:vendorId/branches`}
               element={<Branches />}
             />
+
             <Route
               path={`/${ROUTES.VENDORS}/:vendorId/:branchId`}
               element={<Branch />}
-            >
-              <Route path={`${ROUTES.OFFERS}`} element={<BranchProducts />} />
-              <Route
-                path={`${ROUTES.HOT_DEALS}`}
-                element={<BranchProducts />}
-              />
-              <Route path="" element={<Navigate to={`${ROUTES.OFFERS}`} />} />
-            </Route>
+            ></Route>
             <Route
               path={`/${ROUTES.VENDORS}/:vendorId/category/:categoryId`}
               element={<VendorCategory />}
@@ -198,8 +196,10 @@ export default function ClientLayout() {
             >
               <Route index path="details" element={<AccountDetails />} />
               <Route path="orders" element={<AccountOrders />} />
-              {/* <Route path="orders-requests" element={<Account />} /> */}
-
+              <Route
+                path="orders-requests"
+                element={<AccountOrderRequests />}
+              />
               <Route path="wishlist" element={<AccountWishlist />} />
               <Route path="barcode" element={<AccountBarcode />} />
               <Route path="coupons" element={<AccountCoupons />} />
@@ -218,6 +218,8 @@ export default function ClientLayout() {
               path="/transaction-process"
               element={<TransactionProcess />}
             />
+            <Route path={`/${ROUTES.PREVIEW}`} element={<Preview />} />
+            <Route path="*" element={<Navigate to={`/${ROUTES.HOME}`} />} />
           </Routes>
         </Suspense>
       </div>

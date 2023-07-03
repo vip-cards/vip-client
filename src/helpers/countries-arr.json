@@ -1,0 +1,422 @@
+{
+  "countries": [
+    {
+      "en": "Egypt",
+      "ar": "مصر",
+      "index": 175,
+      "code": "+20",
+      "cities": [
+        {
+          "en": "Banha",
+          "ar": "بنها",
+          "index": 77938
+        },
+        {
+          "en": "Shubra",
+          "ar": "شبرا",
+          "index": 77917
+        },
+        {
+          "en": "Damietta",
+          "ar": "دمياط",
+          "index": 77918
+        },
+        {
+          "en": "Faraskur",
+          "ar": "فارسكور",
+          "index": 77935
+        },
+        {
+          "en": "Al Mansurah",
+          "ar": "المنصورة",
+          "index": 77921
+        },
+        {
+          "en": "Helwan",
+          "ar": "حلوان",
+          "index": 77916
+        },
+        {
+          "en": "Heliopolis",
+          "ar": "مصر الجديدة",
+          "index": 77929
+        },
+        {
+          "en": "Almazah",
+          "ar": "الماظة",
+          "index": 77943
+        },
+        {
+          "en": "Al Mahallah al Kubra",
+          "ar": "المحلة الكبرى",
+          "index": 77928
+        },
+        {
+          "en": "Giza",
+          "ar": "الجيزة",
+          "index": 77915
+        },
+        {
+          "en": "Madinat an Nasr",
+          "ar": "مدينة نصر",
+          "index": 77920
+        },
+        {
+          "en": "Cairo",
+          "ar": "القاهرة",
+          "index": 77912
+        },
+        {
+          "en": "Abu Hammad",
+          "ar": "ابو حماد",
+          "index": 77946
+        },
+        {
+          "en": "Port Said",
+          "ar": "بورسعيد",
+          "index": 77939
+        },
+        {
+          "en": "Az Zamalik",
+          "ar": "الزمالك",
+          "index": 77931
+        },
+        {
+          "en": "Luxor",
+          "ar": "الأقصر",
+          "index": 77940
+        },
+        {
+          "en": "Hurghada",
+          "ar": "الغردقة",
+          "index": 77930
+        },
+        {
+          "en": "Suez",
+          "ar": "السويس",
+          "index": 77919
+        },
+        {
+          "en": "Zagazig",
+          "ar": "الزقازيق",
+          "index": 77925
+        },
+        {
+          "en": "Ramsis",
+          "ar": "رمسيس",
+          "index": 77926
+        },
+        {
+          "en": "Toukh",
+          "ar": "طوخ",
+          "index": 77937
+        },
+        {
+          "en": "6 October",
+          "ar": "مدينة السادس من أكتوبر",
+          "index": 77933
+        },
+        {
+          "en": "Kafr ash Shaykh",
+          "ar": "كفر الشيخ",
+          "index": 77949
+        },
+        {
+          "en": "Tanta",
+          "ar": "طنطا",
+          "index": 77924
+        },
+        {
+          "en": "Assiut",
+          "ar": "أسيوط",
+          "index": 77944
+        },
+        {
+          "en": "Badr",
+          "ar": "بدر",
+          "index": 77950
+        },
+        {
+          "en": "Sadat",
+          "ar": "السادات",
+          "index": 77942
+        },
+        {
+          "en": "Sohag",
+          "ar": "سوهاج",
+          "index": 77923
+        },
+        {
+          "en": "Minya",
+          "ar": "المنيا",
+          "index": 77941
+        },
+        {
+          "en": "Alexandria",
+          "ar": "الإسكندرية",
+          "index": 77914
+        },
+        {
+          "en": "Bani Suwayf",
+          "ar": "بني سويف",
+          "index": 77922
+        },
+        {
+          "en": "Ar Rawdah",
+          "ar": "الروضة",
+          "index": 77927
+        },
+        {
+          "en": "Ismailia",
+          "ar": "الإسماعيلية",
+          "index": 77934
+        },
+        {
+          "en": "Flaminj",
+          "ar": "فلامينج",
+          "index": 77948
+        },
+        {
+          "en": "Al Marj",
+          "ar": "المرج",
+          "index": 77945
+        },
+        {
+          "en": "Nasr",
+          "ar": "نصر",
+          "index": 77947
+        },
+        {
+          "en": "Shirbin",
+          "ar": "شربين",
+          "index": 77936
+        },
+        {
+          "en": "Rafah",
+          "ar": "رفح",
+          "index": 77932
+        },
+        {
+          "en": "New Cairo",
+          "ar": "القاهرة الجديدة",
+          "index": 77913
+        }
+      ],
+      "alpha3": "EGY"
+    },
+    {
+      "en": "Saudi Arabia",
+      "ar": "المملكة العربية السعودية",
+      "index": 304,
+      "code": "+966",
+      "cities": [
+        {
+          "en": "Safwa",
+          "ar": "صفوى",
+          "index": 60903
+        },
+        {
+          "en": "Ras Tanura",
+          "ar": "رأس تنورة",
+          "index": 60927
+        },
+        {
+          "en": "Ta'if",
+          "ar": "الطائف",
+          "index": 60911
+        },
+        {
+          "en": "Dhahran",
+          "ar": "الظهران",
+          "index": 60905
+        },
+        {
+          "en": "Al Yamamah",
+          "ar": "اليمامة",
+          "index": 60924
+        },
+        {
+          "en": "Ra's al Khafji",
+          "ar": "رأس الخفجي",
+          "index": 60935
+        },
+        {
+          "en": "Mina",
+          "ar": "مينا",
+          "index": 60919
+        },
+        {
+          "en": "Jubail",
+          "ar": "الجبيل",
+          "index": 60908
+        },
+        {
+          "en": "At Tuwal",
+          "ar": "في طوال",
+          "index": 60928
+        },
+        {
+          "en": "Abqaiq",
+          "ar": "ابقيق",
+          "index": 60918
+        },
+        {
+          "en": "Hayil",
+          "ar": "حائل",
+          "index": 60932
+        },
+        {
+          "en": "Riyadh",
+          "ar": "مدينة الرياض",
+          "index": 60901
+        },
+        {
+          "en": "Al Hufuf",
+          "ar": "الهفوف",
+          "index": 60913
+        },
+        {
+          "en": "Yanbu` al Bahr",
+          "ar": "ينبع البحر",
+          "index": 60917
+        },
+        {
+          "en": "Sayhat",
+          "ar": "سيهات",
+          "index": 60909
+        },
+        {
+          "en": "Khobar",
+          "ar": "مدينه الخبر",
+          "index": 60907
+        },
+        {
+          "en": "Najran",
+          "ar": "نجران",
+          "index": 60936
+        },
+        {
+          "en": "Jazirah",
+          "ar": "الجزيرة",
+          "index": 60940
+        },
+        {
+          "en": "Mecca",
+          "ar": "مكة المكرمة",
+          "index": 60912
+        },
+        {
+          "en": "Jazirah",
+          "ar": "الجزيرة",
+          "index": 60941
+        },
+        {
+          "en": "Madinat Yanbu` as Sina`iyah",
+          "ar": "مدينة ينبع الصناعية",
+          "index": 60931
+        },
+        {
+          "en": "Rabigh",
+          "ar": "رابغ",
+          "index": 60916
+        },
+        {
+          "en": "Sabya",
+          "ar": "صبيا",
+          "index": 60929
+        },
+        {
+          "en": "Khulays",
+          "ar": "خليص",
+          "index": 60933
+        },
+        {
+          "en": "Rahman",
+          "ar": "رحمن",
+          "index": 60939
+        },
+        {
+          "en": "Sambah",
+          "ar": "سامبح",
+          "index": 60926
+        },
+        {
+          "en": "Ramdah",
+          "ar": "رمضة",
+          "index": 60920
+        },
+        {
+          "en": "Sakaka",
+          "ar": "سكاكا",
+          "index": 60937
+        },
+        {
+          "en": "Dammam",
+          "ar": "الدمام",
+          "index": 60902
+        },
+        {
+          "en": "Jizan",
+          "ar": "جيزان",
+          "index": 60923
+        },
+        {
+          "en": "Linah",
+          "ar": "لينا",
+          "index": 60921
+        },
+        {
+          "en": "Al Bahah",
+          "ar": "الباحة",
+          "index": 60938
+        },
+        {
+          "en": "Abha",
+          "ar": "أبها",
+          "index": 60922
+        },
+        {
+          "en": "Medina",
+          "ar": "المدينة المنورة",
+          "index": 60914
+        },
+        {
+          "en": "Khamis Mushait",
+          "ar": "خميس مشيط",
+          "index": 60934
+        },
+        {
+          "en": "Al Qatif",
+          "ar": "القطيف",
+          "index": 60904
+        },
+        {
+          "en": "Tabuk",
+          "ar": "تبوك",
+          "index": 60925
+        },
+        {
+          "en": "Jeddah",
+          "ar": "جدة",
+          "index": 60910
+        },
+        {
+          "en": "Rahimah",
+          "ar": "رحيمة",
+          "index": 60915
+        },
+        {
+          "en": "Al Faruq",
+          "ar": "الفاروق",
+          "index": 60906
+        },
+        {
+          "en": "Buraidah",
+          "ar": "بريدة",
+          "index": 60930
+        }
+      ],
+      "alpha3": "SAU"
+    }
+  ]
+}

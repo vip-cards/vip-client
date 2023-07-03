@@ -12,7 +12,12 @@ export const postsServices = {
     const response = await Axios.post("/post/create", body);
     return response;
   },
-
+  removePost: async (_id) =>
+    (
+      await Axios.delete("/post/remove", {
+        params: { _id, client: localStorage.getItem("userId") ?? "" },
+      })
+    )?.data,
   applyToPost: async (_id, obj) =>
     (await Axios.post("/post/apply", obj, { params: { _id } }))?.data,
 };

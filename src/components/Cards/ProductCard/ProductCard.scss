@@ -2,7 +2,7 @@
 @import "styles/dimensions";
 @import "styles/globals";
 
-$card-height: 350px;
+$card-height: 360px;
 
 .product-card {
   height: $card-height;
@@ -29,7 +29,7 @@ $card-height: 350px;
     opacity: 1;
   }
   .product-img-container {
-    height: calc(#{$card-height} + 150px);
+    height: calc(#{$card-height} + 120px);
 
     overflow: hidden;
     border-radius: 12px;
@@ -110,6 +110,7 @@ $card-height: 350px;
 
   .product-info-container {
     border-radius: 12px;
+    cursor: pointer;
     height: inherit;
     width: 100%;
     // position: absolute;
@@ -256,6 +257,7 @@ $card-height: 350px;
 
   .branches-list {
     position: absolute;
+    z-index: 9;
     box-shadow: 0 0px 10px 2px $mainColor;
     border-radius: 1rem;
     overflow: auto;
@@ -311,7 +313,7 @@ $card-height: 350px;
     left: 0%;
     right: 0%;
     bottom: 10%;
-    z-index: 1;
+    z-index: 100;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;

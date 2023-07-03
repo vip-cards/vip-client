@@ -37,8 +37,13 @@ export function ProductImageContainer({ product }) {
       });
     }
   }
-  const renderImages = product.image.map((image, index) => (
-    <SwiperSlide key={image?.Location ?? index}>
+  const renderImages = product?.image?.map((image, index) => (
+    <SwiperSlide
+      key={image?.Location ?? index}
+      onClick={() => {
+        navigate("/product/" + product._id);
+      }}
+    >
       <div className="product-img">
         <img
           src={image?.Location ?? ""}
@@ -89,19 +94,23 @@ export function ProductImageContainer({ product }) {
       </span>
     </SwiperSlide>
   ));
-
+  if (!product?._id) return null;
   return (
     <Swiper
       ref={swiperRef}
       loop={true}
       autoplay={{ delay: 5000 }}
       spaceBetween={10}
-      className="product-img-container pointer"
+      className="product-img-container pointer h-44"
     >
       {product.image.length ? (
         renderImages
       ) : (
-        <SwiperSlide>
+        <SwiperSlide
+          onClick={() => {
+            navigate("/product/" + product._id);
+          }}
+        >
           <div className="flex flex-row justify-center items-center text-secondary/80 w-full h-full">
             <FontAwesomeIcon icon={faShop} size="4x" />
           </div>

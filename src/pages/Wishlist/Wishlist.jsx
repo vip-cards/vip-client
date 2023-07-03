@@ -1,10 +1,9 @@
 import CardContainer from "components/CardContainer/CardContainer";
 import { ProductCard } from "components/Cards";
 import LoadingProductCard from "components/Cards/ProductCard/LoadingProductCard";
-import { listRenderFn } from "helpers/rednerFn";
+import { listRenderFn } from "helpers/renderFn";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 export default function Wishlist() {
   const { products: wishlist, loading } = useSelector(
@@ -38,9 +37,10 @@ export default function Wishlist() {
     listRenderFn({
       isLoading: loading && !list?.length,
       list,
-      render: ({ product }, idx) => (
-        <ProductCard product={product} key={product._id} />
-      ),
+      render: ({ product }, idx) =>
+        product?._id ? (
+          <ProductCard product={product} key={product._id} />
+        ) : null,
     });
 
   return (

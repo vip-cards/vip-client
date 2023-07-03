@@ -1,6 +1,6 @@
 import JobCard from "components/Cards/JobCard/JobCard";
 import Pagination from "components/Pagination/Pagination";
-import { listRenderFn } from "helpers/rednerFn";
+import { listRenderFn } from "helpers/renderFn";
 import { useState } from "react";
 import clientServices from "services/clientServices";
 import useSWR from "swr";
@@ -15,9 +15,7 @@ export default function ApplyJobViewCreatedJob() {
 
   const {
     data: jobsData,
-    error,
     isLoading,
-    isValidating,
     mutate,
   } = useSWR(["my-created-jobs", queryParams], ([, queryParams]) =>
     clientServices.listAllJobs(queryParams)
@@ -27,7 +25,7 @@ export default function ApplyJobViewCreatedJob() {
   const totalPages = Math.ceil(counts / LIMIT);
   return (
     <div className="flex flex-col h-full flex-grow">
-      <div className="jobs-cards-container ">
+      <div className="jobs-cards-container">
         {listRenderFn({
           isLoading,
           list: jobs,

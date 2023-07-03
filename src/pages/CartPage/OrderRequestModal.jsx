@@ -9,7 +9,11 @@ import clientServices from "services/clientServices";
 import { newOrderRequest } from "services/socket/order";
 import { getCurrentCartThunk } from "store/cart-slice";
 
-export default function OrderRequestModal({ showModal, setShowModal }) {
+export default function OrderRequestModal({
+  showModal,
+  setShowModal,
+  hasOnlinePayment,
+}) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [userInfo, setUserInfo] = useState({});
@@ -39,6 +43,7 @@ export default function OrderRequestModal({ showModal, setShowModal }) {
         toastPopup.success("Your order is being requested");
         setShowModal(false);
         newOrderRequest(record._id);
+
         dispatch(getCurrentCartThunk());
       })
       .catch(responseErrorToast);
@@ -59,10 +64,14 @@ export default function OrderRequestModal({ showModal, setShowModal }) {
               <MainInput
                 name="paymentMethod"
                 type="select"
-                list={[
-                  { name: "visa", value: "visa" },
-                  { name: "cash on delivery", value: "cash on delivery" },
-                ]}
+                list={
+                  hasOnlinePayment
+                    ? [
+                        { name: "cash on delivery", value: "cash on delivery" },
+                        { name: "visa", value: "visa" },
+                      ]
+                    : [{ name: "cash on delivery", value: "cash on delivery" }]
+                }
                 identifier="name"
                 state={userInfo}
                 setState={setUserInfo}
@@ -71,7 +80,7 @@ export default function OrderRequestModal({ showModal, setShowModal }) {
           </fieldset>
 
           <fieldset className="border border-1 rounded-md flex flex-col gap-5 p-3 mt-8">
-            <legend className="font-semibold px-1">{t("address.")}</legend>
+            <legend className="font-semibold px-1">{t("address")}</legend>
             {formData.map((formInput, index) => {
               return (
                 <MainInput

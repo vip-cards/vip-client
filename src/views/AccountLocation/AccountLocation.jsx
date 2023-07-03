@@ -5,6 +5,7 @@ import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import { useDispatch, useSelector } from "react-redux";
 import clientServices from "services/clientServices";
 import { authActions } from "store/auth-slice";
+import "leaflet/dist/leaflet.css";
 
 const AccountLocation = () => {
   const userLocation = useSelector((state) => state.auth.userData.location);
@@ -59,9 +60,8 @@ const AccountLocation = () => {
           <MainButton
             className="mt-3 text-center mx-auto"
             onClick={handleUpdateLoaction}
-          >
-            Set to current location
-          </MainButton>
+            text="Set to current location"
+          />
         </div>
       </main>
     </section>

@@ -6,20 +6,23 @@ import store from "../store";
 import { authActions } from "../store/auth-slice";
 import endPoint from "./endPoint";
 
-const baseURL = endPoint;
-
 const guestEndpoints = [
   "/login",
   "/loginBy",
+  "/loginByBarcode",
   "/register",
   "/recovery",
   "/resetPassword",
   "/guest",
 ];
 
-const Axios = axios.create({ baseURL });
-Axios.defaults.baseURL = endPoint + "/client";
-Axios.defaults.headers["x-app-token"] = "VIP-Team";
+const axiosConfig = {
+  baseURL: endPoint + "/client",
+  headers: { "x-app-token": "VIP-Team" },
+};
+
+const guestAxios = axios.create(axiosConfig);
+const Axios = axios.create(axiosConfig);
 
 Axios.interceptors.request.use(async (req) => {
   if (guestEndpoints.includes(req.url)) return req;
@@ -32,7 +35,7 @@ Axios.interceptors.request.use(async (req) => {
 
   if (!isTokenExpired) {
     req.headers.Authorization = `Bearer ${auth.token}`;
-    if (req.method === "get") {
+    if (req.method === "get" && !req.url.includes("ad/list")) {
       req.params = {
         ...req.params,
         isActive: req.url.includes("subs") ? false : true,
@@ -40,7 +43,7 @@ Axios.interceptors.request.use(async (req) => {
     }
     if (
       req.method !== "get" &&
-      (token._id === "guest" || !auth.userData.isSubscribed) &&
+      token._id === "guest" &&
       !req.url.includes("update") &&
       !req.url.includes("subscribe")
     ) {
@@ -82,4 +85,5 @@ export function axiosAuthMiddleware() {
   return { axiosWrapper, userId };
 }
 
+export { guestAxios };
 export default Axios;

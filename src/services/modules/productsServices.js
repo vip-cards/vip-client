@@ -7,10 +7,8 @@ export const productsServives = {
     const response = await Axios.get(`/product/get?_id=${productId}`);
     return response.data;
   },
-  listAllBranchProductsOfType: async (branchId, isHotDeal = false) => {
-    const response = await Axios.get(
-      `/product/list?branches=${branchId}&isHotDeal=${isHotDeal}`
-    );
+  listAllBranchProducts: async (branchId) => {
+    const response = await Axios.get(`/product/list?branches=${branchId}`);
     return response;
   },
 

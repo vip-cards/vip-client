@@ -61,17 +61,18 @@ export const cartServices = {
     ).data;
   },
 
-  getOrdersRequests: async () => {
+  getOrdersRequests: async (params) => {
     return (
       await Axios.get("/orderRequest/get", {
         params: {
+          ...params,
           client: userId(),
         },
       })
     ).data;
   },
 
-  rejectOrderRequest: async () => {
+  rejectOrderRequest: async (params) => {
     const response = await Axios.put(
       `/orderRequest/update`,
       {
@@ -80,6 +81,7 @@ export const cartServices = {
       {
         params: {
           client: userId(),
+          ...params,
         },
       }
     );
@@ -88,6 +90,8 @@ export const cartServices = {
 
   checkoutRequest: async (request) =>
     await Axios.post("/order/checkout", { client: userId(), request }),
+  checkoutFreeTrial: async (request) =>
+    await Axios.post("/order/freetrial", { client: userId(), request }),
 
   acceptOrder: async (request) =>
     await Axios.put(

@@ -17,10 +17,5 @@ export function listenToNotification(onEvent) {
 }
 
 export function listNotification() {
-  const userData = JSON.parse(localStorage.getItem("userData"));
-
-  socket.emit(EVENTS.NOTIFICATION.LIST, {
-    // "city.en": userData?.city?.en,
-    // gender: userData?.gender,
-  });
+  socket.emit(EVENTS.NOTIFICATION.LIST, {});
 }

@@ -19,8 +19,10 @@ const clientServices = {
     const response = await Axios.get(`/vendor/get?_id=${vendorId}`);
     return response;
   },
+  
   listAllVendors: async (params) =>
     (await Axios.get(`/vendor/list`, { params })).data,
+
   listAllVendorsByRating: async (params) =>
     (await Axios.get(`/vendor/rating`, { params })).data,
 
@@ -34,8 +36,13 @@ const clientServices = {
     return response;
   },
 
-  listClientOrders: async () => {
-    const response = await Axios.get("/order/get?client=" + userId());
+  listClientOrders: async (params) => {
+    const response = await Axios.get("/order/get", {
+      params: {
+        ...params,
+        client: userId(),
+      },
+    });
     return response;
   },
 

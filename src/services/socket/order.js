@@ -1,9 +1,10 @@
-import toastPopup from "helpers/toastPopup";
 import store from "store";
 import { EVENTS, socket } from "./config";
 
-export function newOrderRequest(requestId) {
-  socket.emit(EVENTS.ORDER.NEW_REQUEST, { requestId });
+export async function newOrderRequest(requestId) {
+  const response = await socket.emitWithAck(EVENTS.ORDER.NEW_REQUEST, {
+    requestId,
+  });
 }
 
 export function openOrderRoom(onEvent) {

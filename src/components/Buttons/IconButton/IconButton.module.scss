@@ -8,6 +8,7 @@
   &.primary {
     color: $mainColor;
   }
+
   &:hover {
     color: darken($color: $mainColor, $amount: 5);
   }

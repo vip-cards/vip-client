@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { MainButton } from "components/Buttons";
 import ProductCard from "components/Cards/ProductCard/ProductCard";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import NoData from "components/NoData/NoData";
@@ -24,7 +23,7 @@ export default function Offers({ isHotDeal = false }) {
     () => clientServices.listAllProducts({ isHotDeal, ...queryParams })
   );
 
-  const { data: categoriesData } = useSWR("all-categories", () =>
+  const { data: categoriesData } = useSWR("all--product-categories", () =>
     clientServices.listAllCategories({ type: "product" })
   );
 
@@ -36,7 +35,6 @@ export default function Offers({ isHotDeal = false }) {
     productsData ?? {};
   const { records: categories = undefined } = categoriesData ?? {};
   const { records: vendors = undefined } = vendorsData ?? {};
-  const totalPages = Math.ceil(productsCount / LIMIT);
 
   const toggleFilter = (arrayKey = "vendors", itemId) => {
     const newVendorFilterList = [...filter[arrayKey]];
@@ -117,9 +115,13 @@ export default function Offers({ isHotDeal = false }) {
       /> */}
       <aside className="flex flex-row flex-wrap gap-x-3 gap-y-2 justify-start items-start mb-2">
         <button
-          onClick={() => setFilter((f) => ({ ...f, categories: [] }))}
+          onClick={() => {
+            setFilter((f) => ({ ...f, categories: [] }));
+            setQueryParams({ page: 1, limit: LIMIT });
+          }}
           className={classNames("px-3 py-1 rounded-lg border text-sm", {
-            "bg-primary/50 shadow-lg text-slate-800": !filter.categories?.length,
+            "bg-primary/50 shadow-lg text-slate-800":
+              !filter.categories?.length,
             "bg-primary shadow text-black": filter.categories?.length,
           })}
         >
@@ -127,7 +129,10 @@ export default function Offers({ isHotDeal = false }) {
         </button>
         {categories?.map((category) => (
           <button
-            onClick={() => toggleFilter("categories", category._id)}
+            onClick={() => {
+              toggleFilter("categories", category._id);
+              setQueryParams({ page: 1, limit: LIMIT });
+            }}
             key={category._id}
             className={classNames("px-3 py-1 rounded-lg border text-sm", {
               "bg-primary":
@@ -145,7 +150,10 @@ export default function Offers({ isHotDeal = false }) {
       </aside>
       <aside className="flex flex-row flex-wrap gap-x-3 gap-y-2 justify-start items-start mb-3">
         <button
-          onClick={() => setFilter((f) => ({ ...f, vendors: [] }))}
+          onClick={() => {
+            setFilter((f) => ({ ...f, vendors: [] }));
+            setQueryParams({ page: 1, limit: LIMIT });
+          }}
           className={classNames("px-3 py-1 rounded-lg border text-sm", {
             "bg-primary/50 shadow-lg text-slate-800": !filter.vendors?.length,
             "bg-primary shadow text-black": filter.vendors?.length,
@@ -155,7 +163,10 @@ export default function Offers({ isHotDeal = false }) {
         </button>
         {vendors?.map((vendor) => (
           <button
-            onClick={() => toggleFilter("vendors", vendor._id)}
+            onClick={() => {
+              toggleFilter("vendors", vendor._id);
+              setQueryParams({ page: 1, limit: LIMIT });
+            }}
             key={vendor._id}
             className={classNames("px-3 py-1 rounded-lg border text-sm", {
               "bg-primary":

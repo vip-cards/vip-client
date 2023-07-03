@@ -10,15 +10,15 @@
     "@fortawesome/free-regular-svg-icons": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@loadable/component": "^5.15.3",
+    "@octokit/rest": "^19.0.13",
     "@reduxjs/toolkit": "^1.8.6",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
+    "animate.css": "^4.1.1",
     "axios": "^1.1.2",
     "classnames": "^2.3.2",
-    "country-city-multilanguage": "^1.0.0",
     "dayjs": "^1.11.5",
     "firebase": "^9.14.0",
+    "framer-motion": "^10.12.17",
     "i18next": "^21.10.0",
     "i18next-browser-languagedetector": "^6.1.8",
     "i18next-http-backend": "^1.4.4",
@@ -40,15 +40,18 @@
     "react-scripts": "5.0.1",
     "react-select": "^5.7.2",
     "react-toastify": "^8.0.3",
-    "serve": "^14.0.1",
     "socket.io-client": "^4.6.1",
+    "source-map-explorer": "^2.5.3",
     "swiper": "^8.4.4",
-    "swr": "^2.1.0",
-    "web-vitals": "^2.1.4"
+    "swr": "^2.1.0"
   },
   "scripts": {
+    "analyze": "npm run build && source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "start:craco": "craco start",
+    "build:craco": "craco build",
+    "analyze:craco": "cross-env REACT_APP_INTERACTIVE_ANALYZE=1 npm run build:craco",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -71,8 +74,18 @@
     ]
   },
   "devDependencies": {
-    "debug": "^4.3.4",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@craco/craco": "^7.1.0",
+    "@craco/types": "^7.1.0",
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "@tailwindcss/typography": "^0.5.9",
+    "@types/loadable__component": "^5.13.4",
+    "@types/lodash": "^4.14.195",
+    "@types/react-datepicker": "^4.11.2",
+    "@types/react-dom": "^18.2.6",
+    "cross-env": "^7.0.3",
     "tailwindcss": "^3.2.7",
-    "tailwindcss-rtl": "^0.9.0"
+    "tailwindcss-rtl": "^0.9.0",
+    "webpack-bundle-analyzer": "^4.9.0"
   }
 }

@@ -21,11 +21,10 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: sans-serif;
+  font-family: "Open Sans", "Noto Sans Arabic", sans-serif;
   scrollbar-width: thin;
   scrollbar-color: rgba($primary, 0.5) #f1f1f1;
 }
-
 
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
@@ -91,7 +90,20 @@
 ::-moz-scrollbar-button:hover {
   background-color: #bbb;
 }
+@layer utilities {
+  @variants responsive {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
 
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
+}
 $font-size-base: 1rem;
 
 $font-size-upper: 2.5rem;
@@ -110,6 +122,7 @@ $font-size-dec: 0.25rem;
   }
   $font-size-upper: $font-size-upper - $font-size-dec;
 }
+
 .app-card-shadow {
   border-radius: 15px;
   box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.2);
@@ -193,7 +206,7 @@ img {
     display: grid;
     place-items: center;
     background: var(--mainColorLight);
-    font-family: "FontAwesome";
+    font-family: "Open Sans", "Noto Sans Arabic", sans-serif;
   }
   &::after {
     content: attr(alt);
@@ -343,4 +356,16 @@ img {
       }
     }
   }
+}
+
+.err {
+  color: #842029;
+  background-color: #f8d7da;
+  border-color: #f5c2c7;
+  padding: 0px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-family: "Noto Sans Arabic", sans-serif;
+  font-weight: bold;
+  margin-bottom: 5px;
 }

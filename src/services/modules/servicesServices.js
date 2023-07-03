@@ -5,8 +5,13 @@ export const servicesServices = {
   createService: async (obj) =>
     (await Axios.post(API.SERVICES.CREATE, obj))?.data,
 
-  removeService: async (_id) =>
-    (await Axios.delete(API.SERVICES.CREATE, { params: { _id } }))?.data,
+  removeService: async (_id) => {
+    const provider = localStorage.getItem("userId") ?? "";
+
+    return (
+      await Axios.delete(API.SERVICES.REMOVE, { params: { _id, provider } })
+    )?.data;
+  },
 
   getService: async (_id) =>
     (await Axios.get(API.SERVICES.GET, { params: { _id } }))?.data,

@@ -1,46 +1,25 @@
+import { ROUTES } from "constants";
 import { checkFixLang } from "helpers/lang";
 import i18n from "locales/i18n";
+import ForgetPassword from "pages/Login/ForgotPassword";
 import Login from "pages/Login/Login";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
 import Register from "pages/Register/Register";
 import ResetPassword from "pages/ResetPassword/ResetPassword";
+import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, Route, Routes, useLocation } from "react-router";
 import ProtectedRoute from "routes/ProtectedRoute/ProtectedRoute";
-import {
-  EVENTS,
-  connectSocket,
-  disconnectSocket,
-  socket,
-} from "services/socket/config";
-import {
-  listNotification,
-  listenToNotification,
-} from "services/socket/notification";
-import { setNotifications } from "store/actions";
+import { SocketProvider } from "services/socket/provider";
 import { fetchWishlist } from "store/wishlist-slice";
 import RegisterForm from "views/RegisterForm/RegisterForm";
 import RegisterHome from "views/RegisterHome/RegisterHome";
-import ForgetPassword from "pages/Login/ForgotPassword";
-import { ROUTES } from "constants";
-import { openOrderRoom } from "services/socket/order";
-import toastPopup from "helpers/toastPopup";
-import { toast } from "react-toastify";
 
 function App() {
   const lang = i18n.language;
 
   const auth = useSelector((state) => state.auth);
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
@@ -56,47 +35,6 @@ function App() {
     document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
 
-  useEffect(() => {
-    connectSocket();
-    listenToNotification((first) => {});
-    socket.on(EVENTS.CONNECTION.OPEN, () => {});
-    listenToNotification((res) => {});
-    listNotification();
-
-    socket.on(EVENTS.NOTIFICATION.LIST, (response) => {
-      setNotifications(response);
-    });
-
-    socket.on(EVENTS.CHAT.CREATE, (res) => {
-      if (!res.success) {
-        return;
-      }
-      const roomId = res.record?._id;
-      navigate("/chat", { state: { roomId } });
-    });
-
-    openOrderRoom((data) => {
-      toast.info("Your latest order has an update!", {
-        onClick: () => navigate("/cart"),
-        pauseOnHover: true,
-        autoClose: 3400,
-        hideProgressBar: true,
-        closeOnClick: true,
-        rtl: i18n.language === "ar",
-        pauseOnFocusLoss: true,
-        theme: "light",
-        type: "info",
-        position: "bottom-right",
-        toastId: data?.records?.[0]?._id,
-      });
-    });
-
-    return () => {
-      socket.off(EVENTS.CONNECTION.OPEN);
-      disconnectSocket();
-    };
-  }, []);
-
   return (
     <div className="App">
       <Helmet>
@@ -104,7 +42,14 @@ function App() {
       </Helmet>
 
       <Routes>
-        <Route path="/*" element={<ProtectedRoute />} />
+        <Route
+          path="/*"
+          element={
+            <SocketProvider>
+              <ProtectedRoute />
+            </SocketProvider>
+          }
+        />
 
         <Route
           path="/login"

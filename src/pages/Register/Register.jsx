@@ -30,12 +30,14 @@ export default function Register() {
           )}
         </div>
 
-        <form
+        <div
           className="login-box app-card-shadow"
           onSubmit={(e) => e.preventDefault()}
         >
           <p>{t("signUp")}</p>
-          <Outlet />
+          <div className="flex flex-col gap-4 justify-center items-center w-full mx-auto">
+            <Outlet />
+          </div>
           <p className="login-footer">
             <span>{t("alreadyHaveAccount")} </span>
             &nbsp;
@@ -43,7 +45,7 @@ export default function Register() {
               {t("login")}
             </Link>
           </p>
-        </form>
+        </div>
       </div>
     </div>
   );

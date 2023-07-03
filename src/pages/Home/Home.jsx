@@ -1,10 +1,5 @@
 import classNames from "classnames";
-import {
-  BannerCard,
-  CategoryCard,
-  ProductCard,
-  VendorCard,
-} from "components/Cards";
+import { CategoryCard, VendorCard } from "components/Cards";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import Modal from "components/Modal/Modal";
 import NoData from "components/NoData/NoData";
@@ -17,56 +12,50 @@ import { SwiperSlide } from "swiper/react";
 import useSWR from "swr";
 import HomeSwiper from "./HomeSwiper";
 import SectionContainer from "./SectionContainer";
-
 import classes from "./Home.module.scss";
+import loadable from "@loadable/component";
+
+const ProdcutsSections = loadable(() =>
+  import("./_components/ProdcutsSections")
+);
 
 export default function Home() {
   const navigate = useNavigate();
   const [popUpModalVisible, setPopUpModalVisible] = useState(false);
-
-  const { data: productsData, isLoading: productsLoading } = useSWR(
-    "all-products",
-    () => clientServices.listAllProducts() // to prevent sending the string in the params
-  );
 
   const { data: vendorsData, isLoading: vendorsLoading } = useSWR(
     "all-vendors",
     () => clientServices.listAllVendors() // to prevent sending the string in the params
   );
   const { data: categoriesData, isLoading: categoriesLoading } = useSWR(
-    "all-categories",
+    "vendor-categories",
     () => clientServices.listAllCategories({ type: "vendor" })
   );
   const { data: advertsData, isLoading: advertsLoading } = useSWR(
     "all-adverts",
-    () => clientServices.listAllAds()
-  );
-  const { data: bannersData, isLoading: bannersLoading } = useSWR(
-    "all-banners",
     () => clientServices.listAllBanners()
   );
 
-  const { records: products = undefined } = productsData ?? {};
   const { records: categories = undefined } = categoriesData ?? {};
   const { records: vendors = undefined } = vendorsData ?? {};
-  const { records: banners = undefined } = bannersData ?? {};
+
   const { records: adverts = undefined } = advertsData ?? {};
 
   const popUps = useMemo(
-    () => banners?.filter((item) => item.isPopUp) ?? [],
-    [banners]
+    () => adverts?.filter((item) => item.isPopUp) ?? [],
+    [adverts]
   );
 
   const randomPopUp = useMemo(
     () => Math.floor(Math.random() * (popUps?.length ?? 0)),
-    [popUps?.length]
+    [popUps]
   );
 
   const renderAds = (size) => {
     if (advertsLoading || !adverts) return <LoadingSpinner />;
     if (!adverts.length)
       return dummyAds
-        .filter((ad) => ad.bannerSize === size)
+        .filter((ad) => ad.size === size && !ad.isPopUp)
         .map((ad) => {
           return (
             <SwiperSlide
@@ -84,7 +73,7 @@ export default function Home() {
           );
         });
     return adverts
-      .filter((ad) => ad.bannerSize === size)
+      .filter((ad) => ad.size === size && !ad.isPopUp)
       .map((ad) => {
         return (
           <SwiperSlide
@@ -98,48 +87,6 @@ export default function Home() {
                 alt={ad.name}
               />
             </a>
-          </SwiperSlide>
-        );
-      });
-  };
-
-  const renderBanners = () => {
-    if (bannersLoading || !banners) return <LoadingSpinner />;
-    if (!banners.length) return <NoData />;
-
-    return banners.map((banner) => {
-      return (
-        <SwiperSlide
-          key={banner._id}
-          className="w-full h-full rounded-xl shadow overflow-hidden"
-        >
-          <BannerCard banner={banner} />
-        </SwiperSlide>
-      );
-    });
-  };
-
-  const renderProducts = (type) => {
-    if (productsLoading || !products) return <LoadingSpinner />;
-    const productList = products?.filter(
-      (product) =>
-        (type === "hotDeal" && product.isHotDeal) ||
-        (type !== "hotDeal" && !product.isHotDeal)
-    );
-
-    if (!productList.length) {
-      return <NoData />;
-    }
-    return products
-      .filter(
-        (product) =>
-          (type === "hotDeal" && product.isHotDeal) ||
-          (type !== "hotDeal" && !product.isHotDeal)
-      )
-      .map((product) => {
-        return (
-          <SwiperSlide key={product._id} className="w-fit h-full">
-            <ProductCard product={product} />
           </SwiperSlide>
         );
       });
@@ -174,14 +121,18 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const hidePopUp = sessionStorage.getItem("hide-popup") ?? "false";
-    if (popUps?.length && !JSON.parse(hidePopUp)) {
+    if (popUps?.length) {
       setPopUpModalVisible(true);
     }
   }, [popUps]);
 
   return (
-    <div className={classNames(classes["client-home"], "page-wrapper")}>
+    <div
+      className={classNames(
+        classes["client-home"],
+        "page-wrapper max-sm:!w-full"
+      )}
+    >
       <header className="flex flex-col gap-8 my-8">
         <SectionContainer direction="col" className="lg:flex-row lg:h-96">
           <div className="flex-grow max-lg:h-72 min-w-[200px] rounded-xl overflow-hidden flex justify-center items-center lg:max-w-[70%] max-w-full">
@@ -215,7 +166,7 @@ export default function Home() {
               {renderAds("medium")}
             </HomeSwiper>
           </div>
-          {/* small screens */}
+          {/* small screens --> hidden for now */}
           <div className="w-full flex lg:hidden flex-grow justify-center items-center rounded-xl overflow-hidden max-w-full">
             <HomeSwiper
               direction="horizontal"
@@ -233,8 +184,8 @@ export default function Home() {
           </div>
         </SectionContainer>
 
-        <SectionContainer direction="row">
-          <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full h-40">
+        <SectionContainer direction="row" className="max-sm:hidden">
+          <div className="flex-grow  min-w-[200px] rounded-xl flex justify-center items-center max-w-full h-40">
             <HomeSwiper
               direction="horizontal"
               spaceBetween={20}
@@ -253,28 +204,7 @@ export default function Home() {
         </SectionContainer>
       </header>
 
-      {/* Banners */}
-      <SectionContainer direction="col">
-        <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full">
-          <HomeSwiper
-            direction="horizontal"
-            spaceBetween={20}
-            breakpoints={{
-              300: { slidesPerView: 1 },
-              480: { slidesPerView: 1.25 },
-              540: { slidesPerView: 1.45 },
-              768: { slidesPerView: 2.1 },
-              860: { slidesPerView: 2.5 },
-              992: { slidesPerView: 3 },
-              1024: { slidesPerView: 3.2 },
-            }}
-          >
-            {renderBanners()}
-          </HomeSwiper>
-        </div>
-      </SectionContainer>
-
-      {/* Vendors */}
+      {/* Categories */}
       <SectionContainer direction="col">
         <div className="flex w-full flex-row justify-between px-3">
           <h4 className="text-primary">{t("categories")}</h4>
@@ -290,7 +220,8 @@ export default function Home() {
             direction="horizontal"
             spaceBetween={20}
             breakpoints={{
-              300: { slidesPerView: 1 },
+              300: { slidesPerView: 1.7 },
+              400: { slidesPerView: 1.2 },
               480: { slidesPerView: 1.25 },
               540: { slidesPerView: 1.45 },
               768: { slidesPerView: 2.1 },
@@ -334,71 +265,13 @@ export default function Home() {
         </div>
       </SectionContainer>
 
-      {/* Offers */}
-      <SectionContainer direction="col">
-        <div className="flex w-full flex-row justify-between px-3">
-          <h4 className="text-primary"> {t("offers")}</h4>
-          <button
-            className="shadow text-primary px-3 font-semibold rounded-lg"
-            onClick={() => navigate("/offers")}
-          >
-            {t("showAllOffers")}
-          </button>
-        </div>
-        <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full">
-          <HomeSwiper
-            direction="horizontal"
-            spaceBetween={20}
-            breakpoints={{
-              300: { slidesPerView: 1 },
-              480: { slidesPerView: 1.25 },
-              540: { slidesPerView: 1.45 },
-              768: { slidesPerView: 2.1 },
-              860: { slidesPerView: 2.5 },
-              992: { slidesPerView: 3 },
-              1024: { slidesPerView: 3.2 },
-            }}
-          >
-            {renderProducts("")}
-          </HomeSwiper>
-        </div>
-      </SectionContainer>
+      <ProdcutsSections />
 
-      {/* Hot Deals */}
-      <SectionContainer direction="col">
-        <div className="flex w-full flex-row justify-between px-3">
-          <h4 className="text-primary"> {t("hotDeals")}</h4>
-          <button
-            className="shadow text-primary px-3 font-semibold rounded-lg"
-            onClick={() => navigate("/hot-deals")}
-          >
-            {t("showAllHotDeals")}
-          </button>
-        </div>
-        <div className="flex-grow min-w-[200px] rounded-xl flex justify-center items-center max-w-full">
-          <HomeSwiper
-            direction="horizontal"
-            spaceBetween={20}
-            breakpoints={{
-              300: { slidesPerView: 1 },
-              480: { slidesPerView: 1.25 },
-              540: { slidesPerView: 1.45 },
-              768: { slidesPerView: 2.1 },
-              860: { slidesPerView: 2.5 },
-              992: { slidesPerView: 3 },
-              1024: { slidesPerView: 3.2 },
-            }}
-          >
-            {renderProducts("hotDeal")}
-          </HomeSwiper>
-        </div>
-      </SectionContainer>
       {!!popUps.length && (
         <Modal
           visible={popUpModalVisible}
           onClose={() => {
             setPopUpModalVisible(false);
-            sessionStorage.setItem("hide-popup", true);
           }}
         >
           <a href={popUps[randomPopUp].link} target="_blank" rel="noreferrer">
