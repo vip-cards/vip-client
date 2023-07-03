@@ -37,7 +37,7 @@ export default function ProtectedRoute() {
       if (!res.success) {
         return;
       }
-      console.log(res);
+
       const room = res.record;
       navigate("/chat", { state: { room } });
     });

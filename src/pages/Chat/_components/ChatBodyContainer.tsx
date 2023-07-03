@@ -1,4 +1,4 @@
-import { faClock, faUserTie } from "@fortawesome/free-solid-svg-icons";
+import { faUserTie } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import { MainImage } from "components";
@@ -24,8 +24,8 @@ export function ChatBodyContainer({
   const user = useSelector(selectAuth);
   const userId = user.userData._id;
   const userRole = user?.userData?.role ?? user?.userRole;
-
   const lang = i18n.language;
+
   if (!activeRoom?._id) return null;
 
   const { members, _id: RoomId, lastUpdated, lastMessage } = activeRoom ?? {};
@@ -38,7 +38,7 @@ export function ChatBodyContainer({
       Object.keys(members).filter((item) => members[item]._id !== userId)[0]
     ];
 
-  const img = otherChatter.name.en.includes("VIP")
+  const img = otherChatter?.name?.en?.includes("VIP")
     ? vipImg
     : otherChatter?.image?.Location;
   return (
