@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import toastPopup, { responseErrorToast } from "helpers/toastPopup";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { redirect, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import clientServices from "services/clientServices";
 import { EVENTS, socket } from "services/socket/config";
 import { selectAuth } from "store/auth-slice";
