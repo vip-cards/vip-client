@@ -169,7 +169,11 @@ export default function CartPage() {
         refetch={mutate}
       />
 
-      <OrderRequestModal showModal={showModal} setShowModal={setShowModal} />
+      <OrderRequestModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        hasOnlinePayment={cart?.vendor?.hasOnlinePayment}
+      />
       <Modal
         className="w-screen h-screen"
         visible={paymentModal.open}
