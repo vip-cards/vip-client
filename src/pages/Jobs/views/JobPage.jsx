@@ -9,17 +9,21 @@ import clientServices from "services/clientServices";
 import { selectAuth } from "store/auth-slice";
 import useSWR from "swr";
 import { motion } from "framer-motion";
+import { t } from "i18next";
 
 export default function JobPage() {
   const auth = useSelector(selectAuth);
   const navigate = useNavigate();
   const { id } = useParams();
   const [cv, setCV] = useState("");
-  const {
-    data: jobData,
-    isLoading,
-  } = useSWR(["job-detail", id], ([, id]) => clientServices.getJobDetails(id));
+  const { data: jobData, isLoading } = useSWR(["job-detail", id], ([, id]) =>
+    clientServices.getJobDetails(id)
+  );
   const job = jobData?.record[0] ?? {};
+
+  const currentUser = auth.userData._id ?? "";
+  const jobUser = job?.client ?? "";
+  const createdByMe = currentUser === jobUser;
 
   const applyJobHandler = () => {
     const data = clientServices
@@ -37,6 +41,7 @@ export default function JobPage() {
         toastPopup.error(e?.response?.data?.error ?? "something went wrong!")
       );
   };
+
   if (isLoading)
     return (
       <div className="jobs-page">
@@ -136,46 +141,60 @@ export default function JobPage() {
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.3 }}
         >
-          <p className="details-header">Details</p>
+          <p className="details-header">{t("Details")}</p>
           <h4>{getLocalizedWord(job?.description)}</h4>
           <h5>{getLocalizedWord(job?.address)}</h5>
           <div className="contact-row">
-            <h6>Phone</h6>
+            <h6>{t("Phone")}</h6>
             <p>{job?.contacts?.phone}</p>
           </div>
           <div className="contact-row">
-            <h6>Whatsapp</h6>
+            <h6>{t("Whatsapp")}</h6>
             <p>{job?.contacts?.whatsapp}</p>
           </div>
           <div className="contact-row">
-            <h6>Telegram</h6>
+            <h6>{t("Telegram")}</h6>
             <p>{job?.contacts?.telegram}</p>
           </div>
         </motion.section>
         <hr />
-        {/* <section className="job-details-applicants">
-        <h4>Applicants</h4>
-        <div className="applicants-container">
-          {job?.applicants?.map((item) => (
-            <div key={item._id} className="applicant-card">
-              <div>{getLocalizedWord(item.name)}</div>
-              <a href={"//" + item.link} target="_blank" rel="noreferrer">
-                <MainButton className="cv-btn" text="Show CV" />
-              </a>
-            </div>
-          ))}
-        </div>
-      </section> */}
-        <footer className="flex flex-row w-full gap-4 justify-around items-center">
-          <MainInput
-            name="CV link"
-            className="flex-grow"
-            onChange={(e) => setCV(e.target.value)}
-          />
-          <MainButton size="medium" onClick={applyJobHandler}>
-            Apply
-          </MainButton>
-        </footer>
+        {createdByMe && !!job?.applicants.length && (
+          <>
+            <hr />
+            <section className={"job-details-applicants"}>
+              <h4>{t("Applicants")}</h4>
+              <motion.div layout className="applicants-container">
+                {job?.applicants?.map((item) => (
+                  <motion.div
+                    key={item._id}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 0.3 }}
+                    className="applicant-card"
+                  >
+                    <div>{getLocalizedWord(item.name)}</div>
+                    <a href={item.link} target="_blank" rel="noreferrer">
+                      <MainButton className="cv-btn" text="Show CV" />
+                    </a>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </section>
+          </>
+        )}
+        {!createdByMe && (
+          <footer className="flex flex-row w-full gap-4 justify-around items-center">
+            <MainInput
+              name="CV link"
+              className="flex-grow"
+              onChange={(e) => setCV(e.target.value)}
+            />
+            <MainButton size="medium" onClick={applyJobHandler}>
+              {t("Apply")}
+            </MainButton>
+          </footer>
+        )}
       </motion.main>
     </div>
   );

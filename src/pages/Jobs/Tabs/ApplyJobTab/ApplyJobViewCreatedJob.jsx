@@ -23,6 +23,7 @@ export default function ApplyJobViewCreatedJob() {
 
   const { records: jobs = undefined, counts = 0 } = jobsData ?? {};
   const totalPages = Math.ceil(counts / LIMIT);
+  
   return (
     <div className="flex flex-col h-full flex-grow">
       <div className="jobs-cards-container">

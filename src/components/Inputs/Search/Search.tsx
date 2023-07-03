@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { MainInput } from "..";
 import SearchTypeSelector from "./SearchTypeSelector";
 import type { ISearchProps } from "./search.type";
+import classNames from "classnames";
 
 const Search: React.FC<ISearchProps> = (props) => {
   const { setSearchQuery, onClick, types, withSelector, setQueryParams } =
@@ -22,7 +23,12 @@ const Search: React.FC<ISearchProps> = (props) => {
   }, [value]);
 
   return (
-    <header className="flex flex-row h-24 max-sm:h-32 bg-gradient-to-r from-primary/30 via-primary/50 to-primary/30 shadow rounded-b-xl">
+    <header
+      className={classNames(
+        { " max-sm:h-32": withSelector },
+        "flex flex-row h-24 bg-gradient-to-r from-primary/30 via-primary/50 to-primary/30 shadow rounded-b-xl"
+      )}
+    >
       <div className="flex flex-row flex-nowrap justify-center items-center gap-1 min-w-[200px] w-[70vw] mx-auto max-w-full px-5">
         <div className="flex max-sm:flex-col flex-row gap-1 flex-nowrap items-center justify-center w-full">
           {withSelector && types.length ? (
@@ -40,7 +46,7 @@ const Search: React.FC<ISearchProps> = (props) => {
           />
         </div>
 
-        <div className="max-sm:h-full max-sm:py-5 max-sm:w-min">
+        <div className={"max-sm:h-full max-sm:py-5 max-sm:w-min"}>
           <MainButton
             className="h-full sm:aspect-square max-sm:w-fit shadow-lg hover:shadow-md"
             onClick={onClick}

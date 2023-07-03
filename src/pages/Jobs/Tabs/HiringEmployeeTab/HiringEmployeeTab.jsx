@@ -1,7 +1,7 @@
 import Tabs from "components/Tabs/Tabs";
 import { HiringTabCreateJob, HiringTabHome } from "pages";
 
-const ApplyJobTab = () => {
+const HiringEmployeeTab = () => {
   const tabs = {
     home: {
       label: "Home",
@@ -26,4 +26,4 @@ const ApplyJobTab = () => {
   );
 };
 
-export default ApplyJobTab;
+export default HiringEmployeeTab;

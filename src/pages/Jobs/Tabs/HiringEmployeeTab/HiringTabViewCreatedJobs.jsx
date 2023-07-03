@@ -6,21 +6,16 @@ import clientServices from "services/clientServices";
 import useSWR from "swr";
 
 const LIMIT = 5;
-export default function ApplyJobViewCreatedJob() {
+export default function HiringTabViewCreatedJobs() {
   const [queryParams, setQueryParams] = useState({
     page: 1,
     limit: LIMIT,
     client: localStorage.getItem("userId"),
   });
 
-  const {
-    data: jobsData,
-    error,
-    isLoading,
-    isValidating,
-    mutate,
-  } = useSWR(["my-created-jobs", queryParams], ([, queryParams]) =>
-    clientServices.listAllJobs(queryParams)
+  const { data: jobsData, isLoading } = useSWR(
+    ["my-created-posts", queryParams],
+    ([, queryParams]) => clientServices.listAllPosts(queryParams)
   );
 
   const { records: jobs = undefined, counts = 0 } = jobsData ?? {};
