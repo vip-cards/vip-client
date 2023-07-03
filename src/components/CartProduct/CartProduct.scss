@@ -8,9 +8,9 @@ $media-md: 800px;
   position: relative;
   $py: 0.5rem;
   grid:
-    "image title quantity total" auto
-    "image description . ." auto
-    "image actions actions actions" auto
+    "image title title itemPrice" auto
+    "image description description quantity" auto
+    "image actions actions total" auto
     "image . . ." #{$py} / #{$image-size} 1fr auto min-content;
 
   column-gap: 8px;
@@ -20,7 +20,8 @@ $media-md: 800px;
       "image image image" auto
       "title title title" auto
       "description description description" auto
-      "actions quantity total" auto;
+      "actions actions actions" auto
+      "itemPrice quantity total" auto;
   }
 
   .cart-product-img-container {
@@ -86,6 +87,12 @@ $media-md: 800px;
         }
       }
     }
+  }
+  .cart-product-price {
+    margin-top: $py;
+    grid-area: itemPrice;
+    color: $secondary;
+    font-weight: bolder;
   }
   .cart-product-total {
     margin-top: $py;

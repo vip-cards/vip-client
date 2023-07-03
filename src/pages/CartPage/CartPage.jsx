@@ -155,19 +155,13 @@ export default function CartPage() {
               </div>
               <div className="flex flex-row justify-between">
                 <h6 className="capitalize font-semibold">total after coupon</h6>
-                <p>{cart.coupon.value}</p>
+                <p>{+cart.price.current - +cart.coupon.value}</p>
               </div>
             </div>
           )}
         </div>
       </div>
       {/* --------------------------------- */}
-
-      <OrderRequestsTable
-        requests={requests}
-        handleOrderRequestProceed={handleOrderRequestProceed}
-        refetch={mutate}
-      />
 
       <OrderRequestModal
         showModal={showModal}

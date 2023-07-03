@@ -92,6 +92,9 @@ export default function CartProduct({ item }) {
           )}
         </span>
       </div>
+      <div className="cart-product-price">
+        {getLocalizedNumber(item.product.price, true)}
+      </div>
       <div className="cart-product-total">
         {getLocalizedNumber(item.total, true)}
       </div>
