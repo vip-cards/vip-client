@@ -22,14 +22,19 @@ import "./Branch.scss";
 
 const LIMIT = 9;
 
+/***************************************/
 const branchFetcher = ([key, id]) =>
   clientServices.getBranchDetails(id).then(({ data }) => data.record[0]);
 
+/*--- --- --- */
 const productsFetcher = ([key, params]) =>
   clientServices.listAllProducts({ ...params });
 
+/*--- --- --- */
 const vendorFetcher = ([key, id]) =>
   clientServices.getVendor(id).then(({ data }) => data.record[0]);
+
+/***************************************/
 
 export default function Branch() {
   const [filter, setFilter] = useState({ vendors: [], categories: [] });
@@ -60,6 +65,7 @@ export default function Branch() {
       suspense: !branch,
     }
   );
+
   const { records: products = undefined, counts: productsCount } =
     productsData ?? {};
 
@@ -122,9 +128,8 @@ export default function Branch() {
       >
         <header className="rounded-3xl border-b-2 p-4 gap-4 pb-4 flex flex-col justify-between relative border-0">
           {/* --- cover --- */}
-
           <a
-            href={branch?.link ?? ""}
+            href={branch?.link ?? "#"}
             target="_blank"
             rel="noreferrer"
             className="h-48 w-full bg-primary/20 overflow-hidden rounded-lg shadow-lg"

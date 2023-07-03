@@ -162,7 +162,7 @@ export default function CartPage() {
         </div>
       </div>
       {/* --------------------------------- */}
-ptran
+
       <OrderRequestsTable
         requests={requests}
         handleOrderRequestProceed={handleOrderRequestProceed}
