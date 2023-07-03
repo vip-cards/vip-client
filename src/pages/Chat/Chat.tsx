@@ -1,7 +1,14 @@
+import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import toastPopup from "helpers/toastPopup";
 import { capitalize } from "lodash";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -26,7 +33,6 @@ import { ChatSidebar } from "./_components/ChatSidebar";
 import { ChatTextInput } from "./_components/ChatTextInput";
 import { RenderRoomList } from "./_components/RenderRoomList";
 
-import dayjs from "dayjs";
 import "./Chat.scss";
 
 dayjs.extend(relativeTime);
@@ -65,12 +71,15 @@ function Chat() {
   };
 
   const handleSelectRoom = (room: IRoom) => {
-    setActiveRoom(room);
     setMessageList([]);
     setMessageText("");
+
     getRoom(room?._id, (data: { record: IRoom }) => {
-      const room: IRoom = data.record;
+      const room: IRoom = data?.record;
+
       if (!room) return;
+
+      setActiveRoom(room);
 
       if (room._id === state?.room?._id) return setMessageList(room.messages);
       navigate("", { state: { room } });
@@ -127,7 +136,7 @@ function Chat() {
   }, [messageList]);
 
   /* select room and exclude it from being hidden, when navigate to chat module */
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (state?.room) {
       setExcludeRoom(state.room._id);
       handleSelectRoom(state.room);
@@ -150,11 +159,6 @@ function Chat() {
   }, [socket, userId]);
 
   /* update the active room details when the room list is updated */
-  useEffect(() => {
-    if (activeRoom?._id) {
-      setActiveRoom(roomList.find((room) => room._id === activeRoom._id));
-    }
-  }, [activeRoom, roomList]);
 
   return (
     <ChatContainer>
