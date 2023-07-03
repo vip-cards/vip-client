@@ -9,7 +9,11 @@ import clientServices from "services/clientServices";
 import { newOrderRequest } from "services/socket/order";
 import { getCurrentCartThunk } from "store/cart-slice";
 
-export default function OrderRequestModal({ showModal, setShowModal }) {
+export default function OrderRequestModal({
+  showModal,
+  setShowModal,
+  hasOnlinePayment,
+}) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [userInfo, setUserInfo] = useState({});
@@ -60,10 +64,14 @@ export default function OrderRequestModal({ showModal, setShowModal }) {
               <MainInput
                 name="paymentMethod"
                 type="select"
-                list={[
-                  { name: "visa", value: "visa" },
-                  { name: "cash on delivery", value: "cash on delivery" },
-                ]}
+                list={
+                  hasOnlinePayment
+                    ? [
+                        { name: "cash on delivery", value: "cash on delivery" },
+                        { name: "visa", value: "visa" },
+                      ]
+                    : [{ name: "cash on delivery", value: "cash on delivery" }]
+                }
                 identifier="name"
                 state={userInfo}
                 setState={setUserInfo}
