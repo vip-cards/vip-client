@@ -4,20 +4,19 @@ import { MainButton } from "components/Buttons";
 import CardContainer from "components/CardContainer/CardContainer";
 import { ImageEdit, MainInput } from "components/Inputs";
 import Modal from "components/Modal/Modal";
+import dayjs from "dayjs";
 import { adFormData } from "helpers/forms/ad";
-import toastPopup from "helpers/toastPopup";
+import toastPopup, { responseErrorToast } from "helpers/toastPopup";
 import useCountriesArr from "helpers/useCountriesArr";
-import i18n from "locales/i18n";
 import HomeSwiper from "pages/Home/HomeSwiper";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import clientServices from "services/clientServices";
+import { selectAuth } from "store/auth-slice";
 import { SwiperSlide } from "swiper/react";
 import "./CreateAd.scss";
-import { selectAuth } from "store/auth-slice";
-import dayjs from "dayjs";
 
 /***
  * name
@@ -29,23 +28,28 @@ import dayjs from "dayjs";
  *
  */
 function CreateAd() {
+  //
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { cities, countries, setCities } = useCountriesArr();
-  const user = useSelector(selectAuth).userData;
-  const vendor = useSelector(selectAuth).vendorId;
+
+  const auth = useSelector(selectAuth);
+  const user = auth.userData;
+  const vendor = auth.vendorId;
+
   const [loading, setLoading] = useState(false);
   const [productList, setProductList] = useState([]);
   const [uploadImage, setUploadImage] = useState(null);
   const [previewModal, setPreviewModal] = useState(false);
-  const [notificationModal, setNotificationModal] = useState(false);
   const [ad, setAd] = useState<{ [x: string]: any }>({ vendor });
+  const [notificationModal, setNotificationModal] = useState(false);
 
   const withSize = ad.type === "banner";
-  //  || ad.type === "pop-up" || ad.type === "notification";
   const withProduct = ad.type === "promotion";
   const withNotification = ad.type === "notification";
+
   const imgUrl = !!uploadImage && URL.createObjectURL(uploadImage).toString();
+
   const formDataList = [
     ...adFormData,
     {
@@ -115,7 +119,7 @@ function CreateAd() {
       toastPopup.success("Ad Created Successfully");
       navigate("/ads");
     } catch (e) {
-      toastPopup.error(e?.response?.data?.error ?? "something went wrong!");
+      toastPopup.error(responseErrorToast(e));
     } finally {
       setLoading(false);
     }
@@ -146,6 +150,7 @@ function CreateAd() {
         })}
 
         <ImageEdit
+          className=""
           setImgUpdated={setUploadImage}
           setUploadImage={setUploadImage}
           uploadImage={uploadImage}
@@ -352,7 +357,6 @@ function CreateAd() {
       <Modal
         onClose={() => setNotificationModal(false)}
         visible={notificationModal}
-      
         title=""
       >
         <a
