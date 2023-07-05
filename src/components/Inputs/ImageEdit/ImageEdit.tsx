@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
@@ -11,22 +11,30 @@ function ImageEdit({
   className,
   style,
 }) {
-  const ref = useRef();
+  const ref = useRef<HTMLInputElement>();
   const imageUploader = (e) => {
     ref.current.click();
   };
+
+  const imgSrc = () => {
+    if (!uploadImage) return null;
+
+    if (typeof uploadImage === "string") return `${uploadImage}`;
+
+    return URL.createObjectURL(uploadImage);
+  };
+
+  useEffect(() => {
+    return () => {
+      uploadImage && URL.revokeObjectURL(uploadImage);
+    };
+  });
 
   return (
     <div className="main-image-label" style={style}>
       {uploadImage && (
         <img
-          src={
-            uploadImage
-              ? typeof uploadImage === "string"
-                ? `${uploadImage}`
-                : URL.createObjectURL(uploadImage)
-              : null
-          }
+          src={imgSrc()}
           alt="imag-viewer"
           className="uploaded-img"
           onClick={() => {

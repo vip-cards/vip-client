@@ -1,8 +1,17 @@
 export const adFormData = [
   { name: "name", type: "text", required: false },
-
-  { name: "startDate", type: "date", required: true, dateRange: "start" },
-  { name: "endDate", type: "date", required: true, dateRange: "end" },
+  {
+    name: "startDate",
+    type: "date",
+    required: true,
+    dateRange: "start" as "start" | "end",
+  },
+  {
+    name: "endDate",
+    type: "date",
+    required: true,
+    dateRange: "start" as "start" | "end",
+  },
   {
     name: "type",
     type: "list",

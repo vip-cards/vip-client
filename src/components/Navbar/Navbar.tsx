@@ -246,7 +246,7 @@ export default function Navbar() {
           className="lang-btn"
           onClick={() => switchLang(lang === "en" ? "ar" : "en")}
         >
-          {t("lang") as string}
+          <>{t("lang")}</>
         </button>
       </div>
       <NotificationRing />

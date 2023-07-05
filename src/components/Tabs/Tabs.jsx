@@ -21,9 +21,7 @@ export default function Tabs({ tabs, defaultTab }) {
           <ProtectedComponent key={key} role={role}>
             <MainButton
               active={tab === key}
-              // className={classNames(classes["btn"], {
-              //   [classes["active"]]: tab === key,
-              // })}
+              className="whitespace-nowrap max-sm:w-full"
               onClick={() => {
                 navigate(location.pathname, {
                   state: {

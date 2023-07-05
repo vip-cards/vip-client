@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import { t } from "i18next";
-import { getLocalizedWord } from "helpers/lang";
 
 const adsFetcher = ([key, params]) => clientServices.listAllAds({ ...params });
 
@@ -18,7 +17,14 @@ const PreviousAds = () => {
   const [filter, setFilter] = useState({ types: [], statuses: [] });
   const initialQuerParams = { client: auth._id };
   const [queryParams, setQueryParams] = useState(initialQuerParams);
+  const {
+    data: adsData,
+    error,
+    isLoading,
+  } = useSWR(["list-previous-ads", queryParams], adsFetcher);
 
+  const { records: adsList = undefined } = adsData ?? {};
+  
   const allTypes = ["banner", "popup", "notification"];
 
   const allStatuses = ["pending", "accepted", "rejected"];
@@ -55,13 +61,7 @@ const PreviousAds = () => {
     });
   }, [filter]);
 
-  const {
-    data: adsData,
-    error,
-    isLoading,
-  } = useSWR(["list-previous-ads", queryParams], adsFetcher);
 
-  const { records: adsList = undefined } = adsData ?? {};
 
   const render = () => {
     if (isLoading) return <LoadingSpinner />;
