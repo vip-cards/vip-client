@@ -32,8 +32,6 @@ class PaymobService {
         currency: "EGP",
         items: [],
         merchant_order_id: orderId,
-        payment_end_point: paymentEndPoint,
-        is_premium_subscription: isPremiumSubscribtion,
       })
       .then(({ data }) => data);
   }
@@ -85,12 +83,7 @@ class PaymobService {
     paymentEndPoint = undefined,
     isPremiumSubscribtion = false
   ) {
-    const paymentOrder = await this.orderPayment(
-      amount,
-      orderId,
-      paymentEndPoint,
-      isPremiumSubscribtion
-    );
+    const paymentOrder = await this.orderPayment(amount, orderId);
     const paymentToken = await this.getPaymentToken(amount, paymentOrder.id);
 
     return `${this.paymobAPI}acceptance/iframes/760110?payment_token=${paymentToken}`;

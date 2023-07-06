@@ -34,8 +34,10 @@ const TransactionProcess = () => {
 
     if (isSuccess) {
       const requestId = params.get("merchant_order_id");
-      const paymentEndPoint = params.get("payment_end_point");
-      const isPremiumSubscribtion = params.get("is_premium_subscription");
+      const paymentEndPoint = localStorage.getItem("paymentEndPointSelect");
+      const isPremiumSubscribtion = localStorage.getItem(
+        "isPremiumSubscribtionRequest"
+      );
 
       // ("useFreeTrial");
       // ("checkout");
@@ -54,6 +56,9 @@ const TransactionProcess = () => {
           }
 
           await clientServices.acceptOrder(requestId);
+
+          localStorage.removeItem("paymentEndPointSelect");
+          localStorage.removeItem("isPremiumSubscribtionRequest");
 
           socket.emit(EVENTS.ORDER.FETCH_ORDER_ROOM, {
             client: auth.userId,

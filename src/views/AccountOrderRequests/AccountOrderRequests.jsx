@@ -46,11 +46,9 @@ const AccountOrderRequests = () => {
   );
 
   async function handleOrderRequestProceed(orderId, amount, paymentEndPoint) {
-    const url = await paymobServices.paymobProcessURL(
-      amount,
-      orderId,
-      paymentEndPoint
-    );
+    localStorage.setItem("paymentEndPointSelect", paymentEndPoint);
+    const url = await paymobServices.paymobProcessURL(amount, orderId);
+
     setPaymentModal({ open: true, url });
   }
 

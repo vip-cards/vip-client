@@ -41,7 +41,8 @@ function Subscribe(props) {
 
   async function handleOrderRequestProceed() {
     setLoading(true);
-    const url = await paymobServices.paymobProcessURL(50, null, null, true);
+    localStorage.setItem("isPremiumSubscribtionRequest", true);
+    const url = await paymobServices.paymobProcessURL(50);
     setPaymentModal({ open: true, url });
     setLoading(false);
   }
