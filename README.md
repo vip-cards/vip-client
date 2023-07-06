@@ -1,7 +1,7 @@
 # VIP CLIENT cards shop app
 
 
-deployment 07-07-2023 
+deployment 07-07-2023  ||
 
 
 
