@@ -34,8 +34,8 @@ const TransactionProcess = () => {
 
     if (isSuccess) {
       const requestId = params.get("merchant_order_id");
-      const paymentEndPoint = params.get("paymentEndPoint");
-      const isPremiumSubscribtion = params.get("isPremiumSubscribtion");
+      const paymentEndPoint = params.get("payment_end_point");
+      const isPremiumSubscribtion = params.get("is_premium_subscription");
 
       // ("useFreeTrial");
       // ("checkout");

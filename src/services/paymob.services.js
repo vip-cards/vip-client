@@ -19,7 +19,7 @@ class PaymobService {
     amount,
     orderId = undefined,
     paymentEndPoint = undefined,
-    isPremiumSubscribtion = undefined
+    isPremiumSubscribtion = false
   ) {
     const amount_cents = this.convertToCents(amount);
     const auth_token = await this.getToken();
@@ -31,11 +31,9 @@ class PaymobService {
         amount_cents,
         currency: "EGP",
         items: [],
-        ...(orderId && { merchant_order_id: orderId }),
-        ...(paymentEndPoint && { paymentEndPoint: paymentEndPoint }),
-        ...(isPremiumSubscribtion && {
-          isPremiumSubscribtion: isPremiumSubscribtion,
-        }),
+        merchant_order_id: orderId,
+        payment_end_point: paymentEndPoint,
+        is_premium_subscription: isPremiumSubscribtion,
       })
       .then(({ data }) => data);
   }
