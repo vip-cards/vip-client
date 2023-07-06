@@ -41,7 +41,7 @@ function Subscribe(props) {
 
   async function handleOrderRequestProceed() {
     setLoading(true);
-    const url = await paymobServices.paymobProcessURL(50);
+    const url = await paymobServices.paymobProcessURL(50, null, null, true);
     setPaymentModal({ open: true, url });
     setLoading(false);
   }

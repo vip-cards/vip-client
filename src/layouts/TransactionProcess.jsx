@@ -34,15 +34,20 @@ const TransactionProcess = () => {
 
     if (isSuccess) {
       const requestId = params.get("merchant_order_id");
+      const paymentEndPoint = params.get("paymentEndPoint");
+      const isPremiumSubscribtion = params.get("isPremiumSubscribtion");
+
+      // ("useFreeTrial");
+      // ("checkout");
       try {
-        if (!auth?.userData?.isSubscribed) {
+        if (isPremiumSubscribtion) {
           await clientServices.updateInfo({
             isSubscribed: "true",
             subStartDate: dayjs().toISOString(),
             subEndDate: dayjs().add(1, "year").toISOString(),
           });
         } else {
-          if (hasFreeTrial) {
+          if (paymentEndPoint === "useFreeTrial") {
             await clientServices.checkoutFreeTrial(requestId);
           } else {
             await clientServices.checkoutRequest(requestId);

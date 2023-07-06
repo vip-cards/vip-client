@@ -19,7 +19,7 @@ const clientServices = {
     const response = await Axios.get(`/vendor/get?_id=${vendorId}`);
     return response;
   },
-  
+
   listAllVendors: async (params) =>
     (await Axios.get(`/vendor/list`, { params })).data,
 
@@ -152,6 +152,47 @@ const clientServices = {
     const response = await Axios.get(`/setting/get`);
     return response?.data?.records ?? response?.data?.record;
   },
+
+  getClientFromBarcode: async (barcode) =>
+    (
+      await Axios.get("client/client/get", {
+        params: { barcode },
+      })
+    )?.data,
+
+  getClientPoints: async (client, vendor) =>
+    (
+      await Axios.get("/points/get", {
+        params: { client, vendor },
+      })
+    )?.data,
+
+  applyCouponFinally: async (request, coupon) =>
+    (
+      await Axios.post(`/coupon/apply?request=${request}&coupon=${coupon}`, {
+        // params: { cart, coupon },
+      })
+    )?.data,
+
+  rejectCoupon: async (request) =>
+    (
+      await Axios.put("/coupon/remove", {
+        params: { request },
+      })
+    )?.data,
+
+  useVendorPoints: async (pointsToRemove, params) =>
+    (await Axios.put("/points/useVendorPoints", { pointsToRemove }, { params }))
+      ?.data,
+
+  useSystemPoints: async (vipPoints, params) =>
+    (await Axios.put("/points/useSystemPoints", { vipPoints }, { params }))
+      ?.data,
+
+  checkout: async (obj) => (await Axios.post("/order/checkout", obj))?.data,
+
+  useFreeTrial: async (obj) =>
+    (await Axios.post("/order/freetrial", obj))?.data,
 
   ...accountServices,
   ...productsServives,

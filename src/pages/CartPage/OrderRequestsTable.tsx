@@ -12,13 +12,13 @@ import { IOrderRequest } from "types/order-request";
 
 interface IOrderRequestsTableProps {
   requests: IOrderRequest[];
-  handleOrderRequestProceed: (requestId: string, total: number) => void;
+  handleCheckoutModalOpen: (request: {}) => void;
   refetch: () => void;
 }
 
 function OrderRequestsTable({
   requests,
-  handleOrderRequestProceed,
+  handleCheckoutModalOpen,
   refetch,
 }: IOrderRequestsTableProps) {
   const { t, i18n } = useTranslation();
@@ -140,12 +140,7 @@ function OrderRequestsTable({
 
                       <td className="flex flex-col gap-4 justify-center py-3">
                         <button
-                          onClick={() =>
-                            handleOrderRequestProceed(
-                              request._id,
-                              +request.total
-                            )
-                          }
+                          onClick={() => handleCheckoutModalOpen(request)}
                           disabled={
                             request.status.includes("pending") ||
                             request.status.includes("rejected") ||
@@ -172,7 +167,7 @@ function OrderRequestsTable({
                       activeModal={activeModal}
                       request={request}
                       refetch={refetch}
-                      handleOrderRequestProceed={handleOrderRequestProceed}
+                      handleCheckoutModalOpen={handleCheckoutModalOpen}
                     />
                   </Fragment>
                 );

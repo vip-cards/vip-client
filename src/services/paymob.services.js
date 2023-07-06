@@ -72,8 +72,18 @@ class PaymobService {
     return `${this.paymobAPI}acceptance/iframes/760110?payment_token=${paymentToken}`;
   }
 
-  async paymobProcessURL(amount = 0, orderId = undefined) {
-    const paymentOrder = await this.orderPayment(amount, orderId);
+  async paymobProcessURL(
+    amount = 0,
+    orderId = undefined,
+    paymentEndPoint = undefined,
+    isPremiumSubscribtion = false
+  ) {
+    const paymentOrder = await this.orderPayment(
+      amount,
+      orderId,
+      paymentEndPoint,
+      isPremiumSubscribtion
+    );
     const paymentToken = await this.getPaymentToken(amount, paymentOrder.id);
 
     return `${this.paymobAPI}acceptance/iframes/760110?payment_token=${paymentToken}`;

@@ -19,6 +19,7 @@ import Modal from "components/Modal/Modal";
 import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
 import toastPopup, { responseErrorToast } from "helpers/toastPopup";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router";
 import clientServices from "services/clientServices";
 import { EOrderRequestStatus } from "types/enums";
 import { IOrderRequest } from "types/order-request";
@@ -28,17 +29,18 @@ export default function OrderDetailsModal({
   request,
   onClose,
   refetch,
-  handleOrderRequestProceed,
+  handleCheckoutModalOpen,
   withAction = true,
 }: {
   activeModal: string | boolean;
   request: IOrderRequest;
   onClose: (x: any) => void;
   refetch?: () => void;
-  handleOrderRequestProceed?: (requestId: string, total: number) => void;
+  handleCheckoutModalOpen?: (request: {}) => void;
   withAction?: boolean;
 }) {
   const { t } = useTranslation();
+  const location = useLocation();
 
   const orderClientStatus =
     request.status === EOrderRequestStatus.CLIENT_ACCEPTED
@@ -49,7 +51,8 @@ export default function OrderDetailsModal({
 
   const orderVendorStatus =
     request.status === EOrderRequestStatus.VENDOR_ACCEPTED ||
-    orderClientStatus === EStepStatus.COMPLETED
+    orderClientStatus === EStepStatus.COMPLETED ||
+    orderClientStatus === EStepStatus.REJECTED
       ? EStepStatus.COMPLETED
       : request.status === EOrderRequestStatus.VENDOR_REJECTED
       ? EStepStatus.REJECTED
@@ -85,11 +88,35 @@ export default function OrderDetailsModal({
     >
       <h5>{t("orderStatus")}</h5>
       <MainStepper
-        steps={[
-          { label: "Request", status: requstStatus },
-          { label: "vendor", status: orderVendorStatus },
-          { label: "client", status: orderClientStatus },
-        ]}
+        steps={
+          location.pathname.includes("requests")
+            ? [
+                { label: "Request", status: requstStatus },
+                { label: "vendor", status: orderVendorStatus },
+                { label: "client", status: orderClientStatus },
+              ]
+            : [
+                {
+                  label: "pending",
+                  status: EStepStatus.COMPLETED,
+                },
+                {
+                  label: "in progress",
+                  status:
+                    request.status === "in progress" ||
+                    request.status === "delivered"
+                      ? EStepStatus.COMPLETED
+                      : EStepStatus.PENDING,
+                },
+                {
+                  label: "delivered",
+                  status:
+                    request.status === "delivered"
+                      ? EStepStatus.COMPLETED
+                      : EStepStatus.PENDING,
+                },
+              ]
+        }
       />
       <hr className="mt-8" />
       <section>
@@ -119,6 +146,7 @@ export default function OrderDetailsModal({
           </div>
           <div className="ms-auto">
             <div className="h-24 w-24 items-center flex-col flex justify-center border-primary rounded-lg border text-primary">
+              <span>{t("points")}</span>
               <FontAwesomeIcon icon={faCoins} className="p-2" size="2x" />
               <span>{getLocalizedNumber(request.points ?? 0)}</span>
             </div>{" "}
@@ -218,8 +246,7 @@ export default function OrderDetailsModal({
         <section className="max-w-lg mx-auto flex w-full flex-row gap-4 justify-center items-center py-3">
           <button
             onClick={() =>
-              handleOrderRequestProceed &&
-              handleOrderRequestProceed(request._id, +request.total)
+              handleCheckoutModalOpen && handleCheckoutModalOpen(request)
             }
             disabled={
               request.status.includes("pending") ||
