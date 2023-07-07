@@ -4,11 +4,13 @@ import CardContainer from "components/CardContainer/CardContainer";
 import { ImageEdit } from "components/Inputs";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import Modal from "components/Modal/Modal";
+import STOP_UGLY_CACHEING from "constants/configSWR";
 import dayjs from "dayjs";
 import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
 import toastPopup from "helpers/toastPopup";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 import clientServices from "services/clientServices";
 import paymobServices from "services/paymob.services";
 import useSWR from "swr";
@@ -20,13 +22,21 @@ const fetchInfo = () => clientServices.updateInfo().then((res) => res.record);
 function Subscribe(props) {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
-
+  const navigate = useNavigate();
   const [uploadImage, setUploadImage] = useState(null);
   const [paymentModal, setPaymentModal] = useState(initialPaymentModal);
   const [loading, setLoading] = useState(false);
 
-  const { data: account, isLoading } = useSWR("account-details", fetchInfo);
-  const { data: walletnumberData } = useSWR("account-wallet", fetchWallet);
+  const { data: account, isLoading } = useSWR(
+    "account-details",
+    fetchInfo,
+    STOP_UGLY_CACHEING
+  );
+  const { data: walletnumberData } = useSWR(
+    "account-wallet",
+    fetchWallet,
+    STOP_UGLY_CACHEING
+  );
 
   const subscriptionHandler = () => {
     const formData = new FormData();
@@ -35,7 +45,10 @@ function Subscribe(props) {
 
     clientServices
       .subscribeUser()
-      .then(({ data }) => toastPopup.success("Subscription request sent!"))
+      .then(({ data }) => {
+        toastPopup.success("Subscription request sent!");
+        navigate(0);
+      })
       .catch(({ response }) => toastPopup.error(response.data.error));
   };
 

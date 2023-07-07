@@ -4,6 +4,7 @@ import classes from "./Tabs.module.scss";
 import { ProtectedComponent } from "components/auth-components/ProtectedComponent";
 import { t } from "i18next";
 import { MainButton } from "components/Buttons";
+import { useState } from "react";
 
 /**
  * It takes an object of tabs `{label, panel}`, and a default tab.
@@ -12,7 +13,9 @@ import { MainButton } from "components/Buttons";
 export default function Tabs({ tabs, defaultTab }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const tab = location?.state?.openedTap ?? defaultTab ?? Object.keys(tabs)[0];
+
+  let [tab, setTab] = useState(Object.keys(tabs)[0]);
+  // const tab = location?.state?.openedTap ?? defaultTab ?? Object.keys(tabs)[0];
 
   return (
     <div className={classes["tabs-container"]}>
@@ -23,11 +26,12 @@ export default function Tabs({ tabs, defaultTab }) {
               active={tab === key}
               className="whitespace-nowrap max-sm:w-full"
               onClick={() => {
-                navigate(location.pathname, {
-                  state: {
-                    openedTap: key,
-                  },
-                });
+                setTab(key);
+                // navigate(location.pathname, {
+                //   state: {
+                //     openedTap: key,
+                //   },
+                // });
               }}
             >
               {t(label)}

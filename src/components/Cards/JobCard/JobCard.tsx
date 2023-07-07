@@ -9,7 +9,7 @@ import { useNavigate } from "react-router";
 import clientServices from "services/clientServices";
 import { motion } from "framer-motion";
 
-const JobCard = ({ job, mutate }) => {
+const JobCard = ({ job }) => {
   const navigate = useNavigate();
   const currentCLient = localStorage.getItem("userId") ?? "";
   const jobClient = job?.client ?? "";
@@ -25,7 +25,6 @@ const JobCard = ({ job, mutate }) => {
       .removeJob(job._id)
       .then(() => {
         toastPopup.success(t("jobRemovedSuccessfully"));
-        mutate && mutate();
       })
       .catch(responseErrorToast)
       .finally(() => setLoading(false));

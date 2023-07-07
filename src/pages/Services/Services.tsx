@@ -6,7 +6,7 @@ import {
 } from "components/PageQueryContainer/PageQueryContext";
 import Tabs from "components/Tabs/Tabs";
 import { listRenderFn } from "helpers/renderFn";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import clientServices from "services/clientServices";
 import useSWR from "swr";
 import CreateServiceForm from "./CreateServiceForm";
@@ -14,48 +14,62 @@ import "./Services.scss";
 import classNames from "classnames";
 import { getLocalizedWord } from "helpers/lang";
 import { t } from "i18next";
+import STOP_UGLY_CACHEING from "constants/configSWR";
 
 const LIMIT = 9;
 
 const initialFilters = { "category._id": null };
 
 function ServiceHome({ id = undefined }) {
-  const initialQueryParams = {
-    page: 1,
-    limit: LIMIT,
-    client: id,
-  };
+  const initialQueryParams = id
+    ? {
+        page: 1,
+        limit: LIMIT,
+        provider: id,
+      }
+    : {
+        page: 1,
+        limit: LIMIT,
+        // client: id,
+      };
+
   const [queryParams, setQueryParams] = useState(initialQueryParams);
   const [filter, setFilter] = useState(initialFilters);
 
-  const {
-    data: servicesData,
-    isLoading,
-    mutate,
-  } = useSWR(
-    id
-      ? [`view-${id}-services`, { ...queryParams, provider: id }]
-      : [`view-all-services`, queryParams],
-    ([, queryParams]) => clientServices.listAllServices(queryParams)
+  const { data: servicesData, isLoading } = useSWR(
+    [`view-all-services`, queryParams],
+    ([, queryParams]) => {
+      console.log(
+        "----------------request hitted---------------------------",
+        queryParams
+      );
+
+      return clientServices.listAllServices(queryParams);
+    },
+    STOP_UGLY_CACHEING
   );
-  const { data: categories } = useSWR("services-categories", () =>
-    clientServices
-      .listAllCategories({ type: "service" })
-      .then((data) => data.records)
+  const { data: categories } = useSWR(
+    "services-categories",
+    () =>
+      clientServices
+        .listAllCategories({ type: "service" })
+        .then((data) => data.records),
+    STOP_UGLY_CACHEING
   );
   const { records: services = undefined, counts = 0 } = servicesData ?? {};
 
   const renderObj = {
     isLoading,
     list: services,
-    render: (service: IService) => (
-      <ServiceCard service={service} refetch={mutate} />
-    ),
+    render: (service: IService) => <ServiceCard service={service} />,
   };
 
-  useLayoutEffect(() => {
+  console.log("----------------services---------------------------", services);
+
+  useEffect(() => {
+    console.log("----------------useEffect---------------------------", id);
     setFilter(initialFilters);
-    if (id) setQueryParams((q) => ({ ...q, client: id }));
+    if (id) setQueryParams((q) => ({ ...q, provider: id }));
     else setQueryParams(initialQueryParams);
   }, [id]);
 
@@ -82,7 +96,9 @@ function ServiceHome({ id = undefined }) {
                 ...f,
                 "category._id": null,
               }));
-              setQueryParams(initialQueryParams);
+              setQueryParams((prev) => {
+                return { ...prev, ...initialQueryParams };
+              });
             }}
             className={classNames("px-3 py-1 rounded-lg border text-sm", {
               "bg-primary/50 shadow-lg text-slate-800": !filter["category._id"],
@@ -101,7 +117,9 @@ function ServiceHome({ id = undefined }) {
                       ? null
                       : category._id,
                 }));
-                setQueryParams(initialQueryParams);
+                setQueryParams((prev) => {
+                  return { ...prev, ...initialQueryParams };
+                });
               }}
               key={category._id}
               className={classNames("px-3 py-1 rounded-lg border text-sm", {
@@ -123,6 +141,7 @@ function ServiceHome({ id = undefined }) {
 }
 
 export default function Services() {
+  let userId = localStorage.getItem("userId");
   const tabs = {
     home: {
       label: "Home",
@@ -138,7 +157,7 @@ export default function Services() {
 
     viewCreatedJob: {
       label: "viewCreatedServices",
-      panel: <ServiceHome id={localStorage.getItem("userId") ?? ""} />,
+      panel: <ServiceHome id={userId} />,
       role: "subscribed",
     },
   };

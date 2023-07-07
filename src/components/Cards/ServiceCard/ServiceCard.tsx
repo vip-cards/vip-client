@@ -12,7 +12,6 @@ import { motion } from "framer-motion";
 
 type Props = {
   service: IService;
-  refetch?: () => void;
 };
 
 const AnimatedLink = motion(Link);
@@ -34,7 +33,6 @@ const ServiceCard = (props: Props) => {
       .removeService(service._id)
       .then(() => {
         toastPopup.success(t("jobRemovedSuccessfully"));
-        props.refetch?.();
       })
       .catch(responseErrorToast)
       .finally(() => setLoading(false));

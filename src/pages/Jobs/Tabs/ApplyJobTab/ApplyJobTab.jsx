@@ -3,6 +3,7 @@ import ApplyJobCreateJob from "./ApplyJobCreateJob";
 import ApplyJobHome from "./ApplyJobHome";
 
 const ApplyJobTab = () => {
+  let userId = localStorage.getItem("userId");
   const tabs = {
     home: {
       label: "home",
@@ -16,7 +17,7 @@ const ApplyJobTab = () => {
 
     viewCreatedJob: {
       label: "View Created Job",
-      panel: <ApplyJobHome id={localStorage.getItem("userId") ?? ""} />,
+      panel: <ApplyJobHome id={userId} />,
     },
   };
 

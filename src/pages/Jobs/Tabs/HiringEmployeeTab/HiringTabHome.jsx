@@ -5,10 +5,11 @@ import {
   SearchBar,
   SearchProvider,
 } from "components/PageQueryContainer/PageQueryContext";
+import STOP_UGLY_CACHEING from "constants/configSWR";
 import { getLocalizedWord } from "helpers/lang";
 import { listRenderFn } from "helpers/renderFn";
 import { t } from "i18next";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import clientServices from "services/clientServices";
 import useSWR from "swr";
 
@@ -16,29 +17,37 @@ const LIMIT = 5;
 const initialFilters = { "category._id": null };
 
 export default function HiringTabHome({ id = undefined }) {
-  const initialQueryParams = {
-    page: 1,
-    limit: LIMIT,
-    client: id,
-  };
+  const initialQueryParams = id
+    ? {
+        page: 1,
+        limit: LIMIT,
+        client: id,
+      }
+    : {
+        page: 1,
+        limit: LIMIT,
+        // client: id,
+      };
+
   const [queryParams, setQueryParams] = useState(initialQueryParams);
   const [filter, setFilter] = useState(initialFilters);
-  const {
-    data: jobsData,
-    isLoading,
-    mutate,
-  } = useSWR([`view-${id ?? "all"}-posts`, queryParams], ([, queryParams]) =>
-    clientServices.listAllPosts(queryParams)
+  const { data: jobsData, isLoading } = useSWR(
+    [`view-${"all"}-posts`, queryParams],
+    ([, queryParams]) => clientServices.listAllPosts(queryParams),
+    STOP_UGLY_CACHEING
   );
-  const { data: categories } = useSWR("posts-categories", () =>
-    clientServices
-      .listAllCategories({ type: "job" })
-      .then((data) => data.records)
+  const { data: categories } = useSWR(
+    "posts-categories",
+    () =>
+      clientServices
+        .listAllCategories({ type: "job" })
+        .then((data) => data.records),
+    STOP_UGLY_CACHEING
   );
 
   const { records: jobs = undefined, counts = 0 } = jobsData ?? {};
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setFilter(initialFilters);
     if (id) setQueryParams((q) => ({ ...q, client: id }));
     else setQueryParams(initialQueryParams);
@@ -56,7 +65,7 @@ export default function HiringTabHome({ id = undefined }) {
           isLoading,
           list: jobs,
           render: (post) => {
-            return <PostCard key={post._id} post={post} mutate={mutate} />;
+            return <PostCard key={post._id} post={post} />;
           },
         })
       }
@@ -72,7 +81,9 @@ export default function HiringTabHome({ id = undefined }) {
                 ...f,
                 "category._id": null,
               }));
-              setQueryParams(initialQueryParams);
+              setQueryParams((prev) => {
+                return { ...prev, ...initialQueryParams };
+              });
             }}
             className={classNames("px-3 py-1 rounded-lg border text-sm", {
               "bg-primary/50 shadow-lg text-slate-800": !filter["category._id"],
@@ -91,7 +102,9 @@ export default function HiringTabHome({ id = undefined }) {
                       ? null
                       : category._id,
                 }));
-                setQueryParams(initialQueryParams);
+                setQueryParams((prev) => {
+                  return { ...prev, ...initialQueryParams };
+                });
               }}
               key={category._id}
               className={classNames("px-3 py-1 rounded-lg border text-sm", {

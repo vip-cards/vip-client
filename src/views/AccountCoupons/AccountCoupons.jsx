@@ -6,6 +6,7 @@ import {
   faNetworkWired,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import STOP_UGLY_CACHEING from "constants/configSWR";
 import { getLocalizedNumber, getLocalizedWord } from "helpers/lang";
 import { listRenderFn } from "helpers/renderFn";
 import { useTranslation } from "react-i18next";
@@ -17,7 +18,11 @@ const fetchCoupons = () =>
 
 const AccountCoupons = () => {
   const { t } = useTranslation();
-  const { data: coupons, isLoading } = useSWR("all-coupons", fetchCoupons);
+  const { data: coupons, isLoading } = useSWR(
+    "all-coupons",
+    fetchCoupons,
+    STOP_UGLY_CACHEING
+  );
 
   const renderCoupons = () =>
     listRenderFn({

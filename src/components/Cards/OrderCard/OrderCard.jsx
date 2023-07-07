@@ -1,31 +1,20 @@
 import { faInfo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import classNames from "classnames";
-import RatingStars from "components/RatingStars/RatingStars";
+
 import dayjs from "dayjs";
 import { getLocalizedWord } from "helpers/lang";
-import { useEffect, useState } from "react";
-import clientServices from "services/clientServices";
+import { useState } from "react";
 import "./OrderCard.scss";
 import OrderDetailsModal from "components/Modals/OrderDetailsModal";
 
 export default function OrderCard({ order }) {
   const [orderDetailsVisible, setOrderDetailsVisible] = useState(false);
-  const [vendor, setVendor] = useState({
-    name: "",
-    image: "",
-  });
 
   function handleShowInfo() {
     setOrderDetailsVisible((p) => !p);
   }
 
-  useEffect(() => {
-    clientServices
-      .getVendor(order.vendor?._id)
-      .then((res) => res.data.record[0])
-      .then((vendor) => setVendor(vendor));
-  }, [order.vendor]);
+  const vendor = order?.vendor;
 
   return (
     <div className="flex flex-col">
@@ -41,7 +30,6 @@ export default function OrderCard({ order }) {
 
         <div className="order-vendor-name">
           <span>{getLocalizedWord(vendor?.name) || "Vendor name"}</span>
-          <RatingStars rate={vendor?.rate ?? 0} />
         </div>
 
         <div className="order-status">

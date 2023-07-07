@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import { t } from "i18next";
+import STOP_UGLY_CACHEING from "constants/configSWR";
 
 const adsFetcher = ([key, params]) => clientServices.listAllAds({ ...params });
 
@@ -21,10 +22,14 @@ const PreviousAds = () => {
     data: adsData,
     error,
     isLoading,
-  } = useSWR(["list-previous-ads", queryParams], adsFetcher);
+  } = useSWR(
+    ["list-previous-ads", queryParams],
+    adsFetcher,
+    STOP_UGLY_CACHEING
+  );
 
   const { records: adsList = undefined } = adsData ?? {};
-  
+
   const allTypes = ["banner", "popup", "notification"];
 
   const allStatuses = ["pending", "accepted", "rejected"];
@@ -60,8 +65,6 @@ const PreviousAds = () => {
       };
     });
   }, [filter]);
-
-
 
   const render = () => {
     if (isLoading) return <LoadingSpinner />;

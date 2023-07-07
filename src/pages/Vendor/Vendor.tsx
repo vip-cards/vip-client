@@ -26,6 +26,7 @@ import { createRoom } from "services/socket/chat";
 import useSWR from "swr";
 import ReviewModal from "./ReviewModal";
 import "./Vendor.scss";
+import STOP_UGLY_CACHEING from "constants/configSWR";
 
 const LIMIT = 9;
 
@@ -61,27 +62,25 @@ export default function Vendor() {
 
   const { data: vendor, isLoading: isVendorLoading } = useSWR(
     [`vendor-details-${vendorId}`, vendorId],
-    vendorFetcher
+    vendorFetcher,
+    STOP_UGLY_CACHEING
   );
   const { data: reviews, isLoading: isReviewsLoading } = useSWR(
     [`vendor-rev-${vendorId}`, vendorId],
-    reviewFetcher
+    reviewFetcher,
+    STOP_UGLY_CACHEING
   );
 
   const { data: branches, isLoading: isVendorbranchesLoading } = useSWR(
     [`vendor-branches-${vendorId}`, vendorId],
     vendorBranchesFetcher,
-    {
-      suspense: !vendor,
-    }
+    { ...STOP_UGLY_CACHEING, suspense: !vendor }
   );
 
   const { data: productsData, isLoading: productsLoading } = useSWR(
     [`all-vendor-products-${vendorId}`, queryParams],
     productsFetcher,
-    {
-      suspense: !vendor,
-    }
+    { ...STOP_UGLY_CACHEING, suspense: !vendor }
   );
   const { records: products = undefined, counts: productsCount } =
     productsData ?? {};
@@ -290,7 +289,9 @@ export default function Vendor() {
           <button
             onClick={() => {
               setFilter((f) => ({ ...f, categories: [] }));
-              setQueryParams({ page: 1, limit: LIMIT, vendor: vendorId });
+              setQueryParams((prev) => {
+                return { ...prev, page: 1, limit: LIMIT, vendor: vendorId };
+              });
             }}
             className={classNames("px-3 py-1 rounded-lg border text-sm", {
               "bg-primary/50 shadow-lg text-slate-800":
@@ -304,7 +305,9 @@ export default function Vendor() {
             <button
               onClick={() => {
                 toggleFilter("categories", category._id);
-                setQueryParams({ page: 1, limit: LIMIT, vendor: vendorId });
+                setQueryParams((prev) => {
+                  return { ...prev, page: 1, limit: LIMIT, vendor: vendorId };
+                });
               }}
               key={category._id}
               className={classNames("px-3 py-1 rounded-lg border text-sm", {

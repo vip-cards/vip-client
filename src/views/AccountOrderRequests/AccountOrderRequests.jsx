@@ -7,6 +7,7 @@ import useSWR from "swr";
 import Select from "react-select";
 import { useTranslation } from "react-i18next";
 import OrderCheckoutModal from "components/Modals/OrderCheckoutModal";
+import STOP_UGLY_CACHEING from "constants/configSWR";
 
 const statusFilter = [
   { value: "pending", label: "pending" },
@@ -42,7 +43,8 @@ const AccountOrderRequests = () => {
   const [status, setStatus] = useState(null);
   const { data: requests = [], mutate } = useSWR(
     ["all-order-requests", status],
-    fetchAllRequests
+    fetchAllRequests,
+    STOP_UGLY_CACHEING
   );
 
   async function handleOrderRequestProceed(orderId, amount, paymentEndPoint) {

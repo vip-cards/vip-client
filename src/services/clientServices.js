@@ -87,6 +87,9 @@ const clientServices = {
   listAllBanners: async (params) =>
     (await Axios.get(`/banner/list`, { params }))?.data,
 
+  incrementBannerCount: async (id) =>
+    (await Axios.put(`/banner/update?_id=${id}`))?.data,
+
   getBranchDetails: async (branchId) => {
     const response = await Axios.get(`/branch/get?_id=${branchId}`);
     return response;

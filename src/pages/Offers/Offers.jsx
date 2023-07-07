@@ -3,6 +3,7 @@ import ProductCard from "components/Cards/ProductCard/ProductCard";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import NoData from "components/NoData/NoData";
 import PageQueryContainer from "components/PageQueryContainer/PageQueryContainer";
+import STOP_UGLY_CACHEING from "constants/configSWR";
 import { getLocalizedWord } from "helpers/lang";
 import { t } from "i18next";
 import { useEffect, useState } from "react";
@@ -20,15 +21,20 @@ export default function Offers({ isHotDeal = false }) {
 
   const { data: productsData, isLoading: productsLoading } = useSWR(
     ["all-products", isHotDeal, queryParams],
-    () => clientServices.listAllProducts({ isHotDeal, ...queryParams })
+    () => clientServices.listAllProducts({ isHotDeal, ...queryParams }),
+    STOP_UGLY_CACHEING
   );
 
-  const { data: categoriesData } = useSWR("all--product-categories", () =>
-    clientServices.listAllCategories({ type: "product" })
+  const { data: categoriesData } = useSWR(
+    "all--product-categories",
+    () => clientServices.listAllCategories({ type: "product" }),
+    STOP_UGLY_CACHEING
   );
 
-  const { data: vendorsData } = useSWR("all-vendors", () =>
-    clientServices.listAllVendors()
+  const { data: vendorsData } = useSWR(
+    "all-vendors",
+    () => clientServices.listAllVendors(),
+    STOP_UGLY_CACHEING
   );
 
   const { records: products = undefined, counts: productsCount } =
@@ -117,7 +123,9 @@ export default function Offers({ isHotDeal = false }) {
         <button
           onClick={() => {
             setFilter((f) => ({ ...f, categories: [] }));
-            setQueryParams({ page: 1, limit: LIMIT });
+            setQueryParams((prev) => {
+              return { ...prev, ...{ page: 1, limit: LIMIT } };
+            });
           }}
           className={classNames("px-3 py-1 rounded-lg border text-sm", {
             "bg-primary/50 shadow-lg text-slate-800":
@@ -131,7 +139,9 @@ export default function Offers({ isHotDeal = false }) {
           <button
             onClick={() => {
               toggleFilter("categories", category._id);
-              setQueryParams({ page: 1, limit: LIMIT });
+              setQueryParams((prev) => {
+                return { ...prev, ...{ page: 1, limit: LIMIT } };
+              });
             }}
             key={category._id}
             className={classNames("px-3 py-1 rounded-lg border text-sm", {
@@ -152,7 +162,9 @@ export default function Offers({ isHotDeal = false }) {
         <button
           onClick={() => {
             setFilter((f) => ({ ...f, vendors: [] }));
-            setQueryParams({ page: 1, limit: LIMIT });
+            setQueryParams((prev) => {
+              return { ...prev, ...{ page: 1, limit: LIMIT } };
+            });
           }}
           className={classNames("px-3 py-1 rounded-lg border text-sm", {
             "bg-primary/50 shadow-lg text-slate-800": !filter.vendors?.length,
@@ -165,7 +177,9 @@ export default function Offers({ isHotDeal = false }) {
           <button
             onClick={() => {
               toggleFilter("vendors", vendor._id);
-              setQueryParams({ page: 1, limit: LIMIT });
+              setQueryParams((prev) => {
+                return { ...prev, ...{ page: 1, limit: LIMIT } };
+              });
             }}
             key={vendor._id}
             className={classNames("px-3 py-1 rounded-lg border text-sm", {
