@@ -46,6 +46,49 @@ const clientServices = {
     return response;
   },
 
+  listClientPoints: async (params) => {
+    const response = await Axios.get("/points/get", {
+      params: {
+        ...params,
+        client: userId(),
+      },
+    });
+    return response;
+  },
+
+  listClientReviews: async (params) => {
+    const response = await Axios.get("/review/list", {
+      params: {
+        ...params,
+        client: userId(),
+      },
+    });
+    return response;
+  },
+
+  listNearAgents: (params) => {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        async ({ coords }) => {
+          try {
+            const response = await Axios.get("/agent/list/", {
+              params: {
+                long: coords.longitude,
+                lat: coords.latitude,
+              },
+            });
+            resolve(response.data);
+          } catch (error) {
+            reject(error);
+          }
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+  },
+
   listAllVendorBranches: async (params) =>
     (
       await Axios.get("/branch/list/", {
@@ -138,6 +181,23 @@ const clientServices = {
 
   createProductReview: async (body) => {
     const response = await Axios.post(`/review/create`, body);
+    return response;
+  },
+
+  editReview: async (body, params) => {
+    const response = await Axios.put(
+      `/review/update?_id=${params._id}&client=${params.client}`,
+      {
+        ...body,
+      }
+    );
+    return response;
+  },
+
+  deleteReview: async (params) => {
+    const response = await Axios.delete(
+      `/review/remove?_id=${params._id}&client=${params.client}`
+    );
     return response;
   },
 

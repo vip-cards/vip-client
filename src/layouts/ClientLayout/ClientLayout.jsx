@@ -48,6 +48,9 @@ import AccountWishlist from "views/AccountWishlist/AccountWishlist";
 import AccountLayout from "../AccountLayout/AccountLayout";
 
 import "./ClientLayout.scss";
+import AccountPoints from "views/AccountPoints/AccountPoints";
+import AccountReviewes from "views/AccountReviewes/AccountReviewes";
+import AccountInvite from "views/AccountInvite/AccountInvite";
 
 const Navbar = loadable(() => import("components/Navbar/Navbar"));
 
@@ -196,6 +199,9 @@ export default function ClientLayout() {
             >
               <Route index path="details" element={<AccountDetails />} />
               <Route path="orders" element={<AccountOrders />} />
+              <Route path="points" element={<AccountPoints />} />
+              <Route path="reviews" element={<AccountReviewes />} />
+              <Route path="invite" element={<AccountInvite />} />
               <Route
                 path="orders-requests"
                 element={<AccountOrderRequests />}

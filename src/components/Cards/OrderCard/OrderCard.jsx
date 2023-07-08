@@ -16,6 +16,9 @@ export default function OrderCard({ order }) {
 
   const vendor = order?.vendor;
 
+  let orderTotalMoneySaved = order.shippingFees
+    ? order.originalTotal - (order.total - order.shippingFees)
+    : order.originalTotal - order.total;
   return (
     <div className="flex flex-col">
       <article className="order-card relative">
@@ -45,6 +48,11 @@ export default function OrderCard({ order }) {
         <div className="order-points">
           <span className="number">{order.points}</span> &nbsp;
           <span className="text">points</span>
+        </div>
+        <div className="order-money">
+          <span className="number">{Math.ceil(orderTotalMoneySaved)}</span>{" "}
+          &nbsp;
+          <span className="text">Money Saved</span>
         </div>
 
         <div className="absolute top-3 left-5">

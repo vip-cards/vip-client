@@ -1,0 +1,23 @@
+@import "src/styles/_colors.scss";
+
+.orders-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  .orders-title {
+    text-align: center;
+    color: $mainColor;
+  }
+
+  .orders-details {
+    box-shadow: 0 0 10px #07070732;
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+}
+.orders-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

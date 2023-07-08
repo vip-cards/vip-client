@@ -16,6 +16,7 @@
     "animate.css": "^4.1.1",
     "axios": "^1.1.2",
     "classnames": "^2.3.2",
+    "clipboard-copy": "^4.0.1",
     "dayjs": "^1.11.5",
     "firebase": "^9.14.0",
     "framer-motion": "^10.12.17",

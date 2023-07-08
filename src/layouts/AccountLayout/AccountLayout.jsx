@@ -24,6 +24,9 @@ export default function AccountLayout() {
             <NavItem to="barcode" icon={faBarcode} title={t("barcode")} />
 
             <NavItem to="orders" icon={faList} title={t("previousOrders")} />
+            <NavItem to="points" icon={faList} title={t("points")} />
+            <NavItem to="reviews" icon={faList} title={t("reviews")} />
+            <NavItem to="invite" icon={faList} title={t("invite")} />
             <NavItem
               to="orders-requests"
               icon={faList}
