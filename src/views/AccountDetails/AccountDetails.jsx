@@ -15,6 +15,7 @@ import { MainButton } from "components/Buttons";
 import { MainInput } from "components/Inputs";
 
 import "./AccountDetails.scss";
+import STOP_UGLY_CACHEING from "constants/configSWR";
 /**
  * {obj1} new object
  * {obj2} old object
@@ -31,14 +32,20 @@ const getUpdatedOnly = (obj1, obj2) => {
 export default function AccountDetails() {
   const ref = useRef();
   const dispatch = useDispatch();
-  const { data: accountData } = useSWR("account-details", () =>
-    clientServices.updateInfo()
+  const { data: accountData } = useSWR(
+    "account-details",
+    () => clientServices.updateInfo(),
+    STOP_UGLY_CACHEING
   );
-  const { data: professionsData } = useSWR("list-professions", () =>
-    clientServices.listAllProfessions()
+  const { data: professionsData } = useSWR(
+    "list-professions",
+    () => clientServices.listAllProfessions(),
+    STOP_UGLY_CACHEING
   );
-  const { data: interestsData } = useSWR("list-interests", () =>
-    clientServices.listAllInterests()
+  const { data: interestsData } = useSWR(
+    "list-interests",
+    () => clientServices.listAllInterests(),
+    STOP_UGLY_CACHEING
   );
 
   const { record: account = undefined } = accountData ?? {};

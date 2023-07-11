@@ -15,7 +15,12 @@ class PaymobService {
     return data.token;
   }
 
-  async orderPayment(amount, orderId = undefined) {
+  async orderPayment(
+    amount,
+    orderId = undefined,
+    paymentEndPoint = undefined,
+    isPremiumSubscribtion = false
+  ) {
     const amount_cents = this.convertToCents(amount);
     const auth_token = await this.getToken();
 
@@ -26,7 +31,7 @@ class PaymobService {
         amount_cents,
         currency: "EGP",
         items: [],
-        ...(orderId && { merchant_order_id: orderId }),
+        merchant_order_id: orderId,
       })
       .then(({ data }) => data);
   }
@@ -72,7 +77,12 @@ class PaymobService {
     return `${this.paymobAPI}acceptance/iframes/760110?payment_token=${paymentToken}`;
   }
 
-  async paymobProcessURL(amount = 0, orderId = undefined) {
+  async paymobProcessURL(
+    amount = 0,
+    orderId = undefined,
+    paymentEndPoint = undefined,
+    isPremiumSubscribtion = false
+  ) {
     const paymentOrder = await this.orderPayment(amount, orderId);
     const paymentToken = await this.getPaymentToken(amount, paymentOrder.id);
 

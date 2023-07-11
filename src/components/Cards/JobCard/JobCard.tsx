@@ -71,7 +71,9 @@ const JobCard = ({ job, mutate }) => {
       <h4 className="sub-title text-xl">{getLocalizedWord(job.companyName)}</h4>
       <p className="body">
         <span>{getLocalizedWord(job.address)}</span>
-        <span>{dayjs(job.publishDate).locale(lang).format("DD, MMM, YYYY")}</span>
+        <span>
+          {dayjs(job.publishDate).locale(lang).format("DD, MMM, YYYY")}
+        </span>
       </p>
     </motion.div>
   );

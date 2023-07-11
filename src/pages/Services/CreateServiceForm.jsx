@@ -72,7 +72,7 @@ export default function CreateServiceForm() {
 
     clientServices.createService(newServiceForm).then((res) => {
       toastPopup.success("Created Successfully");
-      navigate(location.pathname, { state: { openedTap: "viewCreatedJob" } });
+      navigate(0);
     });
   };
 

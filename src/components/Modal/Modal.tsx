@@ -57,7 +57,7 @@ const Modal: React.FC<IModal> = ({
             className={classNames(
               classes.body,
               className,
-              "max-w-full overflow-hidden"
+              "max-w-full overflow-auto"
             )}
           >
             {children}

@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import classNames from "classnames";
 import { t } from "i18next";
+import STOP_UGLY_CACHEING from "constants/configSWR";
 
 const adsFetcher = ([key, params]) => clientServices.listAllAds({ ...params });
 
@@ -22,7 +23,11 @@ const PreviousAds = () => {
     error,
     isLoading,
     mutate,
-  } = useSWR(["list-previous-ads", queryParams], adsFetcher);
+  } = useSWR(
+    ["list-previous-ads", queryParams],
+    adsFetcher,
+    STOP_UGLY_CACHEING
+  );
 
   const { records: adsList = undefined } = adsData ?? {};
 

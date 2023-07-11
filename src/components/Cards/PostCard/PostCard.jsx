@@ -9,7 +9,7 @@ import toastPopup, { responseErrorToast } from "helpers/toastPopup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
-const PostCard = ({ post, mutate }) => {
+const PostCard = ({ post }) => {
   const currentCLient = localStorage.getItem("userId") ?? "";
   const jobClient = post?.client ?? "";
   const createdByMe = currentCLient === jobClient;
@@ -27,7 +27,6 @@ const PostCard = ({ post, mutate }) => {
       .removePost(post._id)
       .then(() => {
         toastPopup.success(t("jobRemovedSuccessfully"));
-        mutate && mutate();
       })
       .catch(responseErrorToast)
       .finally(() => setLoading(false));

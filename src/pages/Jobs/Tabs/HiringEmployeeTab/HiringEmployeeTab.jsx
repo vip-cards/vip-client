@@ -2,6 +2,7 @@ import Tabs from "components/Tabs/Tabs";
 import { HiringTabCreateJob, HiringTabHome } from "pages";
 
 const HiringEmployeeTab = () => {
+  let userId = localStorage.getItem("userId");
   const tabs = {
     home: {
       label: "Home",
@@ -15,7 +16,7 @@ const HiringEmployeeTab = () => {
 
     viewCreatedJob: {
       label: "View Created Posts",
-      panel: <HiringTabHome id={localStorage.getItem("userId") ?? ""} />,
+      panel: <HiringTabHome id={userId} />,
     },
   };
 

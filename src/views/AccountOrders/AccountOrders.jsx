@@ -8,6 +8,7 @@ import clientServices from "../../services/clientServices";
 import "./AccountOrders.scss";
 import { getLocalizedNumber } from "helpers/lang";
 import { useState } from "react";
+import STOP_UGLY_CACHEING from "constants/configSWR";
 
 const statusFilter = [
   { value: "pending", label: "pending" },
@@ -34,7 +35,11 @@ export default function AccountOrders() {
     data: orderList,
     isLoading,
     error,
-  } = useSWR(["orders", status, paymentMethod], fetchOrders);
+  } = useSWR(
+    ["orders", status, paymentMethod],
+    fetchOrders,
+    STOP_UGLY_CACHEING
+  );
 
   function renderOrders() {
     if (isLoading) return <LoadingSpinner />;

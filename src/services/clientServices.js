@@ -19,7 +19,7 @@ const clientServices = {
     const response = await Axios.get(`/vendor/get?_id=${vendorId}`);
     return response;
   },
-  
+
   listAllVendors: async (params) =>
     (await Axios.get(`/vendor/list`, { params })).data,
 
@@ -44,6 +44,49 @@ const clientServices = {
       },
     });
     return response;
+  },
+
+  listClientPoints: async (params) => {
+    const response = await Axios.get("/points/get", {
+      params: {
+        ...params,
+        client: userId(),
+      },
+    });
+    return response;
+  },
+
+  listClientReviews: async (params) => {
+    const response = await Axios.get("/review/list", {
+      params: {
+        ...params,
+        client: userId(),
+      },
+    });
+    return response;
+  },
+
+  listNearAgents: (params) => {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        async ({ coords }) => {
+          try {
+            const response = await Axios.get("/agent/list/", {
+              params: {
+                long: coords.longitude,
+                lat: coords.latitude,
+              },
+            });
+            resolve(response.data);
+          } catch (error) {
+            reject(error);
+          }
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
   },
 
   listAllVendorBranches: async (params) =>
@@ -86,6 +129,9 @@ const clientServices = {
 
   listAllBanners: async (params) =>
     (await Axios.get(`/banner/list`, { params }))?.data,
+
+  incrementBannerCount: async (id) =>
+    (await Axios.put(`/banner/update?_id=${id}`))?.data,
 
   getBranchDetails: async (branchId) => {
     const response = await Axios.get(`/branch/get?_id=${branchId}`);
@@ -138,6 +184,23 @@ const clientServices = {
     return response;
   },
 
+  editReview: async (body, params) => {
+    const response = await Axios.put(
+      `/review/update?_id=${params._id}&client=${params.client}`,
+      {
+        ...body,
+      }
+    );
+    return response;
+  },
+
+  deleteReview: async (params) => {
+    const response = await Axios.delete(
+      `/review/remove?_id=${params._id}&client=${params.client}`
+    );
+    return response;
+  },
+
   listAllPages: async () => {
     const response = await Axios.get(`/page/list`);
     return response?.data?.records ?? response?.data?.record;
@@ -152,6 +215,47 @@ const clientServices = {
     const response = await Axios.get(`/setting/get`);
     return response?.data?.records ?? response?.data?.record;
   },
+
+  getClientFromBarcode: async (barcode) =>
+    (
+      await Axios.get("client/client/get", {
+        params: { barcode },
+      })
+    )?.data,
+
+  getClientPoints: async (client, vendor) =>
+    (
+      await Axios.get("/points/get", {
+        params: { client, vendor },
+      })
+    )?.data,
+
+  applyCouponFinally: async (request, coupon) =>
+    (
+      await Axios.post(`/coupon/apply?request=${request}&coupon=${coupon}`, {
+        // params: { cart, coupon },
+      })
+    )?.data,
+
+  rejectCoupon: async (request) =>
+    (
+      await Axios.put("/coupon/remove", {
+        params: { request },
+      })
+    )?.data,
+
+  useVendorPoints: async (pointsToRemove, params) =>
+    (await Axios.put("/points/useVendorPoints", { pointsToRemove }, { params }))
+      ?.data,
+
+  useSystemPoints: async (vipPoints, params) =>
+    (await Axios.put("/points/useSystemPoints", { vipPoints }, { params }))
+      ?.data,
+
+  checkout: async (obj) => (await Axios.post("/order/checkout", obj))?.data,
+
+  useFreeTrial: async (obj) =>
+    (await Axios.post("/order/freetrial", obj))?.data,
 
   ...accountServices,
   ...productsServives,

@@ -29,6 +29,7 @@ import { addWishProduct } from "store/wishlist-slice";
 import { SwiperSlide } from "swiper/react";
 import useSWR from "swr";
 import "./ProductDetails.scss";
+import STOP_UGLY_CACHEING from "constants/configSWR";
 
 const productReviewFetcher = ([key, id]) =>
   clientServices.getProductReview(id).then((res) => res.records as IReview[]);
@@ -55,11 +56,13 @@ function ProductDetails(props) {
 
   const { data: product, isLoading: isProductLoading } = useSWR(
     ["product", productId],
-    productFetcher
+    productFetcher,
+    STOP_UGLY_CACHEING
   );
   const { data: reviews = [] } = useSWR(
     ["product-rev", productId],
-    productReviewFetcher
+    productReviewFetcher,
+    STOP_UGLY_CACHEING
   );
 
   async function addToCartHandler() {
@@ -323,6 +326,7 @@ function ProductDetails(props) {
                 <RatingStars rate={review.product.rate ?? 0} />
               </div>
             </div>
+            <div className="px-1">{review.review}</div>
           </div>
         ))}
       </section>

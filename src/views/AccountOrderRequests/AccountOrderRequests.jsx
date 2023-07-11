@@ -6,6 +6,8 @@ import paymobServices from "services/paymob.services";
 import useSWR from "swr";
 import Select from "react-select";
 import { useTranslation } from "react-i18next";
+import OrderCheckoutModal from "components/Modals/OrderCheckoutModal";
+import STOP_UGLY_CACHEING from "constants/configSWR";
 
 const statusFilter = [
   { value: "pending", label: "pending" },
@@ -23,14 +25,32 @@ const AccountOrderRequests = () => {
   const lang = i18n.language;
 
   const [paymentModal, setPaymentModal] = useState({ open: false, url: "" });
+
+  const [checkoutModal, setCheckoutModal] = useState({
+    open: false,
+    request: {},
+    paymentMethod: "",
+  });
+
+  function handleCheckoutModalOpen(request) {
+    setCheckoutModal({
+      open: true,
+      request: request,
+      paymentMethod: request?.paymentMethod,
+    });
+  }
+
   const [status, setStatus] = useState(null);
   const { data: requests = [], mutate } = useSWR(
     ["all-order-requests", status],
-    fetchAllRequests
+    fetchAllRequests,
+    STOP_UGLY_CACHEING
   );
 
-  async function handleOrderRequestProceed(orderId, amount) {
+  async function handleOrderRequestProceed(orderId, amount, paymentEndPoint) {
+    localStorage.setItem("paymentEndPointSelect", paymentEndPoint);
     const url = await paymobServices.paymobProcessURL(amount, orderId);
+
     setPaymentModal({ open: true, url });
   }
 
@@ -71,7 +91,7 @@ const AccountOrderRequests = () => {
       <section className="max-w-full overflow-x-scroll">
         <OrderRequestsTable
           requests={requests}
-          handleOrderRequestProceed={handleOrderRequestProceed}
+          handleCheckoutModalOpen={handleCheckoutModalOpen}
           refetch={mutate}
         />
       </section>
@@ -90,6 +110,16 @@ const AccountOrderRequests = () => {
           ></iframe>
         )}
       </Modal>
+      <OrderCheckoutModal
+        visible={checkoutModal.open}
+        request={checkoutModal.request}
+        handlePaymobProcced={handleOrderRequestProceed}
+        onClose={() => {
+          setCheckoutModal((state) => {
+            return { ...state, open: false };
+          });
+        }}
+      />
     </Fragment>
   );
 };

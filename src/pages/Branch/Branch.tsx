@@ -19,6 +19,7 @@ import clientServices from "services/clientServices";
 import { createRoom } from "services/socket/chat";
 import useSWR from "swr";
 import "./Branch.scss";
+import STOP_UGLY_CACHEING from "constants/configSWR";
 
 const LIMIT = 9;
 
@@ -50,20 +51,20 @@ export default function Branch() {
 
   const { data: vendor, isLoading: isVendorLoading } = useSWR(
     [`vendor-details-${vendorId}`, vendorId],
-    vendorFetcher
+    vendorFetcher,
+    STOP_UGLY_CACHEING
   );
 
   const { data: branch, isLoading: isBranchLoading } = useSWR(
     [`branch-details-${branchId}`, branchId],
-    branchFetcher
+    branchFetcher,
+    STOP_UGLY_CACHEING
   );
 
   const { data: productsData, isLoading: productsLoading } = useSWR(
     [`all-branch-products-${branchId}`, queryParams],
     productsFetcher,
-    {
-      suspense: !branch,
-    }
+    { ...STOP_UGLY_CACHEING, suspense: !branch }
   );
 
   const { records: products = undefined, counts: productsCount } =
@@ -219,7 +220,10 @@ export default function Branch() {
           <button
             onClick={() => {
               setFilter((f) => ({ ...f, categories: [] }));
-              setQueryParams({ page: 1, limit: LIMIT, branches: branchId });
+
+              setQueryParams((prev) => {
+                return { ...prev, page: 1, limit: LIMIT, branches: branchId };
+              });
             }}
             className={classNames("px-3 py-1 rounded-lg border text-sm", {
               "bg-primary/50 shadow-lg text-slate-800":
@@ -233,7 +237,9 @@ export default function Branch() {
             <button
               onClick={() => {
                 toggleFilter("categories", category._id);
-                setQueryParams({ page: 1, limit: LIMIT, branches: branchId });
+                setQueryParams((prev) => {
+                  return { ...prev, page: 1, limit: LIMIT, branches: branchId };
+                });
               }}
               key={category._id}
               className={classNames("px-3 py-1 rounded-lg border text-sm", {

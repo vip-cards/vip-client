@@ -5,7 +5,7 @@ import Modal from "components/Modal/Modal";
 import NoData from "components/NoData/NoData";
 import { t } from "i18next";
 import dummyAds from "mock/ad.json";
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import clientServices from "services/clientServices";
 import { SwiperSlide } from "swiper/react";
@@ -51,6 +51,11 @@ export default function Home() {
     [popUps]
   );
 
+  async function increaseAdCountHandler(adId) {
+    try {
+      await clientServices.incrementBannerCount(adId);
+    } catch (e) {}
+  }
   const renderAds = (size) => {
     if (advertsLoading || !adverts) return <LoadingSpinner />;
     if (!adverts.length)
@@ -79,6 +84,9 @@ export default function Home() {
           <SwiperSlide
             key={ad._id}
             className="w-full max-lg:max-h-52 h-full rounded-xl shadow overflow-hidden"
+            onClick={(e) => {
+              increaseAdCountHandler(ad._id);
+            }}
           >
             <a href={ad.link} target="_blank" rel="noreferrer noopener">
               <img
@@ -274,9 +282,15 @@ export default function Home() {
             setPopUpModalVisible(false);
           }}
         >
-          <a href={popUps[randomPopUp].link} target="_blank" rel="noreferrer">
-            <img src={popUps[randomPopUp].image.Location} alt="" />
-          </a>
+          <div
+            onClick={(e) => {
+              increaseAdCountHandler(popUps[randomPopUp]._id);
+            }}
+          >
+            <a href={popUps[randomPopUp].link} target="_blank" rel="noreferrer">
+              <img src={popUps[randomPopUp].image.Location} alt="" />
+            </a>
+          </div>
         </Modal>
       )}
     </div>

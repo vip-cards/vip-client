@@ -97,6 +97,17 @@ export function SearchProvider({
   };
 
   useEffect(() => {
+    if (queryParams.type) {
+      setQueryType(queryParams.type.toString());
+    } else {
+      setQueryParams((prev) => ({
+        ...prev,
+        [`${queryType}.ar`]: undefined,
+        [`${queryType}.en`]: undefined,
+      }));
+      setQueryType("name");
+    }
+
     if (!searchQuery) {
       setQueryParams((prev) => ({
         ...prev,
@@ -112,19 +123,22 @@ export function SearchProvider({
     } else {
       handleListSearch();
     }
-    if (queryParams.type) {
-      setQueryType(queryParams.type.toString());
-    } else {
-      setQueryParams((prev) => ({
-        ...prev,
-        [`${queryType}.ar`]: undefined,
-        [`${queryType}.en`]: undefined,
-      }));
-      setQueryType("name");
-    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, queryParams.type]);
+
+  // useEffect(() => {
+  //   if (queryParams.type) {
+  //     setQueryType(queryParams.type.toString());
+  //   } else {
+  //     setQueryParams((prev) => ({
+  //       ...prev,
+  //       [`${queryType}.ar`]: undefined,
+  //       [`${queryType}.en`]: undefined,
+  //     }));
+  //     setQueryType("name");
+  //   }
+  // }, [queryParams.type]);
 
   useEffect(() => {
     setQueryParams((p) => ({ ...p, ...filter }));
@@ -156,7 +170,8 @@ export function SearchProvider({
 
 // Use the useSearch hook in your SearchBar component to access the search query and update function
 export function SearchBar({ withSelector = false, types = [] }) {
-  const { setSearchQuery, handleListSearch, setQueryParams } = useSearch();
+  const { queryParams, setSearchQuery, handleListSearch, setQueryParams } =
+    useSearch();
 
   return (
     <Search

@@ -14,6 +14,7 @@ import { useParams } from "react-router";
 import useSWR from "swr";
 import clientServices from "../../services/clientServices";
 import "./Vendors.scss";
+import STOP_UGLY_CACHEING from "constants/configSWR";
 
 const LIMIT = 8;
 const sortOptions = [
@@ -65,18 +66,22 @@ export default function Vendors() {
         return clientServices.listAllVendors(params);
     }
   };
-  const { data: categories } = useSWR("all-vendor-categories", () =>
-    clientServices.listAllCategories({ type: "vendor" }).then((res) =>
-      res.records.map((category) => ({
-        ...category,
-        name: getLocalizedWord(category.name),
-      }))
-    )
+  const { data: categories } = useSWR(
+    "all-vendor-categories",
+    () =>
+      clientServices.listAllCategories({ type: "vendor" }).then((res) =>
+        res.records.map((category) => ({
+          ...category,
+          name: getLocalizedWord(category.name),
+        }))
+      ),
+    STOP_UGLY_CACHEING
   );
 
   const { data, isLoading: vendorsLoading } = useSWR(
     [sort?.value, queryParams, sort],
-    ([key, params, sort]) => fetcherSwitch(key, params)
+    ([key, params, sort]) => fetcherSwitch(key, params),
+    STOP_UGLY_CACHEING
   );
 
   const vendorListRender = () =>

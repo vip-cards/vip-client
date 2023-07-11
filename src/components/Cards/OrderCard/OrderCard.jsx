@@ -1,32 +1,24 @@
 import { faInfo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import classNames from "classnames";
-import RatingStars from "components/RatingStars/RatingStars";
+
 import dayjs from "dayjs";
 import { getLocalizedWord } from "helpers/lang";
-import { useEffect, useState } from "react";
-import clientServices from "services/clientServices";
+import { useState } from "react";
 import "./OrderCard.scss";
 import OrderDetailsModal from "components/Modals/OrderDetailsModal";
 
 export default function OrderCard({ order }) {
   const [orderDetailsVisible, setOrderDetailsVisible] = useState(false);
-  const [vendor, setVendor] = useState({
-    name: "",
-    image: "",
-  });
 
   function handleShowInfo() {
     setOrderDetailsVisible((p) => !p);
   }
 
-  useEffect(() => {
-    clientServices
-      .getVendor(order.vendor?._id)
-      .then((res) => res.data.record[0])
-      .then((vendor) => setVendor(vendor));
-  }, [order.vendor]);
+  const vendor = order?.vendor;
 
+  let orderTotalMoneySaved = order.shippingFees
+    ? order.originalTotal - (order.total - order.shippingFees)
+    : order.originalTotal - order.total;
   return (
     <div className="flex flex-col">
       <article className="order-card relative">
@@ -41,7 +33,6 @@ export default function OrderCard({ order }) {
 
         <div className="order-vendor-name">
           <span>{getLocalizedWord(vendor?.name) || "Vendor name"}</span>
-          <RatingStars rate={vendor?.rate ?? 0} />
         </div>
 
         <div className="order-status">
@@ -57,6 +48,11 @@ export default function OrderCard({ order }) {
         <div className="order-points">
           <span className="number">{order.points}</span> &nbsp;
           <span className="text">points</span>
+        </div>
+        <div className="order-money">
+          <span className="number">{Math.ceil(orderTotalMoneySaved)}</span>{" "}
+          &nbsp;
+          <span className="text">Money Saved</span>
         </div>
 
         <div className="absolute top-3 left-5">

@@ -72,6 +72,27 @@ export const cartServices = {
     ).data;
   },
 
+  getOrdersRequest: async (params) => {
+    return (
+      await Axios.get("/orderRequest/get", {
+        params: {
+          ...params,
+          client: userId(),
+        },
+      })
+    ).data;
+  },
+  getOrdersRequests: async (params) => {
+    return (
+      await Axios.get("/orderRequest/get", {
+        params: {
+          ...params,
+          client: userId(),
+        },
+      })
+    ).data;
+  },
+
   rejectOrderRequest: async (params) => {
     const response = await Axios.put(
       `/orderRequest/update`,
@@ -89,9 +110,20 @@ export const cartServices = {
   },
 
   checkoutRequest: async (request) =>
-    await Axios.post("/order/checkout", { client: userId(), request }),
+    await Axios.post("/order/checkout", {
+      client: userId(),
+      request,
+      status: "pending",
+      purchaseDate: new Date(Date.now()),
+    }),
+
   checkoutFreeTrial: async (request) =>
-    await Axios.post("/order/freetrial", { client: userId(), request }),
+    await Axios.post("/order/freetrial", {
+      client: userId(),
+      request,
+      status: "pending",
+      purchaseDate: new Date(Date.now()),
+    }),
 
   acceptOrder: async (request) =>
     await Axios.put(
