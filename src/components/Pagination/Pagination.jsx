@@ -15,7 +15,7 @@ function Pagination({ queryParams, setQueryParams, count }) {
             page: params.page > 1 ? params.page - 1 : 1,
           }))
         }
-        className="p-2 !rounded-full justify-center items-center flex aspect-square disabled:bg-primary/50"
+        className="p-2 !rounded-full shrink-0 grow-0 w-6 h-6  justify-center items-center flex aspect-square disabled:bg-primary/50"
         size="small"
       >
         <FontAwesomeIcon
@@ -35,7 +35,7 @@ function Pagination({ queryParams, setQueryParams, count }) {
             {
               "!bg-primary/50": item !== queryParams.page,
             },
-            "p-2 !rounded-full justify-center items-center flex aspect-square"
+            "p-2 !rounded-full shrink-0 grow-0 w-6 h-6 justify-center items-center flex aspect-square"
           )}
           size="small"
         >
@@ -50,7 +50,7 @@ function Pagination({ queryParams, setQueryParams, count }) {
             page: params.page < count ? params.page + 1 : count,
           }))
         }
-        className="p-2 !rounded-full justify-center items-center flex aspect-square disabled:bg-primary/50"
+        className="p-2 !rounded-full shrink-0 grow-0 w-6 h-6  justify-center items-center flex aspect-square disabled:bg-primary/50"
         size="small"
       >
         <FontAwesomeIcon

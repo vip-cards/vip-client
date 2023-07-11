@@ -62,7 +62,10 @@ export default function MainInput(props: IMainInputProps): JSX.Element {
   const [disableState, setDisabledState] = useState(disabled);
 
   const lang = i18n.language;
-  const className = classNames("main-input peer w-full", { error: invalid }); // input class names
+  const className = classNames("main-input peer w-full", {
+    error: invalid,
+    "pointer-default": disableState || disabled,
+  }); // input class names
 
   const toggleDisabledHandler = () => setDisabledState((state) => !state);
 
@@ -168,15 +171,16 @@ export default function MainInput(props: IMainInputProps): JSX.Element {
           <Select
             isMulti
             options={list}
-            isClearable={true}
+            isClearable={!disabled}
             value={state[name]}
-            isSearchable={true}
+            isSearchable={!disabled}
             isRtl={lang === "ar"}
             closeMenuOnSelect={false} //this is done for some reason
-            isDisabled={disableState}
+            isDisabled={disabled}
             classNamePrefix="multi-select"
             className="multi-select w-full"
             menuShouldScrollIntoView={true}
+            placeholder={t("select")}
             styles={{
               control: (provided, state) => ({
                 ...provided,
@@ -218,9 +222,9 @@ export default function MainInput(props: IMainInputProps): JSX.Element {
         return (
           <CheckboxInput
             list={list}
-            identifier={identifier}
             state={state}
             setState={setState}
+            identifier={identifier}
             {...inputProps}
           />
         );
@@ -252,8 +256,9 @@ export default function MainInput(props: IMainInputProps): JSX.Element {
         id={id}
         list={list}
         name={name}
-        identifier={identifier}
+        state={state}
         setState={setState}
+        identifier={identifier}
         {...restProps}
       />
     );

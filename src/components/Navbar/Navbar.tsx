@@ -251,7 +251,13 @@ export default function Navbar() {
       </div>
       <NotificationRing />
 
-      {showSideMenu && <SideNav onToggle={toggleSideMenu} items={navItems} />}
+      {showSideMenu && (
+        <SideNav
+          onToggle={toggleSideMenu}
+          items={navItems}
+          setConfirmModal={setConfirmModal}
+        />
+      )}
       <Modal
         visible={notificationModal.visible}
         onClose={() =>

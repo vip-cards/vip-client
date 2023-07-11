@@ -1,3 +1,4 @@
+import { getLocalizedWord } from "helpers/lang";
 import { t } from "i18next";
 import i18n from "locales/i18n";
 import { forwardRef, useId } from "react";
@@ -45,7 +46,7 @@ export const ListInput = forwardRef(function ListInput(
           list?.map((li) => {
             return (
               <option key={li._id} value={li._id}>
-                {li[identifier][lang]}
+                {getLocalizedWord(li[identifier])}
               </option>
             );
           })}

@@ -19,7 +19,8 @@ const AnimatedLink = motion(Link);
 
 const ServiceCard = (props: Props) => {
   const { service } = props;
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
   const [loading, setLoading] = useState(false);
 
   const currentCLient = localStorage.getItem("userId") ?? "";
@@ -78,7 +79,7 @@ const ServiceCard = (props: Props) => {
         {getLocalizedWord(service.description)}
       </p>
       <time dateTime={service.publishDate} className="self-end">
-        {dayjs(service.publishDate).format("DD, MMM")}
+        {dayjs(service.publishDate).locale(lang).format("DD, MMM, YYYY")}
       </time>
     </AnimatedLink>
   );

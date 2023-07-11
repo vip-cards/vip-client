@@ -15,7 +15,8 @@ const JobCard = ({ job, mutate }) => {
   const jobClient = job?.client ?? "";
   const createdByMe = currentCLient === jobClient;
   const [loading, setLoading] = useState(false);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
 
   const handleRemoveJob = (e) => {
     e.stopPropagation();
@@ -70,7 +71,7 @@ const JobCard = ({ job, mutate }) => {
       <h4 className="sub-title text-xl">{getLocalizedWord(job.companyName)}</h4>
       <p className="body">
         <span>{getLocalizedWord(job.address)}</span>
-        <span>{dayjs(job.publishDate).format("DD, MMM")}</span>
+        <span>{dayjs(job.publishDate).locale(lang).format("DD, MMM, YYYY")}</span>
       </p>
     </motion.div>
   );

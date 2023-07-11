@@ -13,7 +13,7 @@ type TBreadCrumbProps = {
 };
 
 const BreadCrumb: React.FC<TBreadCrumbProps> = ({ pathList }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const lang = i18n.language;
 
   return (
@@ -36,7 +36,7 @@ const BreadCrumb: React.FC<TBreadCrumbProps> = ({ pathList }) => {
               to={path.link}
               className="flex flex-row items-center gap-2 text-gray-400 hover:text-primary transition-colors"
             >
-              <span className="text-sm capitalize">{path.title}</span>
+              <span className="text-sm capitalize">{t(path.title)}</span>
             </Link>
           </Fragment>
         );
