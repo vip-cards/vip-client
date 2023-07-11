@@ -1,18 +1,12 @@
-import { ReviewCard } from "components/Cards";
+import clipboardCopy from "clipboard-copy";
+import { MainButton } from "components/Buttons";
+import AgentCard from "components/Cards/AgentCard/AgentCard";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
-import NoData from "components/NoData/NoData";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import useSWR from "swr";
+import { useSelector } from "react-redux";
 import clientServices from "../../services/clientServices";
 import "./AccountInvite.scss";
-import { getLocalizedNumber } from "helpers/lang";
-import STOP_UGLY_CACHEING from "constants/configSWR";
-import { useSelector } from "react-redux";
-import { MainButton } from "components/Buttons";
-import clipboardCopy from "clipboard-copy";
-import endPoint from "services/endPoint";
-import AgentCard from "components/Cards/AgentCard/AgentCard";
-import { useState } from "react";
 
 export default function AccountInvite() {
   const { t, i18n } = useTranslation();

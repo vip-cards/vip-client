@@ -59,6 +59,7 @@ export const serviceForm = (records) => [
     required: false,
     identifier: "name",
     list: records ?? [],
+    placeholder: t("select"),
   },
   { name: "phone", type: "phone", required: true },
   { name: "whatsapp", type: "phone", required: false },

@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { MainImage } from "components";
 import { MainButton } from "components/Buttons";
 import CardContainer from "components/CardContainer/CardContainer";
-import { ImageEdit, MainInput } from "components/Inputs";
+
 import Modal from "components/Modal/Modal";
 import dayjs from "dayjs";
 import { adFormData } from "helpers/forms/ad";
@@ -12,11 +12,18 @@ import HomeSwiper from "pages/Home/HomeSwiper";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import clientServices from "services/clientServices";
 import { selectAuth } from "store/auth-slice";
 import { SwiperSlide } from "swiper/react";
+import useSWR from "swr";
 import "./CreateAd.scss";
+import BreadCrumb from "components/BreadCrumb/BreadCrumb";
+import { ROUTES } from "constants/routes";
+import { clearEmpty } from "helpers";
+import { adDetailsFetcher } from "../_fetcher/adDetails";
+import { ImageEdit, MainInput } from "components/Inputs";
+import { getLocalizedNumber } from "helpers/lang";
 
 /***
  * name
@@ -32,6 +39,8 @@ function CreateAd() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { cities, countries, setCities } = useCountriesArr();
+  const { id } = useParams();
+  const toEdit = !!id;
 
   const auth = useSelector(selectAuth);
   const user = auth.userData;
@@ -41,8 +50,18 @@ function CreateAd() {
   const [productList, setProductList] = useState([]);
   const [uploadImage, setUploadImage] = useState(null);
   const [previewModal, setPreviewModal] = useState(false);
+  const [incomingImage, setIncomingImage] = useState(null);
   const [ad, setAd] = useState<{ [x: string]: any }>({ vendor });
   const [notificationModal, setNotificationModal] = useState(false);
+
+  const { data: adsData } = useSWR(id ? ["ad", id] : null, adDetailsFetcher);
+  const { data: bannerData } = useSWR(
+    id ? ["ad-details", id] : null,
+    () => clientServices.getBannerDetails(id).then((data) => data.record[0]),
+    {
+      suspense: !adsData?.status?.includes("accept"),
+    }
+  );
 
   const withSize = ad.type === "banner";
   const withProduct = ad.type === "promotion";
@@ -81,17 +100,11 @@ function CreateAd() {
 
   const submitCreateAdHandler = async (e) => {
     e.preventDefault();
-
-    if (!uploadImage) {
-      toastPopup.error("Please provide a valid image!");
-      return;
-    }
     setLoading(true);
-    const formData = new FormData();
 
-    formData.append("image", uploadImage);
+    const { age_from, age_to, vendor, targetAreas, __v, ...restAd } =
+      clearEmpty(ad) as any;
 
-    const { age_from, age_to, ...restAd } = ad;
     const mappedData = {
       ...restAd,
       startDate: ad.startDate ?? new Date(),
@@ -110,6 +123,48 @@ function CreateAd() {
         },
       }),
     };
+    if (toEdit) {
+      delete mappedData._id;
+
+      try {
+        const adData = await clientServices.updateAd(mappedData, id);
+        const adId = adData.record._id;
+        toastPopup.success("Ad Updated Successfully");
+        if (!uploadImage && withSize) {
+          return;
+        } else {
+          const formData = new FormData();
+
+          formData.append("image", uploadImage);
+          try {
+            const { data: ImgData } = await clientServices.uploadAdImg(
+              adId,
+              formData
+            );
+            toastPopup.success("Ad Image Updated Successfully");
+            navigate("/ads");
+          } catch (e) {
+            responseErrorToast(e);
+          } finally {
+            setLoading(false);
+          }
+        }
+      } catch (e) {
+        responseErrorToast(e);
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+    if (!uploadImage) {
+      toastPopup.error("Please provide a valid image!");
+      return;
+    }
+    setLoading(true);
+    const formData = new FormData();
+
+    formData.append("image", uploadImage);
+
     try {
       const adData = await clientServices.createAd(mappedData);
       const adId = adData.record._id;
@@ -126,12 +181,41 @@ function CreateAd() {
   };
 
   useEffect(() => {
-    setAd((prev) => ({ ...prev, city: null }));
+    if (!adsData) return;
+    setIncomingImage(adsData?.image?.Location);
+    setAd(adsData);
+  }, [adsData]);
+
+  useEffect(() => {
+    if (!ad.country) return;
+    if (ad.country.index !== adsData.country.index)
+      setAd((prev) => ({ ...prev, city: null }));
     setCities(ad.country);
   }, [ad.country, setCities]);
 
   return (
-    <CardContainer className="create-ad-page" title={"create_ad"}>
+    <CardContainer className="create-ad-page" title={"ad"}>
+      <BreadCrumb
+        pathList={[
+          { link: `/${ROUTES.ADS.MAIN}`, title: "ads" },
+          {
+            link: `/${ROUTES.ADS.MAIN}/${ROUTES.ADS.LIST}`,
+            title: "previous_ads",
+          },
+        ]}
+      />
+      {bannerData && (
+        <div className="flex flex-row flex-wrap gap-5 my-5">
+          <div className="flex flex-col justify-center items-center border rounded-lg shadow-sm hover:shadow-lg capitalize w-fit grow-0 mx-auto p-4">
+            <h4>{t("clicks")}</h4>
+            <h5>{getLocalizedNumber(bannerData?.clicks)}</h5>
+          </div>
+          <div className="flex flex-col justify-center items-center border rounded-lg shadow-sm hover:shadow-lg capitalize w-fit grow-0 mx-auto p-4">
+            <h4>{t("reach")}</h4>
+            <h5>{getLocalizedNumber(bannerData?.reach)}</h5>
+          </div>
+        </div>
+      )}
       <form className="create-ad-form" onSubmit={submitCreateAdHandler}>
         {formDataList.map((formInput) => {
           if (formInput.name === "bannerSize" && !withSize) return null;
@@ -141,10 +225,12 @@ function CreateAd() {
 
           return (
             <MainInput
-              {...formInput}
               key={formInput.name}
+              {...formInput}
               state={ad}
               setState={setAd}
+              disabled={adsData?.status && adsData?.status !== "pending"}
+              readOnly={adsData?.status && adsData?.status !== "pending"}
             />
           );
         })}
@@ -153,7 +239,7 @@ function CreateAd() {
           className=""
           setImgUpdated={setUploadImage}
           setUploadImage={setUploadImage}
-          uploadImage={uploadImage}
+          uploadImage={uploadImage ?? incomingImage}
           style={{
             overflow: "hidden",
             width: "100%",
@@ -165,33 +251,40 @@ function CreateAd() {
                 : "300px",
           }}
         />
-        <MainButton
-          type="button"
-          variant="secondary"
-          className={classNames({
-            "opacity-50 pointer-events-none": !uploadImage,
-          })}
-          onClick={() => setPreviewModal(!!uploadImage)}
-        >
-          {t("preview")}
-        </MainButton>
-        <div className="main-input-label">
-          <MainButton
-            className="w-full"
-            text={t("confirm")}
-            loading={loading}
-            type="submit"
-          />
-        </div>
+
+        {adsData?.status && adsData?.status !== "pending" ? null : (
+          <>
+            <MainButton
+              type="button"
+              variant="secondary"
+              className={classNames({
+                "opacity-50 pointer-events-none":
+                  !uploadImage && !incomingImage,
+              })}
+              onClick={() => setPreviewModal(true)}
+            >
+              {t("preview")}
+            </MainButton>
+
+            <div className="main-input-label">
+              <MainButton
+                className="w-full"
+                text={t("confirm")}
+                loading={loading}
+                type="submit"
+              />
+            </div>
+          </>
+        )}
       </form>
       <Modal
-        visible={uploadImage && previewModal}
+        visible={(uploadImage || incomingImage) && previewModal}
         title=""
         onClose={() => setPreviewModal(false)}
       >
         <div
           className={classNames("overflow-y-scroll h-[70vh]", {
-            hidden: !uploadImage || ad.type !== "banner",
+            hidden: !(uploadImage || incomingImage) || ad.type !== "banner",
           })}
         >
           {/* --- */}
@@ -301,7 +394,7 @@ function CreateAd() {
 
         <div
           className={classNames("overflow-y-scroll h-[70vh]", {
-            hidden: !uploadImage || ad.type !== "popup",
+            hidden: !(uploadImage || incomingImage) || ad.type !== "popup",
           })}
         >
           <MainImage src={imgUrl} />
@@ -310,7 +403,8 @@ function CreateAd() {
         {/*         */}
         <div
           className={classNames("overflow-y-scroll h-[70vh]", {
-            hidden: !uploadImage || ad.type !== "notification",
+            hidden:
+              !(uploadImage || incomingImage) || ad.type !== "notification",
           })}
         >
           <h4>{t("notification")}</h4>

@@ -53,7 +53,7 @@ export const RenderRoomList = ({
             )[0]
           ];
 
-        const img = otherChatter.name.en?.includes("VIP")
+        const img = otherChatter?.name.en?.includes("VIP")
           ? vipImg
           : otherChatter?.image?.Location;
 
@@ -77,7 +77,7 @@ export const RenderRoomList = ({
               {img ? (
                 <MainImage
                   src={img}
-                  alt={getLocalizedWord(otherChatter.name)}
+                  alt={getLocalizedWord(otherChatter?.name)}
                 />
               ) : (
                 <FontAwesomeIcon

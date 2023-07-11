@@ -20,7 +20,7 @@ export function ChatBodyContainer({
   messageList,
   activeRoom,
 }: IChatBodyContainer) {
-  const { i18n, t } = useTranslation();
+  const { i18n } = useTranslation();
   const user = useSelector(selectAuth);
   const userId = user.userData._id;
   const userRole = user?.userData?.role ?? user?.userRole;
@@ -56,7 +56,7 @@ export function ChatBodyContainer({
       >
         <div className="w-11 h-11 shrink-0 grow-0 max-w-[3rem] max-h-12 rounded-full flex items-center border bg-slate-200/50 justify-center overflow-hidden">
           {img ? (
-            <MainImage src={img} alt={getLocalizedWord(otherChatter.name)} />
+            <MainImage src={img} alt={getLocalizedWord(otherChatter?.name)} />
           ) : (
             <FontAwesomeIcon
               icon={faUserTie}

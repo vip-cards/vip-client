@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import WishIcon from "components/WishIcon/WishIcon";
 import { useTranslation } from "react-i18next";
+import MainImage from "components/MainImage/MainImage";
 
 export function ProductImageContainer({ product }) {
   const wishlistIds = useSelector((state) => state.wishlist.ids);
@@ -45,7 +46,7 @@ export function ProductImageContainer({ product }) {
       }}
     >
       <div className="product-img">
-        <img
+        <MainImage
           src={image?.Location ?? ""}
           alt="product-img"
           // className="product-img"

@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import toastPopup from "helpers/toastPopup";
-import { capitalize } from "lodash";
+import _, { capitalize } from "lodash";
 import {
   useCallback,
   useEffect,
@@ -119,15 +119,28 @@ function Chat() {
 
   const onCreateRoom = useCallback(() => {
     toastPopup.success("Room Created");
-    listRooms({ client: userId, page: 1, limit: 20 }, onListRooms);
+    listRooms({ [userRole]: userId, page: 1, limit: 20 }, onListRooms);
+  }, [userRole, userId]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, excludeRoom]);
+  const onSentMessage = useCallback(
+    (data: { message: IMessage; _id: IRoom["_id"] }) => {
+      const roomId = _.isObject(activeRoom) ? activeRoom._id : activeRoom;
 
-  const onSentMessage = (data: { message: IMessage }) => {
-    setMessageList((list) => [...list, data.message]);
-    listRooms({ client: userId, page: 1, limit: 20 }, onListRooms);
-  };
+      if (data?._id === roomId) {
+        setMessageList((list) => [...list, data.message]);
+      } else {
+        // Fetch the message list for the current active room
+        getRoom(roomId, (data: { record: IRoom }) => {
+          const room: IRoom = data?.record;
+          if (room) {
+            setMessageList(room.messages);
+          }
+        });
+      }
+      listRooms({ [userRole]: userId, page: 1, limit: 20 }, onListRooms);
+    },
+    [activeRoom, userRole, userId, roomList]
+  );
 
   /* scroll to the bottom of chat when fetching the message list */
   useEffect(() => {
@@ -136,27 +149,26 @@ function Chat() {
   }, [messageList]);
 
   /* select room and exclude it from being hidden, when navigate to chat module */
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (state?.room) {
       setExcludeRoom(state.room._id);
       handleSelectRoom(state.room);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
   /* listen to creating rooms and sending messages with socket */
   useEffect(() => {
-    listRooms({ client: userId, page: 1, limit: 20 }, onListRooms);
-
     socket.on(CHAT.CREATE, onCreateRoom);
     socket.on(CHAT.MESSAGE, onSentMessage);
 
+    listRooms({ [userRole]: userId, page: 1, limit: 20 }, onListRooms);
     return () => {
       socket.off(CHAT.CREATE, onCreateRoom);
       socket.off(CHAT.MESSAGE, onSentMessage);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket, userId]);
+  }, [socket, userId, onSentMessage, onCreateRoom, userRole]);
 
   /* update the active room details when the room list is updated */
 

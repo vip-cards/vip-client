@@ -22,6 +22,7 @@ const PreviousAds = () => {
     data: adsData,
     error,
     isLoading,
+    mutate,
   } = useSWR(
     ["list-previous-ads", queryParams],
     adsFetcher,
@@ -70,7 +71,9 @@ const PreviousAds = () => {
     if (isLoading) return <LoadingSpinner />;
     else if (error) return <div>Something went wrong</div>;
     else if (adsList?.length)
-      return adsList?.map((ad) => <Adcard key={ad._id} ad={ad} />);
+      return adsList?.map((ad) => (
+        <Adcard key={ad._id} ad={ad} mutate={mutate} />
+      ));
     else return <NoData />;
   };
 
@@ -94,13 +97,16 @@ const PreviousAds = () => {
               toggleFilter("types", type);
             }}
             key={type}
-            className={classNames("px-3 py-1 rounded-lg border text-sm", {
-              "bg-primary":
-                filter.types?.findIndex((item) => item === type) > -1,
-              "bg-transparent group-hover:bg-primary/50": !(
-                filter.types?.findIndex((item) => item === type) > -1
-              ),
-            })}
+            className={classNames(
+              "px-3 py-1 rounded-lg border text-sm capitalize",
+              {
+                "bg-primary":
+                  filter.types?.findIndex((item) => item === type) > -1,
+                "bg-transparent group-hover:bg-primary/50": !(
+                  filter.types?.findIndex((item) => item === type) > -1
+                ),
+              }
+            )}
           >
             {t(type)}
           </button>
@@ -125,13 +131,16 @@ const PreviousAds = () => {
               toggleFilter("statuses", status);
             }}
             key={status}
-            className={classNames("px-3 py-1 rounded-lg border text-sm", {
-              "bg-primary":
-                filter.statuses?.findIndex((item) => item === status) > -1,
-              "bg-transparent group-hover:bg-primary/50": !(
-                filter.statuses?.findIndex((item) => item === status) > -1
-              ),
-            })}
+            className={classNames(
+              "px-3 py-1 rounded-lg border text-sm capitalize",
+              {
+                "bg-primary":
+                  filter.statuses?.findIndex((item) => item === status) > -1,
+                "bg-transparent group-hover:bg-primary/50": !(
+                  filter.statuses?.findIndex((item) => item === status) > -1
+                ),
+              }
+            )}
           >
             {t(status)}
           </button>

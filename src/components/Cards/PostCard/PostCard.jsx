@@ -16,7 +16,8 @@ const PostCard = ({ post }) => {
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.language;
 
   const handleRemoveJob = (e) => {
     e.stopPropagation();
@@ -43,7 +44,7 @@ const PostCard = ({ post }) => {
         stiffness: 260,
         damping: 14,
       }}
-      className="job-card bg-gray-300 cursor-pointer relative h-[170px]"
+      className="job-card bg-gray-300 cursor-pointer !gap-2 relative h-[170px]"
       onClick={() => navigate("/posts/" + post._id)}
     >
       {createdByMe && (
@@ -66,11 +67,11 @@ const PostCard = ({ post }) => {
       <h3 className="title">{getLocalizedWord(post.name)}</h3>
       <h4 className="sub-title">{getLocalizedWord(post.jobTitle)}</h4>
       <p className="body">
-        <span>
-          {getLocalizedWord(post.description)} - {post.phone}
+        <span className="leading-5">
+          {getLocalizedWord(post.description)} <br /> {post.phone}
         </span>
         <span className="whitespace-nowrap">
-          {dayjs(post.publishDate).format("DD, MMM")}
+          {dayjs(post.publishDate).locale(lang).format("DD, MMM, YYYY")}
         </span>
       </p>
     </motion.div>

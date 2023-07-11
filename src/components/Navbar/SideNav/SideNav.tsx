@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import "./SideNav.scss";
 
-export default function SideNav({ items, onToggle }) {
+export default function SideNav({ items, onToggle, setConfirmModal }) {
   const { t, i18n } = useTranslation();
   const sideNavRef = useRef<HTMLDivElement>();
 
@@ -21,7 +21,7 @@ export default function SideNav({ items, onToggle }) {
 
   function logoutHandler(e) {
     e.preventDefault();
-    logout();
+    setConfirmModal(true);
   }
 
   function backDropClickHandler(e: React.MouseEvent<HTMLElement>) {
@@ -34,6 +34,7 @@ export default function SideNav({ items, onToggle }) {
       }, 300);
     }
   }
+
   return (
     <aside
       className="side-nav-container bg-black/25"
