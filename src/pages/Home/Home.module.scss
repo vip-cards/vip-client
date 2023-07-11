@@ -2,6 +2,19 @@
   :global(.carousel-container) {
     margin: 30px;
   }
+  :global([dir="rtl"].swiper-vertical .swiper-button-prev) {
+    transform: rotate(-90deg) !important;
+    &:active {
+      transform: rotate(-90deg) scale(0.95) !important;
+    }
+  }
+  :global([dir="rtl"].swiper-vertical .swiper-button-next) {
+    transform: rotate(-90deg) !important;
+    &:active {
+      transform: rotate(-90deg) scale(0.95) !important;
+    }
+  }
+
   .home-section {
     min-height: 170px;
   }
