@@ -5,6 +5,7 @@ import jwt_decode from "jwt-decode";
 import store from "../store";
 import { authActions } from "../store/auth-slice";
 import endPoint from "./endPoint";
+import i18n from "locales/i18n";
 
 const guestEndpoints = [
   "/login",
@@ -18,7 +19,7 @@ const guestEndpoints = [
 
 const axiosConfig = {
   baseURL: endPoint + "/client",
-  headers: { "x-app-token": "VIP-Team" },
+  headers: { "x-app-token": "VIP-Team", "accept-language": i18n.language },
 };
 
 const guestAxios = axios.create(axiosConfig);
@@ -35,10 +36,20 @@ Axios.interceptors.request.use(async (req) => {
 
   if (!isTokenExpired) {
     req.headers.Authorization = `Bearer ${auth.token}`;
-    if (req.method === "get" && !req.url.includes("ad/list")) {
+    if (req.method === "get") {
+      const skipped = ["subs", "ad/list", "job/get", "ad/get", "banner/get"];
+      let isActive = null;
+
+      for (const url of skipped) {
+        if (req.url.includes(url)) {
+          isActive = null;
+          break;
+        }
+        isActive = true;
+      }
       req.params = {
         ...req.params,
-        isActive: req.url.includes("subs") ? false : true,
+        isActive,
       };
     }
     if (

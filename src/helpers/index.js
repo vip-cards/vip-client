@@ -9,9 +9,17 @@ export const clearEmpty = (obj) => {
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       const value = obj[key];
+
       if (typeof value === "object" && !Array.isArray(value)) {
-        result[key] = clearEmpty(value);
-      } else if (value !== null && value !== undefined && value !== "") {
+        const clearedValue = clearEmpty(value);
+
+        if (!!Object.keys(clearedValue).length) {
+          result[key] = clearedValue;
+        }
+      } else if (
+        (Array.isArray(value) && value.length !== 0) ||
+        (value !== null && value !== undefined && value !== "")
+      ) {
         result[key] = value;
       }
     }

@@ -104,6 +104,10 @@ export default function ClientLayout() {
               }
             />
             <Route
+              path={`/${ROUTES.ADS.MAIN}/${ROUTES.ADS.CREATE}/:id`}
+              element={<CreateAd />}
+            />
+            <Route
               path={`/${ROUTES.ADS.MAIN}/${ROUTES.ADS.CREATE}`}
               element={<CreateAd />}
             />

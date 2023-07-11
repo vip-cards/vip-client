@@ -6,6 +6,8 @@ import { BrowserRouter } from "react-router-dom";
 import { SWRConfig } from "swr";
 import App from "./App";
 import store from "./store";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 import "dayjs/locale/ar";
 import "dayjs/locale/en";
@@ -16,6 +18,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import "./index.scss";
 
+dayjs.extend(relativeTime);
 const helmetContext = {};
 const container = document.getElementById("root") as HTMLElement;
 const root = createRoot(container);
