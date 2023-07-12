@@ -71,7 +71,7 @@ export default function ClientLayout() {
     <div className="base-layout">
       <Navbar />
       <div className="base-nav-item"></div>
-      <div className="page-content">
+      <div className="page-content max-sm:!p-0">
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route

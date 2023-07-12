@@ -91,22 +91,22 @@ export default function Navbar() {
   const NotificationRing = useCallback(
     () => (
       <Dropdown
-        menu={notificationList.list}
+        menu={notificationList?.list ?? []}
         left={lang === "en"}
         right={lang === "ar"}
         listRender={notificationListRender(handleNotificationClick)}
       >
-        {!!notificationList.list.filter((item: INotification) => !item.seen)
-          .length && (
+        {!!notificationList?.list?.filter((item: INotification) => !item.seen)
+          ?.length && (
           <div className="h-5 w-5 flex z-20 p-1 items-center justify-center bg-secondary text-white absolute -right-2 -top-3 rounded-full !text-[0.7rem]">
-            {notificationList.list.filter((item: INotification) => !item.seen)
-              .length ?? 0}
+            {notificationList?.list?.filter((item: INotification) => !item.seen)
+              ?.length ?? 0}
           </div>
         )}
         <Notification className="notification-icon hover:drop-shadow-xl hover:bg-white/10 transition-colors rounded-full" />
       </Dropdown>
     ),
-    [notificationList.list, lang]
+    [notificationList?.list, lang]
   );
 
   useEffect(() => {
@@ -119,7 +119,7 @@ export default function Navbar() {
 
   useEffect(() => {
     clientServices.categoryQuery({ type: "vendor" }).then((response) => {
-      const categoryList = response.data.records.map((item) => ({
+      const categoryList = response?.data?.records?.map((item) => ({
         key: item._id,
         _id: item._id,
         to: "categories/" + item._id,
@@ -130,7 +130,7 @@ export default function Navbar() {
     });
 
     clientServices.vendorQuery().then((response) => {
-      const vendorList = response.data.records.map(
+      const vendorList = response?.data?.records?.map(
         (item: {
           _id: string;
           name: { [x: string]: any; en: any; ar: any };
@@ -169,12 +169,12 @@ export default function Navbar() {
         }}
       />
       <ul className="nav-menu rtl:mr-auto rtl:!ml-0 z-[100]">
-        {navItems.map((item, idx) => {
+        {navItems?.map((item, idx) => {
           const defaultListRender = (menu: any[]) => (
             <>
               {menu
-                .slice(0, 5)
-                .map(
+                ?.slice(0, 5)
+                ?.map(
                   (
                     subItem: { key: any; to: any; content: any },
                     idx: number
@@ -193,7 +193,7 @@ export default function Navbar() {
                   )
                 )}
 
-              {menu.length > 5 && (
+              {menu?.length > 5 && (
                 <motion.li
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}

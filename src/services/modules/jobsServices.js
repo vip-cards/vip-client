@@ -12,6 +12,12 @@ export const jobsServices = {
     const response = await Axios.post("/job/create", body);
     return response;
   },
+  updateJob: async (body, params) => {
+    const response = await Axios.put("/job/update", body, {
+      params: { ...params },
+    });
+    return response;
+  },
 
   applyToJob: async (_id, obj) =>
     (await Axios.post("/job/apply", obj, { params: { _id } }))?.data,

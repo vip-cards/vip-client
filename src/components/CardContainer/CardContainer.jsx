@@ -12,7 +12,7 @@ function CardContainer({ children, title, className, withHeader = true }) {
     <main
       className={clsx(
         className,
-        "app-card-shadow page-wrapper mt-16 my-8 max-sm:!m-0 max-sm:!w-full max-sm:!rounded-none"
+        "app-card-shadow page-wrapper max-sm:!max-w-full mt-16 my-8 max-sm:!m-0 max-sm:!w-full max-sm:!rounded-none"
       )}
     >
       <Helmet>

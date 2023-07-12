@@ -65,7 +65,7 @@ export default function HiringTabCreateJob() {
       .createPost(newJobForm)
       .then((res) => {
         toastPopup.success("Created Successfully");
-        navigate("/jobs/hire");
+        navigate("/jobs");
       })
 
       .catch(responseErrorToast)

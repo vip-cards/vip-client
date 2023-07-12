@@ -1,6 +1,7 @@
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MainButton } from "components/Buttons";
+import CardContainer from "components/CardContainer/CardContainer";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
 import Modal from "components/Modal/Modal";
 import NoData from "components/NoData/NoData";
@@ -22,7 +23,6 @@ import useSWR from "swr";
 import CartMoreDetails from "./CartMoreDetails";
 import CartProductsList from "./CartProductsList";
 import OrderRequestModal from "./OrderRequestModal";
-import OrderRequestsTable from "./OrderRequestsTable";
 
 import "./CartPage.scss";
 
@@ -74,7 +74,7 @@ export default function CartPage() {
   if (!cart._id) return <NoData />;
 
   return (
-    <main className="app-card-shadow cart-page">
+    <CardContainer className="cart-page">
       <Helmet>
         <title>{t("shoppingCart")}</title>
       </Helmet>
@@ -93,7 +93,7 @@ export default function CartPage() {
             </h5>
 
             {/* Actions */}
-            <div className="w-full p-2 border rounded-lg flex focus-within:border-blue-500 flex-row justify-between mb-3">
+            <div className="w-full p-2 border rounded-lg flex focus-within:border-blue-500 flex-row flex-wrap justify-between mb-3 overflow-hidden">
               <input
                 className="outline-none ring-0 border-0 "
                 type="text"
@@ -183,6 +183,6 @@ export default function CartPage() {
           ></iframe>
         )}
       </Modal>
-    </main>
+    </CardContainer>
   );
 }

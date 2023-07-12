@@ -12,6 +12,12 @@ export const postsServices = {
     const response = await Axios.post("/post/create", body);
     return response;
   },
+  updatePost: async (body, params) => {
+    const response = await Axios.put("/post/update", body, {
+      params: { ...params },
+    });
+    return response;
+  },
   removePost: async (_id) =>
     (
       await Axios.delete("/post/remove", {

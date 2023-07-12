@@ -2,13 +2,13 @@ import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
 import dayjs from "dayjs";
+import { motion } from "framer-motion";
 import { getLocalizedWord } from "helpers/lang";
 import toastPopup, { responseErrorToast } from "helpers/toastPopup";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import clientServices from "services/clientServices";
-import { motion } from "framer-motion";
 
 type Props = {
   service: IService;
@@ -21,10 +21,12 @@ const ServiceCard = (props: Props) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const currentCLient = localStorage.getItem("userId") ?? "";
 
   const createdByMe = currentCLient === service.provider;
+
   const handleRemoveService = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -33,10 +35,15 @@ const ServiceCard = (props: Props) => {
     clientServices
       .removeService(service._id)
       .then(() => {
-        toastPopup.success(t("jobRemovedSuccessfully"));
+        toastPopup.success("Removed successfully!");
       })
       .catch(responseErrorToast)
       .finally(() => setLoading(false));
+  };
+
+  const handleEditService = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
   };
 
   return (

@@ -1,3 +1,4 @@
+import CardContainer from "components/CardContainer/CardContainer";
 import Tabs from "../../../../components/Tabs/Tabs";
 import ApplyJobCreateJob from "./ApplyJobCreateJob";
 import ApplyJobHome from "./ApplyJobHome";
@@ -22,9 +23,9 @@ const ApplyJobTab = () => {
   };
 
   return (
-    <div className="page-wrapper app-card-shadow px-0 md:px-5 lg:px-8 py-8 m-8">
+    <CardContainer className="" title="" withHeader={false}>
       <Tabs tabs={tabs} />
-    </div>
+    </CardContainer>
   );
 };
 

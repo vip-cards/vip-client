@@ -15,6 +15,7 @@ import classNames from "classnames";
 import { getLocalizedWord } from "helpers/lang";
 import { t } from "i18next";
 import STOP_UGLY_CACHEING from "constants/configSWR";
+import CardContainer from "components/CardContainer/CardContainer";
 
 const LIMIT = 9;
 
@@ -163,8 +164,8 @@ export default function Services() {
   };
 
   return (
-    <div className="page-wrapper app-card-shadow px-0 md:px-4 lg:px-6 py-8 m-8">
+    <CardContainer className="" title="" withHeader={false}>
       <Tabs tabs={tabs} />
-    </div>
+    </CardContainer>
   );
 }
