@@ -7,7 +7,7 @@ toast.configure();
 const toastPopup = {
   error: (text) => {
     const lang = i18n.language;
-    toast.error(text, {
+    toast.error(t(text), {
       position:
         lang === "ar" ? toast.POSITION.TOP_RIGHT : toast.POSITION.TOP_LEFT,
       autoClose: 2000,
@@ -22,7 +22,7 @@ const toastPopup = {
 
   success: (text) => {
     const lang = i18n.language;
-    toast.success(text, {
+    toast.success(t(text), {
       position:
         lang === "ar" ? toast.POSITION.TOP_RIGHT : toast.POSITION.TOP_LEFT,
       autoClose: 2000,
