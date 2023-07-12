@@ -69,7 +69,7 @@ export default function ApplyJobCreateJob() {
       .createJob(newJobForm)
       .then((res) => {
         toastPopup.success("Created Successfully");
-        navigate("/jobs/apply");
+        navigate("/jobs");
       })
       .catch(responseErrorToast)
       .finally(() => setLoading(false));

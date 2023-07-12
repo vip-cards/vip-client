@@ -4,6 +4,7 @@ import { MainInput } from "components/Inputs";
 import { ROUTES } from "constants";
 import { switchLang } from "helpers/lang";
 import toastPopup from "helpers/toastPopup";
+import { t } from "i18next";
 import jwtDecode from "jwt-decode";
 import i18n from "locales/i18n";
 import { useState } from "react";
@@ -60,8 +61,8 @@ function SendRecoveryMailView({ input, setInput }) {
 
   return (
     <>
-      <h3>Forgot Password</h3>
-      <p className="w-2/3 my-3 text-center">Please enter your email</p>
+      <h3>{t("forgotPassword")}</h3>
+      <p className="w-2/3 my-3 text-center">{t("enterYourEmail")}</p>
 
       <MainInput
         state={input}
@@ -71,7 +72,7 @@ function SendRecoveryMailView({ input, setInput }) {
       />
 
       <MainButton
-        text="Send"
+        text="confirm"
         loading={loading}
         type="submit"
         className="w-4/5 mt-8"
@@ -95,8 +96,10 @@ function ConfirmCodeView({ input, setInput }) {
   }
   return (
     <>
-      <h3>Forgot Password</h3>
-      <p className="w-2/3 my-3 text-center">Please enter the sent code</p>
+      <h3>{t("forgotPassword")}</h3>
+      <p className="w-2/3 my-3 text-center">
+        {t("Please enter the sent code")}
+      </p>
 
       <MainInput
         state={input}
@@ -106,7 +109,7 @@ function ConfirmCodeView({ input, setInput }) {
       />
 
       <MainButton
-        text="Send"
+        text="confirm"
         loading={false}
         type="submit"
         className="w-4/5 mt-8"
@@ -143,15 +146,16 @@ function NewPasswordView({ input, setInput }) {
             setLoading(false);
           }, 300);
         });
-
-      } else {
+    } else {
       toastPopup.error("The passwords didn't match");
     }
   }
   return (
     <>
-      <h3>Forgot Password</h3>
-      <p className="w-2/3 my-3 text-center">Please enter the new password</p>
+      <h3>{t("forgotPassword")}</h3>
+      <p className="w-2/3 my-3 text-center">
+        {t("Please enter the new password")}
+      </p>
 
       <MainInput
         state={input}
@@ -169,7 +173,7 @@ function NewPasswordView({ input, setInput }) {
       />
 
       <MainButton
-        text="Send"
+        text="confirm"
         type="submit"
         loading={loading}
         className="w-4/5 mt-8"
@@ -206,7 +210,7 @@ function ForgetPassword() {
         <div className="w-4/5 min-w-fit shadow-lg rounded-2xl p-5 flex flex-col items-center justify-between h-fit gap-4 max-w-2xl py-16">
           {render()}
           <div className="text-primary hover:opacity-80">
-            <Link to={ROUTES.LOGIN}>login</Link>
+            <Link to={ROUTES.LOGIN}>{t("login")}</Link>
           </div>
         </div>
       </div>
