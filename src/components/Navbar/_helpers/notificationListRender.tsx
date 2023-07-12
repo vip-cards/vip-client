@@ -10,7 +10,7 @@ export function notificationListRender(
   ) => void
 ) {
   return (menu: INotification[]) =>
-    menu.map((item, idx: number) => (
+    menu?.map((item, idx: number) => (
       <motion.li
         key={item._id}
         initial={{ opacity: 0, y: -10 }}
