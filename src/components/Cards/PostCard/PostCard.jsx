@@ -44,7 +44,7 @@ const PostCard = ({ post }) => {
         stiffness: 260,
         damping: 14,
       }}
-      className="job-card bg-gray-300 cursor-pointer !gap-2 relative h-[170px]"
+      className="job-card bg-gray-300 cursor-pointer !gap-2 relative h-[190px]"
       onClick={() => navigate("/posts/" + post._id)}
     >
       {createdByMe && (
@@ -64,8 +64,8 @@ const PostCard = ({ post }) => {
           </button>
         </div>
       )}
-      <h3 className="title">{getLocalizedWord(post.name)}</h3>
-      <h4 className="sub-title">{getLocalizedWord(post.jobTitle)}</h4>
+      <h4 className="title">{getLocalizedWord(post.name)}</h4>
+      <h5 className="sub-title">{getLocalizedWord(post.jobTitle)}</h5>
       <p className="body">
         <span className="leading-5">
           {getLocalizedWord(post.description)} <br /> {post.phone}

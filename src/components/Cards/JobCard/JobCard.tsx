@@ -45,7 +45,7 @@ const JobCard = ({ job, mutate }) => {
         stiffness: 260,
         damping: 14,
       }}
-      className="job-card bg-gray-300 cursor-pointer relative h-[150px]"
+      className="job-card bg-gray-300 cursor-pointer relative h-[170px]"
       onClick={() => navigate("/jobs/" + job._id)}
     >
       {createdByMe && (
