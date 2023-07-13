@@ -20,5 +20,9 @@ export const servicesServices = {
     (await Axios.get(API.SERVICES.LSIT, { params }))?.data,
 
   updateService: async (_id, obj) =>
-    (await Axios.put(API.SERVICES.UPDATE, obj, { params: { _id } }))?.data,
+    (
+      await Axios.put(API.SERVICES.UPDATE, obj, {
+        params: { _id, provider: localStorage.getItem("userId") },
+      })
+    )?.data,
 };

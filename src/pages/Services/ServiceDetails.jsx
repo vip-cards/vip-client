@@ -234,7 +234,7 @@ export function ServiceDetails() {
         </div>
       )}
       <BreadCrumb pathList={[{ title: "services", link: "/services" }]} />
-      <section className={classNames({ hidden: !toEdit })}>
+      <section className={classNames({ "!hidden": !toEdit })}>
         <form
           className="create-job-panel"
           onSubmit={onSubmitHandler}
@@ -263,7 +263,11 @@ export function ServiceDetails() {
           </div>
         </form>
       </section>
-      <div className="flex flex-col divide-y-2 gap-4">
+      <div
+        className={classNames("flex flex-col divide-y-2 gap-4", {
+          "!hidden": toEdit,
+        })}
+      >
         <div className="flex flex-col border-b-slate-200">
           <h5>Service</h5>
           <p className="text-lg">{getLocalizedWord(service.serviceName)}</p>
