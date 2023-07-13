@@ -51,6 +51,7 @@ export default function MainInput(props: IMainInputProps): JSX.Element {
     disabled = false,
     toEdit = false,
     invalid = false,
+    isMulti = true,
     className: _className,
     ...restProps
   } = props;
@@ -169,14 +170,14 @@ export default function MainInput(props: IMainInputProps): JSX.Element {
       case "multi-select":
         return (
           <Select
-            isMulti
+            isMulti={isMulti}
             options={list}
             isClearable={!disabled}
             value={state[name]}
             isSearchable={!disabled}
             isRtl={lang === "ar"}
             closeMenuOnSelect={false} //this is done for some reason
-            isDisabled={disabled}
+            isDisabled={disableState}
             classNamePrefix="multi-select"
             className="multi-select w-full"
             menuShouldScrollIntoView={true}
@@ -259,10 +260,13 @@ export default function MainInput(props: IMainInputProps): JSX.Element {
         state={state}
         setState={setState}
         identifier={identifier}
+        disabled={disableState}
         {...restProps}
       />
     );
   }
+  console.log("from the input", state);
+  console.log("from the input", list);
   return (
     <div className={classNames(_className, "main-input-label group")}>
       {renderInput()}

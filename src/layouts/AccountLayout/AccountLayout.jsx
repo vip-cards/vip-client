@@ -38,7 +38,7 @@ export default function AccountLayout() {
           </ul>
         </nav>
         {/* CONTENT */}
-        <div className="account-outlet overflow-hidden pb-5">
+        <div className="account-outlet  overflow-x-hidden overflow-y-auto pb-5">
           <Outlet />
         </div>
       </div>

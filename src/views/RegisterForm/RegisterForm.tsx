@@ -81,9 +81,18 @@ export default function RegisterForm() {
     }
     const mappedData = {
       ..._user,
+      country: {
+        en: _user?.country?.en,
+        ar: _user?.country?.ar,
+        index: _user?.country?.index,
+      },
+      city: {
+        en: _user?.city?.en,
+        ar: _user?.city?.ar,
+        index: _user?.city?.index,
+      },
       name: {
-        en: _user.name_en,
-        ar: _user.name_ar,
+        en: _user.name,
       },
     };
 

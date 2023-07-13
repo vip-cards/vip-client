@@ -1,5 +1,5 @@
 const STOP_UGLY_CACHEING = {
-  revalidateOnFocus: true, // Disable revalidation on window focus
+  revalidateOnFocus: false, // Disable revalidation on window focus
   revalidateOnReconnect: true, // Disable revalidation on reconnect
   refreshWhenHidden: true, // Disable revalidation when the page is hidden
   refreshWhenOffline: true, // Disable revalidation when the user is offline

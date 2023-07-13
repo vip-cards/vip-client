@@ -12,21 +12,32 @@ import { useTranslation } from "react-i18next";
 
 export const InputSelect = ({ list, name, identifier, setState, ...props }) => {
   const { t } = useTranslation();
+  console.log(props);
   const state = props.state;
   const [selected, setSelected] = useState(state?.[name] ?? "");
-
   useEffect(() => {
     if (state[name] === undefined) return;
     if (state[name] === selected) return;
     setSelected(state[name]);
   }, [state, name, selected]);
 
+  console.log(state, selected);
   return (
     <div className="main-input-select">
       <p className="field-title">{t(name)}</p>
       <div className="check-field">
         {list?.map((item, idx) => (
-          <div className="form-check" key={idx}>
+          <div
+            className="form-check"
+            key={idx}
+            onClick={() => {
+              setSelected(item[identifier]);
+              setState((state) => ({
+                ...state,
+                [name]: item[identifier],
+              }));
+            }}
+          >
             <label
               className="form-check-label w-full"
               htmlFor={item[identifier]}

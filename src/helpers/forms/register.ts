@@ -7,20 +7,15 @@ import { t } from "i18next";
 import Joi from "joi";
 
 export const registerSchema = Joi.object({
-  name_en: Joi.string()
+  name: Joi.string()
     .messages({
       "any.required": t("nameValidation"),
       "string.empty": t("nameValidation"),
     })
     .trim()
     .required(),
-  name_ar: Joi.string()
-    .messages({
-      "any.required": t("nameValidation"),
-      "string.empty": t("nameValidation"),
-    })
-    .trim()
-    .required(),
+
+  referredBy: Joi.string().trim(),
   email: emailSchema,
   phone: phoneSchema,
   password: passwordSchema,
@@ -58,13 +53,13 @@ export const registerSchema = Joi.object({
   });
 
 export const registerFormData = [
-  { name: "name_en", type: "text", required: true },
-  { name: "name_ar", type: "text", required: true },
+  { name: "referredBy", type: "text", required: false },
+  { name: "name", type: "text", required: true },
 
   { name: "email", type: "email", required: false },
   { name: "phone", type: "tel", required: false },
   { name: "password", type: "password", required: true },
   { name: "re-password", type: "password", required: true },
 
-  { name: "age", type: "number", required: true, min: "15", max: "100" },
+  { name: "age", type: "number", required: true, min: "10", max: "100" },
 ];

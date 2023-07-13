@@ -5,7 +5,7 @@ import clientServices from "services/clientServices";
 import { authActions } from "store/auth-slice";
 import useSWR from "swr";
 
-import { faImage } from "@fortawesome/free-solid-svg-icons";
+import { faImage, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import branchBlaceHolder from "assets/images/branchPlaceHolder.png";
 import LoadingSpinner from "components/LoadingSpinner/LoadingSpinner";
@@ -16,6 +16,10 @@ import { MainInput } from "components/Inputs";
 
 import "./AccountDetails.scss";
 import STOP_UGLY_CACHEING from "constants/configSWR";
+import { getLocalizedWord } from "helpers/lang";
+import useCountriesArr from "helpers/useCountriesArr";
+import { useNavigate } from "react-router";
+import EditPassworModal from "./EditPasswordModal";
 /**
  * {obj1} new object
  * {obj2} old object
@@ -32,6 +36,12 @@ const getUpdatedOnly = (obj1, obj2) => {
 export default function AccountDetails() {
   const ref = useRef();
   const dispatch = useDispatch();
+
+  const { countries, cities, setCities } = useCountriesArr();
+  const navigate = useNavigate(0);
+
+  console.log(countries, cities);
+
   const { data: accountData } = useSWR(
     "account-details",
     () => clientServices.updateInfo(),
@@ -55,28 +65,43 @@ export default function AccountDetails() {
   const auth = useSelector((state) => state.auth);
 
   const userData = account ?? auth.userData;
-
+  console.log(userData);
   const [loading, setLoading] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
   const [updateImage, setUpdateImage] = useState(userData.image?.Location);
   const [uploadImage, setUploadImage] = useState(updateImage);
   const [imgUpdated, setImgUpdated] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+
+  function handleClosePasswordModal() {
+    setShowPasswordModal(false);
+  }
+
+  const selectedCountry = countries?.find(
+    (cntry) => cntry._id === userData.country.index
+  );
+  const selectedCity = selectedCountry?.cities.find(
+    (cty) => cty._id === userData.city.index
+  );
+
+  console.log("selectedCity", selectedCity);
+  console.log("selectedCountry", selectedCountry);
   const [oldUserInfo, setOldUserInfo] = useState({
-    name_en: userData.name.en,
-    name_ar: userData.name.ar,
-    email: userData.email,
-    phone: userData.phone,
-    image: userData.image,
-    age: userData.age,
-    gender: userData.gender,
-    profession: userData.profession,
-    interests: userData.interests,
+    name: getLocalizedWord(userData.name),
+    email: userData?.email,
+    phone: userData?.phone,
+    image: userData?.image,
+    age: userData?.age,
+    gender: userData?.gender,
+    profession: userData?.profession,
+    interests: userData?.interests,
+    country: selectedCountry,
+    city: selectedCity,
   });
   const [userInfo, setUserInfo] = useState(oldUserInfo);
-
+  console.log("oldUserInfo", oldUserInfo);
   const formData = [
-    { name: "name_en", type: "text", required: true },
-    { name: "name_ar", type: "text", required: true },
+    { name: "name", type: "text", required: true },
     { name: "email", type: "email", required: true, toEdit: true },
     { name: "age", type: "number", toEdit: true },
     { name: "phone", type: "tel", toEdit: true },
@@ -85,12 +110,14 @@ export default function AccountDetails() {
       type: "multi-select",
       identifier: "name",
       list: professions ?? [],
+      isMulti: true,
       toEdit: true,
     },
     {
       name: "interests",
       type: "multi-select",
       identifier: "name",
+      isMulti: true,
       list: interests ?? [],
       toEdit: true,
     },
@@ -103,6 +130,24 @@ export default function AccountDetails() {
       ],
       identifier: "gender",
       required: true,
+    },
+    {
+      name: "country",
+      type: "multi-select",
+      list: countries,
+      required: true,
+      isMulti: false,
+      identifier: "name",
+      closeMenuOnSelect: true,
+    },
+    {
+      name: "city",
+      type: "multi-select",
+      list: cities,
+      required: true,
+      isMulti: false,
+      identifier: "name",
+      closeMenuOnSelect: true,
     },
   ];
 
@@ -118,10 +163,9 @@ export default function AccountDetails() {
      */
     e.preventDefault();
     const newDataObj = getUpdatedOnly(userInfo, oldUserInfo);
-    const mappedData = {
+    let mappedData = {
       name: {
-        en: userInfo.name_en,
-        ar: userInfo.name_ar,
+        en: userInfo.name,
       },
       email: newDataObj.email,
       phone: newDataObj.phone,
@@ -137,11 +181,35 @@ export default function AccountDetails() {
       })),
     };
 
+    mappedData = newDataObj?.country?.index
+      ? {
+          ...mappedData,
+          country: {
+            en: newDataObj?.country?.en,
+            ar: newDataObj?.country?.ar,
+            index: newDataObj?.country?.index,
+          },
+        }
+      : mappedData;
+
+    mappedData = newDataObj?.city?.index
+      ? {
+          ...mappedData,
+
+          city: {
+            en: newDataObj?.city?.en,
+            ar: newDataObj?.city?.ar,
+            index: newDataObj?.city?.index,
+          },
+        }
+      : mappedData;
+
     clientServices
       .updateInfo(mappedData)
       .then((data) => {
         dispatch(authActions.update({ userData: data.record }));
         toastPopup.success("Account Info Updated Successfully");
+        navigate(0);
       })
       .catch((e) => toastPopup.error(e.response.data.error));
   };
@@ -166,6 +234,27 @@ export default function AccountDetails() {
   }, [dispatch, updateImage]);
 
   useEffect(() => {
+    setUserInfo((state) => ({
+      ...state,
+      city:
+        oldUserInfo?.country?.index !== userInfo?.country?.index
+          ? null
+          : state.city,
+    }));
+    setCities(userInfo.country);
+  }, [userInfo.country]);
+
+  useEffect(() => {
+    setOldUserInfo((prev) => {
+      return { ...prev, country: selectedCountry, city: selectedCity };
+    });
+
+    setUserInfo((prev) => {
+      return { ...prev, country: selectedCountry, city: selectedCity };
+    });
+  }, [selectedCountry, selectedCity]);
+
+  useEffect(() => {
     if (imgUpdated) {
       imageUpload();
     }
@@ -174,79 +263,97 @@ export default function AccountDetails() {
   if (loading) {
     return <LoadingSpinner />;
   }
+
   return (
-    <form className="add-branch-form" onSubmit={updateDetails}>
-      <h2 className="add-branch-title">{t("accountDetails")}</h2>
+    <>
+      <form className="add-branch-form" onSubmit={updateDetails}>
+        <h2 className="add-branch-title">{t("accountDetails")}</h2>
 
-      <div className="account-details-container">
-        <div className="main-image-label">
-          {imageLoading ? (
-            <LoadingSpinner />
-          ) : (
-            <>
-              {uploadImage && (
-                <img
-                  src={
-                    uploadImage
-                      ? typeof uploadImage === "string"
-                        ? `${uploadImage}`
-                        : URL.createObjectURL(uploadImage)
-                      : null
-                  }
-                  alt={userData.name.en}
-                  className="uploaded-img"
-                  onClick={() => {
-                    window.open(
-                      uploadImage ? URL.createObjectURL(uploadImage) : null
-                    );
-                  }}
-                  onError={(e) => (e.target.src = branchBlaceHolder)}
+        <div className="account-details-container">
+          <div className="main-image-label">
+            {imageLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <>
+                {uploadImage && (
+                  <img
+                    src={
+                      uploadImage
+                        ? typeof uploadImage === "string"
+                          ? `${uploadImage}`
+                          : URL.createObjectURL(uploadImage)
+                        : null
+                    }
+                    alt={userData.name.en}
+                    className="uploaded-img"
+                    onClick={() => {
+                      window.open(
+                        uploadImage ? URL.createObjectURL(uploadImage) : null
+                      );
+                    }}
+                    onError={(e) => (e.target.src = branchBlaceHolder)}
+                  />
+                )}
+              </>
+            )}
+            <input
+              className="main-input-image"
+              type="file"
+              accept="image/*"
+              name="upload-img"
+              ref={ref}
+              onChange={(e) => {
+                setImgUpdated(true);
+                setUpdateImage(e.target.files[0]);
+              }}
+              disabled={imageLoading}
+            />
+            <label
+              className="vendor-label-image"
+              onClick={imageUploader}
+              htmlFor="upload-img"
+            >
+              <FontAwesomeIcon icon={faImage} />
+            </label>
+          </div>
+
+          <div className="account-info-container">
+            {formData.map((formInput, index) => {
+              return (
+                <MainInput
+                  key={formInput.name}
+                  name={formInput.name}
+                  type={formInput.type}
+                  required={formInput.required}
+                  list={formInput.list}
+                  identifier={formInput.identifier}
+                  state={userInfo}
+                  setState={setUserInfo}
+                  isMulti={formInput.isMulti}
+                  disabled
+                  toEdit={true}
                 />
-              )}
-            </>
-          )}
-          <input
-            className="main-input-image"
-            type="file"
-            accept="image/*"
-            name="upload-img"
-            ref={ref}
-            onChange={(e) => {
-              setImgUpdated(true);
-              setUpdateImage(e.target.files[0]);
-            }}
-            disabled={imageLoading}
-          />
-          <label
-            className="vendor-label-image"
-            onClick={imageUploader}
-            htmlFor="upload-img"
-          >
-            <FontAwesomeIcon icon={faImage} />
-          </label>
-        </div>
+              );
+            })}
 
-        <div className="account-info-container">
-          {formData.map((formInput, index) => {
-            return (
-              <MainInput
-                key={formInput.name}
-                name={formInput.name}
-                type={formInput.type}
-                required={formInput.required}
-                list={formInput.list}
-                identifier={formInput.identifier}
-                state={userInfo}
-                setState={setUserInfo}
-                disabled
-                toEdit={true}
-              />
-            );
-          })}
-
-          <MainButton className="full-width" text={t("confirm")} />
+            <MainButton className="full-width" text={t("confirm")} />
+            <MainButton
+              className="max-w-[35rem] mx-auto"
+              onClick={() => setShowPasswordModal(true)}
+              type="button"
+            >
+              <FontAwesomeIcon icon={faLock} className="mx-2" />
+              {t("Change Password")}
+            </MainButton>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+
+      <EditPassworModal
+        id={userData._id}
+        showPasswordModal={showPasswordModal}
+        handleClosePasswordModal={handleClosePasswordModal}
+      />
+    </>
   );
 }

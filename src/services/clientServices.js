@@ -20,6 +20,13 @@ const clientServices = {
     return response;
   },
 
+  changePassword: async (id, newPassword) => {
+    const response = await Axios.put(`/resetPassword?_id=${id}`, {
+      newPassword,
+    });
+    return response;
+  },
+
   listAllVendors: async (params) =>
     (await Axios.get(`/vendor/list`, { params })).data,
 
