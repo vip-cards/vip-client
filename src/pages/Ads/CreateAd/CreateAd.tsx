@@ -187,10 +187,10 @@ function CreateAd() {
   }, [adsData]);
 
   useEffect(() => {
-    if (!ad.country) return;
-    if (ad.country.index !== adsData.country.index)
+    if (!ad?.country) return;
+    if (ad?.country?.index !== adsData?.country?.index)
       setAd((prev) => ({ ...prev, city: null }));
-    setCities(ad.country);
+    setCities(ad?.country);
   }, [ad.country, setCities]);
 
   return (
