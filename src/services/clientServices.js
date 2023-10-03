@@ -217,6 +217,10 @@ const clientServices = {
     const response = await Axios.get(`/page/get`, { params: { _id } });
     return response?.data?.records?.[0] ?? response?.data?.record[0];
   },
+  getPageByType: async (param) => {
+    const response = await Axios.get(`/page/get`, { params: param });
+    return response?.data?.records?.[0] ?? response?.data?.record[0];
+  },
 
   listAllSettings: async () => {
     const response = await Axios.get(`/setting/get`);

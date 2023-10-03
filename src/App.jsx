@@ -5,6 +5,7 @@ import ForgetPassword from "pages/Login/ForgotPassword";
 import Login from "pages/Login/Login";
 import Register from "pages/Register/Register";
 import ResetPassword from "pages/ResetPassword/ResetPassword";
+import Support from "pages/Support/Support";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
@@ -55,6 +56,7 @@ function App() {
           path="/login"
           element={auth.token ? <Navigate to="/" /> : <Login />}
         />
+        <Route path="/support" element={<Support />} />
         <Route
           path={ROUTES.FORGOT_PASSWORD}
           element={auth.token ? <Navigate to="/" /> : <ForgetPassword />}
