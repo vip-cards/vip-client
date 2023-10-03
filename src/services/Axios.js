@@ -15,6 +15,7 @@ const guestEndpoints = [
   "/recovery",
   "/resetPassword",
   "/guest",
+  "/page",
 ];
 
 const axiosConfig = {
