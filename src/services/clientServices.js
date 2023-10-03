@@ -1,5 +1,5 @@
 import store from "../store";
-import Axios from "./Axios";
+import Axios, { guestAxios } from "./Axios";
 import { accountServices } from "./modules/accountServices";
 import { adsServices } from "./modules/adsServices";
 import { authServices } from "./modules/authServices";
@@ -218,7 +218,7 @@ const clientServices = {
     return response?.data?.records?.[0] ?? response?.data?.record[0];
   },
   getPageByType: async (param) => {
-    const response = await Axios.get(`/page/get`, { params: param });
+    const response = await guestAxios.get(`/page/get`, { params: param });
     return response?.data?.records?.[0] ?? response?.data?.record[0];
   },
 
