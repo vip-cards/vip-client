@@ -1,3 +1,3 @@
-const endPoint = process.env.REACT_APP_BASE_URL;
+const endPoint = "https://vip.e3lanotopia.software/api/v1/";
 
 export default endPoint;
